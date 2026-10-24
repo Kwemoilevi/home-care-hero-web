@@ -1,0 +1,16 @@
+{
+  "name": "Home Care Hero",
+  "short_name": "CareHero",
+  "description": "Home care services in Kampala - Call 0772101875",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0ea5e9",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/2966/2966327.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
