@@ -6,129 +6,76 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen">
+<!-- LOGIN -->
 <div id="login" class="min-h-screen flex items-center justify-center p-6">
 <div class="bg-white p-8 rounded-2xl shadow-xl w-full max-w-sm">
 <h1 class="text-2xl font-bold">Admin Login</h1>
 <p class="text-sm text-gray-500 mt-1">Home Care Hero</p>
 <input id="pass" type="password" placeholder="Enter admin password" class="w-full mt-6 px-4 py-3 rounded-xl border bg-gray-50">
 <button onclick="doLogin()" class="w-full mt-4 bg-black text-white py-3 rounded-xl font-bold">Login</button>
-<p class="text-xs text-gray-400 mt-3 text-center">Default: admin123 - Change it later!</p>
+<p class="text-xs text-gray-400 mt-3 text-center">New password: kwaliver92</p>
 <p id="loginErr" class="text-sm text-red-500 mt-2 text-center"></p>
 </div>
 </div>
-
+<!-- PANEL -->
 <div id="panel" class="hidden">
 <nav class="bg-black text-white px-6 py-4 flex justify-between items-center">
 <div class="font-bold">Home Care Hero Admin 📍 Live Tracking Control</div>
-<button onclick="localStorage.removeItem('hch_admin');location.reload()" class="text-xs bg-white/20 px-3 py-1 rounded-full">Logout</button>
+<button onclick="localStorage.removeItem('hch_admin');location.reload()" class="text-xs bg-white/10 px-3 py-1 rounded-full">Logout</button>
 </nav>
-
 <div class="p-6 max-w-6xl mx-auto">
 <div class="grid grid-cols-3 gap-4">
-<div class="bg-white p-4 rounded-xl border"><p class="text-xs text-gray-400">TOTAL BOOKINGS</p><p id="totalCount" class="text-2xl font-bold">0</p></div>
-<div class="bg-white p-4 rounded-xl border"><p class="text-xs text-gray-400">ON THE WAY</p><p id="onWayCount" class="text-2xl font-bold text-emerald-600">0</p></div>
-<div class="bg-white p-4 rounded-xl border"><p class="text-xs text-gray-400">ACTIVE TODAY</p><p id="todayCount" class="text-2xl font-bold">0</p></div>
+<div class="bg-white p-4 rounded-xl border"><p class="text-xs text-gray-400">TOTAL BOOKINGS</p><p id="total" class="text-2xl font-bold">0</p></div>
+<div class="bg-white p-4 rounded-xl border"><p class="text-xs text-gray-400">ON THE WAY</p><p id="onway" class="text-2xl font-bold text-yellow-600">0</p></div>
+<div class="bg-white p-4 rounded-xl border"><p class="text-xs text-gray-400">ACTIVE CARE</p><p id="active" class="text-2xl font-bold text-emerald-600">0</p></div>
 </div>
-
 <div class="mt-6 bg-white rounded-2xl border p-6">
-<h2 class="font-bold text-lg">Add / Update Booking Tracking</h2>
-<div class="grid md:grid-cols-4 gap-3 mt-4">
-<input id="bId" placeholder="Tracking ID e.g. HCH-1234" class="px-4 py-3 rounded-xl border bg-gray-50 font-bold uppercase">
-<input id="bName" placeholder="Customer name" class="px-4 py-3 rounded-xl border bg-gray-50">
-<input id="bPhone" placeholder="Customer phone 07..." class="px-4 py-3 rounded-xl border bg-gray-50">
-<input id="bCare" placeholder="Caregiver e.g. Grace N." class="px-4 py-3 rounded-xl border bg-gray-50">
-</div>
-<div class="grid md:grid-cols-3 gap-3 mt-3">
-<select id="bStatus" class="px-4 py-3 rounded-xl border bg-gray-50">
-<option value="booked">Booked</option>
-<option value="on_the_way">On the way (50%)</option>
-<option value="arrived">Arrived (75%)</option>
-<option value="care_started">Care Started (100%)</option>
-</select>
-<input id="bEta" placeholder="ETA e.g. 25 min" class="px-4 py-3 rounded-xl border bg-gray-50">
-<button onclick="saveBooking()" class="bg-black text-white py-3 rounded-xl font-bold">Save & Update Live Tracking</button>
-</div>
-<p id="saveMsg" class="text-sm text-emerald-600 font-bold mt-3 text-center"></p>
-</div>
-
-<div class="mt-6 bg-white rounded-2xl border overflow-hidden">
-<div class="p-6 flex justify-between items-center">
-<h2 class="font-bold text-lg">All Bookings - Live Tracking</h2>
-<button onclick="loadBookings()" class="text-sm bg-gray-100 px-3 py-1 rounded-full">Refresh</button>
-</div>
-<div id="bookingList" class="divide-y"></div>
+<div class="flex justify-between items-center"><h2 class="font-bold">All Bookings - Live Control</h2><button onclick="loadBookings()" class="text-xs bg-gray-100 px-3 py-1 rounded-full">↻ Refresh</button></div>
+<div id="bookingsList" class="mt-4 space-y-3"></div>
 </div>
 </div>
 </div>
-
 <script>
-const ADMIN_PASS = 'admin123';
+const ADMIN_PASS = 'kwaliver92';
 function doLogin(){
- if(document.getElementById('pass').value === ADMIN_PASS){ localStorage.setItem('hch_admin','yes'); showPanel(); }
- else{ document.getElementById('loginErr').textContent='Wrong password! Try admin123'; }
+ let p=document.getElementById('pass').value;
+ if(p===ADMIN_PASS){localStorage.setItem('hch_admin','yes');showPanel();}
+ else{document.getElementById('loginErr').textContent='Wrong password! Use kwaliver92';}
 }
 function showPanel(){
  document.getElementById('login').classList.add('hidden');
  document.getElementById('panel').classList.remove('hidden');
  loadBookings();
 }
-if(localStorage.getItem('hch_admin')) showPanel();
-
-function getStore(){ return JSON.parse(localStorage.getItem('hch_bookings')||'[]'); }
-function setStore(arr){ localStorage.setItem('hch_bookings', JSON.stringify(arr)); }
-
-function saveBooking(){
- const id = document.getElementById('bId').value.trim().toUpperCase();
- if(!id){ alert('Enter Tracking ID'); return; }
- let arr = getStore();
- let existing = arr.find(b=>b.id===id);
- let data = {
-   id,
-   name: document.getElementById('bName').value || existing?.name || 'Customer',
-   phone: document.getElementById('bPhone').value || existing?.phone || '',
-   caregiver: document.getElementById('bCare').value || existing?.caregiver || 'Grace N.',
-   status: document.getElementById('bStatus').value,
-   eta: document.getElementById('bEta').value || '25 min',
-   time: new Date().toLocaleString()
- };
- if(existing){ Object.assign(existing, data); } else { arr.unshift(data); }
- setStore(arr);
- localStorage.setItem('hch_tracking_'+id, JSON.stringify(data));
- document.getElementById('saveMsg').textContent='✅ Updated! Customer sees live status for '+id;
- loadBookings();
- // Auto WhatsApp
- if(data.phone){
-   let waMsg = `Hi ${data.name}, Home Care Hero update for ${id}: Status = ${data.status.replace(/_/g,' ').toUpperCase()}, Caregiver: ${data.caregiver}, ETA: ${data.eta}. Track live: ${location.origin}/#tracking`;
-   window.open(`https://wa.me/${data.phone.replace(/[^0-9]/g,'')}?text=${encodeURIComponent(waMsg)}`,'_blank');
- }
-}
-
-async function loadBookings(){
- let arr = getStore();
- // Try fetch from Render backend too
- try{
-   let res = await fetch('https://home-care-hero-api.onrender.com/api/book');
-   if(res.ok){ let backend = await res.json(); if(Array.isArray(backend) && backend.length){ arr = [...backend.map(b=>({id:b.trackingId||'HCH-'+Math.floor(Math.random()*9000), name:b.name, phone:b.phone, caregiver:'Grace N.', status:'booked', eta:'25 min', time:b.createdAt||''})), ...arr]; } }
- }catch(e){}
- document.getElementById('totalCount').textContent = arr.length;
- document.getElementById('onWayCount').textContent = arr.filter(b=>b.status==='on_the_way').length;
- document.getElementById('todayCount').textContent = arr.length;
+function loadBookings(){
+ let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
+ document.getElementById('total').textContent=arr.length;
+ document.getElementById('onway').textContent=arr.filter(b=>b.status==='on_the_way').length;
+ document.getElementById('active').textContent=arr.filter(b=>b.status==='care_started').length;
  let html='';
- arr.forEach(b=>{
-   let color = b.status==='booked'?'bg-gray-200':b.status==='on_the_way'?'bg-yellow-400':b.status==='arrived'?'bg-emerald-400':'bg-black text-white';
-   html+=`<div class="p-4 flex justify-between items-center gap-4">
-   <div><p class="font-bold">${b.id} - ${b.name}</p><p class="text-xs text-gray-500">${b.phone||''} • ${b.caregiver} • ${b.time}</p></div>
-   <div class="flex gap-2 items-center"><span class="text-xs px-3 py-1 rounded-full ${color} font-bold">${b.status}</span>
-   <button onclick="quickUpdate('${b.id}','on_the_way')" class="text-xs bg-black text-white px-3 py-1 rounded-full">On Way</button>
-   <button onclick="quickUpdate('${b.id}','arrived')" class="text-xs bg-emerald-600 text-white px-3 py-1 rounded-full">Arrived</button></div></div>`;
+ if(arr.length===0) html='<p class="text-center text-gray-400 py-10">No bookings yet. Book on homepage to test.</p>';
+ arr.forEach((b,i)=>{
+  html+=`<div class="border p-4 rounded-xl flex flex-col md:flex-row md:justify-between gap-3">
+  <div><p class="font-bold">${b.id} - ${b.name}</p><p class="text-xs text-gray-500">${b.phone} • ${b.service||'Home Care'} • ${b.eta||'30 min'} • Status: <b>${b.status}</b></p><p class="text-xs mt-1">Caregiver: ${b.caregiver||'Not assigned'}</p></div>
+  <div class="flex flex-wrap gap-2">
+  <select onchange="assignCaregiver('${b.id}',this.value)" class="text-xs border rounded-full px-3 py-1 bg-gray-50">
+  <option>Assign Caregiver</option><option ${b.caregiver==='Grace N.'?'selected':''}>Grace N.</option><option ${b.caregiver==='Sarah K.'?'selected':''}>Sarah K.</option><option ${b.caregiver==='Moses O.'?'selected':''}>Moses O.</option>
+  </select>
+  <select onchange="changeStatus('${b.id}',this.value)" class="text-xs border rounded-full px-3 py-1 bg-black text-white">
+  <option>Change Status</option><option value="booked">Booked</option><option value="on_the_way">On The Way</option><option value="arrived">Arrived</option><option value="care_started">Care Started</option><option value="completed">Completed</option>
+  </select>
+  <a href="https://wa.me/${b.phone?.replace(/[^0-9]/g,'')}?text=Hi%20${b.name}%2C%20your%20booking%20${b.id}%20is%20${b.status}.%20Caregiver%20${b.caregiver||''}%20is%20coming.%20ETA%20${b.eta}" target="_blank" class="text-xs bg-[#25D366] text-white px-3 py-1 rounded-full">WhatsApp Client</a>
+  </div></div>`;
  });
- document.getElementById('bookingList').innerHTML = html || '<p class="p-6 text-center text-gray-400">No bookings yet. Book from homepage to test!</p>';
+ document.getElementById('bookingsList').innerHTML=html;
 }
-function quickUpdate(id,status){
- document.getElementById('bId').value=id; document.getElementById('bStatus').value=status;
- let arr=getStore(); let b=arr.find(x=>x.id===id); if(b){ document.getElementById('bName').value=b.name; document.getElementById('bPhone').value=b.phone; document.getElementById('bCare').value=b.caregiver; }
- saveBooking();
+function assignCaregiver(id,name){
+ let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]'); let b=arr.find(x=>x.id===id); if(b){b.caregiver=name; localStorage.setItem('hch_bookings',JSON.stringify(arr)); loadBookings();}
 }
+function changeStatus(id,status){
+ let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]'); let b=arr.find(x=>x.id===id); if(b){b.status=status; localStorage.setItem('hch_bookings',JSON.stringify(arr)); localStorage.setItem('hch_tracking_'+id,JSON.stringify(b)); alert('Updated '+id+' to '+status); loadBookings();}
+}
+if(localStorage.getItem('hch_admin')) showPanel();
 </script>
 </body>
 </html>
