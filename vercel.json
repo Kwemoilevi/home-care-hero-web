@@ -1,0 +1,8 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/register", "destination": "/caregiver-register.html" },
+    { "source": "/caregiver-register", "destination": "/caregiver-register.html" },
+    { "source": "/dashboard", "destination": "/dashboard.html" }
+  ]
+}
