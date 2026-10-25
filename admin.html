@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin - Money Dashboard</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -11,107 +12,99 @@
 <h1 class="font-black text-2xl">CEO Login</h1>
 <p class="text-xs text-gray-500 mt-1">Password to see your money</p>
 <input id="pass" type="password" placeholder="Password" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50">
-<button onclick="doLogin()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-bold">Unlock Dashboard</button>
+<button onclick="dologin()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-black">Login</button>
 <p id="err" class="hidden text-red-500 text-xs mt-2">Wrong password! Use kwaliver92</p>
 </div>
 </div>
 
 <div id="dash" class="hidden">
-<nav class="bg-black text-white px-6 py-4 flex justify-between items-center sticky top-0 z-30">
+<nav class="bg-black text-white px-6 py-4 flex justify-between items-center sticky top-0 z-50">
 <div class="font-black">Home Care Hero Admin 📍 Live + Money</div>
 <button onclick="location.reload()" class="text-xs bg-white/20 px-3 py-1 rounded-full">Logout</button>
 </nav>
 
 <div class="p-6 max-w-6xl mx-auto">
-<!-- MONEY CARDS -->
 <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
 <div class="bg-[#ffcc00] p-4 rounded-2xl border-2 border-black">
 <p class="text-[10px] font-black">TODAY'S PROFIT 💰</p>
 <p id="totalProfit" class="text-2xl font-black mt-1">0 UGX</p>
-<p class="text-[10px] mt-1">Your cut on 0772101875</p>
-</div>
-<div class="bg-black text-white p-4 rounded-2xl">
-<p class="text-[10px]">TOTAL DEPOSIT COLLECTED 💳</p>
-<p id="totalDeposit" class="text-2xl font-black mt-1 text-[#ffcc00]">0 UGX</p>
-<p class="text-[10px] text-gray-400 mt-1">Paid to 0772101875</p>
 </div>
 <div class="bg-white p-4 rounded-2xl border">
-<p class="text-[10px] text-gray-500 font-bold">TOTAL BOOKINGS</p>
-<p id="totalBookings" class="text-2xl font-black mt-1">0</p>
+<p class="text-[10px] text-gray-500">TOTAL BOOKINGS</p>
+<p id="totalBookings" class="text-xl font-black">0</p>
 </div>
 <div class="bg-white p-4 rounded-2xl border">
-<p class="text-[10px] text-gray-500 font-bold">BALANCE PENDING</p>
-<p id="totalBalance" class="text-2xl font-black mt-1 text-emerald-600">0 UGX</p>
-<p class="text-[10px] text-gray-400">Collect after service</p>
+<p class="text-[10px] text-gray-500">PENDING APPS</p>
+<p id="pendingApps" class="text-xl font-black">0</p>
+</div>
+<div class="bg-white p-4 rounded-2xl border">
+<p class="text-[10px] text-gray-500">APPROVED CAREGIVERS</p>
+<p id="approvedCount" class="text-xl font-black">0</p>
 </div>
 </div>
 
-<div class="grid grid-cols-3 gap-4 mt-4">
-<div class="bg-white p-3 rounded-xl border text-center"><p class="text-[10px]">ON THE WAY</p><p id="onway" class="font-black text-yellow-600 text-xl">0</p></div>
-<div class="bg-white p-3 rounded-xl border text-center"><p class="text-[10px]">ACTIVE CARE</p><p id="active" class="font-black text-emerald-600 text-xl">0</p></div>
-<div class="bg-white p-3 rounded-xl border text-center"><p class="text-[10px]">CAREGIVERS ONLINE</p><p class="font-black text-xl">12</p></div>
+<div class="mt-8 grid md:grid-cols-2 gap-6">
+<div class="bg-white p-5 rounded-[1.5rem] border">
+<h2 class="font-black">Client Bookings</h2>
+<p class="text-[11px] text-gray-500">Assign caregiver to each booking</p>
+<div id="bookingList" class="mt-4 space-y-3"></div>
 </div>
 
-<div class="bg-white mt-6 p-6 rounded-[1.5rem] border">
-<div class="flex justify-between items-center">
-<h2 class="font-black">All Bookings - Live Control + Profit</h2>
-<button onclick="loadBookings()" class="text-xs border px-3 py-1 rounded-full">↻ Refresh</button>
+<div class="bg-white p-5 rounded-[1.5rem] border">
+<div class="flex gap-2 mb-3">
+<button onclick="showCG('apps')" id="b1" class="bg-black text-white px-4 py-2 rounded-full text-xs font-black">PENDING APPS</button>
+<button onclick="showCG('approved')" id="b2" class="bg-gray-100 px-4 py-2 rounded-full text-xs font-bold">APPROVED</button>
 </div>
-<div id="list" class="mt-4 space-y-3"></div>
+<div id="cgApps" class="space-y-2"></div>
+<div id="cgApproved" class="hidden space-y-2"></div>
 </div>
-
-<div class="mt-6 bg-emerald-50 border border-emerald-200 p-4 rounded-2xl text-xs">
-<b>How you earn:</b> Client pays 15k deposit to 0772101875 → You keep 10k-15k instantly → Balance (15k-30k) client pays caregiver after service. You pay caregiver from balance, keep difference. Example: 30k service → 15k deposit (you keep 10k) → 15k balance → you pay caregiver 12k → you keep extra 3k = 13k total profit!
 </div>
 </div>
 </div>
 
 <script>
-function doLogin(){
- let p=document.getElementById('pass').value;
- if(p==='kwaliver92'){document.getElementById('login').classList.add('hidden');document.getElementById('dash').classList.remove('hidden');loadBookings();}
- else{ document.getElementById('err').classList.remove('hidden'); }
+function dologin(){
+if(document.getElementById('pass').value==='kwaliver92'){
+document.getElementById('login').classList.add('hidden');
+document.getElementById('dash').classList.remove('hidden');
+loadAll();
+}else{
+document.getElementById('err').classList.remove('hidden');
 }
-function loadBookings(){
- let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
- document.getElementById('totalBookings').textContent=bookings.length;
- let profit=0,deposit=0,balance=0,onway=0,active=0;
- bookings.forEach(b=>{
-  let comm=b.commission||b.yourEarn||10000;
-  if(!b.commission && b.price>=70000) comm=15000;
-  profit+=comm;
-  deposit+= (b.deposit||15000);
-  balance+= (b.balance|| (b.price-15000) );
-  if(b.status && b.status.includes('on the way')) onway++;
-  if(b.status && b.status.includes('active')) active++;
- });
- document.getElementById('totalProfit').textContent=profit.toLocaleString()+' UGX';
- document.getElementById('totalDeposit').textContent=deposit.toLocaleString()+' UGX';
- document.getElementById('totalBalance').textContent=balance.toLocaleString()+' UGX';
- document.getElementById('onway').textContent=onway;
- document.getElementById('active').textContent=active;
-
- let html='';
- if(bookings.length===0){ html='<p class="text-xs text-gray-500">No bookings yet. Share your site: home-care-hero-web.vercel.app</p>'; }
- bookings.forEach((b,i)=>{
-  let comm=b.commission||b.yourEarn||10000;
-  html+=`<div class="border p-3 rounded-xl bg-gray-50">
-  <div class="flex justify-between"><p class="font-black text-sm">${b.id} - ${b.name}</p><p class="text-xs font-black text-emerald-700">Profit ${comm.toLocaleString()} UGX</p></div>
-  <p class="text-[11px] text-gray-600 mt-1">${b.phone} • ${b.service} • Total ${b.price.toLocaleString()} UGX • Deposit ${ (b.deposit||15000).toLocaleString()} to 0772101875 • Balance ${(b.balance||0).toLocaleString()} • Status: <b>${b.status}</b></p>
-  <p class="text-[11px] mt-1">Caregiver: ${b.caregiver||'Not assigned'} • ETA: ${b.eta||'30 min'}</p>
-  <div class="flex gap-2 mt-2 flex-wrap">
-  <select onchange="assign(${i},this.value)" class="text-xs border px-2 py-1 rounded-full bg-white"><option>Assign Caregiver</option><option>Grace N - Babysitter (5★)</option><option>Sarah K - Elderly Care (5★)</option><option>Prossy - Nurse (5★)</option><option>Mariam - House Help</option></select>
-  <select onchange="changeStatus(${i},this.value)" class="text-xs bg-black text-white px-2 py-1 rounded-full"><option>Change Status</option><option>on the way - 15 min</option><option>active - Care started</option><option>completed - Collect balance</option><option>cancelled</option></select>
-  <a href="https://wa.me/${b.phone.replace(/[^0-9]/g,'')}?text=Hello%20${b.name}%20your%20caregiver%20is%20on%20the%20way!%20Booking%20${b.id}" target="_blank" class="text-xs bg-[#25D366] text-white px-3 py-1 rounded-full">WhatsApp Client</a>
-  <button onclick="del(${i})" class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full">Delete</button>
-  </div>
-  </div>`;
- });
- document.getElementById('list').innerHTML=html;
 }
-function assign(i,val){let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]');arr[i].caregiver=val;localStorage.setItem('hch_bookings',JSON.stringify(arr));loadBookings();}
-function changeStatus(i,val){let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]');arr[i].status=val;localStorage.setItem('hch_bookings',JSON.stringify(arr));loadBookings();}
-function del(i){if(!confirm('Delete this booking?'))return;let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]');arr.splice(i,1);localStorage.setItem('hch_bookings',JSON.stringify(arr));loadBookings();}
+function showCG(t){
+document.getElementById('cgApps').classList.toggle('hidden',t!=='apps');
+document.getElementById('cgApproved').classList.toggle('hidden',t!=='approved');
+}
+let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
+let apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]');
+let approved=JSON.parse(localStorage.getItem('hch_approved_caregivers')||'[]');
+function loadAll(){
+bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
+apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]');
+approved=JSON.parse(localStorage.getItem('hch_approved_caregivers')||'[]');
+document.getElementById('totalBookings').textContent=bookings.length;
+document.getElementById('pendingApps').textContent=apps.filter(a=>a.status==='pending').length;
+document.getElementById('approvedCount').textContent=approved.length;
+let profit=0;bookings.forEach(b=>{profit+=(b.price||0)-(b.caregiverPay||15000);});
+document.getElementById('totalProfit').textContent=profit.toLocaleString()+' UGX';
+let h='';if(bookings.length===0)h='<p class="text-xs text-gray-400 py-8 text-center">No bookings yet</p>';
+bookings.forEach((b,i)=>{
+let opts=approved.map(c=>`<option value="${c.phone}|${c.name}" ${b.caregiverPhone===c.phone?'selected':''}>${c.name}-${c.phone}</option>`).join('');
+h+=`<div class="border p-3 rounded-xl"><p class="font-black text-sm">${b.id||'HCH'} - ${b.name} - ${b.price||0}UGX</p><p class="text-xs text-gray-600">${b.phone} | ${b.location||'Kampala'} | ${b.status||'pending'}</p><div class="flex gap-2 mt-2 flex-wrap"><select onchange="assign(${i},this.value)" class="text-xs bg-[#ffcc00] px-3 py-2 rounded-full font-bold"><option>Assign Caregiver</option>${opts}</select><select onchange="upd(${i},this.value)" class="text-xs border px-2 py-1 rounded-full"><option>status</option><option>on the way</option><option>active</option><option>completed</option></select><button onclick="delB(${i})" class="text-xs text-red-500">Del</button></div>${b.caregiver?`<p class="text-[11px] mt-2 bg-black text-white inline-block px-2 py-1 rounded-full">Assigned: ${b.caregiver}</p>`:''}</div>`;
+});
+document.getElementById('bookingList').innerHTML=h;
+let h2='';if(apps.length===0)h2='<p class="text-xs text-gray-400">No applications. Share link: home-care-hero-web.vercel.app/caregiver-register.html</p>';
+apps.forEach((a,i)=>{h2+=`<div class="border p-3 rounded-xl flex justify-between items-center"><div><p class="font-bold text-sm">${a.name} - ${a.phone}</p><p class="text-[11px]">${a.service} in ${a.loc} - ${a.status}</p></div><button onclick="approve(${i})" class="bg-black text-white text-xs px-3 py-2 rounded-full font-bold">${a.status==='pending'?'APPROVE':'OK'}</button></div>`;});
+document.getElementById('cgApps').innerHTML=h2;
+let h3='';if(approved.length===0)h3='<p class="text-xs text-gray-400">No approved yet</p>';
+approved.forEach(a=>{h3+=`<div class="border p-3 rounded-xl flex justify-between"><div><p class="font-bold text-sm">${a.name}</p><p class="text-xs">${a.phone} - ${a.service}</p></div><a href="https://wa.me/${a.phone.replace(/\D/g,'')}" target="_blank" class="text-xs bg-green-500 text-white px-3 py-1 rounded-full h-fit">Chat</a></div>`;});
+document.getElementById('cgApproved').innerHTML=h3;
+}
+function assign(i,v){if(v==='Assign Caregiver'||!v)return;let[ph,nm]=v.split('|');bookings[i].caregiverPhone=ph;bookings[i].caregiver=nm;localStorage.setItem('hch_bookings',JSON.stringify(bookings));loadAll();alert('Assigned '+nm+'! Caregiver will see job now');}
+function upd(i,s){bookings[i].status=s;localStorage.setItem('hch_bookings',JSON.stringify(bookings));loadAll();}
+function delB(i){if(confirm('Delete?')){bookings.splice(i,1);localStorage.setItem('hch_bookings',JSON.stringify(bookings));loadAll();}}
+function approve(i){apps[i].status='approved';if(!approved.find(x=>x.phone===apps[i].phone))approved.push(apps[i]);localStorage.setItem('hch_caregiver_apps',JSON.stringify(apps));localStorage.setItem('hch_approved_caregivers',JSON.stringify(approved));loadAll();alert('Approved '+apps[i].name);}
 </script>
 </body>
 </html>
