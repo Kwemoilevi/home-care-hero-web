@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero</title>
+<title>Home Care Hero - Trusted Care in Kampala</title>
 <link rel="manifest" href="manifest.json">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
@@ -14,71 +14,10 @@
 <div class="flex items-center gap-2 font-bold text-xl"><span class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center">H</span> Home Care Hero</div>
 <button onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})" class="bg-black text-white px-5 py-2.5 rounded-full font-bold text-sm">Book Now</button>
 </nav>
+
 <section class="px-6 pt-12 pb-20 grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
 <div>
 <div class="inline-flex bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold">🇺🇬 Available in Kampala</div>
 <h1 class="text-5xl font-bold leading-[0.95] mt-4">Trusted care<br><span class="text-emerald-600">at home</span></h1>
 <p class="text-gray-600 mt-6 text-lg max-w-lg">Professional caregivers, nurses & companions. Book in 60 seconds, we handle the rest.</p>
-<div class="flex gap-3 mt-8">
-<button onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})" class="bg-black text-white px-8 py-4 rounded-full font-bold">Book a Caregiver</button>
-</div>
-</div>
-<div><img src="https://images.unsplash.com/photo-1576765607924-3f7b410a8a87?w=700&q=80" class="rounded-[2rem] w-full object-cover h-[420px] shadow-xl" alt="Caregiver"></div>
-</section>
-
-<section id="book" class="px-6 py-20 max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
-<div>
-<h2 class="text-4xl font-bold">Book care in 60 seconds</h2>
-<p class="text-gray-600 mt-4">Connected to your Render backend. Secure & fast.</p>
-<div class="mt-8 bg-white rounded-2xl p-6 border">
-<p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Why Home Care Hero?</p>
-<ul class="mt-4 space-y-3 text-sm">
-<li>✅ Verified caregivers</li>
-<li>✅ 24/7 support on WhatsApp</li>
-<li>✅ Pay securely via MoMoPay</li>
-</ul>
-</div>
-</div>
-<form id="careForm" class="bg-white p-8 rounded-[2rem] shadow-xl border space-y-4">
-<input id="name" required placeholder="Your name" class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border">
-<input id="phone" required placeholder="Phone (07...)" class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border">
-<select id="service" class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border"><option>Home Nursing</option><option>Elderly Care</option><option>Child Care</option><option>Companion Care</option></select>
-<textarea id="details" placeholder="What do you need?" class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border h-24"></textarea>
-<button type="submit" class="w-full bg-black text-white py-4 rounded-xl font-bold">Request Caregiver</button>
-<p id="formMsg" class="text-sm text-center text-emerald-600 font-bold"></p>
-</form>
-</section>
-
-<!-- PAYMENT - MoMoPay Merchant 60577134 - Personal number hidden -->
-<section style="background:#f0fdf4;padding:32px 16px;text-align:center;margin:20px;border-radius:18px;border:2px solid #22c55e;max-width:700px;margin-left:auto;margin-right:auto;">
-<h2 style="font-weight:bold;font-size:22px;">💳 Pay via MoMoPay</h2>
-<p style="color:#666;font-size:14px;margin-top:4px;">Secure business payment — Trusted by MTN</p>
-<div style="background:white;padding:20px;border-radius:14px;max-width:380px;margin:18px auto;box-shadow:0 4px 12px rgba(0,0,0,0.06);">
-<p style="font-size:11px;color:gray;margin:0;letter-spacing:1px;text-transform:uppercase;">Merchant Code</p>
-<p style="font-size:34px;font-weight:bold;margin:10px 0;letter-spacing:3px;color:#ffcc00;background:black;display:inline-block;padding:6px 18px;border-radius:10px;">60577134</p>
-<p style="font-size:15px;margin:6px 0 0 0;font-weight:bold;color:#16a34a;">Home Care Hero</p>
-<div style="margin-top:14px;background:#fef9c3;padding:10px;border-radius:8px;">
-<p style="font-size:13px;margin:0;color:#333;">Dial: <b>*165*3*60577134*AMOUNT#</b></p>
-<p style="font-size:11px;margin:4px 0 0 0;color:#666;">Example: *165*3*60577134*50000#</p>
-</div>
-</div>
-<a href="https://wa.me/256772101875?text=Hi%20Home%20Care%20Hero,%20I%20paid%20via%20MoMoPay%2060577134" style="background:#25D366;color:white;padding:14px 28px;border-radius:25px;text-decoration:none;font-weight:bold;display:inline-block;margin-top:8px;">📱 Confirm Payment on WhatsApp</a>
-<p style="font-size:11px;margin-top:14px;color:gray;">After paying, tap to send receipt & get your caregiver</p>
-</section>
-
-<script>
-const form = document.getElementById('careForm');
-const msg = document.getElementById('formMsg');
-form.addEventListener('submit', async (e)=>{
- e.preventDefault();
- msg.textContent = 'Sending...';
- const payload = {name:document.getElementById('name').value, phone:document.getElementById('phone').value, service:document.getElementById('service').value, details:document.getElementById('details').value};
- try{
-   const res = await fetch('https://home-care-hero-api.onrender.com/api/book', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(payload)});
-   if(res.ok){ msg.textContent = '✅ Request sent! We will WhatsApp you shortly.'; form.reset(); }
-   else{ msg.textContent = '✅ Request saved locally. WhatsApp us to confirm.'; }
- }catch(err){ msg.textContent = '✅ Request ready. Please WhatsApp us to confirm booking.'; }
-});
-</script>
-</body>
-</html>
+<div class="flex gap-3 mt
