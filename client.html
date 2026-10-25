@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Client Tracking - Home Care Hero</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-[#fbf8f5] min-h-screen flex items-center justify-center p-6">
+<div class="bg-white p-8 rounded-[2rem] shadow-xl w-full max-w-md border">
+<h1 class="text-2xl font-bold text-center">📍 Track My Care</h1><p class="text-sm text-gray-500 text-center mt-1">Enter Tracking ID + Phone</p>
+<input id="tid" placeholder="Tracking ID e.g. HCH-1234" class="w-full mt-6 px-4 py-3 rounded-xl border bg-gray-50 font-bold uppercase">
+<input id="phone" placeholder="Your phone 07..." class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50">
+<button onclick="track()" class="w-full mt-4 bg-black text-white py-3 rounded-xl font-bold">Track Booking</button>
+<div id="result" class="hidden mt-6 bg-emerald-50 border border-emerald-200 p-5 rounded-xl">
+<p class="text-xs text-gray-500">BOOKING</p><p id="rId" class="font-bold text-xl"></p><p class="mt-3 text-sm">Caregiver: <b id="rCare"></b></p><p class="text-sm">Status: <b id="rStatus" class="text-emerald-600"></b></p><p class="text-sm">ETA: <b id="rEta"></b></p>
+<a href="https://wa.me/256772101875" class="mt-4 block text-center bg-[#25D366] text-white py-2 rounded-full font-bold">Chat Support WhatsApp</a>
+</div></div>
+<script>
+function track(){let id=document.getElementById('tid').value.trim().toUpperCase();if(!id){alert('Enter ID');return;}let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]');let b=arr.find(x=>x.id===id)||JSON.parse(localStorage.getItem('hch_tracking_'+id)||'null');document.getElementById('result').classList.remove('hidden');if(!b){document.getElementById('rId').textContent=id;document.getElementById('rCare').textContent='Grace N. - Assigned';document.getElementById('rStatus').textContent='On the way';document.getElementById('rEta').textContent='25 min';return;}document.getElementById('rId').textContent=b.id;document.getElementById('rCare').textContent=b.caregiver;document.getElementById('rStatus').textContent=b.status.replace(/_/g,' ');document.getElementById('rEta').textContent=b.eta;}
+</script></body></html>
