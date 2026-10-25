@@ -24,7 +24,7 @@ body{font-family:Arial;padding:16px;background:#f5f7fb;max-width:700px;margin:au
 <div id="caregivers"></div>
 </div>
 <script>
-const API="https://home-care-hero-api.onrender.com";
+   const API="https://home-care-hero-api-v2.onrender.com";
 const PASS="0772101875";
 function login(){if(document.getElementById('pwd').value===PASS){localStorage.setItem('a','yes');show()}else{document.getElementById('msg').textContent='Wrong pass'}}
 function show(){document.getElementById('login').style.display='none';document.getElementById('dash').style.display='block';loadData()}
