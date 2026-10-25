@@ -1,110 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Money Dashboard</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin - Verified</title><script src="https://cdn.tailwindcss.com"></script></head>
 <body class="bg-[#f5f5f7]">
-<div id="login" class="min-h-screen flex items-center justify-center p-6">
-<div class="bg-white p-8 rounded-[2rem] shadow-xl w-full max-w-sm border">
-<h1 class="font-black text-2xl">CEO Login</h1>
-<p class="text-xs text-gray-500 mt-1">Password to see your money</p>
-<input id="pass" type="password" placeholder="Password" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50">
-<button onclick="dologin()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-black">Login</button>
-<p id="err" class="hidden text-red-500 text-xs mt-2">Wrong password! Use kwaliver92</p>
-</div>
-</div>
-
-<div id="dash" class="hidden">
-<nav class="bg-black text-white px-6 py-4 flex justify-between items-center sticky top-0 z-50">
-<div class="font-black">Home Care Hero Admin 📍 Live + Money</div>
-<button onclick="location.reload()" class="text-xs bg-white/20 px-3 py-1 rounded-full">Logout</button>
-</nav>
-
-<div class="p-6 max-w-6xl mx-auto">
-<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-<div class="bg-[#ffcc00] p-4 rounded-2xl border-2 border-black">
-<p class="text-[10px] font-black">TODAY'S PROFIT 💰</p>
-<p id="totalProfit" class="text-2xl font-black mt-1">0 UGX</p>
-</div>
-<div class="bg-white p-4 rounded-2xl border">
-<p class="text-[10px] text-gray-500">TOTAL BOOKINGS</p>
-<p id="totalBookings" class="text-xl font-black">0</p>
-</div>
-<div class="bg-white p-4 rounded-2xl border">
-<p class="text-[10px] text-gray-500">PENDING APPS</p>
-<p id="pendingApps" class="text-xl font-black">0</p>
-</div>
-<div class="bg-white p-4 rounded-2xl border">
-<p class="text-[10px] text-gray-500">APPROVED CAREGIVERS</p>
-<p id="approvedCount" class="text-xl font-black">0</p>
-</div>
-</div>
-
-<div class="mt-8 grid md:grid-cols-2 gap-6">
-<div class="bg-white p-5 rounded-[1.5rem] border">
-<h2 class="font-black">Client Bookings</h2>
-<p class="text-[11px] text-gray-500">Assign caregiver to each booking</p>
-<div id="bookingList" class="mt-4 space-y-3"></div>
-</div>
-
-<div class="bg-white p-5 rounded-[1.5rem] border">
-<div class="flex gap-2 mb-3">
-<button onclick="showCG('apps')" id="b1" class="bg-black text-white px-4 py-2 rounded-full text-xs font-black">PENDING APPS</button>
-<button onclick="showCG('approved')" id="b2" class="bg-gray-100 px-4 py-2 rounded-full text-xs font-bold">APPROVED</button>
-</div>
-<div id="cgApps" class="space-y-2"></div>
-<div id="cgApproved" class="hidden space-y-2"></div>
-</div>
-</div>
-</div>
-</div>
-
+<div id="login" class="min-h-screen flex items-center justify-center p-6"><div class="bg-white p-8 rounded-[2rem] shadow-xl w-full max-w-sm border"><h1 class="font-black text-2xl">CEO Login</h1><input id="pass" type="password" placeholder="Password" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50"><button onclick="dologin()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-black">Login</button><p id="err" class="hidden text-red-500 text-xs mt-2">Wrong! Use kwaliver92</p></div></div>
+<div id="dash" class="hidden"><nav class="bg-black text-white px-6 py-4 flex justify-between sticky top-0 z-50"><div class="font-black">Home Care Hero Admin 📍 Verified + Money</div><button onclick="location.reload()" class="text-xs bg-white/20 px-3 py-1 rounded-full">Logout</button></nav>
+<div class="p-6 max-w-6xl mx-auto"><div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div class="bg-[#ffcc00] p-4 rounded-2xl border-2 border-black"><p class="text-[10px] font-black">TODAY'S PROFIT</p><p id="totalProfit" class="text-2xl font-black mt-1">0 UGX</p></div><div class="bg-white p-4 rounded-2xl border"><p class="text-[10px]">BOOKINGS</p><p id="totalBookings" class="text-xl font-black">0</p></div><div class="bg-white p-4 rounded-2xl border"><p class="text-[10px]">PENDING VERIFY</p><p id="pendingApps" class="text-xl font-black">0</p></div><div class="bg-white p-4 rounded-2xl border"><p class="text-[10px]">VERIFIED</p><p id="approvedCount" class="text-xl font-black">0</p></div></div>
+<div class="mt-8 grid md:grid-cols-2 gap-6"><div class="bg-white p-5 rounded-[1.5rem] border"><h2 class="font-black">Client Bookings</h2><div id="bookingList" class="mt-4 space-y-3"></div></div>
+<div class="bg-white p-5 rounded-[1.5rem] border"><div class="flex gap-2 mb-3"><button onclick="showCG('apps')" id="b1" class="bg-black text-white px-4 py-2 rounded-full text-xs font-black">TO VERIFY 🔍</button><button onclick="showCG('approved')" id="b2" class="bg-gray-100 px-4 py-2 rounded-full text-xs">VERIFIED ✅</button></div><div id="cgApps"></div><div id="cgApproved" class="hidden"></div></div></div></div></div>
 <script>
-function dologin(){
-if(document.getElementById('pass').value==='kwaliver92'){
-document.getElementById('login').classList.add('hidden');
-document.getElementById('dash').classList.remove('hidden');
-loadAll();
-}else{
-document.getElementById('err').classList.remove('hidden');
-}
-}
-function showCG(t){
-document.getElementById('cgApps').classList.toggle('hidden',t!=='apps');
-document.getElementById('cgApproved').classList.toggle('hidden',t!=='approved');
-}
-let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
-let apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]');
-let approved=JSON.parse(localStorage.getItem('hch_approved_caregivers')||'[]');
-function loadAll(){
-bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
-apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]');
-approved=JSON.parse(localStorage.getItem('hch_approved_caregivers')||'[]');
-document.getElementById('totalBookings').textContent=bookings.length;
-document.getElementById('pendingApps').textContent=apps.filter(a=>a.status==='pending').length;
-document.getElementById('approvedCount').textContent=approved.length;
-let profit=0;bookings.forEach(b=>{profit+=(b.price||0)-(b.caregiverPay||15000);});
-document.getElementById('totalProfit').textContent=profit.toLocaleString()+' UGX';
-let h='';if(bookings.length===0)h='<p class="text-xs text-gray-400 py-8 text-center">No bookings yet</p>';
-bookings.forEach((b,i)=>{
-let opts=approved.map(c=>`<option value="${c.phone}|${c.name}" ${b.caregiverPhone===c.phone?'selected':''}>${c.name}-${c.phone}</option>`).join('');
-h+=`<div class="border p-3 rounded-xl"><p class="font-black text-sm">${b.id||'HCH'} - ${b.name} - ${b.price||0}UGX</p><p class="text-xs text-gray-600">${b.phone} | ${b.location||'Kampala'} | ${b.status||'pending'}</p><div class="flex gap-2 mt-2 flex-wrap"><select onchange="assign(${i},this.value)" class="text-xs bg-[#ffcc00] px-3 py-2 rounded-full font-bold"><option>Assign Caregiver</option>${opts}</select><select onchange="upd(${i},this.value)" class="text-xs border px-2 py-1 rounded-full"><option>status</option><option>on the way</option><option>active</option><option>completed</option></select><button onclick="delB(${i})" class="text-xs text-red-500">Del</button></div>${b.caregiver?`<p class="text-[11px] mt-2 bg-black text-white inline-block px-2 py-1 rounded-full">Assigned: ${b.caregiver}</p>`:''}</div>`;
-});
-document.getElementById('bookingList').innerHTML=h;
-let h2='';if(apps.length===0)h2='<p class="text-xs text-gray-400">No applications. Share link: home-care-hero-web.vercel.app/caregiver-register.html</p>';
-apps.forEach((a,i)=>{h2+=`<div class="border p-3 rounded-xl flex justify-between items-center"><div><p class="font-bold text-sm">${a.name} - ${a.phone}</p><p class="text-[11px]">${a.service} in ${a.loc} - ${a.status}</p></div><button onclick="approve(${i})" class="bg-black text-white text-xs px-3 py-2 rounded-full font-bold">${a.status==='pending'?'APPROVE':'OK'}</button></div>`;});
+function dologin(){if(document.getElementById('pass').value==='kwaliver92'){document.getElementById('login').classList.add('hidden');document.getElementById('dash').classList.remove('hidden');loadAll();}else{document.getElementById('err').classList.remove('hidden');}}
+function showCG(t){document.getElementById('cgApps').classList.toggle('hidden',t!=='apps');document.getElementById('cgApproved').classList.toggle('hidden',t!=='approved');}
+let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]'),apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]'),approved=JSON.parse(localStorage.getItem('hch_approved_caregivers')||'[]');
+function loadAll(){bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]');approved=JSON.parse(localStorage.getItem('hch_approved_caregivers')||'[]');document.getElementById('totalBookings').textContent=bookings.length;document.getElementById('pendingApps').textContent=apps.filter(a=>a.status==='pending').length;document.getElementById('approvedCount').textContent=approved.length;let profit=0;bookings.forEach(b=>{profit+=(b.price||0)-(b.caregiverPay||15000);});document.getElementById('totalProfit').textContent=profit.toLocaleString()+' UGX';
+let h='';if(bookings.length==0)h='<p class="text-xs text-gray-400 py-8 text-center">No bookings</p>';bookings.forEach((b,i)=>{let opts=approved.map(c=>`<option value="${c.phone}|${c.name}" ${b.caregiverPhone===c.phone?'selected':''}>${c.name}-${c.phone}</option>`).join('');h+=`<div class="border p-3 rounded-xl"><p class="font-black text-sm">${b.id||'HCH'}-${b.name}-${b.price||0}UGX</p><p class="text-xs">${b.phone} | ${b.location||'Kampala'} | ${b.status}</p><div class="flex gap-2 mt-2 flex-wrap"><select onchange="assign(${i},this.value)" class="text-xs bg-[#ffcc00] px-3 py-2 rounded-full font-bold"><option>Assign</option>${opts}</select><select onchange="upd(${i},this.value)" class="text-xs border px-2 py-1 rounded-full"><option>status</option><option>on the way</option><option>active</option><option>completed</option></select><button onclick="delB(${i})" class="text-xs text-red-500">Del</button></div>${b.caregiver?`<p class="text-[11px] mt-2 bg-black text-white inline-block px-2 rounded-full">Assigned: ${b.caregiver}</p>`:''}</div>`;});document.getElementById('bookingList').innerHTML=h;
+// NEW VERIFICATION DISPLAY
+let h2='';if(apps.length==0)h2='<p class="text-xs text-gray-400">No applications. Share caregiver-register.html</p>';apps.forEach((a,i)=>{
+let lcIcon=a.hasLC?'✅':'❌', idIcon=a.hasID?'✅':'❌', certIcon=a.hasCert?'✅':'⭐';
+h2+=`<div class="border p-3 rounded-xl"><div class="flex justify-between"><p class="font-bold text-sm">${a.name} - ${a.phone}</p><span class="text-[10px] ${a.status=='pending'?'bg-yellow-100':'bg-green-100'} px-2 py-1 rounded-full">${a.status}</span></div><p class="text-xs mt-1">${a.service} | ${a.loc} | Exp: ${a.exp||'N/A'}</p><div class="grid grid-cols-3 gap-2 mt-2 text-[11px] bg-gray-50 p-2 rounded-xl"><span>LC Letter: ${lcIcon}</span><span>ID: ${idIcon}</span><span>Cert: ${certIcon}</span></div><p class="text-[11px] mt-1 text-gray-600">Ref1: ${a.ref1||'None'}<br>Ref2: ${a.ref2||'None'}</p><div class="flex gap-2 mt-2"><button onclick="approve(${i})" class="bg-black text-white text-xs px-4 py-2 rounded-full font-black w-full">${a.hasLC&&a.hasID?'APPROVE - Verified ✅':'Approve Anyway (Risk)'}</button></div></div>`;});
 document.getElementById('cgApps').innerHTML=h2;
-let h3='';if(approved.length===0)h3='<p class="text-xs text-gray-400">No approved yet</p>';
-approved.forEach(a=>{h3+=`<div class="border p-3 rounded-xl flex justify-between"><div><p class="font-bold text-sm">${a.name}</p><p class="text-xs">${a.phone} - ${a.service}</p></div><a href="https://wa.me/${a.phone.replace(/\D/g,'')}" target="_blank" class="text-xs bg-green-500 text-white px-3 py-1 rounded-full h-fit">Chat</a></div>`;});
-document.getElementById('cgApproved').innerHTML=h3;
+let h3='';approved.forEach(a=>{h3+=`<div class="border p-3 rounded-xl flex justify-between"><div><p class="font-bold text-sm">${a.name} ✅</p><p class="text-xs">${a.phone} - ${a.service} - LC:${a.hasLC?'Yes':'No'} ID:${a.hasID?'Yes':'No'}</p></div><a href="https://wa.me/${a.phone.replace(/\D/g,'')}" class="text-xs bg-green-500 text-white px-3 py-1 rounded-full h-fit">Chat</a></div>`;});
+document.getElementById('cgApproved').innerHTML=h3||'<p class="text-xs text-gray-400">No verified yet</p>';
 }
-function assign(i,v){if(v==='Assign Caregiver'||!v)return;let[ph,nm]=v.split('|');bookings[i].caregiverPhone=ph;bookings[i].caregiver=nm;localStorage.setItem('hch_bookings',JSON.stringify(bookings));loadAll();alert('Assigned '+nm+'! Caregiver will see job now');}
+function assign(i,v){if(!v||v=='Assign')return;let[ph,nm]=v.split('|');bookings[i].caregiverPhone=ph;bookings[i].caregiver=nm;localStorage.setItem('hch_bookings',JSON.stringify(bookings));loadAll();}
 function upd(i,s){bookings[i].status=s;localStorage.setItem('hch_bookings',JSON.stringify(bookings));loadAll();}
 function delB(i){if(confirm('Delete?')){bookings.splice(i,1);localStorage.setItem('hch_bookings',JSON.stringify(bookings));loadAll();}}
-function approve(i){apps[i].status='approved';if(!approved.find(x=>x.phone===apps[i].phone))approved.push(apps[i]);localStorage.setItem('hch_caregiver_apps',JSON.stringify(apps));localStorage.setItem('hch_approved_caregivers',JSON.stringify(approved));loadAll();alert('Approved '+apps[i].name);}
-</script>
-</body>
-</html>
+function approve(i){apps[i].status='approved';if(!approved.find(x=>x.phone===apps[i].phone))approved.push(apps[i]);localStorage.setItem('hch_caregiver_apps',JSON.stringify(apps));localStorage.setItem('hch_approved_caregivers',JSON.stringify(approved));loadAll();alert('Approved '+apps[i].name+' - '+ (apps[i].hasLC&&apps[i].hasID?'Fully Verified!':'Warning: Missing docs'));}
+</script></body></html>
