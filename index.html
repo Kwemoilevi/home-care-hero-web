@@ -6,31 +6,25 @@
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#fbf8f5]">
-<!-- AD BANNER YOU SELL -->
 <div class="bg-black text-white text-center py-2 text-xs">🔥 Sponsored: Guardian Pharmacy Ntinda - <a href="https://wa.me/256772101875" class="underline text-yellow-300">Order on WhatsApp [100k/week AD]</a></div>
-
 <nav class="bg-white border-b sticky top-0 z-30 px-6 py-4 flex justify-between items-center">
 <div class="font-black text-xl">Home Care Hero <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">FROM 30K/DAY</span></div>
 <div class="flex gap-2"><a href="client.html" class="text-xs border px-3 py-2 rounded-full">Track</a><a href="admin.html" class="text-xs border px-3 py-2 rounded-full">Admin</a></div>
 </nav>
-
 <div class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-8">
 <div>
 <h1 class="text-4xl font-black">Trusted Caregiver in <span class="text-emerald-600">60 Min</span> <span class="text-2xl">From 30k/Day</span></h1>
 <p class="text-gray-600 mt-3 text-sm">Nurses, babysitters, elderly care. No big upfront. Pay small deposit to book on MoMo <b>0772101875</b>, balance after service.</p>
 <div class="mt-4 flex items-center gap-3 text-xs"><span class="bg-green-100 text-green-700 px-3 py-1 rounded-full flex items-center gap-1"><div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span id="viewCount">1,247</span> parents viewed today</span><span class="text-gray-500">12 caregivers online</span></div>
-
 <div class="mt-6 bg-white p-4 rounded-2xl border-2 border-emerald-400">
 <p class="text-xs font-black">💚 FRIENDLY PAYMENT:</p>
 <div class="mt-2 text-sm"><p>1. Pay <b>15,000 UGX only</b> now to book on:</p><div class="flex items-center justify-between mt-2 bg-black text-white p-3 rounded-xl"><span class="font-mono font-black text-lg">0772101875</span><button onclick="navigator.clipboard.writeText('0772101875');alert('Copied 0772101875')" class="text-xs bg-[#ffcc00] text-black px-3 py-1 rounded-full font-bold">COPY</button></div><p class="text-[11px] text-gray-500 mt-2">Kwemo Levi - MTN MoMo. Balance (15k-30k) you pay caregiver after work.</p></div>
 </div>
 </div>
-
 <div class="bg-white p-6 rounded-[2rem] shadow-xl border">
 <h2 class="font-bold text-xl">Book Now - Pay Half Now</h2>
 <input id="name" placeholder="Your name e.g. Namatovu" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
 <input id="phone" placeholder="Your MTN number 07..." class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-
 <label class="text-xs font-bold mt-3 block">Choose Service (Friendly Prices):</label>
 <select id="service" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
 <option value="30000" selected>Babysitter - 30,000 UGX / day (Cheapest)</option>
@@ -38,7 +32,46 @@
 <option value="40000">House Help + Care - 40,000 UGX / day</option>
 <option value="45000">Qualified Nurse - 45,000 UGX / visit</option>
 </select>
-
 <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl mt-3 text-xs">
 <p>Total Price: <b id="total">30,000 UGX</b></p>
-<p class="text-emerald-700 mt-1">👉
+<p class="text-emerald-700 mt-1">👉 You pay NOW: <b>15,000 UGX</b> deposit to 0772101875 to confirm</p>
+<p class="text-gray-500 mt-1">Balance: <span id="balance">15,000 UGX</span> after service to caregiver</p>
+<p class="text-[10px] mt-2 text-emerald-600 font-bold">You (owner) earn: 10,000-15,000 UGX per booking instantly!</p>
+</div>
+<button onclick="payWithMoMo()" class="w-full mt-4 bg-[#ffcc00] text-black py-4 rounded-xl font-black text-lg border-2 border-black">📱 BOOK WITH 15K ON MTN MoMo</button>
+<button onclick="confirmPayment()" class="w-full mt-2 bg-black text-white py-3 rounded-xl font-bold text-sm">✅ I Have Sent 15k to 0772101875</button>
+<div id="result" class="hidden mt-4 bg-black text-white p-4 rounded-xl text-center">
+<p class="text-xs">✅ BOOKING CONFIRMED! Deposit Received!</p><p id="rId" class="font-black text-lg mt-1"></p>
+<p class="text-[11px] mt-2 text-gray-300">Client tracks at client.html | You earned deposit</p>
+<a id="waAdmin" href="#" target="_blank" class="mt-3 block bg-[#25D366] py-2 rounded-full font-bold text-sm">Notify Me on WhatsApp</a>
+</div>
+</div>
+</div>
+<script>
+let views=parseInt(localStorage.getItem('hch_views')||'1247');views++;localStorage.setItem('hch_views',views);document.getElementById('viewCount').textContent=views.toLocaleString();
+function updatePrice(){let p=parseInt(document.getElementById('service').value);document.getElementById('total').textContent=p.toLocaleString()+' UGX';document.getElementById('balance').textContent=(p-15000).toLocaleString()+' UGX';}
+document.getElementById('service').addEventListener('change',updatePrice);updatePrice();
+function payWithMoMo(){
+ let name=document.getElementById('name').value; if(!name){alert('Enter your name first');return;}
+ let ussd="*165*3*0772101875*15000%23"; 
+ if(confirm('Book Home Care Hero?\n\nPay ONLY 15,000 UGX deposit to 0772101875 (Kwemo Levi)?\n\nTap OK to open MTN MoMo dialer.\nBalance you pay later after service.')){
+   window.location.href="tel:"+ussd;
+   alert('MTN dialer opened! Pay 15k to 0772101875.\n\nAfter, tap I Have Sent 15k button.');
+ }
+}
+function confirmPayment(){
+ let name=document.getElementById('name').value.trim(); let phone=document.getElementById('phone').value.trim(); let serviceEl=document.getElementById('service'); let serviceText=serviceEl.options[serviceEl.selectedIndex].text; let price=parseInt(serviceEl.value);
+ if(!name||!phone){alert('Enter name + MTN number');return;}
+ let id='HCH-'+Math.floor(1000+Math.random()*9000);
+ let yourEarn=10000; if(price>=40000) yourEarn=15000;
+ let booking={id,name,phone,service:serviceText,price,deposit:15000,balance:price-15000,commission:yourEarn,yourEarn,status:'DEPOSIT PAID 15k to 0772101875',caregiver:'Not assigned',eta:'30 min',created:Date.now()};
+ let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]'); arr.unshift(booking); localStorage.setItem('hch_bookings',JSON.stringify(arr));
+ localStorage.setItem('hch_tracking_'+id,JSON.stringify(booking));
+ document.getElementById('rId').textContent=id+' | Deposit 15k Paid | Your profit '+yourEarn.toLocaleString()+' UGX';
+ document.getElementById('result').classList.remove('hidden');
+ document.getElementById('waAdmin').href='https://wa.me/256772101875?text=NEW%20DEPOSIT%20BOOKING%20'+id+'%20'+name+'%20Paid%2015k%20to%200772101875%20Service%20'+price;
+ alert('✅ SAVED! You earned '+yourEarn+' UGX deposit from '+name+'!\n\nCheck admin.html password kwaliver92');
+}
+</script>
+</body>
+</html>
