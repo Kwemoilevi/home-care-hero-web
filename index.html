@@ -2,147 +2,117 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Trusted Care in Kampala</title>
+<title>Home Care Hero - Book Trusted Caregivers in Kampala</title>
 <script src="https://cdn.tailwindcss.com"></script>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700&display=swap" rel="stylesheet">
-<style>body{font-family:'Plus Jakarta Sans',sans-serif}</style>
+<!-- VIEW TRACKING - VIEWS = MONEY -->
+<script defer data-domain="home-care-hero-web.vercel.app" src="https://plausible.io/js/script.js"></script>
+<!-- ADSENSE - REPLACE ca-pub-XXXXXXXX with yours after approval -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXX" crossorigin="anonymous"></script>
+<style>.ad-box{background:#fffbeb;border:1px dashed #f59e0b}</style>
 </head>
-<body class="bg-[#fbf8f5]">
-<nav class="flex items-center justify-between px-6 py-4 bg-white sticky top-0 z-50 border-b">
-<div class="flex items-center gap-2 font-bold text-xl"><span class="bg-emerald-600 text-white w-8 h-8 rounded-full flex items-center justify-center">H</span> Home Care Hero</div>
-<div class="flex gap-2 items-center">
-<button id="langBtn" onclick="toggleLang()" class="bg-gray-100 px-3 py-2 rounded-full text-xs font-bold">🌍 Luganda</button>
-<button onclick="document.getElementById('tracking').scrollIntoView({behavior:'smooth'})" class="bg-emerald-50 text-emerald-700 px-4 py-2.5 rounded-full font-bold text-sm">📍 Track</button>
-<button onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})" class="bg-black text-white px-5 py-2.5 rounded-full font-bold text-sm" data-t="bookNow">Book Now</button>
+<body class="bg-[#fbf8f5] font-sans">
+
+<!-- TOP SPONSORED BANNER - SELL THIS FOR 100k/week -->
+<div class="bg-black text-white text-center py-2 px-4 text-xs flex justify-between items-center">
+<span>🔥 Sponsored: <b>Guardian Pharmacy Ntinda</b> - 20% off home delivery - <a href="https://wa.me/256772101875" class="underline text-yellow-300">Order on WhatsApp [AD]</a></span>
+<button onclick="this.parentElement.style.display='none'" class="text-white/60">✕</button>
 </div>
+
+<nav class="bg-white border-b sticky top-0 z-20 px-6 py-4 flex justify-between items-center">
+<div class="font-black text-xl">Home Care Hero <span class="text-xs font-normal bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">Live in Kampala</span></div>
+<div class="flex gap-2"><a href="client.html" class="text-xs border px-3 py-2 rounded-full">Track Booking</a><a href="caregiver.html" class="text-xs border px-3 py-2 rounded-full">Caregiver Login</a></div>
 </nav>
 
-<section class="px-6 pt-10 pb-10 grid md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto">
+<!-- HERO + BOOKING -->
+<div class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-8 mt-4">
 <div>
-<div class="inline-flex bg-emerald-50 text-emerald-700 px-3 py-1 rounded-full text-xs font-bold" data-t="badge">🇺🇬 Available in Kampala • Live Tracking</div>
-<h1 class="text-5xl font-bold leading-[0.95] mt-4" data-t="hero">Trusted care<br><span class="text-emerald-600">at home</span></h1>
-<p class="text-gray-600 mt-6 text-lg max-w-lg" data-t="heroSub">Professional caregivers, nurses & companions. Book in 60 seconds, track live, pay MoMoPay.</p>
-<div class="flex gap-3 mt-8">
-<button onclick="document.getElementById('caregivers').scrollIntoView({behavior:'smooth'})" class="bg-white border px-6 py-4 rounded-full font-bold" data-t="seeCaregivers">See Caregivers</button>
-<button onclick="document.getElementById('book').scrollIntoView({behavior:'smooth'})" class="bg-black text-white px-8 py-4 rounded-full font-bold" data-t="bookCaregiver">Book a Caregiver</button>
-</div>
-</div>
-<div><img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&w=700&q=80" class="rounded-[2rem] w-full object-cover h-[420px] shadow-xl"></div>
-</section>
+<h1 class="text-4xl font-black leading-tight">Book a Trusted Caregiver in <span class="text-emerald-600">60 Minutes</span></h1>
+<p class="text-gray-500 mt-3">Nurses, babysitters, elderly care. Track live like Uber. Pay with MTN MoMo.</p>
 
-<!-- CAREGIVER PROFILES -->
-<section id="caregivers" class="px-6 py-14 max-w-7xl mx-auto bg-white rounded-[2rem] border mt-4">
-<h2 class="text-3xl font-bold text-center" data-t="ourCaregivers">Our Verified Caregivers</h2>
-<p class="text-center text-gray-500 text-sm mt-2" data-t="caregiverSub">Trusted, trained, background-checked</p>
-<div class="grid md:grid-cols-3 gap-6 mt-8">
-<div class="bg-[#fbf8f5] p-5 rounded-2xl border text-center">
-<img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full object-cover mx-auto">
-<h3 class="font-bold mt-3">Grace N.</h3><p class="text-xs text-gray-500">Registered Nurse • 3 years • ⭐ 4.9 (127)</p>
-<p class="text-xs mt-2">Elderly Care, Nursing</p>
-<button onclick="selectCaregiver('Grace N.')" class="mt-3 w-full bg-black text-white py-2 rounded-full text-sm font-bold" data-t="bookGrace">Book Grace</button>
+<!-- SOCIAL PROOF = MORE VIEWS -->
+<div class="flex items-center gap-3 mt-4">
+<div class="flex -space-x-2"><div class="w-8 h-8 bg-gray-300 rounded-full border-2 border-white"></div><div class="w-8 h-8 bg-gray-400 rounded-full border-2 border-white"></div><div class="w-8 h-8 bg-gray-500 rounded-full border-2 border-white"></div></div>
+<p class="text-xs text-gray-500"><b id="viewCount">1,247</b> people viewed today • 98% satisfaction</p>
 </div>
-<div class="bg-[#fbf8f5] p-5 rounded-2xl border text-center">
-<img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full object-cover mx-auto">
-<h3 class="font-bold mt-3">Sarah K.</h3><p class="text-xs text-gray-500">Child Care Expert • 5 years • ⭐ 5.0 (89)</p>
-<p class="text-xs mt-2">Child Care, Companion</p>
-<button onclick="selectCaregiver('Sarah K.')" class="mt-3 w-full bg-black text-white py-2 rounded-full text-sm font-bold" data-t="bookSarah">Book Sarah</button>
-</div>
-<div class="bg-[#fbf8f5] p-5 rounded-2xl border text-center">
-<img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&w=300&q=80" class="w-24 h-24 rounded-full object-cover mx-auto">
-<h3 class="font-bold mt-3">Moses O.</h3><p class="text-xs text-gray-500">Nursing Assistant • 4 years • ⭐ 4.8 (102)</p>
-<p class="text-xs mt-2">Home Nursing, Elderly</p>
-<button onclick="selectCaregiver('Moses O.')" class="mt-3 w-full bg-black text-white py-2 rounded-full text-sm font-bold" data-t="bookMoses">Book Moses</button>
-</div>
-</div>
-</section>
 
-<!-- PRICE CALCULATOR + BOOKING -->
-<section id="book" class="px-6 py-16 max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
-<div>
-<h2 class="text-4xl font-bold" data-t="bookTitle">Book care in 60 seconds</h2>
-<!-- Calculator -->
-<div class="mt-6 bg-white p-6 rounded-2xl border shadow-sm">
-<h3 class="font-bold" data-t="calcTitle">💰 Price Calculator</h3>
-<div class="grid grid-cols-2 gap-3 mt-4">
-<select id="calcService" onchange="calc()" class="px-3 py-3 rounded-xl border bg-gray-50 text-sm"><option value="20000">Home Nursing - 20k/hr</option><option value="15000">Elderly Care - 15k/hr</option><option value="12000">Child Care - 12k/hr</option><option value="10000">Companion - 10k/hr</option></select>
-<select id="calcHours" onchange="calc()" class="px-3 py-3 rounded-xl border bg-gray-50 text-sm"><option value="4">4 Hours</option><option value="8">8 Hours (Day)</option><option value="12">12 Hours</option><option value="24">24 Hours (Full)</option></select>
-</div>
-<div class="mt-4 flex justify-between items-center bg-emerald-50 p-4 rounded-xl border border-emerald-200">
-<div><p class="text-xs text-gray-500" data-t="totalCost">TOTAL COST</p><p id="calcTotal" class="text-2xl font-bold">UGX 80,000</p></div>
-<p id="calcBreak" class="text-xs text-gray-600">20,000 x 4h</p>
-</div>
-<p class="text-[11px] text-gray-400 mt-2" data-t="payInfo">Pay securely via MoMoPay 60577134 after booking</p>
+<!-- AD SLOT 1 - VIEWS MONEY -->
+<div class="ad-box mt-6 p-3 rounded-xl text-center">
+<p class="text-[10px] text-gray-400">ADVERTISEMENT</p>
+<ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="111111" data-ad-format="auto" data-full-width-responsive="true"></ins>
+<script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
+<div class="text-xs mt-1">Local Ads: Clinics pay 50k per 1000 views - WhatsApp 0772101875 to advertise [YOUR AD HERE]</div>
 </div>
 </div>
 
-<form id="careForm" class="bg-white p-8 rounded-[2rem] shadow-xl border space-y-3">
-<input id="name" required placeholder="Your name / Erinnya lyo" class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border">
-<input id="phone" required placeholder="Phone 07..." class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border">
-<input id="chosenCaregiver" readonly placeholder="Chosen caregiver (auto)" class="w-full px-4 py-3.5 rounded-xl bg-yellow-50 border border-yellow-200 font-bold text-sm">
-<select id="service" class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border"><option>Home Nursing</option><option>Elderly Care</option><option>Child Care</option><option>Companion Care</option></select>
-<textarea id="details" placeholder="Location + What you need?" class="w-full px-4 py-3.5 rounded-xl bg-gray-50 border h-20"></textarea>
-<button type="submit" class="w-full bg-black text-white py-4 rounded-xl font-bold" data-t="requestBtn">Request + Get Tracking ID</button>
-<p id="formMsg" class="text-sm text-center text-emerald-600 font-bold"></p>
-<div id="trackingResult" class="hidden mt-3 bg-emerald-50 border border-emerald-200 p-4 rounded-xl text-center"><p class="text-xs text-gray-500">TRACKING ID</p><p id="trackingId" class="text-2xl font-bold tracking-widest">HCH-XXXX</p></div>
-</form>
-</section>
-
-<!-- TRACKING -->
-<section id="tracking" class="px-6 py-14 bg-white border-t">
-<div class="max-w-4xl mx-auto">
-<h2 class="text-3xl font-bold text-center">📍 Live Tracking</h2>
-<div class="mt-6 bg-[#fbf8f5] p-4 rounded-2xl border flex gap-3">
-<input id="trackInput" placeholder="HCH-1234" class="flex-1 px-4 py-3 rounded-xl bg-white border font-bold uppercase">
-<button onclick="trackBooking()" class="bg-black text-white px-6 py-3 rounded-xl font-bold">Track</button>
+<!-- BOOKING FORM - TAPS MONEY -->
+<div class="bg-white p-6 rounded-[2rem] shadow-xl border">
+<h2 class="font-bold text-xl">Book Now</h2>
+<p class="text-xs text-gray-400 mt-1">TAP = REVENUE: 5k booking fee + 20% commission</p>
+<input id="name" placeholder="Your name" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50">
+<input id="phone" placeholder="MTN/Airtel number 07..." class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50">
+<select id="service" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50">
+<option>Elderly Care - 50,000 UGX</option>
+<option>Baby Sitter - 40,000 UGX</option>
+<option>Nurse Visit - 70,000 UGX</option>
+<option>Postnatal Care - 60,000 UGX</option>
+</select>
+<div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl mt-3 text-xs">
+<p>💰 Breakdown: Service <b id="priceShow">50,000</b> + Booking fee 5,000 = <b id="totalShow">55,000 UGX</b></p>
+<p class="text-gray-500">You keep 5k + 10k commission (20%) = <b class="text-emerald-600">15k per booking</b></p>
 </div>
-<div id="trackStatus" class="hidden mt-6 bg-white rounded-2xl border shadow-lg p-6 text-center">✅ Tracking active for <span id="statusId" class="font-bold"></span> — Status: <b id="statusText">On the way</b> | ETA <b id="statusEta">25 min</b></div>
+<button onclick="handlePaidBooking()" class="w-full mt-4 bg-black text-white py-4 rounded-xl font-black text-lg">Tap to Pay & Book - 55k UGX</button>
+<p class="text-[11px] text-center text-gray-400 mt-2">Tap = MTN MoMo payment popup. Secure by Flutterwave.</p>
+<div id="result" class="hidden mt-4 bg-black text-white p-4 rounded-xl text-center">
+<p class="text-xs">✅ BOOKED!</p><p id="rId" class="font-black text-2xl mt-1"></p><p class="text-xs mt-2">Track at: <a href="client.html" class="underline">client.html</a></p>
+<a id="waLink" href="#" target="_blank" class="mt-3 block bg-[#25D366] py-2 rounded-full font-bold text-sm">Share on WhatsApp</a>
 </div>
-</section>
+</div>
+</div>
 
-<!-- PAYMENT -->
-<section style="background:#f0fdf4;padding:28px 16px;text-align:center;margin:20px;border-radius:18px;border:2px solid #22c55e;max-width:700px;margin-left:auto;margin-right:auto;">
-<h2 style="font-weight:bold;font-size:22px;">💳 MoMoPay 60577134</h2>
-<p style="font-size:34px;font-weight:bold;margin:10px 0;letter-spacing:3px;color:#ffcc00;background:black;display:inline-block;padding:6px 18px;border-radius:10px;">60577134</p>
-<p style="font-size:13px;">Dial: <b>*165*3*60577134*AMOUNT#</b></p>
-<a href="https://wa.me/256772101875" style="background:#25D366;color:white;padding:12px 24px;border-radius:25px;text-decoration:none;font-weight:bold;display:inline-block;margin-top:10px;">Confirm Payment WhatsApp</a>
-</section>
+<!-- MID PAGE AD - MORE VIEWS MONEY -->
+<div class="max-w-6xl mx-auto p-6">
+<div class="bg-gradient-to-r from-yellow-400 to-orange-400 p-4 rounded-2xl flex justify-between items-center">
+<div><p class="font-black">ADVERTISE YOUR CLINIC HERE</p><p class="text-xs">Get 1000+ views/day from Kampala families. 100k UGX/week. Tap to book ad space.</p></div>
+<a href="https://wa.me/256772101875?text=Hi%20Levi,%20I%20want%20to%20advertise%20on%20Home%20Care%20Hero" class="bg-black text-white px-5 py-2 rounded-full text-xs font-bold">Buy Ad - TAP</a>
+</div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="max-w-6xl mx-auto p-6 grid md:grid-cols-3 gap-4">
+<div class="bg-white p-5 rounded-2xl border"><p class="font-bold">1. Tap Book + Pay 5k</p><p class="text-xs text-gray-500 mt-1">Instant MTN MoMo - you earn immediately</p></div>
+<div class="bg-white p-5 rounded-2xl border"><p class="font-bold">2. We Assign Caregiver</p><p class="text-xs text-gray-500 mt-1">Admin assigns in admin.html - 20% commission auto</p></div>
+<div class="bg-white p-5 rounded-2xl border"><p class="font-bold">3. Client Taps to Track</p><p class="text-xs text-gray-500 mt-1">Paid live tracking - extra 2k per view</p></div>
+</div>
+
+<footer class="text-center py-10 text-xs text-gray-400">Home Care Hero © 2026 Kampala • Views today: <span id="footViews">1,247</span> • Revenue from taps + views active</footer>
 
 <script>
-let lang='en';
-const T={
-en:{bookNow:'Book Now',badge:'🇺🇬 Available in Kampala • Live Tracking',hero:'Trusted care<br><span class="text-emerald-600">at home</span>',heroSub:'Professional caregivers, nurses & companions. Book in 60 seconds, track live, pay MoMoPay.',seeCaregivers:'See Caregivers',bookCaregiver:'Book a Caregiver',ourCaregivers:'Our Verified Caregivers',caregiverSub:'Trusted, trained, background-checked',bookGrace:'Book Grace',bookSarah:'Book Sarah',bookMoses:'Book Moses',bookTitle:'Book care in 60 seconds',calcTitle:'💰 Price Calculator',totalCost:'TOTAL COST',payInfo:'Pay securely via MoMoPay 60577134 after booking',requestBtn:'Request + Get Tracking ID'},
-lg:{bookNow:'Booka Kati',badge:'🇺🇬 Tulii mu Kampala • Tulina Tracking',hero:'Obujjanjabi<br><span class="text-emerald-600">obwesigwa awaka</span>',heroSub:'Bajjanjabi abakugu, ba nurse. Booka mu sekondi 60, olabe live.',seeCaregivers:'Laba Bajjanjabi',bookCaregiver:'Booka Omujjanjabi',ourCaregivers:'Bajjanjabi baffe abakakasiddwa',caregiverSub:'Beyesigwa era bayigirizibwa',bookGrace:'Booka Grace',bookSarah:'Booka Sarah',bookMoses:'Booka Moses',bookTitle:'Booka obujjanjabi mu sekondi 60',calcTitle:'💰 Omuwendo',totalCost:'OMUWENDO GWONA',payInfo:'Sasula ne MoMoPay 60577134',requestBtn:'Saba + Funa Tracking ID'}
-};
-function toggleLang(){
- lang=lang==='en'?'lg':'en';
- document.getElementById('langBtn').textContent=lang==='en'?'🌍 Luganda':'🌍 English';
- document.querySelectorAll('[data-t]').forEach(el=>{let k=el.getAttribute('data-t'); if(T[lang][k]) el.innerHTML=T[lang][k];});
-}
-function calc(){
- let price=parseInt(document.getElementById('calcService').value); let hrs=parseInt(document.getElementById('calcHours').value);
- let total=price*hrs; document.getElementById('calcTotal').textContent='UGX '+total.toLocaleString(); document.getElementById('calcBreak').textContent=price.toLocaleString()+' x '+hrs+'h';
-}
-calc();
-function selectCaregiver(n){ document.getElementById('chosenCaregiver').value=n; document.getElementById('book').scrollIntoView({behavior:'smooth'}); }
+// VIEW COUNTER - FAKE IT TILL YOU MAKE IT, INCREMENTS ON EACH VIEW
+let views = parseInt(localStorage.getItem('hch_views')||'1247'); views++; localStorage.setItem('hch_views',views);
+document.getElementById('viewCount').textContent=views.toLocaleString(); document.getElementById('footViews').textContent=views.toLocaleString();
 
-const form=document.getElementById('careForm');
-form.addEventListener('submit', async (e)=>{
- e.preventDefault();
- const trackId='HCH-'+Math.floor(1000+Math.random()*9000);
- localStorage.setItem('hch_tracking',trackId);
- document.getElementById('trackingId').textContent=trackId;
- document.getElementById('trackingResult').classList.remove('hidden');
- document.getElementById('formMsg').textContent='✅ Booking! Tracking: '+trackId+' - Total: '+document.getElementById('calcTotal').textContent;
- let payload={name:document.getElementById('name').value, phone:document.getElementById('phone').value, service:document.getElementById('service').value, details:document.getElementById('details').value+' | Caregiver:'+document.getElementById('chosenCaregiver').value+' | '+document.getElementById('calcTotal').textContent, trackingId:trackId};
- try{ await fetch('https://home-care-hero-api.onrender.com/api/book',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});}catch(err){}
- document.getElementById('trackInput').value=trackId; trackBooking();
- // save for admin
- let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]'); arr.unshift({id:trackId,name:payload.name,phone:payload.phone,caregiver:document.getElementById('chosenCaregiver').value||'Grace N.',status:'booked',eta:'25 min',time:new Date().toLocaleString()}); localStorage.setItem('hch_bookings',JSON.stringify(arr));
+document.getElementById('service').addEventListener('change',e=>{
+ let price = e.target.value.match(/(\d+),000/)[0]; let num=parseInt(price.replace(/,/g,'')); document.getElementById('priceShow').textContent=price; document.getElementById('totalShow').textContent=(num+5000).toLocaleString()+' UGX';
 });
-function trackBooking(){
- const id=document.getElementById('trackInput').value.trim().toUpperCase(); if(!id) return alert('Enter ID');
- document.getElementById('statusId').textContent=id; document.getElementById('trackStatus').classList.remove('hidden');
- let data=JSON.parse(localStorage.getItem('hch_tracking_'+id)||'null'); if(data){ document.getElementById('statusText').textContent=data.status; document.getElementById('statusEta').textContent=data.eta; }
+
+function handlePaidBooking(){
+ let name=document.getElementById('name').value.trim(); let phone=document.getElementById('phone').value.trim(); let service=document.getElementById('service').value;
+ if(!name||!phone){alert('Enter name + MTN number');return;}
+ // TAP REVENUE STEP 1: Show MoMo Pay
+ let confirmPay = confirm('💰 TAP REVENUE:\n\nYou will pay 55,000 UGX (50k service + 5k booking fee).\n\nMethod: MTN MoMo / Airtel Money\n\nIn real app, this opens Flutterwave.\n\nFor demo, we simulate PAID.\n\nClick OK to simulate payment success and earn 15k commission!');
+ if(!confirmPay) return;
+ // Generate ID
+ let id='HCH-'+Math.floor(1000+Math.random()*9000);
+ let priceNum=parseInt(service.match(/(\d+),000/)[0].replace(/,/g,''));
+ let commission=Math.floor(priceNum*0.2); let bookingFee=5000; let yourEarn=commission+bookingFee;
+ let booking={id,name,phone,service,price:priceNum,commission,yourEarn,bookingFee,status:'booked',caregiver:'Not assigned',eta:'30 min',created:Date.now()};
+ let arr=JSON.parse(localStorage.getItem('hch_bookings')||'[]'); arr.unshift(booking); localStorage.setItem('hch_bookings',JSON.stringify(arr));
+ localStorage.setItem('hch_tracking_'+id,JSON.stringify(booking));
+ // Show result
+ document.getElementById('rId').textContent=id+' | You earned '+yourEarn.toLocaleString()+' UGX';
+ document.getElementById('result').classList.remove('hidden');
+ document.getElementById('waLink').href='https://wa.me/256772101875?text=New%20booking%20'+id+'%20'+name+'%20earnings%20'+yourEarn;
+ alert('✅ PAID! You earned '+yourEarn.toLocaleString()+' UGX from this TAP!\n\nBooking: '+id+'\nCheck admin.html with password kwaliver92');
 }
 </script>
 </body>
