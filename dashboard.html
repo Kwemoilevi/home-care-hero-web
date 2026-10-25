@@ -5,16 +5,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 body{font-family:Arial;padding:16px;background:#f5f7fb;max-width:700px;margin:auto}
-.card{background:#fff;padding:16px;border-radius:12px;margin:10px 0;box-shadow:0 2px 10px rgba(0,0,0,.1)}
-.btn{padding:8px 12px;border:none;border-radius:6px;margin:4px;cursor:pointer;text-decoration:none;display:inline-block;color:#fff}
-.wa{background:#25D366}.verify{background:#0d6efd}.del{background:#dc3545}
+.card{background:#fff;padding:16px;border-radius:12px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+.btn{padding:8px 12px;border:none;border-radius:6px;margin:4px;cursor:pointer}
+.wa{background:#25D366;color:#fff;border-radius:20px;padding:6px 14px}
+.verify{background:#0d6efd;color:#fff;border-radius:20px;padding:6px 14px}
+.del{background:#dc3545;color:#fff;border-radius:20px;padding:6px 14px}
+.meta{color:#666;font-size:14px}
 </style>
 </head>
 <body>
 <div id="login" class="card" style="max-width:400px;margin:80px auto;text-align:center">
 <h2>🔒 Admin Login</h2>
-<input id="pwd" type="password" placeholder="Password" style="width:100%;padding:12px;border:1px solid #ddd;border-radius:8px">
-<button onclick="login()" style="width:100%;padding:12px;margin-top:10px;background:#0d6efd;color:#fff;border:none;border-radius:8px">Login</button>
+<input id="pwd" type="password" placeholder="Password" style="width:100%;padding:12px">
+<button onclick="login()" style="width:100%;padding:12px;margin-top:10px;background:#000;color:#fff;border-radius:8px">Login</button>
 <p id="msg"></p>
 <small>Pass: 0772101875</small>
 </div>
@@ -24,15 +27,35 @@ body{font-family:Arial;padding:16px;background:#f5f7fb;max-width:700px;margin:au
 <div id="caregivers"></div>
 </div>
 <script>
-   const API="https://home-care-hero-api-v2.onrender.com";
+const API="https://home-care-hero-api-v2.onrender.com";
 const PASS="0772101875";
-function login(){if(document.getElementById('pwd').value===PASS){localStorage.setItem('a','yes');show()}else{document.getElementById('msg').textContent='Wrong pass'}}
+function login(){if(document.getElementById('pwd').value===PASS){localStorage.setItem('a','yes');show()}else{document.getElementById('msg').innerText="Wrong pass"}}
 function show(){document.getElementById('login').style.display='none';document.getElementById('dash').style.display='block';loadData()}
 function logout(){localStorage.removeItem('a');location.reload()}
 if(localStorage.getItem('a')==='yes')show();
-async function loadData(){const d=document.getElementById('caregivers');d.innerHTML='Loading...';try{const r=await fetch(API+'/api/caregivers');const j=await r.json();d.innerHTML=j.caregivers.map(c=>{let p=c.phone.replace(/[^0-9]/g,'');if(p.startsWith('0'))p='256'+p.slice(1);return `<div class=card><b>${c.name}</b> ${c.verified?'✅':''}<br>${c.phone}<br>${c.location} ${c.skill}<br><a class=btn wa href=https://wa.me/${p} target=_blank>WhatsApp</a> <a class=btn style=background:#000 href=tel:${c.phone}>Call</a> ${!c.verified?`<button class=btn verify onclick=verifyCaregiver('${c.id}')>Verify</button>`:''} <button class=btn del onclick=deleteCaregiver('${c.id}')>Delete</button></div>`}).join('')||'No caregivers'}catch(e){d.innerHTML='Error: '+e.message+' - Wait 30sec API sleeping'}}
-async function verifyCaregiver(id){await fetch(API+'/api/caregivers/'+id+'/verify',{method:'POST'});loadData()}
-async function deleteCaregiver(id){if(confirm('Delete?')){await fetch(API+'/api/caregivers/'+id,{method:'DELETE'});loadData()}}
+async function loadData(){
+ const d=document.getElementById('caregivers');d.innerHTML="Loading... waking server (wait 10s)...";
+ try{
+  let r; for(let i=0;i<3;i++){ try{ r=await fetch(API+"/api/caregivers"); if(r.ok) break; }catch(e){} await new Promise(x=>setTimeout(x,8000)); }
+  const data=await r.json(); const list=Array.isArray(data)?data:(data.caregivers||[]);
+  if(list.length===0){d.innerHTML="No caregivers";return;}
+  d.innerHTML="";
+  list.forEach(c=>{
+   const name=c.fullName||c.name||"Unnamed";
+   const phone=c.phone||c.phoneNumber||"";
+   const email=c.email||"";
+   const exp=c.yearsExperience||c.experience||"";
+   const gender=c.gender||"";
+   const id=c._id||c.id||"";
+   const verified=c.verified||false;
+   const div=document.createElement('div'); div.className="card";
+   div.innerHTML=`<b>${name} ${verified?'✅':''}</b><br>${phone}<br><span class="meta">${email}${email&&exp?' - ':''}${exp?exp+' Years':''}${(email||exp)&&gender?' - ':''}${gender}</span><br><br><button class="btn wa" onclick="location.href='tel:${phone}'">Call</button> <button class="btn verify" onclick="verifyCaregiver('${id}')">${verified?'Verified':'Verify'}</button> <button class="btn del" onclick="deleteCaregiver('${id}')">Delete</button>`;
+   d.appendChild(div);
+  });
+ }catch(e){ d.innerHTML="Failed. Tap Refresh again after 60s.<br>"+e.message; }
+}
+async function verifyCaregiver(id){await fetch(API+'/api/caregivers/'+id+'/verify',{method:'PATCH'});loadData();}
+async function deleteCaregiver(id){if(!confirm("Delete?"))return;await fetch(API+'/api/caregivers/'+id,{method:'DELETE'});loadData();}
 </script>
 </body>
 </html>
