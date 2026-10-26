@@ -1,22 +1,73 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>CEO Dashboard</title></head>
-<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:12px;">
-<div style="width:100%;max-width:520px;">
-<div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;color:white;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:11px;"><span id="who">👋 Loading...</span><button onclick="localStorage.removeItem('hch_role');localStorage.removeItem('hch_user');location.href='login.html'" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;font-weight:bold;cursor:pointer;">Logout 🔓</button></div><script>let u=localStorage.getItem('hch_user');try{u=JSON.parse(u).name||u}catch(e){}document.getElementById('who').innerText='👋 '+ (u||'Guest') +' • CEO • Karibu';if(localStorage.getItem('hch_role')!='ceo'){location.href='login.html';}</script>
-<div style="background:#0f172a;color:white;border-radius:16px;padding:16px;text-align:center;"><h2 style="margin:0;">👨‍💼 CEO Command Center</h2><p style="margin:6px 0 0 0;color:#94a3b8;font-size:11px;">LIVE Bookings • LIVE GPS • REAL Wallet</p></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
-<div style="background:#22c55e;color:white;border-radius:12px;padding:12px;text-align:center;"><p style="margin:0;font-size:11px;">Wallet</p><p id="bal" style="margin:4px 0 0 0;font-weight:900;">UGX 0</p></div>
-<div style="background:white;border:1px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center;"><p style="margin:0;font-size:11px;color:#64748b;">Bookings</p><p id="cnt" style="margin:4px 0 0 0;font-weight:900;">0</p></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CEO Admin | Home Care Hero</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:white;margin:0;padding:0}
+.header{background:#1e293b;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.logo{font-weight:900;color:#22c55e;font-size:20px}
+.nav{display:flex;gap:8px;flex-wrap:wrap}
+.tab{padding:8px 14px;border-radius:20px;background:#334155;cursor:pointer;font-size:13px;font-weight:600}
+.tab.active{background:#22c55e;color:white}
+.container{padding:15px;max-width:1200px;margin:0 auto}
+.card{background:#1e293b;border-radius:16px;padding:16px;margin:10px 0;border:1px solid #334155}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.stat{background:#0f172a;padding:12px;border-radius:12px;text-align:center}
+.stat h3{margin:0;color:#22c55e;font-size:22px}
+.stat p{margin:5px 0 0;font-size:12px;color:#94a3b8}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #334155}
+th{color:#94a3b8;font-size:11px;text-transform:uppercase}
+.btn{padding:6px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:12px;margin:2px}
+.btn-green{background:#22c55e;color:white}
+.btn-red{background:#ef4444;color:white}
+.btn-blue{background:#3b82f6;color:white}
+.btn-gray{background:#475569;color:white}
+.badge{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
+.badge-pending{background:#f59e0b;color:white}
+.badge-verified{background:#22c55e;color:white}
+.badge-rejected{background:#ef4444;color:white}
+input,select{padding:8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:white}
+.section-title{font-size:16px;font-weight:800;margin:20px 0 10px;color:#e2e8f0}
+a{color:#22c55e}
+.small{font-size:11px;color:#94a3b8}
+</style>
+</head>
+<body>
+<div class="header">
+<div class="logo">👨‍💼 HOME CARE HERO — CEO</div>
+<div style="display:flex;gap:10px;align-items:center">
+<span id="ceoName" style="font-size:13px">Chairman</span>
+<button class="btn btn-gray" onclick="logout()">Logout</button>
 </div>
-<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:12px;margin-top:12px;"><h3 style="margin:0;font-size:13px;">📋 LIVE Bookings</h3><div id="list" style="margin-top:10px;font-size:12px;">Loading...</div></div>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
-<a href="admin-live-map.html" style="background:#0f172a;color:white;padding:12px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">📍 LIVE GPS MAP</a>
-<a href="wallet.html" style="background:#22c55e;color:white;padding:12px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">💰 Wallet</a>
 </div>
-<a href="index.html" style="display:block;text-align:center;color:#64748b;font-size:11px;margin-top:12px;text-decoration:none;">← Back Home</a>
+
+<div class="container">
+<div class="nav">
+<div class="tab active" onclick="showTab('dash')" id="t-dash">📊 Dashboard</div>
+<div class="tab" onclick="showTab('verify')" id="t-verify">🔐 LC1 Verifications <span id="verifyCount" style="background:#ef4444;padding:2px 6px;border-radius:10px;margin-left:5px">0</span></div>
+<div class="tab" onclick="showTab('bookings')" id="t-bookings">📅 Bookings</div>
+<div class="tab" onclick="showTab('nurses')" id="t-nurses">👩‍⚕️ Nurses</div>
+<div class="tab" onclick="showTab('clients')" id="t-clients">🤗 Clients</div>
+<div class="tab" onclick="showTab('wallet')" id="t-wallet">💰 Wallet</div>
 </div>
-<script>
-function load(){let bks=JSON.parse(localStorage.getItem('hch_bookings')||'[]');document.getElementById('cnt').innerText=bks.length;document.getElementById('bal').innerText='UGX '+Number(localStorage.getItem('ceo_bal')||'0').toLocaleString();let h='';if(bks.length==0)h='<p style=color:#94a3b8>No bookings yet</p>';bks.slice().reverse().forEach((bk,i)=>{h+=`<div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px;margin-top:8px;"><p style="margin:0;font-weight:bold;">${bk.name||'Client'} • ${bk.phone||''}</p><p style="margin:4px 0 0 0;color:#64748b;">${bk.service||''} • ${bk.location||''}</p><button onclick="confirmBk(${bks.length-1-i})" style="background:#22c55e;color:white;border:none;padding:6px 10px;border-radius:6px;margin-top:6px;font-weight:bold;">Confirm +7k</button></div>`});document.getElementById('list').innerHTML=h;}
-function confirmBk(idx){let bks=JSON.parse(localStorage.getItem('hch_bookings')||'[]');let bal=Number(localStorage.getItem('ceo_bal')||'0');bal+=7000;localStorage.setItem('ceo_bal',bal);let cnt=Number(localStorage.getItem('ceo_cnt')||'0');localStorage.setItem('ceo_cnt',cnt+1);alert('Confirmed! +7k added');load();}
-load();setInterval(load,3000);
-</script>
-</body></html>
+
+<!-- DASHBOARD -->
+<div id="dashTab">
+<div class="stat-grid">
+<div class="stat"><h3 id="s-book">0</h3><p>Total Bookings</p></div>
+<div class="stat"><h3 id="s-pend">0</h3><p>Pending LC1</p></div>
+<div class="stat"><h3 id="s-ver">0</h3><p>Verified Nurses</p></div>
+<div class="stat"><h3 id="s-wallet">0 UGX</h3><p>Your 20% Profit</p></div>
+</div>
+
+<div class="card">
+<h3>🚀 CEO Quick Links</h3>
+<p class="small">
+<a href="admin-live-map.html">📍 Live Map (GPS)</a> • 
+<a href="wallet.html">💰 Wallet</a> • 
+<a href="clients.html">🤗 Client View</a> • 
+<a href="caregivers.html">👩‍⚕️ Nurse View</a> • 
+<a href="caregiver-verification.html">📝
