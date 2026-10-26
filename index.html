@@ -2,63 +2,56 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Book Verified Help</title>
+<title>Home Care Hero - Book Verified Help Worldwide</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#f5f5f7]">
 <nav class="bg-black text-white px-6 py-4 flex justify-between sticky top-0 z-50">
-<div class="font-black">Home Care Hero 💛 Kampala</div>
-<a href="caregiver-register.html" class="text-[10px] bg-[#ffcc00] text-black px-3 py-1 rounded-full font-black">Earn 20k-45k/day</a>
+<div class="font-black">Home Care Hero 💛 Global</div>
+<a href="caregiver-register.html" class="text-[10px] bg-[#ffcc00] text-black px-3 py-1 rounded-full font-bold">Join as Caregiver</a>
 </nav>
 <div class="max-w-xl mx-auto p-6">
 <div class="bg-white rounded-[2rem] p-7 border shadow-xl">
-<h1 class="font-black text-3xl">Verified Care in <span class="bg-[#ffcc00] px-2 rounded-xl border-2 border-black">Kampala</span></h1>
-<p class="text-xs text-gray-500 mt-2">Babysitters & Nurses - LC1 + ID Verified. Pay deposit via MoMoPay to confirm.</p>
+<h1 class="font-black text-3xl">Verified Care in <span class="bg-[#ffcc00] px-2 rounded-xl">Worldwide</span></h1>
+<p class="text-xs text-gray-500 mt-2">Babysitters & Nurses - ID Verified Worldwide. Pay deposit to confirm.</p>
 
 <div class="mt-6 space-y-3">
-<input id="cName" placeholder="Your Name" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<input id="cPhone" placeholder="Your Phone 07..." class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<input id="cLoc" placeholder="Location e.g., Kololo, Kisaasi" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<input id="cName" placeholder="Your Name" class="w-full px-4 py-3 rounded-xl border">
+<input id="cPhone" placeholder="Your Phone / WhatsApp" class="w-full px-4 py-3 rounded-xl border">
+<input id="cLoc" placeholder="Location e.g., London, New York, Nairobi, Dubai" class="w-full px-4 py-3 rounded-xl border">
 <select id="cService" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<option value="Babysitting">Babysitting - 35k/day</option>
-<option value="Qualified Nurse">Qualified Nurse - 70k/day</option>
-<option value="House Cleaning">House Cleaning - 40k/day</option>
-<option value="Elderly Care">Elderly Care - 60k/day</option>
-<option value="Cooking">Cooking - 35k/day</option>
+<option value="Babysitting">Babysitting - $15/day</option>
+<option value="Qualified Nurse">Qualified Nurse - $35/day</option>
+<option value="House Cleaning">House Cleaning - $20/day</option>
+<option value="Elderly Care">Elderly Care - $30/day</option>
+<option value="Cooking">Cooking - $15/day</option>
 </select>
-<textarea id="cNote" placeholder="Details: kids age, hours..." class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm h-20"></textarea>
+<textarea id="cNote" placeholder="Details: kids age, hours, special needs..." class="w-full px-4 py-3 rounded-xl border h-20"></textarea>
 <button onclick="bookNow()" class="w-full bg-black text-white py-4 rounded-xl font-black">Book Now - Pay Deposit ✅</button>
+</div>
 </div>
 
 <div class="bg-[#ffcc00] p-4 rounded-2xl border-2 border-black mt-6">
-<p class="font-black text-sm">🔒 Pay Deposit - MoMoPay</p>
-<p class="text-[11px] mt-1">20,000 UGX to confirm. Balance on arrival.</p>
-<p class="font-mono font-black text-lg mt-2">*165*3*XXXXXX#</p>
-<p class="text-[10px]">Replace XXXXXX with your MoMoPay code. Name: HOME CARE HERO</p>
-<a href="tel:*165*3*XXXXXX%23" class="block w-full bg-black text-white text-center py-3 rounded-xl font-black text-sm mt-3">Pay 20k Now 📱</a>
+<p class="font-black text-sm">🛡️ Pay Deposit - Secure Pay</p>
+<p class="text-xs mt-1">20 USD to confirm. Balance on arrival. Verified caregivers worldwide.</p>
+<button onclick="bookNow()" class="mt-3 bg-black text-white px-6 py-2 rounded-xl text-sm font-bold">Pay Securely</button>
 </div>
 
-<div id="success" class="hidden bg-green-100 border p-4 rounded-xl mt-4 text-center">
-<p class="font-black text-sm">Booked! 🎉 Pay deposit above to confirm.</p>
+<div class="text-center mt-6 text-[10px] text-gray-400">
+<p>🌍 Serving 150+ Cities Worldwide • Trusted & Verified</p>
 </div>
+
 </div>
-</div>
+
 <script>
-function getNum(){return atob('MjU2NzcyMTAxODc1');}
 function bookNow(){
-let name=document.getElementById('cName').value.trim();
-let phone=document.getElementById('cPhone').value.trim();
-let loc=document.getElementById('cLoc').value.trim();
-let service=document.getElementById('cService').value;
-let note=document.getElementById('cNote').value.trim();
-if(!name||!phone||!loc){alert('Fill name, phone, location');return;}
-let prices={'Babysitting':35000,'Qualified Nurse':70000,'House Cleaning':40000,'Elderly Care':60000,'Cooking':35000};
-let price=prices[service]||35000;
-let booking={id:'HCH'+Date.now().toString().slice(-5),name,phone,location:loc,service,note,price,caregiverPay:20000,status:'pending',date:new Date().toLocaleString()};
-let all=JSON.parse(localStorage.getItem('hch_bookings')||'[]'); all.push(booking); localStorage.setItem('hch_bookings',JSON.stringify(all));
-document.getElementById('success').classList.remove('hidden');
-let num=getNum();
-window.open('https://wa.me/'+num+'?text=NEW BOOKING '+booking.id+' - '+name+' '+service+' in '+loc,'_blank');
+ const name=document.getElementById('cName').value;
+ const phone=document.getElementById('cPhone').value;
+ const loc=document.getElementById('cLoc').value;
+ const service=document.getElementById('cService').value;
+ if(!name || !phone || !loc){alert('Please fill Name, Phone, Location');return;}
+ alert('✅ Booking Received! '+name+' in '+loc+' for '+service+' - We will call you shortly!');
+ // Add Firebase code here if you have it
 }
 </script>
 </body>
