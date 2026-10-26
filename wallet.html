@@ -1,44 +1,23 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Wallet - LIVE REAL</title></head>
-<body style="margin:0;background:#0f172a;font-family:sans-serif;display:flex;justify-content:center;padding:16px;">
-<div style="width:100%;max-width:480px;color:white;">
-<div style="background:linear-gradient(135deg,#0f172a,#14532d);border:1px solid #22c55e;border-radius:20px;padding:20px;text-align:center;">
-<p style="margin:0;color:#86efac;font-size:11px;font-weight:bold;">💰 REAL CEO WALLET - LIVE</p>
-<h1 style="margin:8px 0 0 0;font-size:13px;color:#94a3b8;">Real Balance - From Real Clients</h1>
-<h2 id="bal" style="margin:6px 0 0 0;font-size:34px;font-weight:900;">UGX 0</h2>
-<p id="balusd" style="margin:6px 0 0 0;color:#4ade80;font-size:12px;">≈ $0 USD • Real Bookings: <span id="cnt">0</span></p>
-<div style="display:flex;gap:8px;margin-top:16px;">
-<button onclick="withdraw()" style="flex:1;background:#22c55e;color:white;padding:12px;border:none;border-radius:12px;font-weight:bold;">💸 WITHDRAW TO MOMO</button>
-<button onclick="addM()" style="flex:1;background:white;color:black;padding:12px;border:none;border-radius:12px;font-weight:bold;">🏦 MOMO NUMBER</button>
-</div></div>
-<div id="tx" style="background:#1e293b;border-radius:16px;padding:16px;margin-top:16px;">
-<h3 style="margin:0 0 12px 0;font-size:14px;">📜 Real Transactions</h3>
-<p style="color:#64748b;font-size:12px;text-align:center;padding:20px 0;">No bookings yet.<br>Share your link to get first client!<br><br><span style="color:#22c55e;">home-care-hero-web.vercel.app</span></p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Wallet</title></head>
+<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:12px;">
+<div style="width:100%;max-width:400px;">
+<div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;color:white;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:11px;"><span id="who">💰 Wallet</span><button onclick="localStorage.removeItem('hch_role');localStorage.removeItem('hch_user');location.href='login.html'" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;font-weight:bold;">Logout</button></div><script>let u=localStorage.getItem('hch_user');try{u=JSON.parse(u).name||u}catch(e){}document.getElementById('who').innerText='👋 '+ (u||'CEO') +' • WALLET';if(!localStorage.getItem('hch_role')){location.href='login.html';}</script>
+<div style="background:linear-gradient(135deg,#0f172a,#14532d);color:white;border-radius:24px;padding:22px;text-align:center;">
+<p style="margin:0;color:#86efac;font-size:11px;letter-spacing:2px;">CEO WALLET • REAL MONEY</p>
+<h1 id="bal" style="margin:12px 0 0 0;font-size:32px;font-weight:900;">UGX 0</h1>
+<p id="cnt" style="margin:6px 0 0 0;color:#94a3b8;font-size:12px;">0 bookings • 7k each</p>
 </div>
-<div style="background:#1e293b;border-radius:16px;padding:16px;margin-top:16px;">
-<h3 style="margin:0 0 12px 0;font-size:14px;">🔗 How Real Money Works</h3>
-<p style="margin:0;color:#94a3b8;font-size:12px;line-height:1.5;">
-1. Client books on clients.html (35k)<br>
-2. You confirm on WhatsApp<br>
-3. Click CONFIRM PAYMENT below → Adds 7k to wallet<br>
-4. Withdraw to your MTN MoMo instantly<br><br>
-<b style="color:white;">To make AUTOMATIC (MTN MoMo API):</b><br>
-We need Flutterwave — costs 3.5% per transaction.<br>
-I can add it when you get first 5 clients.
-</p>
-<button onclick="confirmPay()" style="width:100%;background:#0f172a;border:2px dashed #22c55e;color:#4ade80;padding:12px;border-radius:12px;font-weight:bold;margin-top:12px;">+ CONFIRM REAL PAYMENT 35K (Add 7K to Wallet)</button>
+<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:12px;">
+<label style="font-size:11px;font-weight:bold;">Your MTN MoMo Number</label>
+<input id="momo" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:6px;box-sizing:border-box;" placeholder="07XXXXXXXX">
+<button onclick="saveMomo()" style="width:100%;background:#22c55e;color:white;padding:12px;border-radius:10px;border:none;font-weight:bold;margin-top:8px;">Save MoMo Number</button>
+<p id="momoMsg" style="font-size:11px;text-align:center;margin-top:8px;"></p>
 </div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;padding-bottom:40px;">
-<a href="index.html" style="background:white;color:black;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">Home</a>
-<a href="clients.html" style="background:#22c55e;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">Get Clients</a>
-<a href="admin.html" style="background:#1e293b;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">CEO Admin</a>
-</div></div>
+<a href="index.html" style="display:block;text-align:center;color:#64748b;font-size:11px;margin-top:12px;text-decoration:none;">← Back Home</a>
+</div>
 <script>
-let b=Number(localStorage.getItem('ceo_bal')||0);
-let c=Number(localStorage.getItem('ceo_cnt')||0);
-let tx=JSON.parse(localStorage.getItem('ceo_tx')||'[]');
-function render(){document.getElementById('bal').innerText='UGX '+b.toLocaleString();document.getElementById('balusd').innerHTML='≈ $'+(b/3700).toFixed(0)+' USD • Real Bookings: <span id=cnt>'+c+'</span>';if(tx.length>0){let h='';tx.slice().reverse().forEach(t=>{h+=`<div style="background:#0f172a;border-radius:10px;padding:12px;display:flex;justify-content:space-between;margin-top:8px;"><div><p style="margin:0;font-weight:bold;font-size:13px;">${t.name} - ${t.loc}</p><p style="margin:2px 0 0 0;font-size:11px;color:#94a3b8;">${t.amt} • ${t.cut} your cut • REAL • ${t.time}</p></div><p style="margin:0;color:#4ade80;font-weight:bold;">+${t.cut}</p></div>`});document.getElementById('tx').innerHTML='<h3 style="margin:0 0 12px 0;font-size:14px;">📜 Real Transactions</h3>'+h;}}
-function confirmPay(){let n=prompt('Client Name?');if(!n)return;let l=prompt('Location? e.g. Ntinda');let amt=35000;let cut=7000;b+=cut;c++;tx.push({name:n,loc:l||'Kampala',amt:'UGX 35k',cut:'UGX 7k',time:new Date().toLocaleTimeString()});localStorage.setItem('ceo_bal',b);localStorage.setItem('ceo_cnt',c);localStorage.setItem('ceo_tx',JSON.stringify(tx));render();alert('REAL PAYMENT ADDED! +7k to wallet. Total: UGX '+b);}
-function withdraw(){if(b<5000)return alert('Min UGX 5k to withdraw. Balance: '+b);let m=prompt('Your MTN MoMo number to withdraw UGX '+b+'?');if(!m)return;alert('WITHDRAWAL REQUEST: UGX '+b+' to '+m+'\n\nIn REAL mode, you manually send via MoMo app to yourself. After, click RESET if you want.');}
-function addM(){let m=prompt('Enter your MTN MoMo number for clients to pay to:',localStorage.getItem('momo')||'07');if(m)localStorage.setItem('momo',m);alert('Saved! Your MoMo: '+m+'\nClients will see this on booking page.');}
-render();
-</script></body></html>
+function load(){document.getElementById('bal').innerText='UGX '+Number(localStorage.getItem('ceo_bal')||'0').toLocaleString();document.getElementById('cnt').innerText=(localStorage.getItem('ceo_cnt')||'0')+' bookings • 7k each';let m=localStorage.getItem('ceo_momo');if(m)document.getElementById('momo').value=m;}
+function saveMomo(){let m=document.getElementById('momo').value.trim();if(!m){document.getElementById('momoMsg').innerHTML='<span style=color:red>Enter number</span>';return;}localStorage.setItem('ceo_momo',m);document.getElementById('momoMsg').innerHTML='<span style=color:green>✅ Saved: '+m+'</span>';}
+load();
+</script>
+</body></html>
