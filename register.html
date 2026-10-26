@@ -1,35 +1,98 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Join as Caregiver - Global</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:linear-gradient(135deg,#2563eb,#7c3aed);min-height:100vh;padding:16px;display:flex;align-items:center;justify-content:center}.card{background:#fff;width:100%;max-width:440px;border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.2)}h2{text-align:center;margin-bottom:4px}p.sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:16px}input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;margin:6px 0;font-size:14px}.btn{width:100%;padding:14px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;margin-top:10px}.ok{display:none;background:#dcfce7;color:#166534;padding:12px;border-radius:8px;margin-top:12px;text-align:center;font-weight:700}a{color:#2563eb;text-decoration:none;font-weight:700;font-size:13px}</style></head><body>
-<div class="card">
-<h2>🌍 Join as Caregiver</h2><p class="sub">Work Worldwide - USA, UK, Canada, Africa</p>
-<input id="name" placeholder="Full Name *">
-<select id="service"><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>Disability Care</option><option>House Help</option><option>Live-in Care</option><option>Physiotherapy</option></select>
-<input id="phone" placeholder="Phone + country code e.g. +1, +44, +256 *">
-<input id="location" placeholder="City e.g. New York, London, Kampala *">
-<select id="country"><option value="USA">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="Canada">🇨🇦 Canada</option><option value="Australia">🇦🇺 Australia</option><option value="Uganda">🇺🇬 Uganda</option><option value="Kenya">🇰🇪 Kenya</option><option value="Nigeria">🇳🇬 Nigeria</option><option value="South Africa">🇿🇦 South Africa</option><option value="UAE">🇦🇪 UAE</option><option value="Germany">🇩🇪 Germany</option><option value="Other">🌍 Other</option></select>
-<input id="exp" placeholder="Years of Experience e.g. 3 years">
-<button class="btn" onclick="register()">✅ Register Globally</button>
-<div id="ok" class="ok">✅ Registered! You are now visible worldwide on homepage! <br><a href="index.html">Go to Homepage</a> | <a href="caregiver.html">View in Admin</a></div>
-<p style="text-align:center;margin-top:12px"><a href="index.html">← Back to Homepage</a></p>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Live GPS Tracker - Home Care Hero</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#0f172a;color:#fff}
+.header{padding:12px 16px;background:#1e293b;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
+.btn{padding:10px 14px;border:none;border-radius:8px;font-weight:700;cursor:pointer}
+#map{height:70vh;width:100%}
+.info{background:#fff;color:#000;margin:10px;border-radius:12px;padding:12px}
+.dot{width:12px;height:12px;background:#22c55e;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 #22c55e}70%{box-shadow:0 0 0 10px transparent}100%{box-shadow:0 0 0 0 transparent}}
+</style>
+</head>
+<body>
+<div class="header">
+<b>📍 LIVE GPS Tracking - Home Care Hero</b>
+<div style="display:flex;gap:6px">
+<a href="index.html" style="color:#fff;background:#2563eb;padding:8px 10px;border-radius:8px;text-decoration:none">🏠 Home</a>
+<a href="payment.html" style="color:#fff;background:#f59e0b;padding:8px 10px;border-radius:8px;text-decoration:none">💰 Pay</a>
+<a href="dashboard.html" style="color:#fff;background:#334155;padding:8px 10px;border-radius:8px;text-decoration:none">📊 Dash</a>
 </div>
+</div>
+
+<div class="info">
+<span class="dot"></span> <b id="status">Live Tracking ON</b> | Caregiver: <b id="cg">Sarah - Kampala</b> | <span id="coords">Getting GPS...</span><br>
+<small>Last update: <span id="time">now</span> | Accuracy: <span id="acc">High</span></small>
+</div>
+
+<div id="map"></div>
+
+<div style="padding:10px;display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn" style="background:#22c55e;color:#fff;flex:1" onclick="startTrack()">▶️ Start Live</button>
+<button class="btn" style="background:#ef4444;color:#fff;flex:1" onclick="stopTrack()">⏹️ Stop</button>
+<button class="btn" style="background:#2563eb;color:#fff;flex:1" onclick="shareLocation()">📤 Share Location</button>
+<button class="btn" style="background:#f59e0b;color:#fff;flex:1" onclick="location.href='payment.html'">💰 Pay</button>
+</div>
+
 <script>
-const API="https://home-care-hero-api.onrender.com";
-async function register(){
- const obj={
-  name:document.getElementById('name').value,
-  service:document.getElementById('service').value,
-  phone:document.getElementById('phone').value,
-  location:document.getElementById('location').value,
-  country:document.getElementById('country').value,
-  exp:document.getElementById('exp').value,
-  created:new Date().toISOString()
- };
- if(!obj.name||!obj.phone||!obj.location) return alert('Fill name, phone, city');
- let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');
- caregivers.unshift(obj);
- localStorage.setItem('caregivers',JSON.stringify(caregivers));
- try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}
- document.getElementById('ok').style.display='block';
- setTimeout(()=>{window.location.href='index.html'},2000);
+let map = L.map('map').setView([0.3476, 32.5825], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '© OpenStreetMap' }).addTo(map);
+let marker = L.marker([0.3476, 32.5825]).addTo(map).bindPopup('📍 Live Caregiver Location').openPopup();
+let watchId = null;
+
+function updatePosition(pos) {
+  let lat = pos.coords.latitude;
+  let lng = pos.coords.longitude;
+  let accuracy = pos.coords.accuracy;
+  marker.setLatLng([lat, lng]);
+  map.setView([lat, lng], 15);
+  document.getElementById('coords').textContent = lat.toFixed(5) + ',' + lng.toFixed(5);
+  document.getElementById('time').textContent = new Date().toLocaleTimeString();
+  document.getElementById('acc').textContent = Math.round(accuracy) + 'm';
+  localStorage.setItem('lastLocation', JSON.stringify({lat, lng, time: new Date().toISOString()}));
 }
+
+function startTrack() {
+  if (navigator.geolocation) {
+    watchId = navigator.geolocation.watchPosition(updatePosition, function(err){ alert('GPS Error: ' + err.message); }, { enableHighAccuracy: true, maximumAge: 0, timeout: 10000 });
+    document.getElementById('status').textContent = '🔴 LIVE - Active Tracking';
+  } else {
+    alert('GPS not supported on this device');
+  }
+}
+
+function stopTrack() {
+  if (watchId !== null) {
+    navigator.geolocation.clearWatch(watchId);
+  }
+  document.getElementById('status').textContent = '⏸️ Paused';
+}
+
+function shareLocation() {
+  let saved = JSON.parse(localStorage.getItem('lastLocation') || '{"lat":0.3476,"lng":32.5825}');
+  let url = 'https://www.google.com/maps?q=' + saved.lat + ',' + saved.lng;
+  if (navigator.share) {
+    navigator.share({ title: 'My Live Location - Home Care Hero', text: 'Track me live:', url: url });
+  } else {
+    prompt('Copy and Share this Location Link:', url);
+  }
+}
+
+// Show caregiver name from storage
+let caregivers = JSON.parse(localStorage.getItem('caregivers') || '[]');
+if (caregivers.length > 0) {
+  document.getElementById('cg').textContent = caregivers[0].name + ' - ' + caregivers[0].country;
+}
+
+// Auto start
+startTrack();
 </script>
-</body></html>
+</body>
+</html>
