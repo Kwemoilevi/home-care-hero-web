@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Hero Earnings</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-[#111] text-white"><div class="max-w-md mx-auto">
+<div class="bg-[#ffcc00] text-black p-5 rounded-b-[2rem]"><p class="text-[10px] font-black">HERO EARNINGS - Like BetPawa</p><h1 class="font-black text-2xl">My Wallet</h1>
+<div class="bg-black text-white mt-3 rounded-[1.5rem] p-5"><p class="text-[10px] text-gray-400">AVAILABLE TO WITHDRAW</p><h2 class="text-3xl font-black text-green-400">UGX <span id="earn">0</span></h2>
+<div class="grid grid-cols-2 gap-3 mt-4"><button onclick="withdraw()" class="bg-green-400 text-black py-3 rounded-xl font-black text-sm">WITHDRAW</button><button class="bg-white text-black py-3 rounded-xl font-black text-sm">JOBS: <span id="jobs">0</span></button></div></div></div>
+<div class="p-5"><input id="cPhone" placeholder="Your Hero Phone 07..." class="w-full p-3 rounded-xl bg-[#222] border border-[#333] text-sm"><button onclick="loginC()" class="w-full mt-2 bg-[#ffcc00] text-black py-3 rounded-xl font-black">VIEW EARNINGS</button><div id="cList" class="mt-4 space-y-2"></div></div>
+</div>
+<script>
+function loginC(){
+let p=document.getElementById('cPhone').value.trim(); if(!p)return; localStorage.setItem('hch_c_current',p); loadC();
+}
+function loadC(){
+let phone=localStorage.getItem('hch_c_current'); if(!phone)return;
+let assigns=JSON.parse(localStorage.getItem('hch_assigns')||'[]').filter(a=>a.caregiverPhone==phone);
+let total=assigns.reduce((s,a)=>s+(a.caregiverPay||20000),0);
+document.getElementById('earn').innerText=total.toLocaleString();
+document.getElementById('jobs').innerText=assigns.length;
+let list=document.getElementById('cList'); list.innerHTML=assigns.map(a=>`<div class="bg-[#1f1f1f] p-3 rounded-xl flex justify-between"><div><p class="font-bold text-xs">${a.service} - ${a.clientName}</p><p class="text-[10px] text-gray-400">${a.date}</p></div><p class="text-green-400 font-black">+${(a.caregiverPay||20000).toLocaleString()}</p></div>`).join('')||'<p class="text-xs text-gray-500 text-center mt-5">No jobs yet. Keep profile active!</p>';
+}
+function withdraw(){
+let amt=document.getElementById('earn').innerText; let phone=localStorage.getItem('hch_c_current');
+let m=prompt('Enter MTN/Airtel number to receive:'); if(!m)return;
+let num=atob('MjU2NzcyMTAxODc1'); window.open('https://wa.me/'+num+'?text=Hero '+phone+' wants WITHDRAW '+amt+' to '+m,'_blank'); alert('Request sent! Admin will pay in 1hr');
+}
+if(localStorage.getItem('hch_c_current')){document.getElementById('cPhone').value=localStorage.getItem('hch_c_current'); loadC();}
+</script></body></html>
