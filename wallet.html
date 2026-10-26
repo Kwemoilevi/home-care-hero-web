@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Wallet - Home Care Hero</title><script src="https://cdn.tailwindcss.com"></script></head>
+<body class="bg-[#111] text-white">
+<div class="max-w-md mx-auto">
+<!-- BetPawa Header -->
+<div class="bg-[#ffcc00] text-black p-5 rounded-b-[2rem]">
+<div class="flex justify-between items-center"><div><p class="text-[10px] font-bold">HOME CARE HERO WALLET</p><h1 class="font-black text-xl">Hi, <span id="uName">Client</span> 💛</h1></div><a href="index.html" class="bg-black text-white px-3 py-1 rounded-full text-[10px] font-black">BOOK</a></div>
+<div class="bg-black text-white mt-4 rounded-[1.5rem] p-5">
+<p class="text-[10px] text-gray-400">MAIN BALANCE</p><h2 class="text-3xl font-black">UGX <span id="bal">0</span></h2><p class="text-[10px] mt-1 text-[#ffcc00]">Deposits via MoMoPay are auto-confirmed by Admin</p>
+<div class="grid grid-cols-2 gap-3 mt-4">
+<button onclick="deposit()" class="bg-[#ffcc00] text-black py-3 rounded-xl font-black text-sm">DEPOSIT</button>
+<button onclick="historySec()" class="bg-white text-black py-3 rounded-xl font-black text-sm">HISTORY</button>
+</div></div>
+<div class="grid grid-cols-3 gap-2 mt-3 text-black text-[10px]">
+<div class="bg-white p-3 rounded-xl text-center"><p class="font-bold">Bookings</p><p id="tBook" class="font-black text-lg">0</p></div>
+<div class="bg-white p-3 rounded-xl text-center"><p class="font-bold">Spent</p><p id="tSpent" class="font-black text-lg">0</p></div>
+<div class="bg-white p-3 rounded-xl text-center"><p class="font-bold">Deposit</p><p id="tDep" class="font-black text-lg">0</p></div>
+</div>
+</div>
+<!-- Transactions like BetPawa -->
+<div class="p-5"><h3 class="font-black text-sm mb-3">Recent Transactions</h3><div id="list" class="space-y-2"></div></div>
+<div class="p-5"><input id="phoneLogin" placeholder="Enter your phone 07..." class="w-full p-3 rounded-xl bg-[#222] border border-[#333] text-sm"><button onclick="login()" class="w-full mt-2 bg-[#ffcc00] text-black py-3 rounded-xl font-black">VIEW MY WALLET</button></div>
+</div>
+<script>
+let currentPhone=null;
+function login(){
+let p=document.getElementById('phoneLogin').value.trim();
+if(!p)return alert('Enter phone');
+currentPhone=p; localStorage.setItem('hch_current',p); load();
+}
+function load(){
+let phone=localStorage.getItem('hch_current')||currentPhone;
+if(!phone)return;
+let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]').filter(b=>b.phone==phone);
+let wallets=JSON.parse(localStorage.getItem('hch_wallets')||'{}');
+let w=wallets[phone]||{balance:0,dep:0,spent:0,tx:[]};
+document.getElementById('uName').innerText=bookings[0]?.name||phone.slice(-4);
+document.getElementById('bal').innerText=w.balance.toLocaleString();
+document.getElementById('tBook').innerText=bookings.length;
+document.getElementById('tDep').innerText=w.dep.toLocaleString();
+document.getElementById('tSpent').innerText=w.spent.toLocaleString();
+let list=document.getElementById('list'); list.innerHTML='';
+(w.tx||[]).slice().reverse().forEach(t=>{
+list.innerHTML+=`<div class="bg-[#1f1f1f] p-3 rounded-xl flex justify-between"><div><p class="font-bold text-xs">${t.type}</p><p class="text-[10px] text-gray-400">${t.date}</p></div><p class="${t.type.includes('Deposit')?'text-green-400':'text-red-400'} font-black text-sm">${t.amount>0?'+':''}${t.amount.toLocaleString()}</p></div>`;
+});
+if(bookings.length)document.getElementById('list').innerHTML+=bookings.map(b=>`<div class="bg-[#1f1f1f] p-3 rounded-xl flex justify-between"><div><p class="font-bold text-xs">Booking ${b.id} - ${b.service}</p><p class="text-[10px] text-gray-400">${b.date}</p></div><p class="text-yellow-400 font-black text-sm">-${b.price.toLocaleString()}</p></div>`).join('');
+}
+function deposit(){
+let code=prompt('Your MoMoPay Code is *165*3*XXXXXX#\nEnter amount you paid (e.g 20000):'); if(!code)return;
+let amt=parseInt(code); if(isNaN(amt))return alert('Enter number');
+let phone=localStorage.getItem('hch_current'); if(!phone)return alert('Login first');
+let wallets=JSON.parse(localStorage.getItem('hch_wallets')||'{}'); let w=wallets[phone]||{balance:0,dep:0,spent:0,tx:[]};
+w.balance+=amt; w.dep+=amt; w.tx.push({type:'Deposit MoMoPay',amount:amt,date:new Date().toLocaleString()});
+wallets[phone]=w; localStorage.setItem('hch_wallets',JSON.stringify(wallets)); load();
+let num=atob('MjU2NzcyMTAxODc1'); window.open('https://wa.me/'+num+'?text=Deposit '+amt+' from '+phone,'_blank');
+}
+function historySec(){document.getElementById('list').scrollIntoView({behavior:'smooth'});}
+if(localStorage.getItem('hch_current')){currentPhone=localStorage.getItem('hch_current'); document.getElementById('phoneLogin').value=currentPhone; load();}
+</script>
+</body></html>
