@@ -1,44 +1,35 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join as Caregiver - Home Care Hero</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:linear-gradient(135deg,#2563eb,#7c3aed);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
-.box{background:white;padding:24px;border-radius:16px;width:100%;max-width:420px;box-shadow:0 20px 40px rgba(0,0,0,0.2)}
-h2{text-align:center;color:#0f172a;margin-bottom:8px}
-.sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:16px}
-input,select,textarea{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;margin:6px 0;font-size:14px}
-.btn{width:100%;padding:14px;background:#2563eb;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
-.success{background:#dcfce7;color:#166534;padding:12px;border-radius:8px;text-align:center;display:none;margin-top:10px}
-a{color:#2563eb;text-decoration:none;font-size:13px}
-</style>
-</head>
-<body>
-<div class="box">
-  <h2>👩‍⚕️ Join as Caregiver</h2>
-  <p class="sub">Start earning with Home Care Hero Uganda</p>
-  <input id="name" placeholder="Full Name *">
-  <input id="phone" placeholder="Phone / WhatsApp - 077... *">
-  <select id="service"><option value="">Select Service *</option><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>Disability Care</option><option>House Help</option></select>
-  <input id="location" placeholder="Location - e.g. Ntinda, Kampala *">
-  <input id="experience" placeholder="Years Experience - e.g. 3 years">
-  <textarea id="bio" placeholder="Short Bio - Tell clients about you"></textarea>
-  <button class="btn" onclick="register()">✅ Register Now</button>
-  <div id="ok" class="success">✅ Registered! We will call you soon. Redirecting...</div>
-  <p style="text-align:center;margin-top:12px"><a href="index.html">← Back to Home</a> | <a href="caregiver.html">Admin View</a></p>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Join as Caregiver - Global</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:linear-gradient(135deg,#2563eb,#7c3aed);min-height:100vh;padding:16px;display:flex;align-items:center;justify-content:center}.card{background:#fff;width:100%;max-width:440px;border-radius:16px;padding:22px;box-shadow:0 10px 30px rgba(0,0,0,.2)}h2{text-align:center;margin-bottom:4px}p.sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:16px}input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;margin:6px 0;font-size:14px}.btn{width:100%;padding:14px;background:#2563eb;color:#fff;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer;margin-top:10px}.ok{display:none;background:#dcfce7;color:#166534;padding:12px;border-radius:8px;margin-top:12px;text-align:center;font-weight:700}a{color:#2563eb;text-decoration:none;font-weight:700;font-size:13px}</style></head><body>
+<div class="card">
+<h2>🌍 Join as Caregiver</h2><p class="sub">Work Worldwide - USA, UK, Canada, Africa</p>
+<input id="name" placeholder="Full Name *">
+<select id="service"><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>Disability Care</option><option>House Help</option><option>Live-in Care</option><option>Physiotherapy</option></select>
+<input id="phone" placeholder="Phone + country code e.g. +1, +44, +256 *">
+<input id="location" placeholder="City e.g. New York, London, Kampala *">
+<select id="country"><option value="USA">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="Canada">🇨🇦 Canada</option><option value="Australia">🇦🇺 Australia</option><option value="Uganda">🇺🇬 Uganda</option><option value="Kenya">🇰🇪 Kenya</option><option value="Nigeria">🇳🇬 Nigeria</option><option value="South Africa">🇿🇦 South Africa</option><option value="UAE">🇦🇪 UAE</option><option value="Germany">🇩🇪 Germany</option><option value="Other">🌍 Other</option></select>
+<input id="exp" placeholder="Years of Experience e.g. 3 years">
+<button class="btn" onclick="register()">✅ Register Globally</button>
+<div id="ok" class="ok">✅ Registered! You are now visible worldwide on homepage! <br><a href="index.html">Go to Homepage</a> | <a href="caregiver.html">View in Admin</a></div>
+<p style="text-align:center;margin-top:12px"><a href="index.html">← Back to Homepage</a></p>
 </div>
 <script>
 const API="https://home-care-hero-api.onrender.com";
 async function register(){
-  const data={name:document.getElementById('name').value,phone:document.getElementById('phone').value,service:document.getElementById('service').value,location:document.getElementById('location').value,experience:document.getElementById('experience').value,bio:document.getElementById('bio').value,date:new Date().toLocaleDateString()};
-  if(!data.name||!data.phone||!data.service||!data.location) return alert('Fill * fields');
-  let arr=JSON.parse(localStorage.getItem('caregivers')||'[]'); arr.unshift(data); localStorage.setItem('caregivers',JSON.stringify(arr));
-  try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch{}
-  document.getElementById('ok').style.display='block';
-  setTimeout(()=>{location.href='index.html'},2000);
+ const obj={
+  name:document.getElementById('name').value,
+  service:document.getElementById('service').value,
+  phone:document.getElementById('phone').value,
+  location:document.getElementById('location').value,
+  country:document.getElementById('country').value,
+  exp:document.getElementById('exp').value,
+  created:new Date().toISOString()
+ };
+ if(!obj.name||!obj.phone||!obj.location) return alert('Fill name, phone, city');
+ let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');
+ caregivers.unshift(obj);
+ localStorage.setItem('caregivers',JSON.stringify(caregivers));
+ try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}
+ document.getElementById('ok').style.display='block';
+ setTimeout(()=>{window.location.href='index.html'},2000);
 }
 </script>
-</body>
-</html>
+</body></html>
