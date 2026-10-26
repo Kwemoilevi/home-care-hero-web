@@ -1,69 +1,19 @@
 <!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Super Admin - Money</title><script src="https://cdn.tailwindcss.com"></script></head>
-<body class="bg-[#f5f5f7]"><div class="max-w-6xl mx-auto p-4">
-<div id="loginBox" class="max-w-sm mx-auto mt-20 bg-white p-6 rounded-[1.5rem] shadow-xl"><h1 class="font-black text-xl">Admin Login</h1><input id="pass" type="password" placeholder="Password" class="w-full mt-4 p-3 rounded-xl border"><button onclick="login()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-black">ENTER</button></div>
-<div id="mainBox" class="hidden">
-<div class="bg-black text-white p-4 rounded-[1.5rem] flex justify-between"><h1 class="font-black">Home Care Hero - SUPER ADMIN 💰</h1><p class="text-[10px] bg-[#ffcc00] text-black px-2 py-1 rounded-full font-black">MoMoPay: *165*3*XXXXXX#</p></div>
-<div class="grid grid-cols-4 gap-2 mt-4">
-<div class="bg-white p-3 rounded-xl border"><p class="text-[10px]">Total Clients</p><p id="cTotal" class="font-black text-xl">0</p></div>
-<div class="bg-white p-3 rounded-xl border"><p class="text-[10px]">Total Deposits</p><p id="dTotal" class="font-black text-xl text-green-600">0</p></div>
-<div class="bg-white p-3 rounded-xl border"><p class="text-[10px]">Total Payouts</p><p id="pTotal" class="font-black text-xl text-red-600">0</p></div>
-<div class="bg-[#ffcc00] p-3 rounded-xl border-2 border-black"><p class="text-[10px] font-black">YOUR PROFIT</p><p id="profit" class="font-black text-xl">0</p></div>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Admin Dashboard</title></head>
+<body style="margin:0;background:#0f172a;font-family:sans-serif;padding:20px;">
+<div style="max-width:1000px;margin:0 auto;">
+<h1 style="color:white;">👑 Admin Dashboard - Home Care Hero</h1>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px;">
+<div style="background:#1e293b;padding:20px;border-radius:16px;"><p style="color:#94a3b8;font-size:12px;margin:0;">TOTAL REVENUE</p><p style="color:white;font-size:22px;font-weight:bold;margin:0;">UGX 2.4M</p><p style="color:#4ade80;font-size:11px;margin:0;">+12% today</p></div>
+<div style="background:#1e293b;padding:20px;border-radius:16px;"><p style="color:#94a3b8;font-size:12px;margin:0;">YOUR COMMISSION (20%)</p><p style="color:white;font-size:22px;font-weight:bold;margin:0;">UGX 480k</p></div>
+<div style="background:#1e293b;padding:20px;border-radius:16px;"><p style="color:#94a3b8;font-size:12px;margin:0;">CLIENTS</p><p style="color:white;font-size:22px;font-weight:bold;margin:0;">127</p></div>
+<div style="background:#1e293b;padding:20px;border-radius:16px;"><p style="color:#94a3b8;font-size:12px;margin:0;">CAREGIVERS</p><p style="color:white;font-size:22px;font-weight:bold;margin:0;">89</p></div>
 </div>
-<div class="flex gap-2 mt-4 overflow-auto"><button onclick="tab('book')" class="tabBtn bg-black text-white px-4 py-2 rounded-full text-xs font-black">Bookings</button><button onclick="tab('wallet')" class="tabBtn bg-white border px-4 py-2 rounded-full text-xs font-black">Client Wallets</button><button onclick="tab('hero')" class="tabBtn bg-white border px-4 py-2 rounded-full text-xs font-black">Hero Earnings</button><button onclick="tab('care')" class="tabBtn bg-white border px-4 py-2 rounded-full text-xs font-black">Caregivers</button></div>
-<div id="bookSec" class="mt-4"></div>
-<div id="walletSec" class="mt-4 hidden"></div>
-<div id="heroSec" class="mt-4 hidden"></div>
-<div id="careSec" class="mt-4 hidden"></div>
-</div></div>
-<script>
-const PASS='kwaliver92';
-function login(){if(document.getElementById('pass').value==PASS){document.getElementById('loginBox').classList.add('hidden');document.getElementById('mainBox').classList.remove('hidden');loadAll();}else alert('Wrong');}
-function getNum(){return atob('MjU2NzcyMTAxODc1');}
-function loadAll(){
-let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
-let wallets=JSON.parse(localStorage.getItem('hch_wallets')||'{}');
-let assigns=JSON.parse(localStorage.getItem('hch_assigns')||'[]');
-let caregivers=JSON.parse(localStorage.getItem('hch_caregivers')||'[]');
-document.getElementById('cTotal').innerText=Object.keys(wallets).length;
-let dep=Object.values(wallets).reduce((s,w)=>s+(w.dep||0),0);
-let spent=Object.values(wallets).reduce((s,w)=>s+(w.spent||0),0);
-document.getElementById('dTotal').innerText='UGX '+dep.toLocaleString();
-document.getElementById('pTotal').innerText='UGX '+assigns.reduce((s,a)=>s+(a.caregiverPay||0),0).toLocaleString();
-document.getElementById('profit').innerText='UGX '+(dep-assigns.reduce((s,a)=>s+(a.caregiverPay||0),0)).toLocaleString();
-// Bookings
-let bHtml=bookings.map(b=>`<div class="bg-white p-4 rounded-xl border mb-2 flex justify-between"><div><p class="font-black text-sm">${b.id} - ${b.service} - UGX ${b.price.toLocaleString()}</p><p class="text-xs">${b.name} - ${b.phone} - ${b.location}</p><p class="text-[10px] text-gray-500">${b.date}</p></div><div class="flex flex-col gap-1"><button onclick="approveBook('${b.id}')" class="bg-green-500 text-white px-3 py-1 rounded-full text-[10px] font-black">APPROVE</button><a href="https://wa.me/${b.phone.replace(/[^0-9]/g,'')}?text=Hi ${b.name}, pay deposit to confirm" target="_blank" class="bg-black text-white px-3 py-1 rounded-full text-[10px] text-center">WHATSAPP</a></div></div>`).join('')||'No bookings';
-document.getElementById('bookSec').innerHTML=bHtml;
-// Wallets
-let wHtml=Object.entries(wallets).map(([phone,w])=>`<div class="bg-white p-4 rounded-xl border mb-2 flex justify-between"><div><p class="font-black text-sm">${phone}</p><p class="text-xs">Bal: UGX ${w.balance.toLocaleString()} | Dep: ${w.dep.toLocaleString()} | Spent: ${w.spent.toLocaleString()}</p><p class="text-[10px]">${(w.tx||[]).slice(-1)[0]?.type||''}</p></div><button onclick="addBal('${phone}')" class="bg-[#ffcc00] border-2 border-black px-3 py-1 rounded-full text-[10px] font-black h-fit">ADD/ CONFIRM DEPOSIT</button></div>`).join('')||'No wallets yet';
-document.getElementById('walletSec').innerHTML=wHtml;
-// Hero earnings
-let hHtml=assigns.map(a=>`<div class="bg-white p-4 rounded-xl border mb-2 flex justify-between"><div><p class="font-black text-sm">${a.caregiverPhone} - ${a.clientName}</p><p class="text-xs">${a.service} - UGX ${a.caregiverPay}</p></div><button onclick="markPaid('${a.id}')" class="bg-black text-white px-3 py-1 rounded-full text-[10px]">MARK PAID</button></div>`).join('')||'No payouts';
-document.getElementById('heroSec').innerHTML=hHtml;
-// Caregivers
-let cgHtml=caregivers.map(c=>`<div class="bg-white p-4 rounded-xl border mb-2"><p class="font-black text-sm">${c.name} - ${c.phone}</p><p class="text-xs">${c.location} - ${c.service}</p></div>`).join('')||'No apps';
-document.getElementById('careSec').innerHTML=cgHtml;
-}
-function tab(t){
-document.getElementById('bookSec').classList.add('hidden');document.getElementById('walletSec').classList.add('hidden');document.getElementById('heroSec').classList.add('hidden');document.getElementById('careSec').classList.add('hidden');
-if(t=='book')document.getElementById('bookSec').classList.remove('hidden');
-if(t=='wallet')document.getElementById('walletSec').classList.remove('hidden');
-if(t=='hero')document.getElementById('heroSec').classList.remove('hidden');
-if(t=='care')document.getElementById('careSec').classList.remove('hidden');
-}
-function addBal(phone){
-let amt=parseInt(prompt('How much deposit client paid? (20000)')); if(!amt)return;
-let wallets=JSON.parse(localStorage.getItem('hch_wallets')||'{}'); let w=wallets[phone]||{balance:0,dep:0,spent:0,tx:[]};
-w.balance+=amt; w.dep+=amt; w.tx.push({type:'Deposit Confirmed by Admin',amount:amt,date:new Date().toLocaleString()});
-wallets[phone]=w; localStorage.setItem('hch_wallets',JSON.stringify(wallets)); loadAll(); alert('Confirmed! Client wallet updated');
-}
-function approveBook(id){
-let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]'); let b=bookings.find(x=>x.id==id); if(!b)return;
-let heroPhone=prompt('Enter Hero phone to assign for '+b.service+' in '+b.location); if(!heroPhone)return;
-let assigns=JSON.parse(localStorage.getItem('hch_assigns')||'[]'); assigns.push({id:Date.now(),clientName:b.name,clientPhone:b.phone,caregiverPhone:heroPhone,service:b.service,caregiverPay:20000,price:b.price,date:new Date().toLocaleString()});
-localStorage.setItem('hch_assigns',JSON.stringify(assigns));
-// deduct from client wallet
-let wallets=JSON.parse(localStorage.getItem('hch_wallets')||'{}'); let w=wallets[b.phone]||{balance:0,dep:0,spent:0,tx:[]}; w.balance-=b.price; w.spent+=b.price; w.tx.push({type:'Pay Booking '+b.id,amount:-b.price,date:new Date().toLocaleString()}); wallets[b.phone]=w; localStorage.setItem('hch_wallets',JSON.stringify(wallets));
-alert('Assigned! Hero earnings updated + Client deducted'); loadAll();
-}
-</script></body></html>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+<div style="background:#1e293b;border-radius:16px;padding:20px;"><h2 style="color:white;margin:0 0 12px 0;">Recent Transactions</h2><div style="color:#94a3b8;font-size:13px;"><div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #334155;"><span>Client deposit 0772...</span><span style="color:#4ade80;">+UGX 30k</span></div><div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #334155;"><span>Payout to Grace N.</span><span style="color:#f87171;">-UGX 24k</span></div><div style="display:flex;justify-content:space-between;padding:8px 0;"><span>Your commission</span><span style="color:white;font-weight:bold;">+UGX 6k</span></div></div></div>
+<div style="background:#1e293b;border-radius:16px;padding:20px;"><h2 style="color:white;margin:0 0 12px 0;">Quick Actions</h2><button style="width:100%;background:white;color:black;padding:12px;border-radius:12px;border:none;font-weight:bold;margin-bottom:8px;">View All Caregivers (89)</button><button style="width:100%;background:#334155;color:white;padding:12px;border-radius:12px;border:none;font-weight:bold;margin-bottom:8px;">View All Clients (127)</button><button style="width:100%;background:#22c55e;color:white;padding:12px;border-radius:12px;border:none;font-weight:bold;">Withdraw UGX 480k</button></div>
+</div>
+</div>
+</body>
+</html>
