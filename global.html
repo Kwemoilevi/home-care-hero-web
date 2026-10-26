@@ -1,0 +1,87 @@
+<!DOCTYPE html><html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Home Care Hero - Global</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+<body style="margin:0;background:#0f172a;font-family:sans-serif;display:flex;justify-content:center;padding:20px;">
+<div style="width:100%;max-width:480px;color:white;">
+
+<h1 style="margin:0;text-align:center;">🌍 Home Care Hero GLOBAL</h1>
+<p style="text-align:center;color:#86efac;font-size:13px;margin:4px 0 16px 0;">Professional Nurses + LIVE GPS • 4 Countries</p>
+
+<div style="background:#1e293b;border-radius:16px;padding:16px;">
+<label style="font-size:12px;color:#94a3b8;">SELECT COUNTRY</label>
+<select id="country" onchange="changeCountry()" style="width:100%;padding:14px;border-radius:12px;margin-top:6px;font-weight:bold;font-size:14px;">
+<option value="UG">🇺🇬 Uganda - UGX 35k/day - Kampala</option>
+<option value="KE">🇰🇪 Kenya - KES 3,500/day - Nairobi</option>
+<option value="RW">🇷🇼 Rwanda - RWF 30k/day - Kigali</option>
+<option value="TZ">🇹🇿 Tanzania - TZS 70k/day - Dar es Salaam</option>
+</select>
+
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;">
+<div style="background:#14532d;border:1px solid #22c55e;border-radius:12px;padding:12px;text-align:center;">
+<p style="margin:0;font-size:11px;color:#86efac;">PRICE</p>
+<p id="price" style="margin:4px 0 0 0;font-weight:bold;font-size:18px;">UGX 35k</p>
+</div>
+<div style="background:#1e293b;border:1px solid #334155;border-radius:12px;padding:12px;text-align:center;">
+<p style="margin:0;font-size:11px;color:#94a3b8;">NURSES ONLINE</p>
+<p id="nurses" style="margin:4px 0 0 0;font-weight:bold;font-size:18px;color:#4ade80;">12 LIVE</p>
+</div>
+</div>
+
+<div id="map" style="height:240px;width:100%;border-radius:12px;margin-top:16px;"></div>
+
+<div style="margin-top:16px;">
+<p id="cityList" style="font-size:12px;color:#94a3b8;margin:0 0 8px 0;">📍 Cities: Ntinda, Kololo, Bugolobi, Muyenga</p>
+<a id="bookBtn" href="clients.html" style="display:block;background:#22c55e;color:white;padding:14px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;">BOOK NURSE IN UGANDA - 35k + GPS LIVE</a>
+</div>
+</div>
+
+<div style="background:#1e293b;border-radius:16px;padding:16px;margin-top:16px;">
+<h3 style="margin:0 0 10px 0;font-size:14px;">💰 Global CEO Earnings (Your 20%)</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
+<div style="background:#0f172a;border-radius:10px;padding:10px;text-align:center;"><p style="margin:0;font-size:10px;color:#94a3b8;">🇺🇬 UG</p><p style="margin:4px 0 0 0;font-weight:bold;font-size:12px;">UGX 2.1M</p></div>
+<div style="background:#0f172a;border-radius:10px;padding:10px;text-align:center;"><p style="margin:0;font-size:10px;color:#94a3b8;">🇰🇪 KE</p><p style="margin:4px 0 0 0;font-weight:bold;font-size:12px;">KES 210k</p></div>
+<div style="background:#0f172a;border-radius:10px;padding:10px;text-align:center;"><p style="margin:0;font-size:10px;color:#94a3b8;">🌍 TOTAL</p><p style="margin:4px 0 0 0;font-weight:bold;font-size:12px;color:#4ade80;">$1,200/mo</p></div>
+</div>
+</div>
+
+<div style="display:flex;gap:10px;margin-top:16px;padding-bottom:30px;">
+<a href="index.html" style="flex:1;background:white;color:black;padding:12px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:13px;">🏠 Home</a>
+<a href="admin.html" style="flex:1;background:#22c55e;color:white;padding:12px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:13px;">👑 CEO Admin</a>
+<a href="admin-live-map.html" style="flex:1;background:#334155;color:white;padding:12px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:13px;">📍 Live Map</a>
+</div>
+
+</div>
+<script>
+var map = L.map('map').setView([0.3476, 32.5825], 11);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+var markers = [];
+
+var data = {
+  UG:{lat:0.3476,lng:32.5825,zoom:12,price:'UGX 35k',nurses:'12 LIVE',cities:'Ntinda, Kololo, Bugolobi, Muyenga',btn:'BOOK NURSE IN UGANDA - 35k + GPS LIVE',book:'clients.html',coords:[[0.3476,32.5825],[0.3347,32.5882],[0.3160,32.6200]]},
+  KE:{lat:-1.2921,lng:36.8219,zoom:12,price:'KES 3,500',nurses:'8 LIVE',cities:'Westlands, Karen, Kilimani, Parklands',btn:'BOOK NURSE IN KENYA - KES 3,500 + GPS LIVE',book:'clients.html',coords:[[-1.2921,36.8219],[-1.2673,36.8063],[-1.3032,36.8473]]},
+  RW:{lat:-1.9441,lng:30.0619,zoom:12,price:'RWF 30k',nurses:'5 LIVE',cities:'Kiyovu, Kimihurura, Nyarutarama, Kacyiru',btn:'BOOK NURSE IN RWANDA - 30k + GPS LIVE',book:'clients.html',coords:[[-1.9441,30.0619],[-1.9355,30.0806],[-1.9598,30.1000]]},
+  TZ:{lat:-6.7924,lng:39.2083,zoom:12,price:'TZS 70k',nurses:'6 LIVE',cities:'Oyster Bay, Masaki, Mikocheni, Upanga',btn:'BOOK NURSE IN TANZANIA - 70k + GPS LIVE',book:'clients.html',coords:[[-6.7924,39.2083],[-6.7700,39.2300],[-6.8100,39.2500]]}
+};
+
+function changeCountry(){
+  var c=document.getElementById('country').value;
+  var d=data[c];
+  document.getElementById('price').textContent=d.price;
+  document.getElementById('nurses').textContent=d.nurses;
+  document.getElementById('cityList').textContent='📍 Cities: '+d.cities;
+  document.getElementById('bookBtn').textContent=d.btn;
+  document.getElementById('bookBtn').href=d.book+'?country='+c;
+  map.setView([d.lat,d.lng], d.zoom);
+  markers.forEach(m=>map.removeLayer(m));
+  markers=[];
+  d.coords.forEach(co=>{
+    var m=L.marker(co).addTo(map).bindPopup('👩‍⚕️ Nurse LIVE<br>'+d.price+'/day<br>📍 GPS ON');
+    markers.push(m);
+  });
+}
+changeCountry();
+</script>
+</body></html>
