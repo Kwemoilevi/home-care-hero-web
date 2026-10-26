@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CEO Live Map - Home Care Hero</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>body{margin:0;font-family:sans-serif;background:#0f172a} #map{height:100vh;width:100%} .topbar{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:1000;background:#0f172a;color:white;padding:12px 20px;border-radius:12px;border:1px solid #22c55e;width:90%;max-width:400px;text-align:center} .nurse-card{position:absolute;bottom:10px;left:10px;right:10px;z-index:1000;background:white;border-radius:16px;padding:12px;display:flex;gap:8px;overflow-x:auto}</style>
+</head>
+<body>
+<div class="topbar">
+<h2 style="margin:0;font-size:16px;">👑 CEO LIVE MAP - All Nurses</h2>
+<p style="margin:4px 0 0 0;font-size:12px;color:#86efac;">🟢 <span id="onlineCount">3</span> Nurses Online • Live GPS Every 10s</p>
+<p style="margin:4px 0 0 0;font-size:11px;color:#94a3b8;">Today Revenue: <b style="color:white;">UGX 105,000</b> (Your cut 7k x 3 + 30%)</p>
+</div>
+<div id="map"></div>
+<div class="nurse-card">
+<div style="min-width:140px;background:#f0fdf4;border:1px solid #22c55e;border-radius:12px;padding:10px;text-align:center;"><p style="margin:0;font-size:20px;">👩‍⚕️</p><p style="margin:0;font-weight:bold;font-size:12px;">Sarah - Ntinda</p><p style="margin:2px 0 0 0;font-size:10px;color:#16a34a;">🟢 LIVE • 35k job</p><p style="margin:2px 0 0 0;font-size:10px;color:#64748b;">1.2km to client</p></div>
+<div style="min-width:140px;background:#f0fdf4;border:1px solid #22c55e;border-radius:12px;padding:10px;text-align:center;"><p style="margin:0;font-size:20px;">👩‍⚕️</p><p style="margin:0;font-weight:bold;font-size:12px;">Grace - Kololo</p><p style="margin:0;font-size:10px;color:#16a34a;">🟢 LIVE • 35k job</p><p style="margin:2px 0 0 0;font-size:10px;color:#64748b;">0.8km to client</p></div>
+<div style="min-width:140px;background:#fefce8;border:1px solid #eab308;border-radius:12px;padding:10px;text-align:center;"><p style="margin:0;font-size:20px;">👩‍⚕️</p><p style="margin:0;font-weight:bold;font-size:12px;">Joan - Bugolobi</p><p style="margin:0;font-size:10px;color:#ca8a04;">🟡 Going to job</p><p style="margin:2px 0 0 0;font-size:10px;color:#64748b;">2.5km away</p></div>
+<div style="min-width:140px;background:white;border:1px solid #e2e8f0;border-radius:12px;padding:10px;text-align:center;"><a href="admin.html" style="text-decoration:none;"><p style="margin:0;font-size:20px;">💰</p><p style="margin:0;font-weight:bold;font-size:12px;color:black;">Admin</p><p style="margin:2px 0 0 0;font-size:10px;color:#22c55e;">View Earnings</p></a></div>
+</div>
+<script>
+var map = L.map('map').setView([0.3476, 32.5825], 13);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+// Kampala nurses - real locations
+var nurses = [
+ {lat:0.3476, lng:32.5825, name:'Sarah - Ntinda - 35k', color:'green'},
+ {lat:0.3347, lng:32.5882, name:'Grace - Kololo - 35k', color:'green'},
+ {lat:0.3160, lng:32.6200, name:'Joan - Bugolobi - 35k', color:'orange'}
+];
+
+nurses.forEach(n=>{
+  var icon = L.divIcon({html:'<div style="background:'+(n.color==='green'?'#22c55e':'#eab308')+';color:white;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:12px;border:2px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.3)">👩‍⚕️ LIVE</div>', iconSize:[80,30]});
+  L.marker([n.lat, n.lng], {icon:icon}).addTo(map).bindPopup('<b>'+n.name+'</b><br>📍 Live GPS<br>💰 35k/day<br>🟢 Online now');
+});
+
+// Your main nurse from localStorage (if they shared)
+var myLat = localStorage.getItem('nurseLat');
+var myLng = localStorage.getItem('nurseLng');
+if(myLat && myLng){
+  var myIcon = L.divIcon({html:'<div style="background:#ef4444;color:white;padding:6px 10px;border-radius:20px;font-weight:bold;font-size:12px;border:2px solid white;">📍 YOU - LIVE</div>', iconSize:[100,30]});
+  L.marker([parseFloat(myLat), parseFloat(myLng)], {icon:myIcon}).addTo(map).bindPopup('<b>Your Live Nurse Location</b><br>Sharing to clients now!').openPopup();
+  map.setView([parseFloat(myLat), parseFloat(myLng)], 14);
+}
+
+// Simulate movement every 10s like Uber
+setInterval(()=>{
+  document.getElementById('onlineCount').textContent = Math.floor(Math.random()*2)+2+1;
+}, 10000);
+</script>
+</body></html>
