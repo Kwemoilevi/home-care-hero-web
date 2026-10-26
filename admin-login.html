@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head><title>CEO Secret Login | Home Care Hero</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{font-family:sans-serif;background:#0f172a;color:white;display:flex;justify-content:center;align-items:center;height:100vh;margin:0}
+.box{background:#1e293b;padding:30px;border-radius:20px;width:90%;max-width:400px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+input{width:100%;padding:12px;margin:10px 0;border-radius:10px;border:none}
+button{width:100%;padding:12px;background:#22c55e;color:white;border:none;border-radius:10px;font-weight:bold;cursor:pointer}
+.small{font-size:12px;color:#94a3b8;margin-top:15px}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>👨‍💼 CEO SECRET ACCESS</h2>
+<p>Home Care Hero Command Center</p>
+<input id="u" placeholder="CEO Username (CEO)">
+<input id="p" type="password" placeholder="CEO Password">
+<button onclick="login()">ENTER COMMAND CENTER 🔐</button>
+<p class="small">This page is NOT public. Only CEO knows link.<br>home-care-hero-web.vercel.app/admin-login.html</p>
+<p id="msg" style="color:#f87171"></p>
+</div>
+<script>
+function login(){
+ let user=document.getElementById('u').value.trim();
+ let pass=document.getElementById('p').value.trim();
+ if((user==='CEO' || user==='admin' || user==='ceo') && pass.length>=3){
+  localStorage.setItem('hch_role','CEO');
+  localStorage.setItem('hch_user',user);
+  localStorage.setItem('hch_name','Chairman CEO');
+  location.href='admin.html';
+ }else{
+  document.getElementById('msg').innerText='❌ Wrong CEO credentials! Use CEO / 1234';
+ }
+}
+</script>
+</body>
+</html>
