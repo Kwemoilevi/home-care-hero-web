@@ -1,0 +1,50 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Login - Home Care Hero</title></head>
+<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:12px;">
+<div style="width:100%;max-width:380px;margin-top:20px;">
+<div style="background:#0f172a;color:white;border-radius:24px;padding:20px;text-align:center;border:1px solid #22c55e;">
+<p style="margin:0;color:#86efac;font-size:11px;letter-spacing:2px;font-weight:bold;">💚 WELCOME BACK, FAMILY</p>
+<h2 style="margin:10px 0 0 0;font-size:22px;font-weight:900;">Karibu Tena<br><span style="color:#4ade80;">Login</span></h2>
+<p style="margin:8px 0 0 0;color:#94a3b8;font-size:12px;">Secure access to your care</p>
+</div>
+<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:12px;">
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:16px;">
+<button onclick="setRole('client')" id="b-client" style="background:#22c55e;color:white;padding:10px;border-radius:10px;border:none;font-weight:bold;font-size:11px;">👨‍👩‍👧 Client</button>
+<button onclick="setRole('nurse')" id="b-nurse" style="background:white;border:1px solid #e2e8f0;padding:10px;border-radius:10px;font-weight:bold;font-size:11px;">👩‍⚕️ Nurse</button>
+<button onclick="setRole('ceo')" id="b-ceo" style="background:white;border:1px solid #e2e8f0;padding:10px;border-radius:10px;font-weight:bold;font-size:11px;">👨‍💼 CEO</button>
+</div>
+<p id="roleTxt" style="margin:0 0 12px 0;font-size:12px;color:#64748b;text-align:center;">Logging in as <b>Client</b> — Book care with love</p>
+<label style="font-size:11px;font-weight:bold;color:#334155;">Phone / Email</label>
+<input id="user" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:6px;box-sizing:border-box;" placeholder="07XXXXXXXX or email">
+<label style="font-size:11px;font-weight:bold;color:#334155;display:block;margin-top:12px;">Password / MoMo PIN</label>
+<input id="pass" type="password" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:6px;box-sizing:border-box;" placeholder="Enter password">
+<button onclick="login()" style="width:100%;background:#22c55e;color:white;padding:14px;border-radius:12px;border:none;font-weight:900;font-size:14px;margin-top:16px;">🤗 LOGIN SECURELY</button>
+<p style="text-align:center;color:#64748b;font-size:11px;margin-top:12px;"><span onclick="showSignup()" style="color:#22c55e;font-weight:bold;cursor:pointer;">No account? Create one →</span></p>
+<div id="msg" style="margin-top:12px;font-size:12px;text-align:center;"></div>
+</div>
+<div id="signupBox" style="display:none;background:#fffbeb;border:1px solid #f59e0b;border-radius:16px;padding:16px;margin-top:12px;">
+<h4 style="margin:0;font-size:13px;">👋 Create Account - You're Family Now</h4>
+<input id="s-name" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e2e8f0;margin-top:10px;box-sizing:border-box;" placeholder="Full Name">
+<input id="s-phone" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e2e8f0;margin-top:8px;box-sizing:border-box;" placeholder="Phone 07XXXXXXXX">
+<input id="s-pass" type="password" style="width:100%;padding:10px;border-radius:10px;border:1px solid #e2e8f0;margin-top:8px;box-sizing:border-box;" placeholder="Create Password">
+<button onclick="signup()" style="width:100%;background:#0f172a;color:white;padding:12px;border-radius:10px;border:none;font-weight:bold;margin-top:10px;">Create Account 💚</button>
+</div>
+<div style="text-align:center;margin-top:12px;"><a href="index.html" style="color:#64748b;font-size:11px;text-decoration:none;">← Back to Welcome Home</a></div>
+</div>
+<script>
+let role='client';
+function setRole(r){role=r;['client','nurse','ceo'].forEach(x=>{document.getElementById('b-'+x).style.background=x==r?'#22c55e':'white';document.getElementById('b-'+x).style.color=x==r?'white':'black';document.getElementById('b-'+x).style.border=x==r?'none':'1px solid #e2e8f0'});let txt={client:'Client — Book care with love',nurse:'Nurse — Serve with heart',ceo:'CEO — Global Command'};document.getElementById('roleTxt').innerHTML='Logging in as <b>'+txt[r]+'</b>';}
+function login(){
+let u=document.getElementById('user').value.trim();let p=document.getElementById('pass').value.trim();let m=document.getElementById('msg');
+if(!u||!p){m.innerHTML='<span style="color:red;">Fill phone and password</span>';return;}
+if(role=='ceo'){if(u=='CEO'||u=='ceo'||u=='admin'){localStorage.setItem('hch_role','ceo');localStorage.setItem('hch_user',u);m.innerHTML='<span style="color:green;">Welcome CEO! Redirecting...</span>';setTimeout(()=>location.href='admin.html',800);return;}else{m.innerHTML='<span style="color:red;">CEO login: use CEO / ceo</span>';return;}}
+let users=JSON.parse(localStorage.getItem('hch_users')||'[]');let found=users.find(x=>x.phone==u&&x.pass==p&&x.role==role);
+if(found){localStorage.setItem('hch_role',role);localStorage.setItem('hch_user',JSON.stringify(found));m.innerHTML='<span style="color:green;">Karibu '+found.name+'! Redirecting...</span>';setTimeout(()=>{if(role=='client')location.href='clients.html';else if(role=='nurse')location.href='caregivers.html';else location.href='admin.html';},800);}else{m.innerHTML='<span style="color:red;">No account found. Create one below.</span>';document.getElementById('signupBox').style.display='block';}
+}
+function showSignup(){document.getElementById('signupBox').style.display='block';}
+function signup(){
+let n=document.getElementById('s-name').value.trim();let ph=document.getElementById('s-phone').value.trim();let ps=document.getElementById('s-pass').value.trim();let m=document.getElementById('msg');
+if(!n||!ph||!ps){m.innerHTML='<span style="color:red;">Fill all fields</span>';return;}
+let users=JSON.parse(localStorage.getItem('hch_users')||'[]');users.push({name:n,phone:ph,pass:ps,role:role,created:new Date().toISOString()});localStorage.setItem('hch_users',JSON.stringify(users));localStorage.setItem('hch_role',role);localStorage.setItem('hch_user',JSON.stringify({name:n,phone:ph}));m.innerHTML='<span style="color:green;">Welcome family '+n+'! Account created.</span>';setTimeout(()=>{if(role=='client')location.href='clients.html';else location.href='caregivers.html';},1000);
+}
+</script>
+</body></html>
