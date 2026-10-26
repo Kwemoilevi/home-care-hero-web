@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caregiver Verification | Home Care Hero</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;background:#f0fdf4;margin:0;padding:15px}
+.card{background:white;max-width:700px;margin:0 auto;border-radius:20px;padding:25px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+h2{color:#16a34a;text-align:center;margin:0 0 5px}
+.sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:20px}
+.section{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;padding:15px;margin:12px 0}
+.section h3{margin:0 0 10px;font-size:15px;color:#0f172a}
+input,select,textarea{width:100%;padding:11px;margin:6px 0;border-radius:10px;border:1px solid #e2e8f0;box-sizing:border-box}
+label{font-size:13px;font-weight:600;color:#334155;display:block;margin-top:8px}
+.file{border:2px dashed #16a34a;background:#f0fdf4}
+.btn{width:100%;padding:14px;background:#16a34a;color:white;border:none;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:15px}
+.btn:disabled{background:#94a3b8}
+.req{color:#ef4444}
+.small{font-size:11px;color:#94a3b8}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="card">
+<h2>👩‍⚕️ Caregiver Verification</h2>
+<p class="sub">Trusted • Licensed • Kind - Complete to get clients (35k/day)<br>All documents checked by CEO in admin.html</p>
+
+<form id="verForm">
+<!-- 1. PERSONAL -->
+<div class="section">
+<h3>1️⃣ Personal Info <span class="req">*</span></h3>
+<div class="grid">
+<div><label>Full Name as on ID</label><input id="fullName" required></div>
+<div><label>Phone (MTN/Airtel)</label><input id="phone" required placeholder="0772..."></div>
+</div>
+<div class="grid">
+<div><label>District / Village</label><input id="village" required placeholder="e.g. Kawempe, Kampala"></div>
+<div><label>Date of Birth</label><input type="date" id="dob" required></div>
+</div>
+<label>National ID Number (NIN) <span class="req">*</span></label>
+<input id="nin" required placeholder="CM12345678...">
+</div>
+
+<!-- 2. LC1 -->
+<div class="section">
+<h3>2️⃣ LC1 Verification Letter <span class="req">*</span> - MOST IMPORTANT</h3>
+<label>LC1 Chairperson Name</label><input id="lc1Name" required placeholder="e.g. Chairman John Mukasa">
+<label>LC1 Phone Number</label><input id="lc1Phone" required placeholder="LC1 contact for verification">
+<label>Upload LC1 Letter Photo / PDF (signed & stamped) <span class="req">*</span></label>
+<input type="file" id="lc1File" class="file" accept="image/*,.pdf" required>
+<p class="small">Letter must say: "This person is known to us, good character, lives in our area" - with LC1 stamp</p>
+<label>Upload National ID Front & Back <span class="req">*</span></label>
+<input type="file" id="idFile" class="file" accept="image/*,.pdf" required multiple>
+</div>
+
+<!-- 3. QUALIFICATIONS -->
+<div class="section">
+<h3>3️⃣ Nursing / Care Qualifications <span class="req">*</span></h3>
+<label>Highest Qualification</label>
+<select id="qual" required>
+<option value="">Select...</option>
+<option>Certificate in Nursing / Midwifery</option>
+<option>Diploma in Nursing</option>
+<option>Degree in Nursing (BSN)</option>
+<option>Caregiver Certificate (Home Care)</option>
+<option>First Aid Certificate</option>
+<option>Other Health Certificate</option>
+</select>
+<label>School / Institution Name</label><input id="school" required placeholder="e.g. Mulago School of Nursing">
+<label>Year Completed</label><input type="number" id="year" placeholder="2020" required>
+<label>Upload Certificates (Nursing, First Aid, etc) <span class="req">*</span></label>
+<input type="file" id="certFile" class="file" accept="image/*,.pdf" required multiple>
+<label>Years of Experience</label>
+<select id="exp" required><option>0-1 years</option><option>1-3 years</option><option>3-5 years</option><option>5+ years</option></select>
+<textarea id="expDetail" placeholder="Where did you work before? e.g. Worked at Nsambya Hospital 2 years, home care in Ntinda..." rows="3"></textarea>
+</div>
+
+<!-- 4. EXTRA TRUST -->
+<div class="section">
+<h3>4️⃣ Extra Trust Documents (Boost clients x3)</h3>
+<label>Police Clearance / Good Conduct (If you have)</label>
+<input type="file" id="policeFile" class="file" accept="image/*,.pdf">
+<label>2 References (Name & Phone)</label>
+<textarea id="refs" placeholder="1. Dr. Jane - 0772... - Mulago Hospital&#10;2. Mama Sarah - 0701... - Client from Makindye" rows="3"></textarea>
+<label>Do you have smartphone with GPS?</label>
+<select id="gps"><option>Yes - I can share LIVE location</option><option>No - but I can use client phone</option></select>
+<label><input type="checkbox" id="agree" required> I confirm all info is true. I agree LC1 & documents will be verified by Home Care Hero CEO before I get clients. <span class="req">*</span></label>
+</div>
+
+<button class="btn" type="submit">Submit for Verification ✅</button>
+<p id="msg" style="text-align:center;font-size:13px;margin-top:10px"></p>
+</form>
+
+<div class="small" style="text-align:center;margin-top:15px">After submit, CEO will verify in admin.html → Status changes to VERIFIED ✅ → You start getting clients!<br>Need help? WhatsApp CEO: 07XX...</div>
+</div>
+
+<script>
+document.getElementById('verForm').addEventListener('submit', function(e){
+ e.preventDefault();
+ let data={
+  fullName:document.getElementById('fullName').value,
+  phone:document.getElementById('phone').value,
+  village:document.getElementById('village').value,
+  nin:document.getElementById('nin').value,
+  lc1Name:document.getElementById('lc1Name').value,
+  lc1Phone:document.getElementById('lc1Phone').value,
+  qual:document.getElementById('qual').value,
+  school:document.getElementById('school').value,
+  year:document.getElementById('year').value,
+  exp:document.getElementById('exp').value,
+  expDetail:document.getElementById('expDetail').value,
+  refs:document.getElementById('refs').value,
+  status:'PENDING_VERIFICATION',
+  submitted: new Date().toISOString(),
+  user: localStorage.getItem('hch_user') || 'nurse'
+ };
+ let all=JSON.parse(localStorage.getItem('hch_verifications')||'[]');
+ all.push(data);
+ localStorage.setItem('hch_verifications', JSON.stringify(all));
+ document.getElementById('msg').innerText='✅ Submitted! CEO will verify your LC1 & certificates within 24h. You will get SMS.';
+ document.getElementById('msg').style.color='#16a34a';
+ setTimeout(()=>{ location.href='caregivers.html'; }, 2000);
+});
+</script>
+</body>
+</html>
