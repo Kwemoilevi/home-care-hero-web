@@ -1,1 +1,19 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dashboard</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#f1f5f9;padding:12px}.top{display:flex;justify-content:space-between;align-items:center;background:#1e293b;color:#fff;padding:12px;border-radius:12px}.card{background:#fff;padding:14px;border-radius:12px;margin:8px 0;box-shadow:0 1px 3px rgba(0,0,0,.1)}.btn{padding:8px 12px;border:none;border-radius:8px;font-weight:700;cursor:pointer}</style></head><body><div class="top"><b>📊 Admin Dashboard</b><div><a href="index.html" style="color:#fff;background:#2563eb;padding:7px 10px;border-radius:8px;text-decoration:none">🏠 Home</a> <a href="tracker.html" style="color:#fff;background:#22c55e;padding:7px 10px;border-radius:8px;text-decoration:none">📍 Track</a></div></div><div id="list"></div><script>let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');function render(){let h='';if(caregivers.length==0)h='<div class=card>No caregivers yet. <a href=register.html>Register one</a></div>';caregivers.forEach((c,i)=>{h+=`<div class=card><b>${c.name}</b> - ${c.service||'Care'} (${c.country||''})<br>📞 ${c.phone||''} | ${c.location||''}<br><div style=margin-top:8px;display:flex;gap:6px><button class=btn style=background:#22c55e;color:#fff onclick="book(${i})">Book</button><button class=btn style=background:#ef4444;color:#fff onclick="del(${i})">Delete</button></div></div>`});if(bookings.length>0){h+='<div class=card><b>📅 Bookings:</b><br>'+bookings.map(b=>`${b.name} booked on ${b.date}`).join('<br>')+'</div>'}document.getElementById('list').innerHTML=h}function book(i){let c=caregivers[i];let b={name:c.name,date:new Date().toLocaleDateString()};bookings.unshift(b);localStorage.setItem('bookings',JSON.stringify(bookings));render()}function del(i){if(confirm('Delete?')){caregivers.splice(i,1);localStorage.setItem('caregivers',JSON.stringify(caregivers));render()}}render();</script></body></html>
+<!-- BETPAWA STYLE CREDIT CHECK -->
+<div style="background:#1e293b;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #22c55e">
+<div><small style="color:#94a3b8">💰 WALLET BALANCE</small><br><b id="balance" style="font-size:20px">UGX 0</b> <span id="eye" onclick="toggleBal()" style="cursor:pointer;margin-left:8px">👁️</span></div>
+<div><button onclick="addCredit()" style="background:#22c55e;color:#000;border:none;padding:8px 14px;border-radius:20px;font-weight:800">+ Deposit</button></div>
+</div>
+<div style="background:#0f172a;padding:8px 16px;display:flex;gap:8px;overflow-x:auto">
+<button style="background:#334155;color:#fff;border:none;padding:6px 12px;border-radius:20px;font-size:12px">📊 Today: UGX 0</button>
+<button style="background:#334155;color:#fff;border:none;padding:6px 12px;border-radius:20px;font-size:12px">💸 Earned: UGX 0</button>
+<button style="background:#ef4444;color:#fff;border:none;padding:6px 12px;border-radius:20px;font-size:12px">🏧 Withdraw</button>
+</div>
+<script>
+let bal=parseInt(localStorage.getItem('walletBal')||'25000');
+let hidden=false;
+function showBal(){document.getElementById('balance').textContent=hidden?'UGX •••••':'UGX '+bal.toLocaleString();}
+function toggleBal(){hidden=!hidden;document.getElementById('eye').textContent=hidden?'🙈':'👁️';showBal();}
+function addCredit(){let a=prompt('Enter amount to add (UGX):','5000');if(a){bal+=parseInt(a);localStorage.setItem('walletBal',bal);showBal();alert('✅ Added! New Balance: UGX '+bal.toLocaleString());}}
+showBal();
+</script>
+<!-- END CREDIT CHECK -->
