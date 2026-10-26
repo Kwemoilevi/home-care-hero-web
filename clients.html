@@ -1,8 +1,34 @@
-<select style="width:100%;padding:14px;border-radius:12px;margin-bottom:10px;font-weight:bold;">
-<option>🏥 Professional Nursing Care - 35k/day</option>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Client</title></head>
+<body style="margin:0;background:#0f172a;font-family:sans-serif;display:flex;justify-content:center;padding:20px;">
+<div style="width:100%;max-width:420px;">
+<h1 style="color:white;">👨‍👩‍👧 Client Dashboard</h1>
+<p style="color:#94a3b8;font-size:13px;">Book trusted nurses - 35k/day</p>
+
+<div style="background:#1e293b;border-radius:20px;padding:20px;margin-top:16px;">
+<h2 style="color:white;margin:0 0 12px 0;font-size:16px;">Book a Nurse</h2>
+<select style="width:100%;padding:12px;border-radius:12px;margin-bottom:10px;">
+<option>🏥 Professional Nursing - 35k/day</option>
 <option>💉 Post-Surgery Nursing - 35k/day</option>
-<option>👵 Elderly Nursing Care - 30k/day</option>
-<option>🤱 Mother & Baby Nursing - 35k/day</option>
-<option>♿ Disability Care - 30k/day</option>
-<option>👶 Child Care - 25k/day</option>
+<option>🤱 Mother & Baby - 35k/day</option>
+<option>👵 Elderly Nursing - 30k/day</option>
 </select>
+<input placeholder="Location e.g. Ntinda" style="width:100%;padding:12px;border-radius:12px;margin-bottom:12px;box-sizing:border-box;">
+<button onclick="showTrack()" style="width:100%;background:#22c55e;color:white;font-weight:bold;padding:12px;border-radius:12px;border:none;">FIND NURSE 35k + GPS TRACK</button>
+
+<div id="trackBox" style="display:none;background:white;border-radius:12px;padding:12px;margin-top:16px;">
+<p style="font-weight:bold;margin:0 0 8px 0;font-size:14px;color:black;">📍 LIVE TRACKING - Your Nurse</p>
+<iframe id="mapFrame" width="100%" height="200" style="border:0;border-radius:8px;" src="https://www.openstreetmap.org/export/embed.html?bbox=32.5725%2C0.3376%2C32.5925%2C0.3576&layer=mapnik&marker=0.3476%2C32.5825"></iframe>
+<p id="eta" style="font-size:12px;color:#16a34a;font-weight:bold;margin:8px 0 0 0;">🟢 Nurse Sarah - 1.2km away - Live</p>
+</div>
+</div>
+</div>
+<script>
+function showTrack(){
+  document.getElementById('trackBox').style.display='block';
+  var lat=localStorage.getItem('nurseLat')||'0.3476';
+  var lng=localStorage.getItem('nurseLng')||'32.5825';
+  var f=document.getElementById('mapFrame');
+  f.src='https://www.openstreetmap.org/export/embed.html?bbox='+(parseFloat(lng)-0.01)+'%2C'+(parseFloat(lat)-0.01)+'%2C'+(parseFloat(lng)+0.01)+'%2C'+(parseFloat(lat)+0.01)+'&layer=mapnik&marker='+lat+'%2C'+lng;
+}
+</script>
+</body></html>
