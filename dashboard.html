@@ -1,42 +1,179 @@
-<!DOCTYPE html><html><head><title>Home Care Hero - All System</title><meta name="viewport" content="width=device-width,initial-scale=1">
-<style>body{font-family:sans-serif;padding:15px;background:#f5f5f5} .card{background:#fff;padding:15px;border-radius:10px;margin:10px 0;box-shadow:0 2px 5px #0001} .btn{padding:10px 15px;border-radius:8px;border:none;margin:5px;color:#fff;text-decoration:none;display:inline-block;cursor:pointer} .black{background:#222} .verify{background:#0a7} .blue{background:#07f} h1,h2{color:#222} input{padding:12px;width:90%;border-radius:8px;border:1px solid #ccc;margin:5px 0}</style>
-</head><body>
-<div id="loginCard" class="card"><h2>🔒 Admin - Home Care Hero</h2><p>Access All System At Once - Password: 0772101875</p><input id="pwd" type="password" placeholder="Enter password"><br><button onclick="login()" class="btn black">Login</button><p style="color:red;font-size:12px">If wrong password, use: 0772101875 (no spaces)</p></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Care Hero - Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#f5f7fb;min-height:100vh}
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:#0f172a}
+.loginBox{background:white;padding:32px;border-radius:16px;width:90%;max-width:380px;box-shadow:0 20px 40px rgba(0,0,0,0.2)}
+.loginBox h2{margin-bottom:16px;color:#0f172a;text-align:center}
+.loginBox input{width:100%;padding:14px;border:2px solid #e2e8f0;border-radius:10px;margin:12px 0;font-size:16px}
+.loginBox button{width:100%;padding:14px;background:#2563eb;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer}
+.loginBox button:active{transform:scale(0.98)}
+#dashboardPage{display:none}
+.header{background:#0f172a;color:white;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.status{padding:6px 12px;border-radius:20px;font-size:12px;font-weight:bold}
+.online{background:#22c55e;color:white}
+.offline{background:#ef4444;color:white}
+.sleeping{background:#f59e0b;color:white}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;padding:16px}
+.card{background:white;padding:18px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+.card h3{font-size:28px;color:#2563eb}
+.card p{color:#64748b;font-size:13px;margin-top:4px}
+.section{padding:0 16px 16px}
+.sectionBox{background:white;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:16px}
+.sectionBox h2{font-size:16px;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center}
+.btn{padding:10px 16px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+.btn2{background:#e2e8f0;color:#0f172a}
+.item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;gap:10px}
+.item small{color:#64748b}
+</style>
+</head>
+<body>
 
-<div id="dash" style="display:none">
-<h1>📊 Dashboard - All System</h1>
-<button onclick="load()" class="btn black">🔄 Refresh</button> <button onclick="logout()" class="btn black">Logout</button>
-<p id="status" style="font-size:13px;color:#555">Ready - API: home-care-hero-api-v2.onrender.com</p>
-
-<h2>🔗 Quick Access - All System At Once</h2>
-<div class="card">
-<a href="/" class="btn black">🏠 Home</a>
-<a href="/register.html" class="btn verify">📝 Register Caregiver</a>
-<a href="/index.html" class="btn verify">💰 Booking Page</a>
-<a href="https://home-care-hero-api-v2.onrender.com/" target="_blank" class="btn blue">🔌 API Status</a>
+<!-- LOGIN -->
+<div id="loginPage">
+  <div class="loginBox">
+    <h2>🏥 Home Care Hero</h2>
+    <p style="text-align:center;color:#64748b;font-size:14px;margin-bottom:8px">Enter Dashboard Password</p>
+    <input type="password" id="pass" placeholder="Password" value="0772101875">
+    <button onclick="doLogin()">Login</button>
+    <p id="loginMsg" style="text-align:center;color:#ef4444;margin-top:10px;font-size:13px"></p>
+    <p style="text-align:center;color:#94a3b8;font-size:11px;margin-top:14px">API: home-care-hero-api.onrender.com</p>
+  </div>
 </div>
 
-<h2>👩‍⚕️ Caregivers (<span id="cCount">0</span>) - Local + API</h2>
-<div id="caregivers">Loading... Wait 60s if API sleeping...</div>
+<!-- DASHBOARD -->
+<div id="dashboardPage">
+  <div class="header">
+    <div><b>🏥 Home Care Hero Dashboard</b><br><span style="font-size:12px;opacity:0.7">ALL SYSTEM AT ONCE</span></div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span id="apiStatus" class="status sleeping">API: Checking...</span>
+      <button class="btn btn2" onclick="location.reload()">Logout</button>
+    </div>
+  </div>
 
-<h2>📦 Bookings - Local Storage</h2>
-<div id="bookings"></div>
+  <div class="stats">
+    <div class="card"><h3 id="totalCaregivers">0</h3><p>Total Caregivers</p></div>
+    <div class="card"><h3 id="totalBookings">0</h3><p>Total Bookings</p></div>
+    <div class="card"><h3 id="totalClients">0</h3><p>Clients / Local</p></div>
+    <div class="card"><h3 id="apiText">LOCAL</h3><p>Mode</p></div>
+  </div>
+
+  <div class="section">
+    <div class="sectionBox">
+      <h2>⚙️ System Control <button class="btn" onclick="refreshAll()">🔄 Refresh</button></h2>
+      <p style="font-size:13px;color:#475569">API: <code id="apiUrlText"></code></p>
+      <p style="font-size:12px;color:#64748b;margin-top:6px">If API sleeps (Render Free), dashboard works from Local Storage automatically.</p>
+    </div>
+
+    <div class="sectionBox">
+      <h2>👩‍⚕️ Caregivers</h2>
+      <div id="caregiverList"><p style="color:#94a3b8">Loading...</p></div>
+    </div>
+
+    <div class="sectionBox">
+      <h2>📅 Bookings</h2>
+      <div id="bookingList"><p style="color:#94a3b8">Loading...</p></div>
+    </div>
+  </div>
 </div>
 
 <script>
-const API="https://home-care-hero-api-v2.onrender.com";
-const ADMIN_PASS="0772101875";
-function login(){let v=document.getElementById('pwd').value.trim(); if(v===ADMIN_PASS || v==="772101875"){localStorage.setItem('admin','yes');showDash();}else{alert("Wrong password! Use: 0772101875");}}
-function showDash(){document.getElementById('loginCard').style.display='none';document.getElementById('dash').style.display='block';load();}
-function logout(){localStorage.removeItem('admin');location.reload();}
-if(localStorage.getItem('admin')==='yes')showDash();
+// === CONFIG ===
+const API="https://home-care-hero-api.onrender.com";
+document.getElementById('apiUrlText').innerText=API;
 
-async function load(){
- const s=document.getElementById('status');
- const cgDiv=document.getElementById('caregivers');
- const bkDiv=document.getElementById('bookings');
- s.innerText="Loading... Waking API (60s)...";
- try{
-   let res=await fetch(API+"/");
-   if(res.ok){s.innerText="✅ API Online: "+API+" - LIVE"; s.style.color="green"}else{s.innerText="⚠️ API sleeping, using local"; s.style.color="orange"}
- }catch(e){s.innerText="⚠️ API sleeping (will use local).
+const PASSWORD="0772101875";
+
+function doLogin(){
+  const p=document.getElementById('pass').value;
+  if(p===PASSWORD){
+    document.getElementById('loginPage').style.display='none';
+    document.getElementById('dashboardPage').style.display='block';
+    refreshAll();
+  }else{
+    document.getElementById('loginMsg').innerText='Wrong password! Use 0772101875';
+  }
+}
+
+async function refreshAll(){
+  checkApi();
+  loadCaregivers();
+  loadBookings();
+}
+
+async function checkApi(){
+  const el=document.getElementById('apiStatus');
+  const modeText=document.getElementById('apiText');
+  try{
+    el.textContent='API: Waking...'; el.className='status sleeping';
+    const controller=new AbortController();
+    const timeout=setTimeout(()=>controller.abort(),8000);
+    const res=await fetch(API,{signal:controller.signal});
+    clearTimeout(timeout);
+    if(res.ok){
+      el.textContent='API Online: LIVE'; el.className='status online';
+      modeText.textContent='LIVE';
+    }else{
+      throw new Error('not ok');
+    }
+  }catch(e){
+    el.textContent='API: LOCAL MODE'; el.className='status offline';
+    modeText.textContent='LOCAL';
+  }
+}
+
+async function loadCaregivers(){
+  const list=document.getElementById('caregiverList');
+  const countEl=document.getElementById('totalCaregivers');
+  let data=[];
+  try{
+    const res=await fetch(API+'/caregivers');
+    if(res.ok) data=await res.json();
+    else throw Error();
+  }catch{
+    // fallback local
+    const local=localStorage.getItem('caregivers');
+    data=local?JSON.parse(local):[{name:'Sample Caregiver - Sarah',service:'Elderly Care',phone:'077...',location:'Kampala'}];
+  }
+  countEl.textContent=data.length;
+  if(!data.length){list.innerHTML='<p style="color:#94a3b8">No caregivers yet</p>'; return;}
+  list.innerHTML=data.map((c,i)=>`
+    <div class="item">
+      <div><b>${c.name||'Caregiver '+(i+1)}</b><br><small>${c.service||c.skills||'Home Care'} • ${c.location||'Kampala'}</small></div>
+      <div><small>${c.phone||''}</small></div>
+    </div>`).join('');
+}
+
+async function loadBookings(){
+  const list=document.getElementById('bookingList');
+  const countEl=document.getElementById('totalBookings');
+  const clientEl=document.getElementById('totalClients');
+  let data=[];
+  try{
+    const res=await fetch(API+'/bookings');
+    if(res.ok) data=await res.json();
+    else throw Error();
+  }catch{
+    const local=localStorage.getItem('bookings');
+    data=local?JSON.parse(local):[{client:'John Doe',caregiver:'Sarah',date:new Date().toLocaleDateString(),status:'Pending'}];
+  }
+  countEl.textContent=data.length;
+  clientEl.textContent=data.length;
+  if(!data.length){list.innerHTML='<p style="color:#94a3b8">No bookings yet</p>'; return;}
+  list.innerHTML=data.map((b,i)=>`
+    <div class="item">
+      <div><b>${b.client||b.clientName||'Client '+(i+1)}</b><br><small>Caregiver: ${b.caregiver||b.caregiverName||'-'} • ${b.date||''}</small></div>
+      <div><small style="background:#dcfce7;color:#166534;padding:4px 8px;border-radius:12px">${b.status||'Active'}</small></div>
+    </div>`).join('');
+}
+
+// Auto login if enter pressed
+document.getElementById('pass').addEventListener('keypress',e=>{if(e.key==='Enter')doLogin()})
+</script>
+</body>
+</html>
