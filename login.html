@@ -1,118 +1,121 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Login - Home Care Hero Uganda</title></head>
-<body style="margin:0;background:#f8fafc;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;display:flex;justify-content:center;padding:12px;">
-<div style="width:100%;max-width:400px;margin-top:12px;">
-<!-- WELCOME HEADER -->
-<div style="background:linear-gradient(135deg,#0f172a 0%,#14532d 100%);color:white;border-radius:24px;padding:22px;text-align:center;border:1px solid #22c55e;">
-<p style="margin:0;color:#86efac;font-size:11px;letter-spacing:2px;font-weight:bold;">💚 WELCOME BACK, FAMILY</p>
-<h2 style="margin:12px 0 0 0;font-size:24px;font-weight:900;line-height:1.2;">Karibu Tena<br><span style="color:#4ade80;">Login Securely</span></h2>
-<p style="margin:8px 0 0 0;color:#94a3b8;font-size:11px;">Tusanyuse Okukulaba • You're safe here</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login | Home Care Hero Uganda</title>
+<style>
+body{font-family:'Segoe UI',sans-serif;background:#f0fdf4;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:15px}
+.card{background:white;padding:28px;border-radius:20px;width:100%;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.1);text-align:center}
+.logo{font-size:28px;font-weight:900;color:#16a34a}
+.sub{color:#64748b;font-size:14px;margin:5px 0 20px}
+input,select{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #e2e8f0;box-sizing:border-box;font-size:15px}
+.btn{width:100%;padding:13px;background:#16a34a;color:white;border:none;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
+.btn:hover{background:#15803d}
+.link{font-size:13px;color:#16a34a;cursor:pointer;margin-top:12px;display:block}
+.divider{margin:18px 0;border:none;border-top:1px solid #e2e8f0}
+.small{font-size:11px;color:#94a3b8;margin-top:10px}
+.tabs{display:flex;gap:8px;margin-bottom:15px}
+.tab{flex:1;padding:10px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;cursor:pointer;font-weight:600}
+.tab.active{background:#16a34a;color:white;border-color:#16a34a}
+</style>
+</head>
+<body>
+<div class="card">
+<div class="logo">💚 Home Care Hero</div>
+<div class="sub">Karibu Home! Login to continue</div>
+
+<div class="tabs">
+<div id="tabLogin" class="tab active" onclick="switchMode('login')">Login</div>
+<div id="tabReg" class="tab" onclick="switchMode('register')">Create Account</div>
 </div>
-<!-- ROLE SELECTOR -->
-<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:12px;">
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-<button onclick="setRole('client')" id="b-client" style="background:#22c55e;color:white;padding:12px;border-radius:12px;border:none;font-weight:900;font-size:12px;">👨‍👩‍👧 Client</button>
-<button onclick="setRole('nurse')" id="b-nurse" style="background:white;border:1px solid #e2e8f0;padding:12px;border-radius:12px;font-weight:700;font-size:12px;">👩‍⚕️ Nurse</button>
-<button onclick="setRole('ceo')" id="b-ceo" style="background:white;border:1px solid #e2e8f0;padding:12px;border-radius:12px;font-weight:700;font-size:12px;">👨‍💼 CEO</button>
-</div>
-<p id="roleTxt" style="margin:12px 0 0 0;font-size:12px;color:#334155;text-align:center;background:#f0fdf4;padding:8px;border-radius:8px;">Logging in as <b>Client</b> — Book care with love 🤗</p>
+
 <!-- LOGIN FORM -->
-<label style="font-size:11px;font-weight:bold;color:#334155;display:block;margin-top:16px;">Phone Number / Email</label>
-<input id="user" style="width:100%;padding:14px;border-radius:12px;border:1px solid #e2e8f0;margin-top:6px;box-sizing:border-box;font-size:14px;" placeholder="07XXXXXXXX or email">
-<label style="font-size:11px;font-weight:bold;color:#334155;display:block;margin-top:12px;">Password / MoMo PIN</label>
-<input id="pass" type="password" style="width:100%;padding:14px;border-radius:12px;border:1px solid #e2e8f0;margin-top:6px;box-sizing:border-box;font-size:14px;" placeholder="Enter your password">
-<button onclick="login()" style="width:100%;background:#22c55e;color:white;padding:16px;border-radius:12px;border:none;font-weight:900;font-size:15px;margin-top:16px;cursor:pointer;">🤗 LOGIN SECURELY</button>
-<p style="text-align:center;color:#64748b;font-size:11px;margin:12px 0 0 0;">Forgot? Use Create Account below</p>
-<div id="msg" style="margin-top:14px;font-size:13px;text-align:center;font-weight:bold;min-height:20px;"></div>
+<div id="loginForm">
+<select id="role">
+<option value="Client">🤗 I am Client - Need Care</option>
+<option value="Nurse">👩‍⚕️ I am Nurse - Give Care</option>
+</select>
+<input id="l_user" placeholder="Phone or Username">
+<input id="l_pass" type="password" placeholder="Password">
+<button class="btn" onclick="doLogin()">Login 💚</button>
 </div>
-<!-- SIGNUP BOX -->
-<div id="signupBox" style="background:#fffbeb;border:1px solid #f59e0b;border-radius:16px;padding:16px;margin-top:12px;">
-<h4 style="margin:0;font-size:14px;color:#0f172a;">👋 Create Account — You're Family Now</h4>
-<p style="margin:6px 0 0 0;font-size:11px;color:#64748b;">New here? Karibu! Create in 10 seconds</p>
-<input id="s-name" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:12px;box-sizing:border-box;" placeholder="Full Name - e.g. Sarah Namatovu">
-<input id="s-phone" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:8px;box-sizing:border-box;" placeholder="Phone - 07XXXXXXXX">
-<input id="s-pass" type="password" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:8px;box-sizing:border-box;" placeholder="Create Password - min 4 chars">
-<button onclick="signup()" style="width:100%;background:#0f172a;color:white;padding:14px;border-radius:10px;border:none;font-weight:900;font-size:13px;margin-top:12px;cursor:pointer;">Create Account & Join Family 💚</button>
-<p id="s-msg" style="margin-top:10px;font-size:12px;text-align:center;font-weight:bold;min-height:16px;"></p>
+
+<!-- REGISTER FORM -->
+<div id="regForm" style="display:none">
+<select id="r_role">
+<option value="Client">🤗 Client Account</option>
+<option value="Nurse">👩‍⚕️ Nurse Account</option>
+</select>
+<input id="r_name" placeholder="Full Name">
+<input id="r_phone" placeholder="Phone Number e.g. 0772...">
+<input id="r_user" placeholder="Choose Username">
+<input id="r_pass" type="password" placeholder="Choose Password (min 3)">
+<button class="btn" onclick="doRegister()">Create Account & Login 🚀</button>
 </div>
-<!-- FOOTER LINKS -->
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
-<a href="index.html" style="background:white;border:1px solid #e2e8f0;padding:12px;border-radius:12px;text-align:center;text-decoration:none;color:#334155;font-weight:bold;font-size:12px;">← Welcome Home</a>
-<a href="clients.html" style="background:#22c55e;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">Book Care 35k</a>
+
+<p id="msg" style="color:#ef4444;font-size:13px;margin-top:10px"></p>
+<hr class="divider">
+<div class="small">By continuing, you agree to Trusted, Licensed & Kind care.<br>Secure • UGX 35k/day • MTN MoMo Pay<br><br>
+🏠 <a href="index.html" style="color:#16a34a;text-decoration:none">Back to Welcome Home</a>
 </div>
-<p style="text-align:center;color:#94a3b8;font-size:10px;margin-top:16px;">CEO Login: Username CEO / admin — Any password<br>All accounts saved real • With Love 💚 Home Care Hero Uganda</p>
 </div>
+
 <script>
-let role='client';
-function setRole(r){
-role=r;
-['client','nurse','ceo'].forEach(x=>{
-let b=document.getElementById('b-'+x);
-b.style.background=x==r?'#22c55e':'white';
-b.style.color=x==r?'white':'black';
-b.style.border=x==r?'none':'1px solid #e2e8f0';
-});
-let txt={
-client:'Client — Book care with love 🤗',
-nurse:'Nurse — Serve with heart 👩‍⚕️',
-ceo:'CEO — Global Command Center 👨‍💼'
-};
-document.getElementById('roleTxt').innerHTML='Logging in as <b>'+txt[r]+'</b>';
+let mode='login';
+function switchMode(m){
+ mode=m;
+ document.getElementById('tabLogin').classList.toggle('active', m==='login');
+ document.getElementById('tabReg').classList.toggle('active', m==='register');
+ document.getElementById('loginForm').style.display = m==='login' ? 'block':'none';
+ document.getElementById('regForm').style.display = m==='register' ? 'block':'none';
+ document.getElementById('msg').innerText='';
 }
-function login(){
-let u=document.getElementById('user').value.trim();
-let p=document.getElementById('pass').value.trim();
-let m=document.getElementById('msg');
-if(!u||!p){m.innerHTML='<span style="color:red;">Fill phone & password</span>';return;}
-// CEO LOGIN - SPECIAL
-if(role=='ceo'){
-if(u.toLowerCase()=='ceo'||u.toLowerCase()=='admin'||u.toLowerCase()=='ceo global'){
-localStorage.setItem('hch_role','ceo');
-localStorage.setItem('hch_user',u);
-m.innerHTML='<span style="color:green;">✅ Welcome CEO '+u+'! Opening Command Center...</span>';
-setTimeout(()=>location.href='admin.html',900);
-return;
-}else{
-m.innerHTML='<span style="color:red;">CEO login: Use CEO / admin / CEO Global</span>';
-return;
+
+function doLogin(){
+ let role=document.getElementById('role').value;
+ let user=document.getElementById('l_user').value.trim();
+ let pass=document.getElementById('l_pass').value.trim();
+ if(!user || pass.length<3){ msg('Enter username & password (min 3)'); return; }
+
+ // check if user exists
+ let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
+ let found=users.find(u=> (u.username===user || u.phone===user) && u.password===pass && u.role===role);
+ if(!found && users.length>0){ msg('❌ Wrong credentials or role. Try Create Account.'); return; }
+
+ let name = found ? found.name : user;
+ localStorage.setItem('hch_role', role);
+ localStorage.setItem('hch_user', user);
+ localStorage.setItem('hch_name', name);
+ localStorage.setItem('hch_phone', found ? found.phone : user);
+
+ if(role==='Client') location.href='clients.html';
+ else location.href='caregivers.html';
 }
+
+function doRegister(){
+ let role=document.getElementById('r_role').value;
+ let name=document.getElementById('r_name').value.trim();
+ let phone=document.getElementById('r_phone').value.trim();
+ let user=document.getElementById('r_user').value.trim();
+ let pass=document.getElementById('r_pass').value.trim();
+ if(!name || !phone || !user || pass.length<3){ msg('Fill all fields, password min 3'); return; }
+
+ let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
+ if(users.some(u=>u.username===user)){ msg('Username taken, choose another'); return; }
+
+ users.push({name, phone, username:user, password:pass, role, created:new Date().toISOString()});
+ localStorage.setItem('hch_users', JSON.stringify(users));
+ localStorage.setItem('hch_role', role);
+ localStorage.setItem('hch_user', user);
+ localStorage.setItem('hch_name', name);
+ localStorage.setItem('hch_phone', phone);
+
+ if(role==='Client') location.href='clients.html';
+ else location.href='caregivers.html';
 }
-// CLIENT & NURSE LOGIN - REAL LOCALSTORAGE
-let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
-let found=users.find(x=>x.phone==u&&x.pass==p&&x.role==role);
-if(found){
-localStorage.setItem('hch_role',role);
-localStorage.setItem('hch_user',JSON.stringify(found));
-m.innerHTML='<span style="color:green;">✅ Karibu '+found.name+'! Redirecting...</span>';
-setTimeout(()=>{
-if(role=='client')location.href='clients.html';
-else location.href='caregivers.html';
-},900);
-}else{
-m.innerHTML='<span style="color:red;">❌ No account found. Please create below.</span>';
-document.getElementById('signupBox').style.display='block';
-document.getElementById('signupBox').scrollIntoView({behavior:'smooth'});
-}
-}
-function signup(){
-let n=document.getElementById('s-name').value.trim();
-let ph=document.getElementById('s-phone').value.trim();
-let ps=document.getElementById('s-pass').value.trim();
-let m=document.getElementById('s-msg');
-if(!n||!ph||!ps){m.innerHTML='<span style="color:red;">Fill name, phone, password</span>';return;}
-if(ps.length<4){m.innerHTML='<span style="color:red;">Password min 4 chars</span>';return;}
-let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
-if(users.find(x=>x.phone==ph&&x.role==role)){m.innerHTML='<span style="color:red;">Phone already exists, login above</span>';return;}
-users.push({name:n,phone:ph,pass:ps,role:role,created:new Date().toISOString()});
-localStorage.setItem('hch_users',JSON.stringify(users));
-localStorage.setItem('hch_role',role);
-localStorage.setItem('hch_user',JSON.stringify({name:n,phone:ph}));
-m.innerHTML='<span style="color:green;">✅ Welcome family '+n+'! Account created. Redirecting...</span>';
-setTimeout(()=>{
-if(role=='client')location.href='clients.html';
-else location.href='caregivers.html';
-},1000);
-}
-// init
-setRole('client');
+
+function msg(t){ document.getElementById('msg').innerText=t; }
 </script>
-</body></html>
+</body>
+</html>
