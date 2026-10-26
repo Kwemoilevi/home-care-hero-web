@@ -1,71 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Clients - Home Care Hero</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#f5f7fb;padding:16px}
-.header{background:#0f172a;color:white;padding:16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.card{background:white;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:16px}
-input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}
-.btn{padding:12px 18px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;width:100%}
-.item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between}
-.btn-sm{padding:6px 10px;font-size:12px;width:auto;background:#ef4444}
-a{color:white;text-decoration:none}
-</style>
-</head>
-<body>
-<div class="header">
-  <div><b>👥 Clients & Bookings</b><br><small>ALL SYSTEM</small></div>
-  <div style="display:flex;gap:8px"><a href="dashboard.html" style="background:#334155;padding:8px 12px;border-radius:8px">Dashboard</a><a href="caregivers.html" style="background:#2563eb;padding:8px 12px;border-radius:8px">Caregivers</a></div>
-</div>
-
-<div class="card">
-  <h3>Add New Client / Booking</h3>
-  <input id="client" placeholder="Client Name - e.g. John Doe">
-  <select id="caregiverSelect"></select>
-  <input id="date" type="date">
-  <select id="status"><option>Pending</option><option>Active</option><option>Completed</option></select>
-  <button class="btn" onclick="addBooking()">+ Add Booking</button>
-</div>
-
-<div class="card">
-  <h3>Bookings List (<span id="count">0</span>)</h3>
-  <div id="list"></div>
-</div>
-
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clients - Global</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#f5f7fb;padding:16px}.header{background:#0f172a;color:#fff;padding:16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}.btn{padding:12px 18px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;width:100%}.item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between}.btn-sm{padding:6px 10px;font-size:12px;width:auto;background:#ef4444}a{color:#fff;text-decoration:none}</style></head><body>
+<div class="header"><div><b>🌍 Clients & Bookings - GLOBAL</b><br><small>ALL SYSTEM</small></div><div style="display:flex;gap:8px"><a href="dashboard.html" style="background:#334155;padding:8px 12px;border-radius:8px">Dashboard</a><a href="caregiver.html" style="background:#2563eb;padding:8px 12px;border-radius:8px">Caregivers</a></div></div>
+<div class="card"><h3>Add New Client / Booking - Any Country</h3><input id="client" placeholder="Client Name"><select id="caregiverSelect"></select><input id="cCountry" placeholder="Country - e.g. USA, UK, Uganda"><input id="date" type="date"><select id="status"><option>Pending</option><option>Active</option><option>Completed</option></select><button class="btn" onclick="addBooking()">+ Add Booking</button></div>
+<div class="card"><h3>Bookings List (<span id="count">0</span>) - Worldwide</h3><div id="list"></div></div>
 <script>
-const API="https://home-care-hero-api.onrender.com";
-let bookings = JSON.parse(localStorage.getItem('bookings')||'[]');
-if(!bookings.length) bookings=[{client:'John Doe',caregiver:'Sample Caregiver - Sarah',date:new Date().toISOString().split('T')[0],status:'Pending'}];
-let caregivers = JSON.parse(localStorage.getItem('caregivers')||'[]');
-
-function save(){localStorage.setItem('bookings',JSON.stringify(bookings)); render();}
-function renderSelect(){
-  const sel=document.getElementById('caregiverSelect');
-  sel.innerHTML=caregivers.map(c=>`<option>${c.name}</option>`).join('') || '<option>No caregiver yet</option>';
-}
-function render(){
-  document.getElementById('count').textContent=bookings.length;
-  document.getElementById('list').innerHTML=bookings.map((b,i)=>`
-    <div class="item"><div><b>${b.client}</b><br><small>Caregiver: ${b.caregiver} • ${b.date} • <span style="background:#dcfce7;padding:2px 6px;border-radius:10px">${b.status}</span></small></div><button class="btn btn-sm" onclick="del(${i})">Delete</button></div>
-  `).join('');
-  renderSelect();
-}
-async function addBooking(){
-  const obj={client:document.getElementById('client').value,caregiver:document.getElementById('caregiverSelect').value,date:document.getElementById('date').value,status:document.getElementById('status').value};
-  if(!obj.client) return alert('Enter client name');
-  bookings.unshift(obj); save();
-  document.getElementById('client').value='';
-  try{await fetch(API+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}
-}
-function del(i){ if(confirm('Delete?')){ bookings.splice(i,1); save(); } }
-
-render();
-try{fetch(API+'/bookings').then(r=>r.json()).then(d=>{ if(d.length){bookings=d; save();} })}catch{}
-try{fetch(API+'/caregivers').then(r=>r.json()).then(d=>{ if(d.length){caregivers=d; localStorage.setItem('caregivers',JSON.stringify(d)); renderSelect();} })}catch{}
-document.getElementById('date').valueAsDate=new Date();
-</script>
-</body>
-</html>
+const API="https://home-care-hero-api.onrender.com"; let bookings=JSON.parse(localStorage.getItem('bookings')||'[]'); if(!bookings.length) bookings=[{client:'John Doe',caregiver:'Sample Caregiver - Sarah',date:new Date().toISOString().split('T')[0],status:'Pending',country:'USA'}];
+function loadCaregivers(){ return JSON.parse(localStorage.getItem('caregivers')||'[]'); }
+function save(){localStorage.setItem('bookings',JSON.stringify(bookings)); render();} function renderSelect(){let caregivers=loadCaregivers(); const sel=document.getElementById('caregiverSelect'); if(!caregivers.length) sel.innerHTML='<option value="">No caregiver yet - Add in Caregivers page</option>'; else sel.innerHTML=caregivers.map(c=>`<option>${c.name} - ${c.location}, ${c.country||''}</option>`).join('');}
+function render(){document.getElementById('count').textContent=bookings.length; document.getElementById('list').innerHTML=bookings.map((b,i)=>`<div class="item"><div><b>${b.client}</b> <small>${b.country||''}</small><br><small>Caregiver: ${b.caregiver} • ${b.date} • <span style=background:#dcfce7;padding:2px 6px;border-radius:10px>${b.status}</span></small></div><button class="btn btn-sm" onclick="del(${i})">Delete</button></div>`).join(''); renderSelect();}
+async function addBooking(){const obj={client:document.getElementById('client').value,caregiver:document.getElementById('caregiverSelect').value,date:document.getElementById('date').value,status:document.getElementById('status').value,country:document.getElementById('cCountry').value}; if(!obj.client) return alert('Enter client name'); bookings.unshift(obj); save(); document.getElementById('client').value=''; try{await fetch(API+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}} function del(i){if(confirm('Delete?')){bookings.splice(i,1); save();}} render(); try{fetch(API+'/bookings').then(r=>r.json()).then(d=>{if(d.length){bookings=d; save();}})}catch{} try{fetch(API+'/caregivers').then(r=>r.json()).then(d=>{if(d.length){localStorage.setItem('caregivers',JSON.stringify(d)); renderSelect();}})}catch{} document.getElementById('date').valueAsDate=new Date(); setInterval(renderSelect,2000);
+</script></body></html>
