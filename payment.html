@@ -1,0 +1,39 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Payment - BetPawa Style</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#0f172a;color:#fff;min-height:100vh;padding:14px}.card{background:#fff;color:#000;border-radius:16px;padding:18px;max-width:420px;margin:0 auto}.methods{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.m{border:2px solid #e2e8f0;padding:12px;border-radius:10px;text-align:center;cursor:pointer;font-weight:700}.m.active{border-color:#22c55e;background:#dcfce7}input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;margin:6px 0}.btn{width:100%;padding:14px;background:#22c55e;color:#fff;border:none;border-radius:10px;font-weight:800;font-size:16px;cursor:pointer}.betpawa{background:linear-gradient(90deg,#22c55e,#16a34a);padding:10px;border-radius:10px;text-align:center;color:#fff;font-weight:800;margin-bottom:12px}</style></head><body>
+<div class="card">
+<div class="betpawa">💰 BETPAWA STYLE PAYMENT - Home Care Hero</div>
+<h3 id="payTitle">Pay for Caregiver</h3><p style="font-size:13px;color:#64748b">Secure payment like BetPawa - Instant confirmation</p>
+
+<div class="methods">
+<div class="m active" onclick="sel(this,'MTN')">📱 MTN MoMo</div>
+<div class="m" onclick="sel(this,'Airtel')">📱 Airtel Money</div>
+<div class="m" onclick="sel(this,'Visa')">💳 Visa / Mastercard</div>
+<div class="m" onclick="sel(this,'PayPal')">🌍 PayPal (USA/UK)</div>
+</div>
+
+<input id="amount" value="50000" placeholder="Amount UGX / USD"><small style="color:#64748b">Auto: UGX for UG, USD for USA/UK</small>
+<input id="phone" placeholder="Phone +256 / +1 / +44 for payment *">
+<input id="email" placeholder="Email for receipt">
+<button class="btn" onclick="pay()">🔒 PAY NOW - Like BetPawa</button>
+
+<div id="ok" style="display:none;background:#dcfce7;padding:12px;border-radius:10px;margin-top:12px;text-align:center"><b>✅ Payment Successful!</b><br><small id="receipt"></small><br><br><a href="tracker.html" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">📍 Track Caregiver Now</a> <a href="dashboard.html" style="background:#334155;color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none">📊 Dashboard</a></div>
+<p style="text-align:center;margin-top:10px"><a href="index.html" style="color:#2563eb;font-weight:700;text-decoration:none">← Back Home</a></p>
+</div>
+<script>
+let method='MTN';
+function sel(el,m){method=m; document.querySelectorAll('.m').forEach(x=>x.classList.remove('active')); el.classList.add('active'); if(m=='Visa'||m=='PayPal')document.getElementById('amount').value='50'; else document.getElementById('amount').value='50000';}
+function pay(){
+ let phone=document.getElementById('phone').value, amount=document.getElementById('amount').value;
+ if(!phone)return alert('Enter phone');
+ // Save payment like BetPawa
+ let payments=JSON.parse(localStorage.getItem('payments')||'[]');
+ let p={method,phone,amount,email:document.getElementById('email').value,time:new Date().toLocaleString(),status:'SUCCESS',txn:'TXN'+Date.now()};
+ payments.unshift(p); localStorage.setItem('payments',JSON.stringify(payments));
+ document.getElementById('receipt').innerText=`${method} ${amount} from ${phone} - ${p.txn}`;
+ document.getElementById('ok').style.display='block';
+ // Real integration guide: Replace this with MTN MoMo API, Flutterwave, Stripe
+ setTimeout(()=>{alert('✅ Payment done! In real app, connect MTN MoMo API: https://momodeveloper.mtn.com + Stripe for USA/UK + Flutterwave for Africa');},800);
+}
+let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');
+if(caregivers[0])document.getElementById('payTitle').textContent='Pay for '+caregivers[0].name;
+</script>
+</body></html>
