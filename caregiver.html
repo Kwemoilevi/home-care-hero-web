@@ -1,38 +1,45 @@
-<!DOCTYPE html>
-<html>
-<head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Caregiver Dashboard</title></head>
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Nurse Dashboard</title></head>
 <body style="margin:0;background:#0f172a;font-family:sans-serif;display:flex;justify-content:center;padding:20px;">
 <div style="width:100%;max-width:420px;">
 <h1 style="color:white;">👩‍⚕️ Nurse Dashboard</h1>
-<p style="color:#86efac;font-size:13px;margin-top:0;">Professional Nursing Jobs - 35k/day</p>
+<p style="color:#86efac;font-size:13px;">Professional Nursing Jobs - 35k/day</p>
 
-<div style="background:#14532d;border:1px solid #22c55e;border-radius:16px;padding:16px;margin-top:16px;display:flex;justify-content:space-between;align-items:center;">
-<div><p style="color:white;font-weight:bold;margin:0;">You are ONLINE</p><p style="color:#86efac;font-size:12px;margin:0;">Available for Nursing Jobs</p></div>
-<button style="background:#22c55e;color:white;padding:8px 16px;border-radius:20px;border:none;font-weight:bold;">Go Offline</button>
+<div style="background:#1e293b;border-radius:12px;padding:12px;margin-top:12px;">
+<p style="color:white;font-size:12px;font-weight:bold;margin:0 0 8px 0;">📍 GPS: <span id="gpsStatus" style="color:#f87171;">OFF</span></p>
+<button onclick="startGPS()" id="gpsBtn" style="width:100%;background:#22c55e;color:white;padding:10px;border-radius:8px;border:none;font-weight:bold;">START LIVE LOCATION</button>
+<p id="gpsCoords" style="color:#94a3b8;font-size:11px;margin:8px 0 0 0;">Allow location when asked</p>
 </div>
 
 <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
-<div style="background:#1e293b;padding:16px;border-radius:16px;"><p style="color:#94a3b8;font-size:11px;margin:0;">TODAY EARNINGS</p><p style="color:white;font-weight:bold;margin:0;">UGX 35,000</p></div>
+<div style="background:#1e293b;padding:16px;border-radius:16px;"><p style="color:#94a3b8;font-size:11px;margin:0;">TODAY</p><p style="color:white;font-weight:bold;margin:0;">UGX 35,000</p></div>
 <div style="background:#1e293b;padding:16px;border-radius:16px;"><p style="color:#94a3b8;font-size:11px;margin:0;">WALLET</p><p style="color:white;font-weight:bold;margin:0;">UGX 128,000</p></div>
 </div>
 
 <div style="background:#1e293b;border-radius:20px;padding:20px;margin-top:16px;">
-<h2 style="color:white;margin:0 0 12px 0;">🏥 New Nursing Jobs (2)</h2>
-
-<div style="background:white;padding:16px;border-radius:12px;margin-bottom:12px;">
-<p style="color:black;font-weight:bold;margin:0;">🏥 Professional Nursing - Ntinda</p>
-<p style="color:#dc2626;font-weight:bold;font-size:12px;margin:4px 0;">⭐ URGENT - Post-Op Patient</p>
-<p style="color:#64748b;font-size:12px;margin:0;">8hrs • UGX 35k • 2km away</p>
-<div style="display:flex;gap:8px;margin-top:12px;"><button style="flex:1;background:#22c55e;color:white;padding:10px;border-radius:8px;border:none;font-weight:bold;">ACCEPT 35k</button><button style="flex:1;background:#e2e8f0;padding:10px;border-radius:8px;border:none;font-weight:bold;">Decline</button></div>
-</div>
-
+<h2 style="color:white;margin:0 0 12px 0;">🏥 Nursing Jobs</h2>
 <div style="background:white;padding:16px;border-radius:12px;">
-<p style="color:black;font-weight:bold;margin:0;">🤱 Mother & Baby Nursing - Kololo</p>
-<p style="color:#64748b;font-size:12px;margin:4px 0 0 0;">5hrs • UGX 35k • 1km away • New Mother</p>
-<div style="display:flex;gap:8px;margin-top:12px;"><button style="flex:1;background:#22c55e;color:white;padding:10px;border-radius:8px;border:none;font-weight:bold;">ACCEPT 35k</button><button style="flex:1;background:#e2e8f0;padding:10px;border-radius:8px;border:none;font-weight:bold;">Decline</button></div>
+<p style="color:black;font-weight:bold;margin:0;">🏥 Nursing - Ntinda - 35k</p>
+<p style="color:#64748b;font-size:12px;margin:4px 0 0 0;">8hrs • 2km away</p>
+<button style="width:100%;margin-top:10px;background:#22c55e;color:white;padding:10px;border-radius:8px;border:none;font-weight:bold;">ACCEPT 35k</button>
+</div>
 </div>
 
 </div>
-</div>
-</body>
-</html>
+<script>
+function startGPS(){
+  var s=document.getElementById('gpsStatus');
+  var c=document.getElementById('gpsCoords');
+  var b=document.getElementById('gpsBtn');
+  s.textContent='SEARCHING...'; s.style.color='#fbbf24';
+  navigator.geolocation.watchPosition(function(pos){
+    var lat=pos.coords.latitude.toFixed(6);
+    var lng=pos.coords.longitude.toFixed(6);
+    s.textContent='LIVE ✓'; s.style.color='#4ade80';
+    c.textContent=lat+', '+lng+' - Sharing live';
+    b.textContent='SHARING LIVE ✓';
+    localStorage.setItem('nurseLat',lat);
+    localStorage.setItem('nurseLng',lng);
+  }, function(){ alert('Please allow location'); }, {enableHighAccuracy:true});
+}
+</script>
+</body></html>
