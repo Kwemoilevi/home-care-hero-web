@@ -1,89 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Caregivers - GLOBAL FIXED</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#f5f7fb;padding:16px}
-.header{background:#0f172a;color:#fff;padding:16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
-input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}
-.btn{padding:12px 18px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;width:100%}
-.item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
-.btn-sm{padding:6px 10px;font-size:12px;width:auto;background:#ef4444;border:none;border-radius:6px;color:#fff;cursor:pointer}
-a{color:#fff;text-decoration:none}
-.badge{background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:10px;font-size:11px}
-</style>
-</head>
-<body>
-<div class="header">
-<div><b>🌍 Caregivers - GLOBAL</b><br><small>ALL SYSTEM - FIXED</small></div>
-<div style="display:flex;gap:8px"><a href="dashboard.html" style="background:#334155;padding:8px 12px;border-radius:8px">Dashboard</a><a href="client.html" style="background:#2563eb;padding:8px 12px;border-radius:8px">Clients</a></div>
+<html>
+<head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Caregiver Dashboard</title></head>
+<body style="margin:0;background:#0f172a;font-family:sans-serif;display:flex;justify-content:center;padding:20px;">
+<div style="width:100%;max-width:420px;">
+<h1 style="color:white;">👩‍⚕️ Nurse Dashboard</h1>
+<p style="color:#86efac;font-size:13px;margin-top:0;">Professional Nursing Jobs - 35k/day</p>
+
+<div style="background:#14532d;border:1px solid #22c55e;border-radius:16px;padding:16px;margin-top:16px;display:flex;justify-content:space-between;align-items:center;">
+<div><p style="color:white;font-weight:bold;margin:0;">You are ONLINE</p><p style="color:#86efac;font-size:12px;margin:0;">Available for Nursing Jobs</p></div>
+<button style="background:#22c55e;color:white;padding:8px 16px;border-radius:20px;border:none;font-weight:bold;">Go Offline</button>
 </div>
 
-<div class="card">
-<h3>Add New Caregiver - Any Country</h3>
-<input id="name" placeholder="Full Name *">
-<select id="service">
-<option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>Disability Care</option><option>House Help</option><option>Live-in Care</option>
-</select>
-<input id="phone" placeholder="Phone / WhatsApp - with country code +1, +44, +256...">
-<input id="location" placeholder="City - e.g. New York, London, Nairobi, Kampala">
-<select id="country">
-<option>USA</option><option>UK</option><option>Canada</option><option>Australia</option><option>Uganda</option><option>Kenya</option><option>Nigeria</option><option>South Africa</option><option>UAE</option><option>Germany</option><option>Other</option>
-</select>
-<button class="btn" onclick="addCaregiver()">+ Add Caregiver</button>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px;">
+<div style="background:#1e293b;padding:16px;border-radius:16px;"><p style="color:#94a3b8;font-size:11px;margin:0;">TODAY EARNINGS</p><p style="color:white;font-weight:bold;margin:0;">UGX 35,000</p></div>
+<div style="background:#1e293b;padding:16px;border-radius:16px;"><p style="color:#94a3b8;font-size:11px;margin:0;">WALLET</p><p style="color:white;font-weight:bold;margin:0;">UGX 128,000</p></div>
 </div>
 
-<div class="card">
-<h3>Caregivers List (<span id="count">0</span>) - Worldwide</h3>
-<div id="list"></div>
+<div style="background:#1e293b;border-radius:20px;padding:20px;margin-top:16px;">
+<h2 style="color:white;margin:0 0 12px 0;">🏥 New Nursing Jobs (2)</h2>
+
+<div style="background:white;padding:16px;border-radius:12px;margin-bottom:12px;">
+<p style="color:black;font-weight:bold;margin:0;">🏥 Professional Nursing - Ntinda</p>
+<p style="color:#dc2626;font-weight:bold;font-size:12px;margin:4px 0;">⭐ URGENT - Post-Op Patient</p>
+<p style="color:#64748b;font-size:12px;margin:0;">8hrs • UGX 35k • 2km away</p>
+<div style="display:flex;gap:8px;margin-top:12px;"><button style="flex:1;background:#22c55e;color:white;padding:10px;border-radius:8px;border:none;font-weight:bold;">ACCEPT 35k</button><button style="flex:1;background:#e2e8f0;padding:10px;border-radius:8px;border:none;font-weight:bold;">Decline</button></div>
 </div>
 
-<script>
-const API="https://home-care-hero-api.onrender.com";
-let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');
-if(!caregivers.length){
-  caregivers=[
-    {name:'Sample Caregiver - Sarah',service:'Elderly Care',phone:'+256772101875',location:'Kampala',country:'Uganda'},
-    {name:'Emily Johnson',service:'Child Care',phone:'+1 212 555 0100',location:'New York',country:'USA'},
-    {name:'Grace Atim',service:'Nursing',phone:'+44 20 7123 4567',location:'London',country:'UK'}
-  ];
-}
-localStorage.setItem('caregivers',JSON.stringify(caregivers));
+<div style="background:white;padding:16px;border-radius:12px;">
+<p style="color:black;font-weight:bold;margin:0;">🤱 Mother & Baby Nursing - Kololo</p>
+<p style="color:#64748b;font-size:12px;margin:4px 0 0 0;">5hrs • UGX 35k • 1km away • New Mother</p>
+<div style="display:flex;gap:8px;margin-top:12px;"><button style="flex:1;background:#22c55e;color:white;padding:10px;border-radius:8px;border:none;font-weight:bold;">ACCEPT 35k</button><button style="flex:1;background:#e2e8f0;padding:10px;border-radius:8px;border:none;font-weight:bold;">Decline</button></div>
+</div>
 
-function save(){localStorage.setItem('caregivers',JSON.stringify(caregivers)); render();}
-function render(){
-  document.getElementById('count').textContent=caregivers.length;
-  document.getElementById('list').innerHTML=caregivers.map((c,i)=>`
-    <div class="item">
-      <div><b>${c.name}</b> <span class="badge">🌍 ${c.country||''}</span><br><small>${c.service} • ${c.location} • ${c.phone}</small></div>
-      <button class="btn-sm" onclick="del(${i})">Delete</button>
-    </div>
-  `).join('')||'<p style=color:#94a3b8>No caregivers</p>';
-}
-async function addCaregiver(){
-  const obj={
-    name:document.getElementById('name').value,
-    service:document.getElementById('service').value,
-    phone:document.getElementById('phone').value,
-    location:document.getElementById('location').value,
-    country:document.getElementById('country').value
-  };
-  if(!obj.name||!obj.phone) return alert('Enter name & phone');
-  caregivers.unshift(obj);
-  save();
-  document.getElementById('name').value=''; document.getElementById('phone').value=''; document.getElementById('location').value='';
-  try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}
-}
-function del(i){if(confirm('Delete this caregiver?')){caregivers.splice(i,1); save();}}
-render();
-try{
-  fetch(API+'/caregivers').then(r=>r.json()).then(d=>{
-    if(d&&d.length){caregivers=d; save();}
-  })
-}catch{}
-</script>
+</div>
+</div>
 </body>
 </html>
