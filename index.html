@@ -1,91 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero Uganda - Book a Caregiver</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:#f5f7fb}
-.header{background:#0f172a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.header a{color:white;text-decoration:none;background:#2563eb;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:bold}
-.hero{background:linear-gradient(135deg,#2563eb,#1e40af);color:white;padding:32px 20px;text-align:center}
-.hero h1{font-size:28px;margin-bottom:8px}
-.hero p{opacity:0.9;margin-bottom:16px}
-.hero button{padding:14px 22px;background:white;color:#2563eb;border:none;border-radius:10px;font-weight:bold;font-size:15px;cursor:pointer}
-.search{background:white;margin:-20px 16px;padding:16px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;gap:8px}
-.search input{flex:1;padding:12px;border:2px solid #e2e8f0;border-radius:8px}
-.card{background:white;margin:0 16px 12px;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;justify-content:space-between;gap:12px;align-items:center}
-.badge{background:#dcfce7;color:#166534;padding:4px 8px;border-radius:12px;font-size:11px}
-.btn{padding:10px 16px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:16px;z-index:20}
-.modalBox{background:white;width:100%;max-width:400px;border-radius:16px;padding:20px}
-.modalBox input,.modalBox select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}
-</style>
-</head>
-<body>
-<div class="header">
-  <b>🏥 Home Care Hero</b>
-  <div style="display:flex;gap:8px"><a href="register.html" style="background:#22c55e">Join as Caregiver</a><a href="dashboard.html">Dashboard</a></div>
-</div>
-
-<div class="hero">
-  <h1>Trusted Caregivers in Uganda</h1>
-  <p>Book Elderly Care, Child Care, Nursing in Kampala now</p>
-  <button onclick="document.getElementById('list').scrollIntoView({behavior:'smooth'})">👇 View Caregivers</button>
-</div>
-
-<div class="search">
-  <input id="q" placeholder="Search by service or location..." oninput="render()">
-  <button class="btn" onclick="render()">Search</button>
-</div>
-
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Care Hero - Global Caregivers</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#f5f7fb}.header{background:#0f172a;color:#fff;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}.header a{color:#fff;text-decoration:none;background:#2563eb;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:700}.hero{background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;padding:36px 20px;text-align:center}.hero h1{font-size:28px;margin-bottom:8px}.hero p{opacity:.9;margin-bottom:16px}.hero button{padding:14px 22px;background:#fff;color:#2563eb;border:none;border-radius:10px;font-weight:700;font-size:15px;cursor:pointer}.filters{background:#fff;margin:-18px 16px 12px;padding:14px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);display:flex;gap:8px;flex-wrap:wrap}.filters input,.filters select{flex:1;min-width:120px;padding:10px;border:2px solid #e2e8f0;border-radius:8px}.card{background:#fff;margin:0 16px 12px;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);display:flex;justify-content:space-between;gap:12px;align-items:center}.badge{background:#dcfce7;color:#166534;padding:4px 8px;border-radius:12px;font-size:11px}.btn{padding:10px 16px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);align-items:center;justify-content:center;padding:16px;z-index:20}.modalBox{background:#fff;width:100%;max-width:420px;border-radius:16px;padding:20px}.modalBox input,.modalBox select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}</style></head><body>
+<div class="header"><b>🌍 Home Care Hero - GLOBAL</b><div style="display:flex;gap:8px"><a href="register.html" style="background:#22c55e">Join as Caregiver</a><a href="dashboard.html">Dashboard</a></div></div>
+<div class="hero"><h1>🌍 Trusted Caregivers Worldwide</h1><p>Book Elderly Care, Child Care, Nursing in USA, UK, Canada, Africa, Anywhere!</p><button onclick="document.getElementById('list').scrollIntoView({behavior:'smooth'})">👇 View Global Caregivers</button></div>
+<div class="filters"><input id="q" placeholder="Search service or city..." oninput="render()"><select id="countryFilter" onchange="render()"><option value="">All Countries</option><option>USA</option><option>UK</option><option>Canada</option><option>Uganda</option><option>Kenya</option><option>Nigeria</option><option>UAE</option><option>Other</option></select><select id="serviceFilter" onchange="render()"><option value="">All Services</option><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>House Help</option></select></div>
 <div id="list"></div>
-
-<!-- BOOK MODAL -->
-<div id="modal" class="modal" onclick="if(event.target==this)closeModal()">
-  <div class="modalBox">
-    <h3 id="modalTitle">Book Caregiver</h3>
-    <input id="cName" placeholder="Your Name *">
-    <input id="cPhone" placeholder="Your Phone *">
-    <input id="cLocation" placeholder="Your Location">
-    <input id="cDate" type="date">
-    <select id="cService"><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>House Help</option></select>
-    <button class="btn" style="width:100%;margin-top:8px" onclick="bookNow()">✅ Confirm Booking</button>
-    <button style="width:100%;margin-top:8px;padding:10px;background:#e2e8f0;border:none;border-radius:8px" onclick="closeModal()">Cancel</button>
-    <p id="bookOk" style="display:none;background:#dcfce7;color:#166534;padding:10px;border-radius:8px;margin-top:10px;text-align:center">✅ Booking sent! We will call you.</p>
-  </div>
-</div>
-
+<div id="modal" class="modal" onclick="if(event.target==this)closeModal()"><div class="modalBox"><h3 id="modalTitle">Book Caregiver</h3><input id="cName" placeholder="Your Name *"><input id="cPhone" placeholder="Your Phone + country code *"><input id="cLocation" placeholder="Your City & Country"><input id="cDate" type="date"><select id="cService"><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>House Help</option><option>Live-in Care</option></select><button class="btn" style="width:100%;margin-top:8px" onclick="bookNow()">✅ Confirm Booking</button><button style="width:100%;margin-top:8px;padding:10px;background:#e2e8f0;border:none;border-radius:8px" onclick="closeModal()">Cancel</button><p id="bookOk" style="display:none;background:#dcfce7;color:#166534;padding:10px;border-radius:8px;margin-top:10px;text-align:center">✅ Booking sent! We will call you.</p></div></div>
 <script>
-const API="https://home-care-hero-api.onrender.com";
-let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');
-if(!caregivers.length) caregivers=[{name:'Sarah Namatovu',service:'Elderly Care',phone:'0772101875',location:'Kampala',experience:'4 years',bio:'Loving and experienced'}];
-let selectedCaregiver=null;
-
-function render(){
-  const q=document.getElementById('q').value.toLowerCase();
-  const list=document.getElementById('list');
-  const filtered=caregivers.filter(c=>(c.name+c.service+c.location).toLowerCase().includes(q));
-  list.innerHTML=filtered.map(c=>`
-    <div class="card">
-      <div><b>${c.name}</b> <span class="badge">${c.service}</span><br><small>${c.location} • ${c.experience||''} • ${c.phone}</small><br><small style="color:#64748b">${c.bio||''}</small></div>
-      <button class="btn" onclick="openBook('${c.name}')">Book</button>
-    </div>
-  `).join('') || '<p style="text-align:center;color:#94a3b8;margin:20px">No caregivers found. Be first to <a href=register.html>register</a></p>';
-  document.getElementById('cDate').valueAsDate=new Date();
-}
-function openBook(name){ selectedCaregiver=name; document.getElementById('modalTitle').innerText='Book '+name; document.getElementById('modal').style.display='flex'; }
-function closeModal(){ document.getElementById('modal').style.display='none'; }
-async function bookNow(){
-  const data={client:document.getElementById('cName').value,phone:document.getElementById('cPhone').value,caregiver:selectedCaregiver,clientLocation:document.getElementById('cLocation').value,date:document.getElementById('cDate').value,service:document.getElementById('cService').value,status:'Pending',created:new Date().toLocaleString()};
-  if(!data.client||!data.phone) return alert('Enter name & phone');
-  let bookings=JSON.parse(localStorage.getItem('bookings')||'[]'); bookings.unshift(data); localStorage.setItem('bookings',JSON.stringify(bookings));
-  try{await fetch(API+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch{}
-  document.getElementById('bookOk').style.display='block';
-  setTimeout(()=>{closeModal(); document.getElementById('bookOk').style.display='none'; alert('✅ Booking received! Check dashboard: home-care-hero-web.vercel.app/client.html');},1500);
-}
-render();
-try{fetch(API+'/caregivers').then(r=>r.json()).then(d=>{ if(d.length){caregivers=d; localStorage.setItem('caregivers',JSON.stringify(d)); render();}})}catch{}
-</script>
-</body>
-</html>
+const API="https://home-care-hero-api.onrender.com"; let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]'); if(!caregivers.length) caregivers=[{name:'Sarah Namatovu',service:'Elderly Care',phone:'+256772101875',location:'Kampala',country:'Uganda'},{name:'Emily Johnson',service:'Child Care',phone:'+1 212 555 0100',location:'New York',country:'USA'},{name:'Grace Atim',service:'Nursing',phone:'+44 20 7123 4567',location:'London',country:'UK'}]; let selectedCaregiver=null;
+function render(){const q=document.getElementById('q').value.toLowerCase(); const cf=document.getElementById('countryFilter').value; const sf=document.getElementById('serviceFilter').value; const list=document.getElementById('list'); let filtered=caregivers.filter(c=>{return (c.name+c.service+c.location).toLowerCase().includes(q) && (!cf||c.country==cf) && (!sf||c.service==sf)}); list.innerHTML=filtered.map(c=>`<div class="card"><div><b>${c.name}</b> <span class="badge">${c.service}</span> <small style=background:#e0e7ff;padding:2px 6px;border-radius:8px>🌍 ${c.country||''}</small><br><small>${c.location} • ${c.phone}</small></div><button class="btn" onclick="openBook('${c.name}')">Book</button></div>`).join('')||'<p style=text-align:center;color:#94a3b8;margin:20px>No caregivers found. <a href=register.html>Register now</a></p>'; document.getElementById('cDate').valueAsDate=new Date();}
+function openBook(n){selectedCaregiver=n; document.getElementById('modalTitle').innerText='Book '+n; document.getElementById('modal').style.display='flex';} function closeModal(){document.getElementById('modal').style.display='none';}
+async function bookNow(){const data={client:document.getElementById('cName').value,phone:document.getElementById('cPhone').value,caregiver:selectedCaregiver,clientLocation:document.getElementById('cLocation').value,date:document.getElementById('cDate').value,service:document.getElementById('cService').value,status:'Pending',created:new Date().toLocaleString()}; if(!data.client||!data.phone) return alert('Enter name & phone'); let bookings=JSON.parse(localStorage.getItem('bookings')||'[]'); bookings.unshift(data); localStorage.setItem('bookings',JSON.stringify(bookings)); try{await fetch(API+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch{} document.getElementById('bookOk').style.display='block'; setTimeout(()=>{closeModal(); document.getElementById('bookOk').style.display='none'; alert('✅ Booking received! Worldwide!');},1500);} render(); try{fetch(API+'/caregivers').then(r=>r.json()).then(d=>{if(d.length){caregivers=d; localStorage.setItem('caregivers',JSON.stringify(d)); render();}})}catch{}
+</script></body></html>
