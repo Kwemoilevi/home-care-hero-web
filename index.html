@@ -2,114 +2,90 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Worldwide - Pay Deposit</title>
-<script src="https://cdn.tailwindcss.com"></script>
-<script src="https://checkout.flutterwave.com/v3.js"></script>
+<title>Home Care Hero Uganda - Book a Caregiver</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#f5f7fb}
+.header{background:#0f172a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+.header a{color:white;text-decoration:none;background:#2563eb;padding:8px 14px;border-radius:8px;font-size:13px;font-weight:bold}
+.hero{background:linear-gradient(135deg,#2563eb,#1e40af);color:white;padding:32px 20px;text-align:center}
+.hero h1{font-size:28px;margin-bottom:8px}
+.hero p{opacity:0.9;margin-bottom:16px}
+.hero button{padding:14px 22px;background:white;color:#2563eb;border:none;border-radius:10px;font-weight:bold;font-size:15px;cursor:pointer}
+.search{background:white;margin:-20px 16px;padding:16px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);display:flex;gap:8px}
+.search input{flex:1;padding:12px;border:2px solid #e2e8f0;border-radius:8px}
+.card{background:white;margin:0 16px 12px;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,0.06);display:flex;justify-content:space-between;gap:12px;align-items:center}
+.badge{background:#dcfce7;color:#166534;padding:4px 8px;border-radius:12px;font-size:11px}
+.btn{padding:10px 16px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;padding:16px;z-index:20}
+.modalBox{background:white;width:100%;max-width:400px;border-radius:16px;padding:20px}
+.modalBox input,.modalBox select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}
+</style>
 </head>
-<body class="bg-[#f5f5f7]">
-<nav class="bg-black text-white px-6 py-4 flex justify-between sticky top-0">
-<div class="font-black">Home Care Hero 💛 Global</div>
-<div class="text-[10px] bg-green-400 text-black px-3 py-1 rounded-full font-bold">💳 Payments Live</div>
-</nav>
-<div class="max-w-xl mx-auto p-6">
-<div class="bg-white rounded-[2rem] p-7 border shadow-xl">
-<h1 class="font-black text-3xl">Verified Care in <span class="bg-[#ffcc00] px-2 rounded-xl">Worldwide</span></h1>
-<p class="text-xs text-gray-500 mt-2">💳 Auto-currency + Secure Payment. ID Verified.</p>
-<div class="mt-6 space-y-3">
-<input id="cName" placeholder="Your Name" class="w-full px-4 py-3 rounded-xl border">
-<input id="cEmail" placeholder="Email for receipt" class="w-full px-4 py-3 rounded-xl border">
-<input id="cPhone" placeholder="Phone / WhatsApp" class="w-full px-4 py-3 rounded-xl border">
-<input id="cLoc" oninput="updateCurrency()" placeholder="Location e.g., London, New York, Nairobi" class="w-full px-4 py-3 rounded-xl border">
-<p id="currencyNote" class="text-[11px] font-bold text-green-600">🌍 Type location to see your local price</p>
-<select id="cService" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm font-bold"></select>
-<textarea id="cNote" placeholder="Details..." class="w-full px-4 py-3 rounded-xl border h-20"></textarea>
-<button onclick="bookNow()" class="w-full bg-black text-white py-4 rounded-xl font-black">💳 Book & Pay Deposit ✅</button>
-<div class="grid grid-cols-2 gap-2">
-<button onclick="payMobileMoney()" class="bg-[#ffcc00] text-black py-3 rounded-xl font-bold text-xs border-2 border-black">📱 MTN / Airtel</button>
-<button onclick="payCard()" class="bg-white text-black py-3 rounded-xl font-bold text-xs border-2 border-black">💳 Card / PayPal</button>
+<body>
+<div class="header">
+  <b>🏥 Home Care Hero</b>
+  <div style="display:flex;gap:8px"><a href="register.html" style="background:#22c55e">Join as Caregiver</a><a href="dashboard.html">Dashboard</a></div>
 </div>
+
+<div class="hero">
+  <h1>Trusted Caregivers in Uganda</h1>
+  <p>Book Elderly Care, Child Care, Nursing in Kampala now</p>
+  <button onclick="document.getElementById('list').scrollIntoView({behavior:'smooth'})">👇 View Caregivers</button>
 </div>
+
+<div class="search">
+  <input id="q" placeholder="Search by service or location..." oninput="render()">
+  <button class="btn" onclick="render()">Search</button>
 </div>
-<div class="bg-[#ffcc00] p-4 rounded-2xl border-2 border-black mt-6">
-<p class="font-black text-sm">🛡️ Pay Deposit - <span id="depositText">$20 to confirm</span></p>
-<p class="text-xs mt-1">Secure via Flutterwave & Stripe. Balance on arrival.</p>
-<p class="text-[10px] mt-2 opacity-60">Supported: Visa, Mastercard, MTN MoMo, Airtel, PayPal</p>
+
+<div id="list"></div>
+
+<!-- BOOK MODAL -->
+<div id="modal" class="modal" onclick="if(event.target==this)closeModal()">
+  <div class="modalBox">
+    <h3 id="modalTitle">Book Caregiver</h3>
+    <input id="cName" placeholder="Your Name *">
+    <input id="cPhone" placeholder="Your Phone *">
+    <input id="cLocation" placeholder="Your Location">
+    <input id="cDate" type="date">
+    <select id="cService"><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>House Help</option></select>
+    <button class="btn" style="width:100%;margin-top:8px" onclick="bookNow()">✅ Confirm Booking</button>
+    <button style="width:100%;margin-top:8px;padding:10px;background:#e2e8f0;border:none;border-radius:8px" onclick="closeModal()">Cancel</button>
+    <p id="bookOk" style="display:none;background:#dcfce7;color:#166534;padding:10px;border-radius:8px;margin-top:10px;text-align:center">✅ Booking sent! We will call you.</p>
+  </div>
 </div>
-</div>
+
 <script>
-const rates = {
-london:{symbol:'£',currency:'GBP',prices:[12,28,16,24,12],deposit:15,code:'GBP'},
-newyork:{symbol:'$',currency:'USD',prices:[15,35,20,30,15],deposit:20,code:'USD'},
-nairobi:{symbol:'KSh ',currency:'KES',prices:[2000,5000,3000,4500,2000],deposit:3000,code:'KES'},
-dubai:{symbol:'AED ',currency:'AED',prices:[55,130,75,110,55],deposit:75,code:'AED'},
-kampala:{symbol:'UGX ',currency:'UGX',prices:[35000,70000,40000,60000,35000],deposit:50000,code:'UGX'},
-lagos:{symbol:'₦',currency:'NGN',prices:[10000,25000,15000,20000,10000],deposit:15000,code:'NGN'},
-default:{symbol:'$',currency:'USD',prices:[15,35,20,30,15],deposit:20,code:'USD'}
-};
-const services = ["Babysitting","Qualified Nurse","House Cleaning","Elderly Care","Cooking"];
-let currentRate = rates.default;
+const API="https://home-care-hero-api.onrender.com";
+let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');
+if(!caregivers.length) caregivers=[{name:'Sarah Namatovu',service:'Elderly Care',phone:'0772101875',location:'Kampala',experience:'4 years',bio:'Loving and experienced'}];
+let selectedCaregiver=null;
 
-function getRate(){
-const loc = document.getElementById('cLoc').value.toLowerCase();
-if(loc.includes('london')||loc.includes('uk')) return rates.london;
-if(loc.includes('new york')||loc.includes('usa')||loc.includes('us')) return rates.newyork;
-if(loc.includes('nairobi')||loc.includes('kenya')) return rates.nairobi;
-if(loc.includes('dubai')||loc.includes('uae')) return rates.dubai;
-if(loc.includes('lagos')||loc.includes('nigeria')) return rates.lagos;
-if(loc.includes('kampala')||loc.includes('uganda')) return rates.kampala;
-return rates.default;
+function render(){
+  const q=document.getElementById('q').value.toLowerCase();
+  const list=document.getElementById('list');
+  const filtered=caregivers.filter(c=>(c.name+c.service+c.location).toLowerCase().includes(q));
+  list.innerHTML=filtered.map(c=>`
+    <div class="card">
+      <div><b>${c.name}</b> <span class="badge">${c.service}</span><br><small>${c.location} • ${c.experience||''} • ${c.phone}</small><br><small style="color:#64748b">${c.bio||''}</small></div>
+      <button class="btn" onclick="openBook('${c.name}')">Book</button>
+    </div>
+  `).join('') || '<p style="text-align:center;color:#94a3b8;margin:20px">No caregivers found. Be first to <a href=register.html>register</a></p>';
+  document.getElementById('cDate').valueAsDate=new Date();
 }
-function updateCurrency(){
-currentRate = getRate();
-const sel = document.getElementById('cService');
-sel.innerHTML = "";
-services.forEach((s,i)=>{
-const opt = document.createElement('option');
-opt.value = s;
-opt.textContent = s + " - " + currentRate.symbol + currentRate.prices[i] + "/day";
-sel.appendChild(opt);
-});
-document.getElementById('depositText').textContent = currentRate.symbol + currentRate.deposit + ' to confirm (' + currentRate.code + ')';
-document.getElementById('currencyNote').textContent = "🌍 Detected: " + currentRate.currency + " (" + currentRate.symbol.trim() + ") - Prices updated!";
+function openBook(name){ selectedCaregiver=name; document.getElementById('modalTitle').innerText='Book '+name; document.getElementById('modal').style.display='flex'; }
+function closeModal(){ document.getElementById('modal').style.display='none'; }
+async function bookNow(){
+  const data={client:document.getElementById('cName').value,phone:document.getElementById('cPhone').value,caregiver:selectedCaregiver,clientLocation:document.getElementById('cLocation').value,date:document.getElementById('cDate').value,service:document.getElementById('cService').value,status:'Pending',created:new Date().toLocaleString()};
+  if(!data.client||!data.phone) return alert('Enter name & phone');
+  let bookings=JSON.parse(localStorage.getItem('bookings')||'[]'); bookings.unshift(data); localStorage.setItem('bookings',JSON.stringify(bookings));
+  try{await fetch(API+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch{}
+  document.getElementById('bookOk').style.display='block';
+  setTimeout(()=>{closeModal(); document.getElementById('bookOk').style.display='none'; alert('✅ Booking received! Check dashboard: home-care-hero-web.vercel.app/client.html');},1500);
 }
-function validateForm(){
-const name=document.getElementById('cName').value;
-const email=document.getElementById('cEmail').value;
-const phone=document.getElementById('cPhone').value;
-const loc=document.getElementById('cLoc').value;
-if(!name||!email||!phone||!loc){alert('Fill Name, Email, Phone, Location');return false;}
-return true;
-}
-function bookNow(){ payCard(); }
-
-function payCard(){
-if(!validateForm()) return;
-const name=document.getElementById('cName').value;
-const email=document.getElementById('cEmail').value;
-const phone=document.getElementById('cPhone').value;
-
-// FLUTTERWAVE - GLOBAL PAYMENTS
-FlutterwaveCheckout({
-public_key: "FLWPUBK_TEST-XXXXXXX-X", // REPLACE WITH YOUR KEY FROM flutterwave.com
-tx_ref: "HC-"+Date.now(),
-amount: currentRate.deposit,
-currency: currentRate.code,
-payment_options: "card,mobilemoney,ussd",
-customer: { email: email, phone_number: phone, name: name },
-customizations: { title: "Home Care Hero Global", description: "Deposit for " + document.getElementById('cService').value + " in " + document.getElementById('cLoc').value, logo: "https://cdn-icons-png.flaticon.com/512/3004/3004458.png" },
-callback: function(data){ alert("✅ Payment Successful! TX: " + data.transaction_id + " - We will call you!"); },
-onclose: function(){}
-});
-}
-
-function payMobileMoney(){
-if(!validateForm()) return;
-const phone=document.getElementById('cPhone').value;
-alert("📱 Mobile Money:\nMTN: *165*3#\nAirtel: *185*9#\nSend " + currentRate.symbol + currentRate.deposit + " to 077XXXXXX\n\nThen WhatsApp receipt to " + phone);
-// Replace with Pesapal or MTN MoMo API later
-}
-
-updateCurrency();
+render();
+try{fetch(API+'/caregivers').then(r=>r.json()).then(d=>{ if(d.length){caregivers=d; localStorage.setItem('caregivers',JSON.stringify(d)); render();}})}catch{}
 </script>
 </body>
 </html>
