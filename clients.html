@@ -1,20 +1,19 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Book Nurse - REAL LIVE 35k + GPS</title></head>
-<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:16px;">
-<div style="width:100%;max-width:480px;">
-<div style="background:#0f172a;color:white;border-radius:20px;padding:20px;text-align:center;">
-<p style="margin:0;color:#86efac;font-size:11px;font-weight:bold;">🔴 REAL BOOKING - LIVE GPS + WALLET</p>
-<h1 style="margin:10px 0 0 0;font-size:24px;font-weight:900;">Book Professional Nurse</h1>
-<p style="margin:6px 0 0 0;color:#94a3b8;font-size:13px;">35k/day • GPS LIVE tracking • Pay via MoMo • Real nurse comes</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Book Care</title></head>
+<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:12px;">
+<div style="width:100%;max-width:400px;">
+<div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;color:white;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:11px;"><span id="who">👋</span><button onclick="localStorage.removeItem('hch_role');localStorage.removeItem('hch_user');location.href='login.html'" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;font-weight:bold;">Logout</button></div><script>let u=localStorage.getItem('hch_user');try{u=JSON.parse(u).name||u}catch(e){}document.getElementById('who').innerText='👋 '+ (u||'Client') +' • CLIENT';if(!localStorage.getItem('hch_role')){location.href='login.html';}</script>
+<div style="background:#0f172a;color:white;border-radius:16px;padding:16px;text-align:center;"><h2 style="margin:0;">🤗 Book Trusted Nurse</h2><p style="margin:6px 0 0 0;color:#86efac;font-size:12px;">35k/day • LIVE GPS • With Love</p></div>
+<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:12px;">
+<input id="name" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;box-sizing:border-box;" placeholder="Your Name">
+<input id="phone" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:8px;box-sizing:border-box;" placeholder="Phone 07XXXXXXXX">
+<input id="loc" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:8px;box-sizing:border-box;" placeholder="Location - e.g. Ntinda, Kampala">
+<select id="service" style="width:100%;padding:12px;border-radius:10px;border:1px solid #e2e8f0;margin-top:8px;box-sizing:border-box;"><option>Elderly Care 35k</option><option>Baby Care 35k</option><option>Post-Surgery 40k</option><option>Daily Nursing 35k</option></select>
+<button onclick="book()" style="width:100%;background:#22c55e;color:white;padding:14px;border-radius:12px;border:none;font-weight:900;margin-top:12px;">Book Now 💚</button>
+<div id="msg" style="margin-top:10px;font-size:12px;text-align:center;font-weight:bold;"></div>
 </div>
-<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:16px;">
-<h3 style="margin:0 0 12px 0;font-size:15px;">📝 Real Booking Form</h3>
-<input id="cname" placeholder="Your Full Name *" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<input id="cphone" placeholder="Your Phone - 07... *" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<input id="cloc" placeholder="Your Location - e.g. Ntinda, Kampala *" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<select id="cservice" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<option>Professional Nursing - UGX 35k/day</option>
-<option>Post-Surgery Care - UGX 35k/day</option>
-<option>Mother & Baby - UGX 35k/day</option>
-<option>Elderly Care - UGX 35k/day</option>
-</select>
-<select
+<a href="index.html" style="display:block;text-align:center;color:#64748b;font-size:11px;margin-top:12px;text-decoration:none;">← Back Home</a>
+</div>
+<script>
+function book(){let n=document.getElementById('name').value.trim();let p=document.getElementById('phone').value.trim();let l=document.getElementById('loc').value.trim();let s=document.getElementById('service').value;let m=document.getElementById('msg');if(!n||!p||!l){m.innerHTML='<span style=color:red>Fill all</span>';return;}let bks=JSON.parse(localStorage.getItem('hch_bookings')||'[]');bks.push({name:n,phone:p,location:l,service:s,time:new Date().toISOString()});localStorage.setItem('hch_bookings',JSON.stringify(bks));m.innerHTML='<span style=color:green>✅ Booked! Nurse coming with LIVE GPS. CEO sees you LIVE!</span>';}
+</script>
+</body></html>
