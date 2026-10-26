@@ -1,56 +1,20 @@
-<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>Join as Nurse - REAL GPS + WALLET</title></head>
-<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:16px;">
-<div style="width:100%;max-width:480px;">
-<div style="background:#0f172a;color:white;border-radius:20px;padding:20px;text-align:center;">
-<p style="margin:0;color:#86efac;font-size:11px;font-weight:bold;">👩‍⚕️ REAL NURSE REGISTRATION - LIVE GPS</p>
-<h1 style="margin:10px 0 0 0;font-size:22px;font-weight:900;">Join as Professional Nurse</h1>
-<p style="margin:6px 0 0 0;color:#94a3b8;font-size:13px;">Earn UGX 35k/day • LIVE GPS tracking • Wallet LIVE</p>
+<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Nurse Dashboard</title></head>
+<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:12px;">
+<div style="width:100%;max-width:400px;">
+<div style="display:flex;justify-content:space-between;align-items:center;background:#0f172a;color:white;padding:10px 12px;border-radius:12px;margin-bottom:12px;font-size:11px;"><span id="who">👋 Nurse</span><button onclick="localStorage.removeItem('hch_role');localStorage.removeItem('hch_user');location.href='login.html'" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;font-weight:bold;">Logout</button></div><script>let u=localStorage.getItem('hch_user');try{u=JSON.parse(u).name||u}catch(e){}document.getElementById('who').innerText='👋 '+ (u||'Nurse') +' • NURSE';if(!localStorage.getItem('hch_role')){location.href='login.html';}</script>
+<div style="background:#0f172a;color:white;border-radius:16px;padding:16px;text-align:center;"><h2 style="margin:0;">👩‍⚕️ Nurse Dashboard</h2><p style="margin:6px 0 0 0;color:#86efac;font-size:11px;">Serve with heart • LIVE GPS</p></div>
+<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:12px;text-align:center;">
+<p style="margin:0;font-size:13px;font-weight:bold;">📍 Your LIVE GPS</p>
+<p id="gpsStatus" style="margin:8px 0 0 0;font-size:11px;color:#64748b;">GPS OFF - Click START</p>
+<button id="gpsBtn" onclick="toggleGPS()" style="width:100%;background:#22c55e;color:white;padding:14px;border-radius:12px;border:none;font-weight:900;margin-top:12px;">📍 START GPS</button>
 </div>
-<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:16px;">
-<h3 style="margin:0 0 12px 0;font-size:15px;">📝 Real Nurse Application</h3>
-<input id="nname" placeholder="Full Name - e.g. Grace Nakato *" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<input id="nphone" placeholder="Phone - 07... *" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<input id="nloc" placeholder="Your Area - e.g. Ntinda, Kampala *" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<select id="nskill" style="width:100%;padding:12px;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:10px;box-sizing:border-box;">
-<option>Professional Nursing</option><option>Midwifery</option><option>Elderly Care</option><option>Post-Surgery</option><option>Mother & Baby</option>
-</select>
-<div style="background:#f0fdf4;border:1px solid #22c55e;border-radius:10px;padding:12px;margin-bottom:12px;">
-<p style="margin:0;font-size:12px;font-weight:bold;">📍 REAL GPS - REQUIRED:</p>
-<p id="gpsStatus" style="margin:6px 0 0 0;font-size:12px;color:#334155;">GPS: Not started. Click START GPS below to go LIVE on CEO map.</p>
-<p id="gpsCoords" style="margin:4px 0 0 0;font-size:11px;color:#16a34a;"></p>
-</div>
-<button onclick="startGPS()" style="width:100%;background:#0f172a;color:white;padding:12px;border:none;border-radius:12px;font-weight:bold;margin-bottom:10px;">📍 START REAL GPS - GO LIVE</button>
-<button onclick="registerNurse()" style="width:100%;background:#22c55e;color:white;padding:14px;border:none;border-radius:12px;font-weight:bold;font-size:15px;">✅ REGISTER AS NURSE - EARN 35K/DAY</button>
-<p style="margin:10px 0 0 0;color:#64748b;font-size:11px;text-align:center;">By joining, you agree to share LIVE GPS when on duty. Clients track you.</p>
-</div>
-<div style="background:#0f172a;color:white;border-radius:16px;padding:16px;margin-top:16px;">
-<h3 style="margin:0 0 10px 0;font-size:14px;">💰 How You Earn REAL Money</h3>
-<p style="margin:0;color:#94a3b8;font-size:12px;line-height:1.6;">
-• Client books → You get WhatsApp<br>
-• You click START GPS → Client sees you LIVE<br>
-• You go to client → Client pays 35k to CEO MoMo<br>
-• CEO sends you 28k (80%) via MoMo instantly<br>
-• CEO keeps 7k (20%) in wallet<br><br>
-<span style="color:#4ade80;">Real nurses registered: <span id="nCount">0</span></span>
-</p>
-<a href="admin-live-map.html" style="display:block;background:#22c55e;color:white;padding:10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;margin-top:12px;font-size:13px;">📍 SEE YOURSELF LIVE ON CEO MAP</a>
-</div>
-<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:16px;">
-<h3 style="margin:0 0 10px 0;font-size:14px;">👩‍⚕️ Real Nurses LIVE Now</h3>
-<div id="nurseList"><p style="color:#94a3b8;font-size:12px;text-align:center;padding:10px 0;">No nurses yet. Be first to register LIVE!</p></div>
-</div>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:16px;padding-bottom:40px;">
-<a href="index.html" style="background:white;border:1px solid #e2e8f0;padding:12px;border-radius:12px;text-align:center;text-decoration:none;color:black;font-weight:bold;font-size:12px;">Home</a>
-<a href="wallet.html" style="background:#22c55e;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">Wallet</a>
-<a href="clients.html" style="background:#0f172a;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">Clients</a>
-</div>
+<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:12px;margin-top:12px;"><h3 style="margin:0;font-size:12px;">📋 Assigned Clients</h3><div id="list" style="margin-top:8px;font-size:12px;">Loading...</div></div>
+<a href="index.html" style="display:block;text-align:center;color:#64748b;font-size:11px;margin-top:12px;text-decoration:none;">← Home</a>
 </div>
 <script>
-let nurses=JSON.parse(localStorage.getItem('real_nurses')||'[]');
-let watchId=null;let currentPos=null;
-function renderN(){document.getElementById('nCount').innerText=nurses.length;if(nurses.length>0){let h='';nurses.slice().reverse().slice(0,6).forEach(n=>{h+=`<div style="background:#f8fafc;border-radius:10px;padding:10px;margin-top:8px;display:flex;justify-content:space-between;"><div><p style="margin:0;font-weight:bold;font-size:13px;">${n.name} - ${n.loc}</p><p style="margin:2px 0 0 0;font-size:11px;color:#64748b;">${n.skill} • ${n.phone} • GPS:${n.gps?' LIVE':' OFF'}</p></div><p style="margin:0;color:#16a34a;font-weight:bold;font-size:11px;">${n.gps?'🔴 LIVE':''}</p></div>`});document.getElementById('nurseList').innerHTML=h;}}
-function startGPS(){if(!navigator.geolocation)return alert('GPS not supported on this phone');document.getElementById('gpsStatus').innerText='📡 Starting REAL GPS... Allow location!';navigator.geolocation.getCurrentPosition(pos=>{currentPos=pos;let lat=pos.coords.latitude.toFixed(5);let lng=pos.coords.longitude.toFixed(5);document.getElementById('gpsStatus').innerText='✅ REAL GPS LIVE - You are visible on CEO map!';document.getElementById('gpsCoords').innerText=`Lat: ${lat}, Lng: ${lng} • Accuracy: ${pos.coords.accuracy.toFixed(0)}m`;localStorage.setItem('nurse_gps',JSON.stringify({lat,lng,time:Date.now()}));watchId=navigator.geolocation.watchPosition(p=>{currentPos=p;localStorage.setItem('nurse_gps',JSON.stringify({lat:p.coords.latitude,lng:p.coords.longitude,time:Date.now()}));document.getElementById('gpsCoords').innerText=`Live: ${p.coords.latitude.toFixed(5)}, ${p.coords.longitude.toFixed(5)} • Moving...`;},null,{enableHighAccuracy:true});alert(`REAL GPS LIVE!\n\nLat: ${lat}\nLng: ${lng}\n\nCEO can see you LIVE on:\nhome-care-hero-web.vercel.app/admin-live-map.html\n\nKeep this page open to stay LIVE.`);},err=>{alert('GPS Error: '+err.message+'\nAllow location permission!');document.getElementById('gpsStatus').innerText='❌ GPS failed - Allow location permission';},{enableHighAccuracy:true});}
-function registerNurse(){let n=document.getElementById('nname').value.trim();let p=document.getElementById('nphone').value.trim();let l=document.getElementById('nloc').value.trim();let s=document.getElementById('nskill').value;if(!n||!p||!l)return alert('Fill Name, Phone, Location');let gps=currentPos?true:false;if(!gps&&!confirm('Register WITHOUT GPS? You should START GPS first to go LIVE! Continue?'))return;nurses.push({name:n,phone:p,loc:l,skill:s,gps:gps,time:new Date().toLocaleString(),lat:currentPos?currentPos.coords.latitude:null,lng:currentPos?currentPos.coords.longitude:null});localStorage.setItem('real_nurses',JSON.stringify(nurses));renderN();alert(`REAL REGISTRATION DONE!\n\n${n} - ${l}\nSkill: ${s}\nGPS: ${gps?'LIVE ✅':'OFF - Start GPS!'}\n\nYou will get clients via WhatsApp on ${p}\nEarn 28k per day (80%)\n\nCEO sees you on live map now!`);document.getElementById('nname').value='';document.getElementById('nphone').value='';document.getElementById('nloc').value='';}
-renderN();let savedGPS=JSON.parse(localStorage.getItem('nurse_gps')||'null');if(savedGPS){document.getElementById('gpsStatus').innerText='✅ GPS was LIVE before';document.getElementById('gpsCoords').innerText=`Last: ${savedGPS.lat}, ${savedGPS.lng}`;}
+let watchId=null;
+function toggleGPS(){let btn=document.getElementById('gpsBtn');let st=document.getElementById('gpsStatus');if(watchId){navigator.geolocation.clearWatch(watchId);watchId=null;btn.innerText='📍 START GPS';btn.style.background='#22c55e';st.innerText='GPS OFF';localStorage.removeItem('nurse_gps');return;}if(!navigator.geolocation){st.innerText='GPS not supported';return;}watchId=navigator.geolocation.watchPosition(pos=>{let d={lat:pos.coords.latitude,lng:pos.coords.longitude,time:new Date().toISOString()};localStorage.setItem('nurse_gps',JSON.stringify(d));st.innerText=`LIVE: ${d.lat.toFixed(5)}, ${d.lng.toFixed(5)}`;btn.innerText='🟢 GPS LIVE';btn.style.background='#0f172a';},err=>{st.innerText='Error: '+err.message;},{enableHighAccuracy:true});}
+function load(){let bks=JSON.parse(localStorage.getItem('hch_bookings')||'[]');let h='';if(bks.length==0)h='<p style=color:#94a3b8>No bookings</p>';else bks.slice().reverse().forEach(b=>{h+=`<div style="border:1px solid #e2e8f0;border-radius:8px;padding:8px;margin-top:6px;"><b>${b.name}</b> • ${b.phone}<br><span style=color:#64748b>${b.location} • ${b.service}</span></div>`});document.getElementById('list').innerHTML=h;}
+load();setInterval(load,3000);
 </script>
 </body></html>
