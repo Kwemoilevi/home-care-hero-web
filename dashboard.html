@@ -1,61 +1,66 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Admin Dashboard</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<style>
-body{font-family:Arial;padding:16px;background:#f5f7fb;max-width:700px;margin:auto}
-.card{background:#fff;padding:16px;border-radius:12px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}
-.btn{padding:8px 12px;border:none;border-radius:6px;margin:4px;cursor:pointer}
-.wa{background:#25D366;color:#fff;border-radius:20px;padding:6px 14px}
-.verify{background:#0d6efd;color:#fff;border-radius:20px;padding:6px 14px}
-.del{background:#dc3545;color:#fff;border-radius:20px;padding:6px 14px}
-.meta{color:#666;font-size:14px}
-</style>
-</head>
-<body>
-<div id="login" class="card" style="max-width:400px;margin:80px auto;text-align:center">
-<h2>🔒 Admin Login</h2>
-<input id="pwd" type="password" placeholder="Password" style="width:100%;padding:12px">
-<button onclick="login()" style="width:100%;padding:12px;margin-top:10px;background:#000;color:#fff;border-radius:8px">Login</button>
-<p id="msg"></p>
-<small>Pass: 0772101875</small>
-</div>
+<!DOCTYPE html><html><head><title>Home Care Hero - All System</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font-family:Arial;padding:12px;background:#f5f7fb;max-width:800px;margin:auto}.card{background:#fff;padding:16px;border-radius:12px;margin:10px 0;box-shadow:0 2px 8px rgba(0,0,0,.1)}.btn{padding:8px 12px;border:none;border-radius:6px;margin:4px;cursor:pointer;text-decoration:none;display:inline-block;color:#fff}.wa{background:#25D366}.verify{background:#0d6efd}.del{background:#dc3545}.black{background:#000}#loginCard{max-width:400px;margin:60px auto;text-align:center}h2{margin:8px 0}</style></head><body>
+<div id="loginCard" class="card"><h2>🔒 Admin - Home Care Hero</h2><p>Access All System</p><input id="pwd" type="password" placeholder="Enter Password" style="width:100%;padding:12px;border-radius:8px;border:1px solid #ddd"><button onclick="login()" style="width:100%;padding:12px;margin-top:10px;background:#0d6efd;color:#fff;border:none;border-radius:8px;font-weight:bold">Login & Open All</button><p id="loginMsg" style="color:red"></p><small>Password: 0772101875</small></div>
+
 <div id="dash" style="display:none">
-<h1>📊 Dashboard</h1>
-<button onclick="loadData()">Refresh</button> <button onclick="logout()">Logout</button>
-<div id="caregivers"></div>
+<h1>📊 Dashboard - All System</h1>
+<button onclick="load()" class="btn black">🔄 Refresh</button> <button onclick="logout()" class="btn del">Logout</button>
+<p id="status" style="font-size:13px;color:#555">Ready - API: home-care-hero-api.onrender.com</p>
+
+<h2>🔗 Quick Access - All System At Once</h2>
+<div class="card">
+<a href="/" class="btn black">🏠 Home</a>
+<a href="/register.html" class="btn verify">📝 Register Caregiver</a>
+<a href="/index.html" class="btn verify">💰 Booking Page</a>
+<a href="https://home-care-hero-api.onrender.com/" target="_blank" class="btn black">🔌 API Status</a>
 </div>
+
+<h2>👩‍⚕️ Caregivers (<span id="cCount">0</span>) - Local + API</h2>
+<div id="caregivers">Loading... wait 60s if API sleeping...</div>
+
+<h2>📦 Bookings - Local Storage</h2>
+<div id="bookings"></div>
+</div>
+
 <script>
-const API="https://home-care-hero-api-v2.onrender.com";
-const PASS="0772101875";
-function login(){if(document.getElementById('pwd').value===PASS){localStorage.setItem('a','yes');show()}else{document.getElementById('msg').innerText="Wrong pass"}}
-function show(){document.getElementById('login').style.display='none';document.getElementById('dash').style.display='block';loadData()}
-function logout(){localStorage.removeItem('a');location.reload()}
-if(localStorage.getItem('a')==='yes')show();
-async function loadData(){
- const d=document.getElementById('caregivers');d.innerHTML="Loading... waking server (wait 10s)...";
+const API="https://home-care-hero-api.onrender.com";
+const ADMIN_PASS="0772101875";
+function login(){if(document.getElementById('pwd').value===ADMIN_PASS){localStorage.setItem('admin','yes');showDash();}else{document.getElementById('loginMsg').textContent='Wrong password - use 0772101875';}}
+function showDash(){document.getElementById('loginCard').style.display='none';document.getElementById('dash').style.display='block';load();}
+function logout(){localStorage.removeItem('admin');location.reload();}
+if(localStorage.getItem('admin')==='yes')showDash();
+
+async function load(){
+ const s=document.getElementById('status');
+ const d=document.getElementById('caregivers');
+ const b=document.getElementById('bookings');
+ s.textContent='⏳ Waking up API... wait 60 seconds, Render is sleeping...';
+ d.innerHTML='⏳ Trying API...';
  try{
-  let r; for(let i=0;i<3;i++){ try{ r=await fetch(API+"/api/caregivers"); if(r.ok) break; }catch(e){} await new Promise(x=>setTimeout(x,8000)); }
-  const data=await r.json(); const list=Array.isArray(data)?data:(data.caregivers||[]);
-  if(list.length===0){d.innerHTML="No caregivers";return;}
-  d.innerHTML="";
-  list.forEach(c=>{
-   const name=c.fullName||c.name||"Unnamed";
-   const phone=c.phone||c.phoneNumber||"";
-   const email=c.email||"";
-   const exp=c.yearsExperience||c.experience||"";
-   const gender=c.gender||"";
-   const id=c._id||c.id||"";
-   const verified=c.verified||false;
-   const div=document.createElement('div'); div.className="card";
-   div.innerHTML=`<b>${name} ${verified?'✅':''}</b><br>${phone}<br><span class="meta">${email}${email&&exp?' - ':''}${exp?exp+' Years':''}${(email||exp)&&gender?' - ':''}${gender}</span><br><br><button class="btn wa" onclick="location.href='tel:${phone}'">Call</button> <button class="btn verify" onclick="verifyCaregiver('${id}')">${verified?'Verified':'Verify'}</button> <button class="btn del" onclick="deleteCaregiver('${id}')">Delete</button>`;
-   d.appendChild(div);
-  });
- }catch(e){ d.innerHTML="Failed. Tap Refresh again after 60s.<br>"+e.message; }
+   const ctrl=new AbortController(); setTimeout(()=>ctrl.abort(),15000);
+   const r=await fetch(API+'/api/caregivers',{signal:ctrl.signal});
+   const j=await r.json();
+   s.textContent='✅ API Online - '+j.count+' caregivers from API';
+   document.getElementById('cCount').textContent=j.count;
+   if(j.caregivers.length===0) d.innerHTML='No caregivers in API yet - check Local below';
+   else d.innerHTML=j.caregivers.map(c=>{
+     let p=(c.phone||'').replace(/[^0-9]/g,''); if(p.startsWith('0'))p='256'+p.slice(1);
+     return `<div class=card><b>${c.name||'No name'}</b> ${(c.verified?'<span style=background:green;color:#fff;padding:2px 6px;border-radius:4px;font-size:10px>VERIFIED</span>':'<span style=background:orange;padding:2px 6px;border-radius:4px;font-size:10px>UNVERIFIED</span>')}<br>📞 ${c.phone||''}<br>📍 ${c.location||''} | ${c.skill||''}<br><a class="btn wa" href="https://wa.me/${p}" target="_blank">WhatsApp</a><button class="btn verify" onclick="verify('${c.id}')">Verify</button><button class="btn del" onclick="delCaregiver('${c.id}')">Delete</button></div>`;
+   }).join('');
+ }catch(e){
+   s.textContent='⚠️ API sleeping or error: '+e.message+'. Showing LOCAL data - Tap Refresh after 60s';
+   // Show local caregivers
+   let local=JSON.parse(localStorage.getItem('hch_caregivers')||'[]');
+   document.getElementById('cCount').textContent=local.length+' (local)';
+   if(local.length===0) d.innerHTML='❌ API Failed + No local data.<br><br>1. Go to <a href="https://home-care-hero-api.onrender.com/" target="_blank">API link</a> to wake it up (wait until you see LIVE message)<br>2. Then come back and tap Refresh<br><br>Error: '+e.message;
+   else d.innerHTML=local.map(c=>`<div class=card><b>${c.name}</b> (LOCAL)<br>📞 ${c.phone}</div>`).join('');
+ }
+ // bookings from localStorage
+ try{
+   let books=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
+   if(books.length===0) b.innerHTML='<div class=card>No bookings yet in this phone. Bookings are saved on client phone.</div>';
+   else b.innerHTML=books.map(x=>`<div class=card><b>${x.id}</b> - ${x.name} - ${x.phone}<br>${x.service} - ${x.price} UGX<br>Status: ${x.status}<br><a class="btn wa" href="https://wa.me/${(x.phone||'').replace(/[^0-9]/g,'')}" target="_blank">WhatsApp Client</a></div>`).join('');
+ }catch(e){ b.innerHTML='Error loading bookings';}
 }
-async function verifyCaregiver(id){await fetch(API+'/api/caregivers/'+id+'/verify',{method:'PATCH'});loadData();}
-async function deleteCaregiver(id){if(!confirm("Delete?"))return;await fetch(API+'/api/caregivers/'+id,{method:'DELETE'});loadData();}
-</script>
-</body>
-</html>
+async function verify(id){ try{await fetch(API+'/api/caregivers/'+id+'/verify',{method:'POST'}); load();}catch(e){alert('API sleeping, wait 60s then try');} }
+async function delCaregiver(id){ if(!confirm('Delete?'))return; try{await fetch(API+'/api/caregivers/'+id,{method:'DELETE'}); load();}catch(e){alert('API sleeping');} }
+</script></body></html>
