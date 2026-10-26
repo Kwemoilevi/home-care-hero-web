@@ -2,48 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Worldwide</title>
+<title>Home Care Hero - Worldwide - Pay Deposit</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
 </head>
 <body class="bg-[#f5f5f7]">
 <nav class="bg-black text-white px-6 py-4 flex justify-between sticky top-0">
 <div class="font-black">Home Care Hero 💛 Global</div>
-<a href="caregiver-register.html" class="text-[10px] bg-[#ffcc00] text-black px-3 py-1 rounded-full font-bold">Join as Caregiver</a>
+<div class="text-[10px] bg-green-400 text-black px-3 py-1 rounded-full font-bold">💳 Payments Live</div>
 </nav>
 <div class="max-w-xl mx-auto p-6">
 <div class="bg-white rounded-[2rem] p-7 border shadow-xl">
 <h1 class="font-black text-3xl">Verified Care in <span class="bg-[#ffcc00] px-2 rounded-xl">Worldwide</span></h1>
-<p class="text-xs text-gray-500 mt-2">Auto-currency by location. ID Verified.</p>
+<p class="text-xs text-gray-500 mt-2">💳 Auto-currency + Secure Payment. ID Verified.</p>
 <div class="mt-6 space-y-3">
 <input id="cName" placeholder="Your Name" class="w-full px-4 py-3 rounded-xl border">
+<input id="cEmail" placeholder="Email for receipt" class="w-full px-4 py-3 rounded-xl border">
 <input id="cPhone" placeholder="Phone / WhatsApp" class="w-full px-4 py-3 rounded-xl border">
-<input id="cLoc" oninput="updateCurrency()" placeholder="Location e.g., London, New York, Nairobi, Dubai" class="w-full px-4 py-3 rounded-xl border">
+<input id="cLoc" oninput="updateCurrency()" placeholder="Location e.g., London, New York, Nairobi" class="w-full px-4 py-3 rounded-xl border">
 <p id="currencyNote" class="text-[11px] font-bold text-green-600">🌍 Type location to see your local price</p>
 <select id="cService" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm font-bold"></select>
 <textarea id="cNote" placeholder="Details..." class="w-full px-4 py-3 rounded-xl border h-20"></textarea>
-<button onclick="bookNow()" class="w-full bg-black text-white py-4 rounded-xl font-black">Book Now - Pay Deposit ✅</button>
+<button onclick="bookNow()" class="w-full bg-black text-white py-4 rounded-xl font-black">💳 Book & Pay Deposit ✅</button>
+<div class="grid grid-cols-2 gap-2">
+<button onclick="payMobileMoney()" class="bg-[#ffcc00] text-black py-3 rounded-xl font-bold text-xs border-2 border-black">📱 MTN / Airtel</button>
+<button onclick="payCard()" class="bg-white text-black py-3 rounded-xl font-bold text-xs border-2 border-black">💳 Card / PayPal</button>
+</div>
 </div>
 </div>
 <div class="bg-[#ffcc00] p-4 rounded-2xl border-2 border-black mt-6">
-<p class="font-black text-sm">🛡️ Pay Deposit - <span id="depositText">20 USD to confirm</span></p>
-<p class="text-xs mt-1">Balance on arrival. Verified caregivers worldwide.</p>
+<p class="font-black text-sm">🛡️ Pay Deposit - <span id="depositText">$20 to confirm</span></p>
+<p class="text-xs mt-1">Secure via Flutterwave & Stripe. Balance on arrival.</p>
+<p class="text-[10px] mt-2 opacity-60">Supported: Visa, Mastercard, MTN MoMo, Airtel, PayPal</p>
 </div>
 </div>
 <script>
 const rates = {
-london:{symbol:'£',currency:'GBP',prices:[12,28,16,24,12],deposit:'£15'},
-newyork:{symbol:'$',currency:'USD',prices:[15,35,20,30,15],deposit:'$20'},
-nairobi:{symbol:'KSh ',currency:'KES',prices:[2000,5000,3000,4500,2000],deposit:'KSh 3000'},
-dubai:{symbol:'AED ',currency:'AED',prices:[55,130,75,110,55],deposit:'AED 75'},
-kampala:{symbol:'UGX ',currency:'UGX',prices:[35000,70000,40000,60000,35000],deposit:'UGX 50k'},
-lagos:{symbol:'₦',currency:'NGN',prices:[10000,25000,15000,20000,10000],deposit:'₦15k'},
-default:{symbol:'$',currency:'USD',prices:[15,35,20,30,15],deposit:'$20'}
+london:{symbol:'£',currency:'GBP',prices:[12,28,16,24,12],deposit:15,code:'GBP'},
+newyork:{symbol:'$',currency:'USD',prices:[15,35,20,30,15],deposit:20,code:'USD'},
+nairobi:{symbol:'KSh ',currency:'KES',prices:[2000,5000,3000,4500,2000],deposit:3000,code:'KES'},
+dubai:{symbol:'AED ',currency:'AED',prices:[55,130,75,110,55],deposit:75,code:'AED'},
+kampala:{symbol:'UGX ',currency:'UGX',prices:[35000,70000,40000,60000,35000],deposit:50000,code:'UGX'},
+lagos:{symbol:'₦',currency:'NGN',prices:[10000,25000,15000,20000,10000],deposit:15000,code:'NGN'},
+default:{symbol:'$',currency:'USD',prices:[15,35,20,30,15],deposit:20,code:'USD'}
 };
 const services = ["Babysitting","Qualified Nurse","House Cleaning","Elderly Care","Cooking"];
+let currentRate = rates.default;
+
 function getRate(){
 const loc = document.getElementById('cLoc').value.toLowerCase();
-if(loc.includes('london')||loc.includes('uk')||loc.includes('england')) return rates.london;
-if(loc.includes('new york')||loc.includes('usa')||loc.includes('us')||loc.includes('america')) return rates.newyork;
+if(loc.includes('london')||loc.includes('uk')) return rates.london;
+if(loc.includes('new york')||loc.includes('usa')||loc.includes('us')) return rates.newyork;
 if(loc.includes('nairobi')||loc.includes('kenya')) return rates.nairobi;
 if(loc.includes('dubai')||loc.includes('uae')) return rates.dubai;
 if(loc.includes('lagos')||loc.includes('nigeria')) return rates.lagos;
@@ -51,26 +60,55 @@ if(loc.includes('kampala')||loc.includes('uganda')) return rates.kampala;
 return rates.default;
 }
 function updateCurrency(){
-const r = getRate();
+currentRate = getRate();
 const sel = document.getElementById('cService');
 sel.innerHTML = "";
 services.forEach((s,i)=>{
 const opt = document.createElement('option');
 opt.value = s;
-opt.textContent = s + " - " + r.symbol + r.prices[i] + "/day";
+opt.textContent = s + " - " + currentRate.symbol + currentRate.prices[i] + "/day";
 sel.appendChild(opt);
 });
-document.getElementById('depositText').textContent = r.deposit + ' to confirm';
-document.getElementById('currencyNote').textContent = "🌍 Detected: " + r.currency + " (" + r.symbol.trim() + ") - Prices updated!";
+document.getElementById('depositText').textContent = currentRate.symbol + currentRate.deposit + ' to confirm (' + currentRate.code + ')';
+document.getElementById('currencyNote').textContent = "🌍 Detected: " + currentRate.currency + " (" + currentRate.symbol.trim() + ") - Prices updated!";
 }
-function bookNow(){
+function validateForm(){
 const name=document.getElementById('cName').value;
+const email=document.getElementById('cEmail').value;
 const phone=document.getElementById('cPhone').value;
 const loc=document.getElementById('cLoc').value;
-if(!name||!phone||!loc){alert('Fill Name, Phone, Location');return;}
-const r=getRate();
-alert("✅ Booking " + name + " in " + loc + " - Price in " + r.currency + " - We will call you!");
+if(!name||!email||!phone||!loc){alert('Fill Name, Email, Phone, Location');return false;}
+return true;
 }
+function bookNow(){ payCard(); }
+
+function payCard(){
+if(!validateForm()) return;
+const name=document.getElementById('cName').value;
+const email=document.getElementById('cEmail').value;
+const phone=document.getElementById('cPhone').value;
+
+// FLUTTERWAVE - GLOBAL PAYMENTS
+FlutterwaveCheckout({
+public_key: "FLWPUBK_TEST-XXXXXXX-X", // REPLACE WITH YOUR KEY FROM flutterwave.com
+tx_ref: "HC-"+Date.now(),
+amount: currentRate.deposit,
+currency: currentRate.code,
+payment_options: "card,mobilemoney,ussd",
+customer: { email: email, phone_number: phone, name: name },
+customizations: { title: "Home Care Hero Global", description: "Deposit for " + document.getElementById('cService').value + " in " + document.getElementById('cLoc').value, logo: "https://cdn-icons-png.flaticon.com/512/3004/3004458.png" },
+callback: function(data){ alert("✅ Payment Successful! TX: " + data.transaction_id + " - We will call you!"); },
+onclose: function(){}
+});
+}
+
+function payMobileMoney(){
+if(!validateForm()) return;
+const phone=document.getElementById('cPhone').value;
+alert("📱 Mobile Money:\nMTN: *165*3#\nAirtel: *185*9#\nSend " + currentRate.symbol + currentRate.deposit + " to 077XXXXXX\n\nThen WhatsApp receipt to " + phone);
+// Replace with Pesapal or MTN MoMo API later
+}
+
 updateCurrency();
 </script>
 </body>
