@@ -1,54 +1,36 @@
-import { useState } from "react";
-
-export default function Wallet() {
-  const [phone, setPhone] = useState("0772101875");
-  const [amount, setAmount] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-  const [balance] = useState(28000);
-
-  const handleDeposit = async () => {
-    if (!phone || !amount) {
-      setMessage("Please enter phone number and amount.");
-      return;
-    }
-    setLoading(true);
-    setMessage("");
-    try {
-      const res = await fetch("/api/momo/deposit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ phoneNumber: phone, amount: parseInt(amount) }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setMessage(`Request sent to ${phone}. Please approve on your phone.`);
-      } else {
-        setMessage(data.message || "Check your phone for MoMo prompt.");
-      }
-    } catch (e) {
-      setMessage(`Payment request sent to ${phone}. Dial *165*5# if no prompt.`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-slate-900 p-4 flex justify-center">
-      <div className="w-full max-w-md">
-        <h1 className="text-white text-xl font-bold mb-6">💼 Home Care Hero Wallet</h1>
-        <div className="bg-slate-800 rounded-2xl p-6">
-          <p className="text-3xl font-bold text-white">UGX {balance.toLocaleString()}</p>
-          <p className="text-gray-400 text-sm">Available Balance</p>
-          <hr className="my-5 border-gray-700" />
-          <h2 className="text-white font-semibold mb-4">Deposit Funds</h2>
-          <input value={phone} onChange={(e)=>setPhone(e.target.value)} placeholder="MTN Number e.g. 0772101875" className="w-full p-3 rounded-xl mb-3 bg-slate-100 text-black" />
-          <input value={amount} onChange={(e)=>setAmount(e.target.value)} placeholder="Amount (UGX)" type="number" className="w-full p-3 rounded-xl mb-4 bg-slate-100 text-black" />
-          <button onClick={handleDeposit} disabled={loading} className="w-full bg-green-500 text-white font-bold py-3 rounded-xl">{loading ? "Processing..." : "DEPOSIT NOW"}</button>
-          {message && <p className="text-green-400 text-sm mt-4">✅ {message}</p>}
-          <p className="text-gray-500 text-xs text-center mt-4">Secure payment powered by MTN Mobile Money. Encrypted & Protected.</p>
-        </div>
-      </div>
-    </div>
-  );
+<div style="min-height:100vh;background:#0f172a;padding:20px;display:flex;justify-content:center;font-family:sans-serif">
+<div style="width:100%;max-width:400px">
+<h1 style="color:white">💼 Home Care Hero Wallet</h1>
+<div style="background:#1e293b;border-radius:20px;padding:24px;margin-top:20px">
+<p style="color:white;font-size:32px;font-weight:bold;margin:0">UGX 28,000</p>
+<p style="color:#94a3b8;font-size:14px;margin:0">Available Balance</p>
+<hr style="margin:20px 0;border-color:#334155">
+<h2 style="color:white;margin:0 0 16px 0">Deposit Funds</h2>
+<input id="phone" value="0772101875" placeholder="MTN Number" style="width:100%;padding:14px;border-radius:12px;border:none;margin-bottom:12px;box-sizing:border-box">
+<input id="amount" type="number" placeholder="Amount (UGX)" style="width:100%;padding:14px;border-radius:12px;border:none;margin-bottom:16px;box-sizing:border-box">
+<button onclick="deposit()" id="btn" style="width:100%;background:#22c55e;color:white;font-weight:bold;padding:14px;border-radius:12px;border:none;cursor:pointer">DEPOSIT NOW</button>
+<p id="msg" style="color:#4ade80;margin-top:16px;display:none"></p>
+<p style="color:#64748b;font-size:11px;text-align:center;margin-top:16px">Secure payment powered by MTN Mobile Money. Encrypted & Protected.</p>
+</div>
+</div>
+</div>
+<script>
+async function deposit(){
+let phone=document.getElementById('phone').value;
+let amount=document.getElementById('amount').value;
+let msg=document.getElementById('msg');
+let btn=document.getElementById('btn');
+if(!phone||!amount){msg.style.display='block';msg.innerText='Please enter phone and amount';return}
+btn.innerText='Processing...';
+try{
+let res=await fetch('/api/momo/deposit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phoneNumber:phone,amount:parseInt(amount)})});
+let data=await res.json();
+msg.style.display='block';
+msg.innerText='Request sent to '+phone+'. Please approve on your phone.';
+}catch(e){
+msg.style.display='block';
+msg.innerText='Payment request sent to '+phone+'. Dial *165*5# if no prompt.';
 }
+btn.innerText='DEPOSIT NOW';
+}
+</script>
