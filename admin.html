@@ -1,0 +1,107 @@
+<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width, initial-scale=1"><title>CEO DASHBOARD - MONITOR ALL LIVE</title></head>
+<body style="margin:0;background:#0f172a;font-family:sans-serif;display:flex;justify-content:center;padding:12px;">
+<div style="width:100%;max-width:600px;color:white;">
+<div style="background:linear-gradient(135deg,#0f172a,#14532d);border:1px solid #22c55e;border-radius:20px;padding:18px;text-align:center;">
+<p style="margin:0;color:#86efac;font-size:11px;font-weight:bold;">👨‍💼 CEO COMMAND CENTER - MONITOR ALL LIVE</p>
+<h1 style="margin:8px 0 0 0;font-size:22px;font-weight:900;">GLOBAL EMPIRE MONITOR</h1>
+<p style="margin:4px 0 0 0;color:#94a3b8;font-size:12px;">Real Bookings • Real Nurses • Real Wallet • Real GPS</p>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:14px;">
+<div style="background:#1e293b;border-radius:12px;padding:10px;"><p style="margin:0;font-size:10px;color:#94a3b8;">BOOKINGS</p><p id="sB" style="margin:4px 0 0 0;font-size:20px;font-weight:900;">0</p></div>
+<div style="background:#1e293b;border-radius:12px;padding:10px;"><p style="margin:0;font-size:10px;color:#94a3b8;">NURSES</p><p id="sN" style="margin:4px 0 0 0;font-size:20px;font-weight:900;">0</p></div>
+<div style="background:#1e293b;border-radius:12px;padding:10px;"><p style="margin:0;font-size:10px;color:#94a3b8;">WALLET</p><p id="sW" style="margin:4px 0 0 0;font-size:14px;font-weight:900;">0</p></div>
+<div style="background:#1e293b;border-radius:12px;padding:10px;"><p style="margin:0;font-size:10px;color:#94a3b8;">GPS LIVE</p><p id="sG" style="margin:4px 0 0 0;font-size:20px;font-weight:900;">0</p></div>
+</div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;">
+<a href="admin-live-map.html" style="background:#22c55e;color:white;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:13px;">📍 LIVE GPS MAP - UBER VIEW</a>
+<a href="wallet.html" style="background:white;color:black;padding:12px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:13px;">💰 WALLET: <span id="sW2">UGX 0</span></a>
+</div>
+<div style="background:#1e293b;border-radius:16px;padding:14px;margin-top:12px;">
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;font-size:14px;">📝 REAL CLIENT BOOKINGS - LIVE</h3><button onclick="clearBookings()" style="background:#ef4444;color:white;border:none;padding:4px 8px;border-radius:6px;font-size:10px;">CLEAR</button></div>
+<div id="bookList" style="margin-top:10px;"><p style="color:#64748b;font-size:12px;text-align:center;padding:12px 0;">No real bookings yet.<br>Share: home-care-hero-web.vercel.app/clients.html</p></div>
+</div>
+<div style="background:#1e293b;border-radius:16px;padding:14px;margin-top:12px;">
+<div style="display:flex;justify-content:space-between;align-items:center;"><h3 style="margin:0;font-size:14px;">👩‍⚕️ REAL NURSES - LIVE</h3><button onclick="clearNurses()" style="background:#ef4444;color:white;border:none;padding:4px 8px;border-radius:6px;font-size:10px;">CLEAR</button></div>
+<div id="nurseList" style="margin-top:10px;"><p style="color:#64748b;font-size:12px;text-align:center;padding:12px 0;">No nurses registered yet.<br>Share: home-care-hero-web.vercel.app/caregivers.html</p></div>
+</div>
+<div style="background:#1e293b;border-radius:16px;padding:14px;margin-top:12px;">
+<h3 style="margin:0 0 10px 0;font-size:14px;">💰 REAL EARNINGS & WALLET</h3>
+<div style="background:#0f172a;border-radius:10px;padding:12px;">
+<div style="display:flex;justify-content:space-between;"><p style="margin:0;color:#94a3b8;font-size:12px;">Total Bookings Value:</p><p id="earnTotal" style="margin:0;font-weight:bold;font-size:12px;">UGX 0</p></div>
+<div style="display:flex;justify-content:space-between;margin-top:6px;"><p style="margin:0;color:#94a3b8;font-size:12px;">Your Cut (20%):</p><p id="earnCut" style="margin:0;font-weight:bold;color:#4ade80;font-size:12px;">UGX 0</p></div>
+<div style="display:flex;justify-content:space-between;margin-top:6px;"><p style="margin:0;color:#94a3b8;font-size:12px;">Paid to Nurses (80%):</p><p id="earnNurse" style="margin:0;font-weight:bold;font-size:12px;">UGX 0</p></div>
+<hr style="border:0;border-top:1px solid #334155;margin:10px 0;">
+<div style="display:flex;justify-content:space-between;"><p style="margin:0;font-weight:bold;font-size:13px;">Wallet Balance NOW:</p><p id="earnBal" style="margin:0;font-weight:900;color:#4ade80;font-size:16px;">UGX 0</p></div>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+<button onclick="addEarn()" style="background:#22c55e;color:white;padding:10px;border:none;border-radius:10px;font-weight:bold;font-size:12px;">+ ADD REAL PAYMENT 35K</button>
+<button onclick="resetWallet()" style="background:#334155;color:white;padding:10px;border:none;border-radius:10px;font-weight:bold;font-size:12px;">RESET WALLET 0</button>
+</div>
+</div>
+<div style="background:#1e293b;border-radius:16px;padding:14px;margin-top:12px;">
+<h3 style="margin:0 0 10px 0;font-size:14px;">📍 LIVE GPS TRACKING - REAL TIME</h3>
+<div id="gpsList"><p style="color:#64748b;font-size:12px;text-align:center;padding:10px 0;">No GPS LIVE.<br>Nurses must click START GPS in caregivers.html</p></div>
+<button onclick="refreshGPS()" style="width:100%;background:#0f172a;border:1px solid #334155;color:white;padding:10px;border-radius:10px;font-weight:bold;margin-top:10px;font-size:12px;">🔄 REFRESH GPS LIVE</button>
+</div>
+<div style="background:linear-gradient(135deg,#14532d,#0f172a);border:1px solid #22c55e;border-radius:16px;padding:14px;margin-top:12px;">
+<h3 style="margin:0;font-size:14px;">🚀 CEO ACTIONS - GO LIVE</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;">
+<a href="https://wa.me/256700000000" style="background:#25D366;color:white;padding:10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:12px;">WhatsApp CEO</a>
+<button onclick="exportData()" style="background:white;color:black;padding:10px;border-radius:10px;font-weight:bold;font-size:12px;border:none;">📊 EXPORT DATA</button>
+</div>
+<p id="momoSet" style="margin:10px 0 0 0;color:#86efac;font-size:11px;">MTN MoMo: Not set (Set in wallet.html)</p>
+</div>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:12px;padding-bottom:40px;">
+<a href="index.html" style="background:white;color:black;padding:10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;">Home</a>
+<a href="clients.html" style="background:#334155;color:white;padding:10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;">Clients</a>
+<a href="caregivers.html" style="background:#334155;color:white;padding:10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;">Nurses</a>
+<a href="global.html" style="background:#334155;color:white;padding:10px;border-radius:10px;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;">Global</a>
+</div>
+</div>
+<script>
+function loadAll(){
+let bookings=JSON.parse(localStorage.getItem('real_bookings')||'[]');
+let nurses=JSON.parse(localStorage.getItem('real_nurses')||'[]');
+let bal=Number(localStorage.getItem('ceo_bal')||0);
+let cnt=Number(localStorage.getItem('ceo_cnt')||0);
+let tx=JSON.parse(localStorage.getItem('ceo_tx')||'[]');
+let gps=JSON.parse(localStorage.getItem('nurse_gps')||'null');
+let momo=localStorage.getItem('momo')||'Not set (Set in wallet.html)';
+document.getElementById('sB').innerText=bookings.length;
+document.getElementById('sN').innerText=nurses.length;
+document.getElementById('sW').innerText='UGX '+(bal>=1000?Math.round(bal/1000)+'k':bal);
+document.getElementById('sW2').innerText='UGX '+bal.toLocaleString();
+let liveN=nurses.filter(n=>n.gps).length;
+if(gps) liveN=Math.max(liveN,1);
+document.getElementById('sG').innerText=liveN;
+document.getElementById('momoSet').innerText='MTN MoMo: '+momo;
+let total=bookings.length*35000;
+document.getElementById('earnTotal').innerText='UGX '+total.toLocaleString();
+document.getElementById('earnCut').innerText='UGX '+(total*0.2).toLocaleString();
+document.getElementById('earnNurse').innerText='UGX '+(total*0.8).toLocaleString();
+document.getElementById('earnBal').innerText='UGX '+bal.toLocaleString();
+if(bookings.length>0){
+let h='';bookings.slice().reverse().forEach((b,i)=>{
+h+=`<div style="background:#0f172a;border-radius:10px;padding:10px;margin-top:8px;"><div style="display:flex;justify-content:space-between;"><div><p style="margin:0;font-weight:bold;font-size:13px;">${i+1}. ${b.name} - ${b.loc}</p><p style="margin:2px 0 0 0;font-size:11px;color:#94a3b8;">${b.phone} • ${b.service} • ${b.days} day(s) • ${b.time}</p></div><p style="margin:0;color:#4ade80;font-weight:bold;font-size:11px;">35k</p></div><div style="display:flex;gap:6px;margin-top:8px;"><a href="https://wa.me/${b.phone.replace(/[^0-9]/g,'')}" style="flex:1;background:#25D366;color:white;padding:6px;border-radius:6px;text-align:center;text-decoration:none;font-size:11px;font-weight:bold;">WhatsApp</a><button onclick="confirmBook(${i})" style="flex:1;background:#22c55e;color:white;padding:6px;border-radius:6px;border:none;font-size:11px;font-weight:bold;">Confirm +7k</button></div></div>`;
+});document.getElementById('bookList').innerHTML=h;
+}
+if(nurses.length>0){
+let h='';nurses.slice().reverse().forEach((n,i)=>{
+h+=`<div style="background:#0f172a;border-radius:10px;padding:10px;margin-top:8px;display:flex;justify-content:space-between;"><div><p style="margin:0;font-weight:bold;font-size:13px;">${i+1}. ${n.name} - ${n.loc}</p><p style="margin:2px 0 0 0;font-size:11px;color:#94a3b8;">${n.phone} • ${n.skill} • ${n.time} ${n.gps?'• 🔴 GPS LIVE':''}</p>${n.lat?`<p style="margin:2px 0 0 0;font-size:10px;color:#4ade80;">GPS: ${n.lat.toFixed(4)}, ${n.lng.toFixed(4)}</p>`:''}</div><a href="https://wa.me/${n.phone.replace(/[^0-9]/g,'')}" style="background:#334155;color:white;padding:6px 10px;border-radius:6px;text-decoration:none;font-size:11px;height:fit-content;">WA</a></div>`;
+});document.getElementById('nurseList').innerHTML=h;
+}
+if(gps || nurses.some(n=>n.lat)){
+let h='';if(gps){h+=`<div style="background:#0f172a;border-radius:10px;padding:10px;margin-top:8px;"><p style="margin:0;font-weight:bold;font-size:13px;">🔴 Last GPS Signal</p><p style="margin:2px 0 0 0;font-size:11px;color:#4ade80;">Lat: ${gps.lat}, Lng: ${gps.lng} • ${new Date(gps.time).toLocaleString()}</p><a href="https://maps.google.com/?q=${gps.lat},${gps.lng}" target="_blank" style="display:inline-block;background:#22c55e;color:white;padding:4px 8px;border-radius:6px;text-decoration:none;font-size:10px;margin-top:6px;">Open in Google Maps</a></div>`;}
+nurses.filter(n=>n.lat).forEach(n=>{h+=`<div style="background:#0f172a;border-radius:10px;padding:10px;margin-top:8px;"><p style="margin:0;font-weight:bold;font-size:13px;">${n.name} - ${n.loc}</p><p style="margin:2px 0 0 0;font-size:11px;color:#4ade80;">${n.lat.toFixed(5)}, ${n.lng.toFixed(5)}</p></div>`});
+document.getElementById('gpsList').innerHTML=h||'<p style="color:#64748b;font-size:12px;text-align:center;padding:10px 0;">No GPS yet</p>';
+}
+}
+function confirmBook(idx){
+let bookings=JSON.parse(localStorage.getItem('real_bookings')||'[]');
+let b=bookings[bookings.length-1-idx]||bookings[idx];
+if(!b)return;
+let bal=Number(localStorage.getItem('ceo_bal')||0);
+let cnt=Number(localStorage.getItem('ceo_cnt')||0);
+let tx=JSON.parse(localStorage.getItem('ceo_tx')||'[]');
+bal+=7000;cnt++;tx.push({name:b.name,loc:b.loc,amt:'UGX 35k',cut:'UGX 7k',time:new Date().toLocaleTimeString()});
+localStorage.setItem('ceo_bal',bal);localStorage.setItem('ceo_cnt',cnt);localStorage.setItem('ceo_tx',JSON.stringify
