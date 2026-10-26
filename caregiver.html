@@ -1,9 +1,89 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Caregivers - Global</title><style>*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}body{background:#f5f7fb;padding:16px}.header{background:#0f172a;color:#fff;padding:16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}.btn{padding:12px 18px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;width:100%}.item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between}.btn-sm{padding:6px 10px;font-size:12px;width:auto;background:#ef4444}a{color:#fff;text-decoration:none}</style></head><body>
-<div class="header"><div><b>🌍 Caregivers - GLOBAL</b><br><small>ALL SYSTEM</small></div><div style="display:flex;gap:8px"><a href="dashboard.html" style="background:#334155;padding:8px 12px;border-radius:8px">Dashboard</a><a href="client.html" style="background:#2563eb;padding:8px 12px;border-radius:8px">Clients</a></div></div>
-<div class="card"><h3>Add New Caregiver - Any Country</h3><input id="name" placeholder="Full Name"><select id="service"><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>Disability Care</option><option>House Help</option><option>Live-in Care</option></select><input id="phone" placeholder="Phone / WhatsApp - with country code +1, +44, +256..."><input id="location" placeholder="City - e.g. New York, London, Nairobi, Kampala"><select id="country"><option>USA</option><option>UK</option><option>Canada</option><option>Australia</option><option>Uganda</option><option>Kenya</option><option>Nigeria</option><option>South Africa</option><option>UAE</option><option>Other</option></select><button class="btn" onclick="addCaregiver()">+ Add Caregiver</button></div>
-<div class="card"><h3>Caregivers List (<span id="count">0</span>) - Worldwide</h3><div id="list"></div></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caregivers - GLOBAL FIXED</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#f5f7fb;padding:16px}
+.header{background:#0f172a;color:#fff;padding:16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
+input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}
+.btn{padding:12px 18px;background:#2563eb;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer;width:100%}
+.item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between;align-items:center}
+.btn-sm{padding:6px 10px;font-size:12px;width:auto;background:#ef4444;border:none;border-radius:6px;color:#fff;cursor:pointer}
+a{color:#fff;text-decoration:none}
+.badge{background:#e0e7ff;color:#3730a3;padding:2px 8px;border-radius:10px;font-size:11px}
+</style>
+</head>
+<body>
+<div class="header">
+<div><b>🌍 Caregivers - GLOBAL</b><br><small>ALL SYSTEM - FIXED</small></div>
+<div style="display:flex;gap:8px"><a href="dashboard.html" style="background:#334155;padding:8px 12px;border-radius:8px">Dashboard</a><a href="client.html" style="background:#2563eb;padding:8px 12px;border-radius:8px">Clients</a></div>
+</div>
+
+<div class="card">
+<h3>Add New Caregiver - Any Country</h3>
+<input id="name" placeholder="Full Name *">
+<select id="service">
+<option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>Disability Care</option><option>House Help</option><option>Live-in Care</option>
+</select>
+<input id="phone" placeholder="Phone / WhatsApp - with country code +1, +44, +256...">
+<input id="location" placeholder="City - e.g. New York, London, Nairobi, Kampala">
+<select id="country">
+<option>USA</option><option>UK</option><option>Canada</option><option>Australia</option><option>Uganda</option><option>Kenya</option><option>Nigeria</option><option>South Africa</option><option>UAE</option><option>Germany</option><option>Other</option>
+</select>
+<button class="btn" onclick="addCaregiver()">+ Add Caregiver</button>
+</div>
+
+<div class="card">
+<h3>Caregivers List (<span id="count">0</span>) - Worldwide</h3>
+<div id="list"></div>
+</div>
+
 <script>
-const API="https://home-care-hero-api.onrender.com"; let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]'); if(!caregivers.length) caregivers=[{name:'Sample Caregiver - Sarah',service:'Elderly Care',phone:'+256772101875',location:'Kampala',country:'Uganda'}];
-function save(){localStorage.setItem('caregivers',JSON.stringify(caregivers)); render();} function render(){document.getElementById('count').textContent=caregivers.length; document.getElementById('list').innerHTML=caregivers.map((c,i)=>`<div class="item"><div><b>${c.name}</b> <small>${c.country||''}</small><br><small>${c.service} • ${c.location} • ${c.phone}</small></div><button class="btn btn-sm" onclick="del(${i})">Delete</button></div>`).join('')||'<p style=color:#94a3b8>No caregivers</p>';}
-async function addCaregiver(){const obj={name:document.getElementById('name').value,service:document.getElementById('service').value,phone:document.getElementById('phone').value,location:document.getElementById('location').value,country:document.getElementById('country').value}; if(!obj.name) return alert('Enter name'); caregivers.unshift(obj); save(); document.getElementById('name').value=''; document.getElementById('phone').value=''; document.getElementById('location').value=''; try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}} function del(i){if(confirm('Delete?')){caregivers.splice(i,1); save();}} render(); try{fetch(API+'/caregivers').then(r=>r.json()).then(d=>{if(d.length){caregivers=d; save();}})}catch{}
-</script></body></html>
+const API="https://home-care-hero-api.onrender.com";
+let caregivers=JSON.parse(localStorage.getItem('caregivers')||'[]');
+if(!caregivers.length){
+  caregivers=[
+    {name:'Sample Caregiver - Sarah',service:'Elderly Care',phone:'+256772101875',location:'Kampala',country:'Uganda'},
+    {name:'Emily Johnson',service:'Child Care',phone:'+1 212 555 0100',location:'New York',country:'USA'},
+    {name:'Grace Atim',service:'Nursing',phone:'+44 20 7123 4567',location:'London',country:'UK'}
+  ];
+}
+localStorage.setItem('caregivers',JSON.stringify(caregivers));
+
+function save(){localStorage.setItem('caregivers',JSON.stringify(caregivers)); render();}
+function render(){
+  document.getElementById('count').textContent=caregivers.length;
+  document.getElementById('list').innerHTML=caregivers.map((c,i)=>`
+    <div class="item">
+      <div><b>${c.name}</b> <span class="badge">🌍 ${c.country||''}</span><br><small>${c.service} • ${c.location} • ${c.phone}</small></div>
+      <button class="btn-sm" onclick="del(${i})">Delete</button>
+    </div>
+  `).join('')||'<p style=color:#94a3b8>No caregivers</p>';
+}
+async function addCaregiver(){
+  const obj={
+    name:document.getElementById('name').value,
+    service:document.getElementById('service').value,
+    phone:document.getElementById('phone').value,
+    location:document.getElementById('location').value,
+    country:document.getElementById('country').value
+  };
+  if(!obj.name||!obj.phone) return alert('Enter name & phone');
+  caregivers.unshift(obj);
+  save();
+  document.getElementById('name').value=''; document.getElementById('phone').value=''; document.getElementById('location').value='';
+  try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}
+}
+function del(i){if(confirm('Delete this caregiver?')){caregivers.splice(i,1); save();}}
+render();
+try{
+  fetch(API+'/caregivers').then(r=>r.json()).then(d=>{
+    if(d&&d.length){caregivers=d; save();}
+  })
+}catch{}
+</script>
+</body>
+</html>
