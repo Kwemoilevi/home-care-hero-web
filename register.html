@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Join as Caregiver - Home Care Hero</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:linear-gradient(135deg,#2563eb,#7c3aed);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:16px}
+.box{background:white;padding:24px;border-radius:16px;width:100%;max-width:420px;box-shadow:0 20px 40px rgba(0,0,0,0.2)}
+h2{text-align:center;color:#0f172a;margin-bottom:8px}
+.sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:16px}
+input,select,textarea{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:10px;margin:6px 0;font-size:14px}
+.btn{width:100%;padding:14px;background:#2563eb;color:white;border:none;border-radius:10px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
+.success{background:#dcfce7;color:#166534;padding:12px;border-radius:8px;text-align:center;display:none;margin-top:10px}
+a{color:#2563eb;text-decoration:none;font-size:13px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>👩‍⚕️ Join as Caregiver</h2>
+  <p class="sub">Start earning with Home Care Hero Uganda</p>
+  <input id="name" placeholder="Full Name *">
+  <input id="phone" placeholder="Phone / WhatsApp - 077... *">
+  <select id="service"><option value="">Select Service *</option><option>Elderly Care</option><option>Child Care</option><option>Nursing</option><option>Disability Care</option><option>House Help</option></select>
+  <input id="location" placeholder="Location - e.g. Ntinda, Kampala *">
+  <input id="experience" placeholder="Years Experience - e.g. 3 years">
+  <textarea id="bio" placeholder="Short Bio - Tell clients about you"></textarea>
+  <button class="btn" onclick="register()">✅ Register Now</button>
+  <div id="ok" class="success">✅ Registered! We will call you soon. Redirecting...</div>
+  <p style="text-align:center;margin-top:12px"><a href="index.html">← Back to Home</a> | <a href="caregiver.html">Admin View</a></p>
+</div>
+<script>
+const API="https://home-care-hero-api.onrender.com";
+async function register(){
+  const data={name:document.getElementById('name').value,phone:document.getElementById('phone').value,service:document.getElementById('service').value,location:document.getElementById('location').value,experience:document.getElementById('experience').value,bio:document.getElementById('bio').value,date:new Date().toLocaleDateString()};
+  if(!data.name||!data.phone||!data.service||!data.location) return alert('Fill * fields');
+  let arr=JSON.parse(localStorage.getItem('caregivers')||'[]'); arr.unshift(data); localStorage.setItem('caregivers',JSON.stringify(arr));
+  try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)})}catch{}
+  document.getElementById('ok').style.display='block';
+  setTimeout(()=>{location.href='index.html'},2000);
+}
+</script>
+</body>
+</html>
