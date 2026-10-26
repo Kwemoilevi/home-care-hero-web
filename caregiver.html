@@ -1,1 +1,66 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width"><title>Caregiver</title><script src="https://cdn.tailwindcss.com"></script></head><body class="bg-gray-50"><div id="L" class="min-h-screen flex items-center justify-center p-6"><div class="bg-white p-7 rounded-[2rem] shadow-xl w-full max-w-sm border"><h1 class="font-black">Caregiver Login</h1><input id="p" placeholder="0772101875" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50 font-bold"><button onclick="login()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-bold">See Jobs</button><p id="e" class="hidden text-red-500 text-xs mt-2">Not approved. Call CEO.</p><a href="/caregiver-register.html" class="text-xs underline">Apply as new caregiver</a></div></div><div id="D" class="hidden"><nav class="bg-black text-white px-6 py-4 flex justify-between"><b>MY JOBS</b><span id="n" class="text-xs bg-white/20 px-3 py-1 rounded-full"></span></nav><div class="p-4 max-w-xl mx-auto"><div id="list"></div></div></div><script>let cp='';function login(){let ph=document.getElementById('p').value.replace(/\D/g,'');cp=ph;let apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]');let appr=JSON.parse(localStorage.getItem('hch_approved_caregivers')||'[]');let f=[...apps,...appr].find(a=>a.phone.replace(/\D/g,'').slice(-9)===ph.slice(-9));if(!f&&ph.slice(-9)!=='772101875'){document.getElementById('e').classList.remove('hidden');return;}document.getElementById('L').classList.add('hidden');document.getElementById('D').classList.remove('hidden');document.getElementById('n').textContent=f?f.name:'CEO';let books=JSON.parse(localStorage.getItem('hch_bookings')||'[]');let my=books;if(ph.slice(-9)!=='772101875')my=books.filter(b=>b.caregiverPhone&&b.caregiverPhone.replace(/\D/g,'').slice(-9)===ph.slice(-9));let h='';if(my.length===0)h='<p class="text-center text-xs text-gray-500 mt-10">No jobs yet.</p>';my.forEach(b=>{h+=`<div class="bg-white p-4 rounded-2xl border mt-3"><p class="font-black text-sm">${b.id} - ${b.name}</p><p class="text-xs">${b.phone} - ${b.price} UGX - ${b.status}</p><div class="flex gap-2 mt-2"><select onchange="upd('${b.id}',this.value)" class="text-xs bg-black text-white px-3 py-1 rounded-full"><option>Update</option><option>on the way</option><option>active</option><option>completed</option></select><a href="https://wa.me/${b.phone.replace(/[^0-9]/g,'')}" class="text-xs bg-green-500 text-white px-3 py-1 rounded-full">Call</a></div></div>`});document.getElementById('list').innerHTML=h;}function upd(id,s){let a=JSON.parse(localStorage.getItem('hch_bookings')||'[]');let i=a.findIndex(b=>b.id===id);if(i>-1){a[i].status=s;localStorage.setItem('hch_bookings',JSON.stringify(a));alert('Updated: '+s);}}</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caregivers - Home Care Hero</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
+body{background:#f5f7fb;padding:16px}
+.header{background:#0f172a;color:white;padding:16px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card{background:white;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06);margin-bottom:16px}
+input,select{width:100%;padding:12px;border:2px solid #e2e8f0;border-radius:8px;margin:6px 0}
+.btn{padding:12px 18px;background:#2563eb;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;width:100%}
+.item{border:1px solid #e2e8f0;border-radius:10px;padding:12px;margin-bottom:10px;display:flex;justify-content:space-between}
+.btn-sm{padding:6px 10px;font-size:12px;width:auto;background:#ef4444}
+a{color:white;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="header">
+  <div><b>👩‍⚕️ Caregivers</b><br><small>ALL SYSTEM</small></div>
+  <div style="display:flex;gap:8px"><a href="dashboard.html" style="background:#334155;padding:8px 12px;border-radius:8px">Dashboard</a><a href="clients.html" style="background:#2563eb;padding:8px 12px;border-radius:8px">Clients</a></div>
+</div>
+
+<div class="card">
+  <h3>Add New Caregiver</h3>
+  <input id="name" placeholder="Full Name - e.g. Sarah Namatovu">
+  <input id="service" placeholder="Service - Elderly Care / Child Care / Nursing">
+  <input id="phone" placeholder="Phone - 077...">
+  <input id="location" placeholder="Location - Kampala">
+  <button class="btn" onclick="addCaregiver()">+ Add Caregiver</button>
+</div>
+
+<div class="card">
+  <h3>Caregivers List (<span id="count">0</span>)</h3>
+  <div id="list"></div>
+</div>
+
+<script>
+const API="https://home-care-hero-api.onrender.com";
+let caregivers = JSON.parse(localStorage.getItem('caregivers')||'[]');
+if(!caregivers.length) caregivers=[{name:'Sample Caregiver - Sarah',service:'Elderly Care',phone:'0772101875',location:'Kampala'}];
+
+function save(){localStorage.setItem('caregivers',JSON.stringify(caregivers)); render();}
+
+function render(){
+  document.getElementById('count').textContent=caregivers.length;
+  document.getElementById('list').innerHTML=caregivers.map((c,i)=>`
+    <div class="item"><div><b>${c.name}</b><br><small>${c.service} • ${c.location} • ${c.phone}</small></div><button class="btn btn-sm" onclick="del(${i})">Delete</button></div>
+  `).join('') || '<p style="color:#94a3b8">No caregivers</p>';
+}
+
+async function addCaregiver(){
+  const obj={name:document.getElementById('name').value,service:document.getElementById('service').value,phone:document.getElementById('phone').value,location:document.getElementById('location').value};
+  if(!obj.name) return alert('Enter name');
+  caregivers.unshift(obj); save();
+  document.getElementById('name').value='';document.getElementById('service').value='';document.getElementById('phone').value='';document.getElementById('location').value='';
+  try{await fetch(API+'/caregivers',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(obj)})}catch{}
+}
+
+function del(i){ if(confirm('Delete?')){ caregivers.splice(i,1); save(); } }
+
+render();
+try{fetch(API+'/caregivers').then(r=>r.json()).then(d=>{ if(d.length){caregivers=d; save();} })}catch{}
+</script>
+</body>
+</html>
