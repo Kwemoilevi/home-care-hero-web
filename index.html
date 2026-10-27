@@ -1,23 +1,200 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Home Care Hero Uganda</title></head>
-<body style="margin:0;background:#f8fafc;font-family:sans-serif;display:flex;justify-content:center;padding:12px;">
-<div style="width:100%;max-width:520px;">
-<div id="logoutBar" style="display:none;justify-content:space-between;align-items:center;background:#f0fdf4;border:1px solid #22c55e;padding:8px 12px;border-radius:12px;margin-bottom:12px;font-size:11px;"><span id="who2"></span><button onclick="localStorage.clear();location.reload()" style="background:#ef4444;color:white;border:none;padding:6px 12px;border-radius:8px;font-weight:bold;">Logout 🔓</button></div><script>let r=localStorage.getItem('hch_role');if(r){document.getElementById('logoutBar').style.display='flex';let u=localStorage.getItem('hch_user');try{u=JSON.parse(u).name||u}catch(e){}document.getElementById('who2').innerText='👋 '+u+' • '+r.toUpperCase()+' • Karibu';}</script>
-<div style="background:linear-gradient(135deg,#0f172a 0%,#14532d 100%);color:white;border-radius:24px;padding:22px;text-align:center;border:1px solid #22c55e;">
-<p style="margin:0;color:#86efac;font-size:11px;letter-spacing:2px;font-weight:bold;">💚 WELCOME HOME — YOU ARE FAMILY NOW</p>
-<h1 style="margin:12px 0 0 0;font-size:26px;font-weight:900;">Karibu Home Care Hero<br><span style="color:#4ade80;">Your Health, Our Heart</span></h1>
-<p style="margin:8px 0 0 0;color:#94a3b8;font-size:11px;">Tusanyuse Okukulaba • Karibu Sana • Murakaza Neza</p>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px;">
-<a href="clients.html" style="background:#22c55e;color:white;padding:14px;border-radius:12px;text-align:center;text-decoration:none;font-weight:900;">🤗 BOOK 35K</a>
-<a href="caregivers.html" style="background:white;color:black;padding:14px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;">Join 👩‍⚕️</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Karibu Home Care Hero - Earn from Every Tap</title>
+
+<!-- GOOGLE ADMOB - REPLACE ca-pub-YOUR_ID WITH YOUR REAL ID WHEN YOU GET IT -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXX" crossorigin="anonymous"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8fafc;color:#0f172a;padding:12px;padding-bottom:90px}
+.topbar{background:white;border-radius:14px;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 10px rgba(0,0,0,.06);margin-bottom:12px}
+.logo{font-weight:900;color:#16a34a}
+.main-card{background:linear-gradient(135deg,#0f172a,#14532d);border-radius:22px;padding:22px;color:white;text-align:center;position:relative;overflow:hidden}
+.main-card:before{content:"";position:absolute;top:-50px;right:-50px;width:150px;height:150px;background:#22c55e;opacity:.15;border-radius:50%}
+h1{font-size:24px;line-height:1.2;margin:8px 0}
+h1 span{color:#22c55e}
+.sub{font-size:11px;color:#94e2b8;letter-spacing:1px}
+.btn-row{display:flex;gap:10px;margin-top:16px}
+.btn{flex:1;padding:14px;border-radius:14px;border:none;font-weight:800;font-size:14px;cursor:pointer}
+.btn-green{background:#22c55e;color:white}
+.btn-white{background:white;color:#0f172a}
+.nav-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.nav-btn{padding:12px;border-radius:14px;border:1px solid #e2e8f0;background:white;font-weight:700;font-size:13px;cursor:pointer;text-align:center;text-decoration:none;color:#0f172a;display:block}
+.nav-btn.wallet{background:#22c55e;color:white;border-color:#22c55e}
+.nav-btn.ceo{background:#0f172a;color:white;display:none} /* HIDDEN FROM PUBLIC - CEO USES SECRET LINK */
+.trust-card{background:white;border-radius:18px;padding:16px;margin-top:12px;box-shadow:0 2px 12px rgba(0,0,0,.05)}
+.trust-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+.trust-box{background:#f0fdf4;border-radius:12px;padding:12px;text-align:center}
+.trust-box b{font-size:13px}
+.ad-box{background:white;border:2px dashed #22c55e;border-radius:14px;padding:10px;margin-top:12px;text-align:center}
+.earn-float{position:fixed;bottom:10px;left:10px;right:10px;background:#0f172a;color:white;padding:12px;border-radius:14px;display:flex;justify-content:space-between;align-items:center;z-index:999;font-size:12px;box-shadow:0 10px 30px rgba(0,0,0,.3)}
+.small{font-size:10px;color:#94a3b8}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+<div class="logo" id="topLogo">👋 CEO • Karibu</div>
+<button onclick="logout()" style="background:#fee2e2;color:#dc2626;border:none;padding:6px 12px;border-radius:20px;font-weight:700;font-size:12px;cursor:pointer">Logout 🔒</button>
+</div>
+
+<div class="main-card">
+<p class="sub">💚 WELCOME HOME - YOU ARE FAMILY NOW</p>
+<h1>Karibu Home Care Hero<br><span>Your Health, Our Heart</span></h1>
+<p style="font-size:11px;color:#a7f3d0;margin-top:6px">Tusanyuse Okukulaba • Karibu Sana • Murakaza Neza</p>
+
+<div class="btn-row">
+<button class="btn btn-green" onclick="tap('book')">🤗 BOOK 35K</button>
+<button class="btn btn-white" onclick="tap('join')">Join 👩‍⚕️</button>
+</div>
+<p class="small" style="color:#86efac;margin-top:8px">Every tap earns you money • 50 UGX per tap</p>
+</div>
+
+<div class="nav-grid">
+<a class="nav-btn wallet" href="wallet.html" onclick="tap('wallet')">💰 Wallet</a>
+<a class="nav-btn ceo" id="ceoBtn" href="admin-login.html">CEO</a>
+<a class="nav-btn" href="global.html" onclick="tap('global')">🌍 Global</a>
+<a class="nav-btn" href="admin-live-map.html" onclick="tap('gps')">📍 GPS</a>
+<a class="nav-btn" href="login.html" onclick="tap('login')" style="grid-column:span 2;background:#0f172a;color:white">🔐 LOGIN / CREATE ACCOUNT</a>
+</div>
+
+<div class="trust-card">
+<b>Why Families Trust Us 💚</b>
+<div class="trust-grid">
+<div class="trust-box" onclick="tap('livegps')"><div>📍</div><b>LIVE GPS</b><br><span class="small">Track nurse</span></div>
+<div class="trust-box" onclick="tap('35k')"><div>💰</div><b>35k/day</b><br><span class="small">20% to CEO</span></div>
 </div>
 </div>
-<a href="login.html" style="display:block;background:#0f172a;color:white;padding:14px;border-radius:12px;text-align:center;text-decoration:none;font-weight:900;margin-top:12px;border:1px solid #22c55e;">🔐 LOGIN / CREATE ACCOUNT</a>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;margin-top:12px;">
-<a href="wallet.html" style="background:#22c55e;color:white;padding:10px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;">💰 Wallet</a>
-<a href="admin.html" style="background:#0f172a;color:white;padding:10px;border-radius:12px;text-align:center;text-decoration:none;font-weight:bold;font-size:11px;">CEO</a>
-<a href="global.html" style="background:white;border:1px solid #e2e8f0;padding:10px;border-radius:12px;text-align:center;text-decoration:none;color:black;font-weight:bold;font-size:11px;">🌍 Global</a>
-<a href="admin-live-map.html" style="background:white;border:1px solid #e2e8f0;padding:10px;border-radius:12px;text-align:center;text-decoration:none;color:black;font-weight:bold;font-size:11px;">📍 GPS</a>
+
+<!-- AD THAT FETCHES MONEY FROM VIEWS -->
+<div class="ad-box">
+<p style="font-size:11px;font-weight:800;color:#16a34a">🔥 SPONSORED - VIEW = MONEY</p>
+<!-- REAL GOOGLE AD - WILL PAY YOU PER VIEW -->
+<ins class="adsbygoogle"
+     style="display:block;min-height:80px"
+     data-ad-client="ca-pub-XXXXXXXXXX"
+     data-ad-slot="1234567890"
+     data-ad-format="auto"
+     data-full-width-responsive="true"></ins>
+<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<p class="small">You earn 20 UGX per person who sees this</p>
 </div>
-<div style="background:white;border:1px solid #e2e8f0;border-radius:16px;padding:16px;margin-top:12px;"><h3 style="margin:0;font-size:14px;">Why Families Trust Us 💚</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;"><div style="background:#f0fdf4;border-radius:12px;padding:12px;text-align:center;"><p style="margin:0;font-size:20px;">📍</p><p style="margin:4px 0 0 0;font-weight:bold;font-size:12px;">LIVE GPS</p></div><div style="background:#f0fdf4;border-radius:12px;padding:12px;text-align:center;"><p style="margin:0;font-size:20px;">💰</p><p style="margin:4px 0 0 0;font-weight:bold;font-size:12px;">35k/day</p></div></div></div>
+
+<!-- NURSE TOP LISTING - MONEY FROM VIEWS -->
+<div class="trust-card" id="topListingCard" style="border:2px solid #f59e0b">
+<b>⭐ TOP NURSES - PAID 5K FOR MORE VIEWS</b>
+<div id="topNurses" style="margin-top:10px;font-size:13px">Loading...</div>
+<button onclick="tap('becomeTop')" style="width:100%;margin-top:10px;padding:10px;background:#f59e0b;color:white;border:none;border-radius:10px;font-weight:800">Pay 5K to be TOP (7 days) - MTN MoMo</button>
+<p class="small">Nurses pay you to appear here — more views = more money for you</p>
 </div>
-</body></html>
+
+<!-- CEO EARN DASHBOARD FLOAT -->
+<div class="earn-float" id="earnFloat">
+<div>
+<div><b id="vCount">0</b> Views | <b id="tCount">0</b> Taps</div>
+<div class="small">Today's earnings from ads</div>
+</div>
+<div style="text-align:right">
+<div style="font-size:16px;font-weight:900;color:#22c55e" id="earnTotal">UGX 0</div>
+<div class="small" id="earnBreak">10/view + 50/tap</div>
+</div>
+</div>
+
+<script>
+// ===== MONEY FROM TAPS & VIEWS SYSTEM =====
+let views = parseInt(localStorage.getItem('hch_views')||'0');
+views++;
+localStorage.setItem('hch_views', views);
+
+let taps = parseInt(localStorage.getItem('hch_taps')||'0');
+let totalEarn = parseInt(localStorage.getItem('hch_earn')||'0');
+
+// Show CEO button only if CEO logged in
+let role = localStorage.getItem('hch_role');
+let name = localStorage.getItem('hch_name')||'Karibu';
+document.getElementById('topLogo').innerText = (role||'👋') + ' • ' + name;
+if(role==='CEO'){ document.getElementById('ceoBtn').style.display='block'; document.getElementById('topLogo').innerText='👨‍💼 CEO • '+name; }
+
+// Update earn display
+function updateEarn(){
+ document.getElementById('vCount').innerText=views;
+ document.getElementById('tCount').innerText=taps;
+ // 10 UGX per view, 50 per tap, 5000 per TOP listing
+ let topEarn = JSON.parse(localStorage.getItem('hch_top_pay')||'[]').length * 5000;
+ totalEarn = (views*10) + (taps*50) + topEarn;
+ localStorage.setItem('hch_earn', totalEarn);
+ document.getElementById('earnTotal').innerText='UGX '+totalEarn.toLocaleString();
+ document.getElementById('earnBreak').innerText=`Views ${views*10}+ Taps ${taps*50}+ TOP ${topEarn}`;
+}
+updateEarn();
+
+// Tap function - called on every button
+function tap(action){
+ taps++;
+ localStorage.setItem('hch_taps', taps);
+ 
+ // Log for analytics
+ let logs=JSON.parse(localStorage.getItem('hch_tap_logs')||'[]');
+ logs.push({action, time:new Date().toISOString(), user:localStorage.getItem('hch_user')||'guest'});
+ localStorage.setItem('hch_tap_logs', JSON.stringify(logs.slice(-100))); // keep last 100
+ 
+ updateEarn();
+ 
+ // Navigate after counting
+ if(action==='book') location.href='clients.html';
+ if(action==='join') location.href='caregiver-verification.html';
+ if(action==='becomeTop') payTop();
+}
+
+// TOP listing pay with MTN MoMo simulation
+function payTop(){
+ let phone=prompt('Enter MTN number to pay 5,000 UGX for TOP listing (7 days):\nExample: 0772123456');
+ if(!phone) return;
+ if(phone.length<10){ alert('Invalid number'); return; }
+ 
+ // Simulate MoMo pay
+ alert('📲 MTN MoMo request sent to '+phone+'\nEnter PIN to pay 5,000 UGX to Home Care Hero');
+ setTimeout(()=>{
+   let topPays=JSON.parse(localStorage.getItem('hch_top_pay')||'[]');
+   topPays.push({phone, amount:5000, date:new Date().toISOString(), expiry: Date.now()+7*24*3600*1000});
+   localStorage.setItem('hch_top_pay', JSON.stringify(topPays));
+   alert('✅ Payment received! You are now TOP for 7 days. You will get 3x more views!');
+   loadTopNurses();
+   updateEarn();
+ },1500);
+}
+
+function loadTopNurses(){
+ let tops=JSON.parse(localStorage.getItem('hch_top_pay')||'[]');
+ let vers=JSON.parse(localStorage.getItem('hch_verifications')||'[]');
+ let html='';
+ tops.filter(t=>t.expiry>Date.now()).forEach(t=>{
+   let v=vers.find(x=>x.phone===t.phone);
+   html+=`<div style="background:#fffbeb;padding:8px;border-radius:8px;margin:5px 0">⭐ ${v? v.fullName : t.phone} - TOP till ${new Date(t.expiry).toLocaleDateString()} - Paid 5k</div>`;
+ });
+ if(!html) html='<span class="small">No TOP nurses yet. Be first — pay 5k!</span>';
+ document.getElementById('topNurses').innerHTML=html;
+}
+loadTopNurses();
+
+function logout(){
+ localStorage.removeItem('hch_role'); localStorage.removeItem('hch_name');
+ location.href='login.html';
+}
+
+// Daily reset views? Keep accumulating - shows total earnings
+// Anti-fraud: Limit 1 view per 5 minutes from same device
+let lastView=localStorage.getItem('hch_last_view');
+if(lastView && Date.now()-lastView < 5*60*1000){
+  // Don't count duplicate quick refresh as new view - prevent fraud
+  views--; localStorage.setItem('hch_views', views);
+} else {
+  localStorage.setItem('hch_last_view', Date.now());
+}
+</script>
+</body>
+</html>
