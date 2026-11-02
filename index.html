@@ -3,41 +3,35 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Home Care Hero - Find Nurses in Uganda</title>
+<title>Home Care Hero - Merchant 60577134</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:Arial;background:#f5f7fa}
-.header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold;position:sticky;top:0;z-index:10}
+body{margin:0;font-family:Arial;background:#f5f7fa}
+.header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold}
 .header span{color:#fff;font-size:11px;display:block;margin-top:3px}
+.merchant-bar{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}
 .search{margin:12px;background:#fff;padding:12px;border-radius:12px;display:flex;gap:8px}
 .search input{flex:1;padding:12px;border-radius:10px;border:1px solid #ddd}
 .search button{padding:12px 16px;background:#ffcc00;border:none;border-radius:10px;font-weight:bold}
-.card{background:#fff;margin:12px;padding:14px;border-radius:14px;display:flex;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.06)}
-.card img{width:60px;height:60px;border-radius:50%;object-fit:cover}
-.card b{font-size:15px}
-.card p{font-size:12px;color:#666;margin:3px 0}
-.btn{padding:10px 14px;border:none;border-radius:10px;font-weight:bold;font-size:12px;cursor:pointer;margin-right:6px}
+.card{background:#fff;margin:12px;padding:14px;border-radius:14px;display:flex;gap:12px}
+.card img{width:60px;height:60px;border-radius:50%}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-weight:bold;font-size:12px;margin-right:6px}
 .btn-book{background:#000;color:#ffcc00}
 .btn-call{background:#e8f5e9;color:#00aa55}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #eee}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #eee}
 .nav a{text-decoration:none;color:#666;font-size:11px;text-align:center;font-weight:bold}
 .nav a.active{color:#000}
-.merchant-bar{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}
 </style>
 </head>
 <body>
 <div class="header">🏥 HOME CARE HERO<span>Find Nurses & Caregivers - Kampala, Uganda</span></div>
 <div class="merchant-bar">💳 Merchant Code: 60577134 | Booking Fee: 10,000 UGX - Secure Pay</div>
-
 <div class="search">
-<input id="q" placeholder="Search nurse, caregiver, location..." oninput="filter()">
-<button onclick="filter()">Search</button>
+<input id="q" placeholder="Search nurse, caregiver, location..." oninput="doFilter()">
+<button onclick="doFilter()">Search</button>
 </div>
-
-<div id="list"></div>
-
-<div style="height:80px"></div>
+<div id="list">Loading nurses...</div>
+<div style="height:90px"></div>
 <div class="nav">
 <a href="index.html" class="active">🏠<br>Home</a>
 <a href="momo-wallet.html">💰<br>Wallet<br><span id="navBal" style="font-size:9px;color:#00aa55">10K</span></a>
@@ -46,39 +40,49 @@ body{font-family:Arial;background:#f5f7fa}
 </div>
 
 <script>
-// DATA
-const nurses=[
+var nurses=[
 {name:"Auma Grace - Enrolled Nurse",skill:"Home Nursing, Injections",loc:"Kampala - Ntinda",img:"https://i.pravatar.cc/100?img=5"},
 {name:"Mukasa John - Caregiver",skill:"Elderly Care, Bathing",loc:"Kampala - Bweyogerere",img:"https://i.pravatar.cc/100?img=12"},
 {name:"Nakato Sarah - Midwife",skill:"Postnatal, Newborn Care",loc:"Wakiso - Kira",img:"https://i.pravatar.cc/100?img=32"},
-{name:"Okello Levi - General Nurse",skill:"Wound Care, Home Care",loc:"Kampala - Central",img:"https://i.pravatar.cc/100?img=15"},
-{name:"Babirye Hope - Nurse Assistant",skill:"Patient Care, Feeding",loc:"Mukono",img:"https://i.pravatar.cc/100?img=23"}
+{name:"Okello Levi - General Nurse",skill:"Wound Care, Home Care",loc:"Kampala - Central",img:"https://i.pravatar.cc/100?img=15"}
 ];
 
 function render(arr){
-let h='';
-arr.forEach(n=>{
-h+=`<div class="card">
-<img src="${n.img}">
-<div style="flex:1">
-<b>${n.name}</b>
-<p>⭐ ${n.skill}</p>
-<p>📍 ${n.loc}</p>
-<div style="margin-top:8px">
-<button class="btn btn-book" onclick="book('${n.name}')">Book 10K</button>
-<button class="btn btn-call" onclick="callNurse()">Call</button>
-</div>
-</div>
-</div>`;
-});
-document.getElementById('list').innerHTML=h;
+var html="";
+for(var i=0;i<arr.length;i++){
+var n=arr[i];
+html+='<div class="card"><img src="'+n.img+'"><div style="flex:1"><b>'+n.name+'</b><p style="font-size:12px;color:#666;margin:3px 0">⭐ '+n.skill+'</p><p style="font-size:12px;color:#666">📍 '+n.loc+'</p><div style="margin-top:8px"><button class="btn btn-book" onclick="bookNurse(\''+n.name+'\')">Book 10K</button><button class="btn btn-call" onclick="goPay()">Call</button></div></div></div>';
+}
+document.getElementById('list').innerHTML=html;
 }
 
-function filter(){
-let q=document.getElementById('q').value.toLowerCase();
-let f=nurses.filter(n=> n.name.toLowerCase().includes(q) || n.loc.toLowerCase().includes(q) || n.skill.toLowerCase().includes(q));
-render(f);
-// Count as tap for merchant wallet
-let t=parseInt(localStorage.getItem('adTaps')||0)+1;
+function doFilter(){
+var q=document.getElementById('q').value.toLowerCase();
+var f=[];
+for(var i=0;i<nurses.length;i++){
+var n=nurses[i];
+if(n.name.toLowerCase().indexOf(q)>-1 || n.loc.toLowerCase().indexOf(q)>-1 || n.skill.toLowerCase().indexOf(q)>-1){f.push(n)}
+}
+render(f.length?f:nurses);
+var t=parseInt(localStorage.getItem('adTaps')||0)+1;
 localStorage.setItem('adTaps',t);
 }
+
+function bookNurse(name){
+localStorage.setItem('selectedNurse',name);
+window.location.href='pay.html';
+}
+function goPay(){window.location.href='pay.html';}
+
+// Count view to merchant wallet 60577134
+var v=parseInt(localStorage.getItem('adViews')||0)+1;
+localStorage.setItem('adViews',v);
+var b=parseInt(localStorage.getItem('realBookingEarn')||0);
+var tot=b+v*5;
+var nav=document.getElementById('navBal');
+if(nav) nav.innerHTML=tot.toLocaleString()+' UGX';
+
+render(nurses);
+</script>
+</body>
+</html>
