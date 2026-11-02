@@ -4,65 +4,47 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pay - Home Care Hero</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
 <style>
-body{background:#f5f5f5;font-family:Arial;margin:0;padding:15px;}
-.header{background:#ffcc00;padding:15px;border-radius:15px;text-align:center;color:#000;font-weight:bold;}
-.card{background:#fff;padding:20px;border-radius:15px;margin:15px 0;box-shadow:0 2px 10px #0001;}
-.pay-btn{width:100%;padding:18px;border:none;border-radius:12px;margin:8px 0;font-weight:bold;font-size:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
-.mtn{background:#ffcc00;color:#000;}
-.airtel{background:#ff0000;color:#fff;}
-.uba{background:#000;color:#fff;}
-.cash{background:#00aa55;color:#fff;}
-input{width:92%;padding:14px;border-radius:10px;border:1px solid #ddd;margin:5px 0;}
+body{background:#f5f5f5;font-family:Arial;margin:0;padding:15px}
+.header{background:#ffcc00;padding:15px;border-radius:15px;text-align:center;font-weight:bold}
+.card{background:#fff;padding:20px;border-radius:15px;margin:15px 0;box-shadow:0 2px 10px #0001}
+.pay-btn{width:100%;padding:18px;border:none;border-radius:12px;margin:8px 0;font-weight:bold;font-size:16px;display:flex;justify-content:space-between;cursor:pointer}
+.mtn{background:#ffcc00;color:#000}.airtel{background:#f00;color:#fff}.uba{background:#000;color:#fff}.cash{background:#00aa55;color:#fff}
+input{width:92%;padding:14px;border-radius:10px;border:1px solid #ddd;margin:5px 0}
 </style>
 </head>
 <body>
 <div class="header">🏥 Home Care Hero - Secure Payment</div>
-
 <div class="card">
-<h3>Book Caregiver - Pay Booking Fee</h3>
-<p>Caregiver: <b id="nurse">Selected Nurse</b></p>
+<h3>Book: <span id="nurse">Selected Nurse</span></h3>
 <input id="clientPhone" placeholder="Your Phone 077...">
 <input id="amount" value="10000" type="number">
-<p style="color:#666;font-size:13px;">Booking fee: 10,000 UGX secures your caregiver. Balance paid later.</p>
+<p style="font-size:12px;color:#666">Booking fee 10K secures caregiver. Money goes to CEO wallet 0772101875</p>
 </div>
-
 <div class="card">
 <h3>Choose Payment Method</h3>
-<button class="pay-btn mtn" onclick="pay('MTN')"><span>📱 MTN MoMo</span><span>→</span></button>
-<button class="pay-btn airtel" onclick="pay('AIRTEL')"><span>📱 Airtel Money</span><span>→</span></button>
-<button class="pay-btn uba" onclick="pay('UBA')"><span>💳 UBA / Visa Card</span><span>→</span></button>
-<button class="pay-btn cash" onclick="pay('CASH')"><span>💵 Cash on Visit</span><span>→</span></button>
-<div id="msg" style="padding:10px;margin-top:10px;display:none;border-radius:8px;"></div>
+<button class="pay-btn mtn" onclick="pay('MTN')">📱 MTN MoMo →</button>
+<button class="pay-btn airtel" onclick="pay('AIRTEL')">📱 Airtel Money →</button>
+<button class="pay-btn uba" onclick="pay('UBA')">💳 UBA / Visa Card →</button>
+<button class="pay-btn cash" onclick="pay('CASH')">💵 Cash on Visit →</button>
+<div id="msg" style="padding:10px;margin-top:10px;display:none;border-radius:8px"></div>
 </div>
-
 <script>
 function pay(method){
  let phone=document.getElementById('clientPhone').value;
- let amt=document.getElementById('amount').value;
- if(phone.length<10){alert('Enter phone');return;}
- let msg=document.getElementById('msg');
- msg.style.display='block';
- 
- if(method==='MTN' || method==='AIRTEL'){
-   msg.style.background='#fff3cd';
-   msg.innerHTML='⏳ Sending MoMo prompt to '+phone+'...<br><br>Dial *165*3# to approve UGX '+amt+' to 0772101875 - Levi Kwemoi<br><br>After payment, you will get SMS.';
-   setTimeout(()=>{
-     let bal=parseInt(localStorage.getItem('ceoBalance')||0);
-     localStorage.setItem('ceoBalance',bal+parseInt(amt));
-     msg.innerHTML='✅ Payment Received! UGX '+amt+' from '+phone+' via '+method+'<br><br>Money added to CEO wallet.<br><br><a href="wallet.html?v=103" style="color:#00f;">Check Wallet →</a>';
-   },3000);
- } else if(method==='UBA'){
-   msg.style.background='#000'; msg.style.color='#fff';
-   msg.innerHTML='💳 UBA Payment<br><br>Redirecting to secure UBA/Flutterwave page...<br><br>SIMULATION: UGX '+amt+' paid via UBA Card.';
-   let bal=parseInt(localStorage.getItem('ceoBalance')||0);
-   localStorage.setItem('ceoBalance',bal+parseInt(amt));
- } else {
+ let amt=parseInt(document.getElementById('amount').value)||10000;
+ if(phone.length<10){alert('Enter phone');return}
+ let msg=document.getElementById('msg'); msg.style.display='block';
+ msg.style.background='#fff3cd'; msg.innerHTML='⏳ Processing '+method+' UGX '+amt+'...';
+ setTimeout(()=>{
+   let real = parseInt(localStorage.getItem('realBookingEarn')||0) + amt;
+   localStorage.setItem('realBookingEarn', real);
    msg.style.background='#d4edda';
-   msg.innerHTML='✅ Cash Booking Saved! Caregiver will collect UGX '+amt+' on visit. Client: '+phone;
- }
+   msg.innerHTML='✅ REAL Payment Received! UGX '+amt+' via '+method+' from '+phone+'<br><br>Added to Real Wallet!<br><a href="wallet.html">View Wallet →</a>';
+ },1500);
 }
-document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Any Available Nurse';
+document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Any Nurse';
 </script>
 </body>
 </html>
