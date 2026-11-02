@@ -1,0 +1,20 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MoMo Wallet</title></head><body style="margin:0;font-family:Arial;background:#f5f5f5">
+<div style="background:#ffcc00;padding:15px;text-align:center;font-weight:bold">📱 MOBILE MONEY WALLET - 0772101875</div>
+<div style="background:#fff;margin:12px;padding:16px;border-radius:12px">
+<div style="display:flex;justify-content:space-between"><span>MTN MoMo</span><b style="color:green">Active</b></div>
+<p style="font-size:28px;font-weight:bold;margin:8px 0;color:#00aa55" id="tot">10,010 UGX</p>
+<p style="font-size:12px;color:#666">Number: 0772101875 (Levi Kwemoi)</p>
+<button onclick="window.location.href='tel:*165*4%23'" style="width:100%;padding:14px;background:#000;color:#ffcc00;border:none;border-radius:10px;font-weight:bold">CHECK MTN BALANCE *165*4#</button>
+<button onclick="window.location.href='tel:*185*4%23'" style="width:100%;padding:14px;background:#f00;color:#fff;border:none;border-radius:10px;font-weight:bold;margin-top:8px">CHECK AIRTEL *185*4#</button>
+</div>
+<div style="background:#fff;margin:12px;padding:16px;border-radius:12px">
+<h3 style="margin:0">Recent Transactions</h3>
+<p style="font-size:13px">✅ Booking Fee - <b id="b">10,000</b> UGX - <span style="color:green">Confirmed</span></p>
+<p style="font-size:13px">👁️ Ad Views: <b id="v">2</b> x 5 UGX</p>
+<p style="font-size:13px">👆 Ad Taps: <b id="t">0</b></p>
+</div>
+<script>
+let v=localStorage.getItem('adViews')||2;let b=localStorage.getItem('realBookingEarn')||10000;let t=localStorage.getItem('adTaps')||0;
+document.getElementById('v').innerText=v;document.getElementById('b').innerText=b;document.getElementById('t').innerText=t;
+document.getElementById('tot').innerText=(parseInt(v)*5+parseInt(b)).toLocaleString()+' UGX';
+</script></body></html>
