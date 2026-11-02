@@ -1,60 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wallet Fast</title>
-<style>
-body{background:#0a0a0a;color:#fff;font-family:Arial;padding:15px;}
-.card{background:#1a1a1a;padding:15px;border-radius:10px;margin:10px 0;}
-input{padding:12px;width:90%;margin:5px 0;border-radius:8px;border:none;}
-button{padding:12px;width:100%;background:#00ff88;color:#000;font-weight:bold;border:none;border-radius:8px;margin-top:10px;}
-</style>
+<title>CEO Real Wallet</title>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
+<style>body{background:#000;color:#fff;font-family:Arial;padding:15px}.card{background:#111;border:1px solid #00ff88;border-radius:15px;padding:20px;margin:10px 0}.big{font-size:32px;color:#00ff88;font-weight:bold}.btn{width:100%;padding:15px;background:#00ff88;color:#000;border:none;border-radius:10px;font-weight:bold}</style>
 </head>
 <body>
-<h2>💰 Wallet - FAST</h2>
+<h2>💰 CEO Real Wallet - 0772101875</h2>
 <div class="card">
-<h3 id="bal">Balance: 0</h3>
-<p id="info"></p>
-</div>
-<div class="card">
-<input id="num" value="0772101875" placeholder="MTN">
-<input id="amt" type="number" placeholder="Amount">
-<button onclick="withdraw()">WITHDRAW NOW</button>
-<p id="msg"></p>
-</div>
-<div class="card">
-<div id="history"></div>
-<button onclick="location.href='admin.html'" style="background:#ffaa00;">Back to Admin</button>
-<button onclick="localStorage.setItem('isCEO','true');localStorage.setItem('ceoBalance','470');location.reload()" style="background:#0088ff;color:#fff;">🔧 FIX Loading Issue - Click Here</button>
+Views: <b id="views">0</b> → Ad Earn: UGX <b id="adEarn">0</b><br><br>
+Taps: <b id="taps">0</b> → Booking Earn: UGX <b id="bookEarn">0</b><hr>
+<div class="big">Total Real: UGX <span id="total">0</span></div>
+<p style="font-size:11px;color:#aaa">150 UGX per view (Google) + Real client payments from pay.html</p>
+<button class="btn" onclick="withdraw()">Withdraw to MoMo 0772101875</button>
+<div id="msg"></div>
 </div>
 <script>
-try{
- let views=parseInt(localStorage.getItem("totalViews")||"6");
- let taps=parseInt(localStorage.getItem("totalTaps")||"7");
- let lifetime=views*20+taps*50;
- let bal=localStorage.getItem("ceoBalance");
- if(bal===null){bal=lifetime; localStorage.setItem("ceoBalance",bal);}
- document.getElementById("bal").innerText="Balance: UGX "+bal+" (Lifetime "+lifetime+")";
- document.getElementById("info").innerText="Views:"+views+" Taps:"+taps;
- document.getElementById("amt").value=bal;
- let reqs=JSON.parse(localStorage.getItem("withdrawRequests")||"[]");
- let h="History:<br>";
- reqs.slice(-5).forEach(r=>{h+=r.amount+" to "+r.number+" "+r.status+"<br>"});
- document.getElementById("history").innerHTML=h;
-}catch(e){document.getElementById("bal").innerText="Error: "+e.message;}
-function withdraw(){
- let num=document.getElementById("num").value;
- let amt=document.getElementById("amt").value;
- if(!num||!amt){alert("Fill");return;}
- document.getElementById("msg").innerHTML="✅ UGX "+amt+" withdraw to "+num+" SAVED!<br>Txn: TXN-"+Date.now()+"<br>Dial *165# to send manually";
- let bal=parseInt(localStorage.getItem("ceoBalance")||0);
- localStorage.setItem("ceoBalance",bal-amt);
- let reqs=JSON.parse(localStorage.getItem("withdrawRequests")||"[]");
- reqs.push({number:num,amount:amt,date:new Date().toLocaleString(),status:"SUCCESS"});
- localStorage.setItem("withdrawRequests",JSON.stringify(reqs));
- setTimeout(()=>location.reload(),1500);
-}
+let views=parseInt(localStorage.getItem('totalViews')||0);
+let taps=parseInt(localStorage.getItem('totalTaps')||0);
+let adEarn=views*150;
+let bookEarn=parseInt(localStorage.getItem('realBookingEarn')||0);
+document.getElementById('views').innerText=views;
+document.getElementById('taps').innerText=taps;
+document.getElementById('adEarn').innerText=adEarn;
+document.getElementById('bookEarn').innerText=bookEarn;
+document.getElementById('total').innerText=adEarn+bookEarn;
+function withdraw(){let t=adEarn+bookEarn; if(t<5000){document.getElementById('msg').innerHTML='<p style="color:orange">Need 5000 UGX min. You have '+t+'</p>';return}document.getElementById('msg').innerHTML='✅ Request: UGX '+t+' → To 0772101875. Add Flutterwave to make automatic.'}
 </script>
 </body>
 </html>
