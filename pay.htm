@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pay Like SafeBoda - Home Care Hero</title>
+<style>
+body{background:#f5f5f5;font-family:Arial;margin:0;padding:15px;}
+.header{background:#ffcc00;padding:15px;border-radius:15px;text-align:center;color:#000;font-weight:bold;}
+.card{background:#fff;padding:20px;border-radius:15px;margin:15px 0;box-shadow:0 2px 10px #0001;}
+.pay-btn{width:100%;padding:18px;border:none;border-radius:12px;margin:8px 0;font-weight:bold;font-size:16px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;}
+.mtn{background:#ffcc00;color:#000;}
+.airtel{background:#ff0000;color:#fff;}
+.uba{background:#000;color:#fff;}
+.cash{background:#00aa55;color:#fff;}
+input{width:92%;padding:14px;border-radius:10px;border:1px solid #ddd;margin:5px 0;}
+</style>
+</head>
+<body>
+<div class="header">🏥 Home Care Hero - SafeBoda Style Payment</div>
+
+<div class="card">
+<h3>Book Caregiver - Pay Booking Fee</h3>
+<p>Caregiver: <b id="nurse">Selected Nurse</b></p>
+<input id="clientPhone" placeholder="Your Phone 077...">
+<input id="amount" value="10000" type="number">
+<p style="color:#666;font-size:13px;">Booking fee: 10,000 UGX secures your caregiver. Balance paid later.</p>
+</div>
+
+<div class="card">
+<h3>Choose Payment Like SafeBoda</h3>
+<button class="pay-btn mtn" onclick="pay('MTN')"><span>📱 MTN MoMo</span><span>→</span></button>
+<button class="pay-btn airtel" onclick="pay('AIRTEL')"><span>📱 Airtel Money</span><span>→</span></button>
+<button class="pay-btn uba" onclick="pay('UBA')"><span>💳 UBA / Visa Card</span><span>→</span></button>
+<button class="pay-btn cash" onclick="pay('CASH')"><span>💵 Cash on Visit</span><span>→</span></button>
+<div id="msg" style="padding:10px;margin-top:10px;display:none;border-radius:8px;"></div>
+</div>
+
+<script>
+function pay(method){
+ let phone=document.getElementById('clientPhone').value;
+ let amt=document.getElementById('amount').value;
+ if(phone.length<10){alert('Enter phone');return;}
+ let msg=document.getElementById('msg');
+ msg.style.display='block';
+ 
+ if(method==='MTN' || method==='AIRTEL'){
+   msg.style.background='#fff3cd';
+   msg.innerHTML='⏳ Sending MoMo prompt to '+phone+'...<br><br>Dial *165*3# to approve UGX '+amt+' to 0772101875 - Levi Kwemoi<br><br>After payment, you will get SMS.';
+   // Real integration: Call Flutterwave/Pesapal API here
+   // For now simulate like SafeBoda
+   setTimeout(()=>{
+     let bal=parseInt(localStorage.getItem('ceoBalance')||0);
+     localStorage.setItem('ceoBalance',bal+parseInt(amt));
+     msg.innerHTML='✅ Payment Received! UGX '+amt+' from '+phone+' via '+method+'<br><br>Money added to CEO wallet. Real MTN integration needs Flutterwave key.<br><br><a href="wallet.html?v=103" style="color:#00f;">Check Wallet →</a>';
+   },3000);
+ } else if(method==='UBA'){
+   msg.style.background='#000'; msg.style.color='#fff';
+   msg.innerHTML='💳 UBA Payment (like SafeBoda card)<br><br>Redirecting to secure UBA/Flutterwave page...<br><br>To activate real UBA: Register at flutterwave.com → Get PUBLIC KEY → Send to me.<br><br>SIMULATION: UGX '+amt+' paid via UBA Card.';
+   let bal=parseInt(localStorage.getItem('ceoBalance')||0);
+   localStorage.setItem('ceoBalance',bal+parseInt(amt));
+ } else {
+   msg.style.background='#d4edda';
+   msg.innerHTML='✅ Cash Booking Saved! Caregiver will collect UGX '+amt+' on visit. Client: '+phone;
+ }
+}
+
+document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Any Available Nurse';
+</script>
+</body>
+</html>
