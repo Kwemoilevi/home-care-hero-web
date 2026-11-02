@@ -3,101 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Caregiver Registration - Home Care Hero</title>
+<title>Wallet - Withdraw - Private</title>
+<script>
+// CEO privacy guard
+if(localStorage.getItem("isCEO")!=="true"){
+  alert("Login as CEO first!");
+  window.location.href="admin-login.html";
+}
+</script>
 <style>
-body{background:#0a0a0a;color:#fff;font-family:Arial;padding:20px;}
-.card{background:#1a1a1a;padding:20px;border-radius:12px;margin:15px 0;}
+body{background:#0a0a0a;color:#fff;font-family:Arial;padding:15px;}
+.card{background:#1a1a1a;padding:20px;border-radius:12px;margin:15px 0;border:1px solid #333;}
 input,select{padding:12px;width:92%;border-radius:8px;border:none;margin:8px 0;}
-button{padding:14px;width:100%;background:#00ff88;color:#000;font-weight:bold;border:none;border-radius:8px;cursor:pointer;margin-top:10px;}
-.badge{padding:5px 10px;border-radius:5px;font-size:12px;}
-.pending{background:#ffaa00;color:#000;}
-.verified{background:#00ff88;color:#000;}
-.top{background:gold;color:#000;}
+button{padding:14px;width:100%;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;}
+.green{background:#00ff88;color:#000;}
+.red{background:#ff4444;color:#fff;}
+.orange{background:#ffaa00;color:#000;}
 </style>
 </head>
 <body>
-<h2>🧑‍⚕️ Join as Caregiver - Automatic</h2>
+<h2>💰 CEO Wallet - Withdraw</h2>
 
-<div class="card" id="regForm">
-<h3>Register in 30 Seconds</h3>
-<input id="name" placeholder="Full Name">
-<input id="phone" placeholder="MTN Number e.g. 076XXXXXXX" type="tel">
-<select id="skill">
-<option value="">Select Skill</option>
-<option>Nurse</option>
-<option>Midwife</option>
-<option>Physiotherapist</option>
-<option>Babysitter</option>
-<option>Elderly Care</option>
-</select>
-<input id="district" placeholder="District e.g. Kampala">
-<input id="experience" placeholder="Years Experience e.g. 3">
-<button onclick="registerCaregiver()">REGISTER & GET VERIFIED</button>
-<p id="msg"></p>
+<div class="card">
+<h3 id="bal">Balance: Loading...</h3>
+<p id="stats"></p>
+<p style="color:#00ff88;">Earning: 20 UGX per view, 50 UGX per tap</p>
 </div>
 
 <div class="card">
-<h3>📋 Registered Caregivers (Auto-list)</h3>
-<div id="list"></div>
+<h3>📤 Withdraw to MTN MoMo</h3>
+<input id="momoNumber" type="tel" placeholder="Your MTN Number 076XXXXXXX">
+<select id="network">
+<option value="MTN">MTN MoMo Uganda</option>
+<option value="AIRTEL">Airtel Money</option>
+</select>
+<input id="amount" type="number" placeholder="Amount">
+<button class="green" onclick="withdraw()">✅ WITHDRAW NOW</button>
+<p id="msg" style="margin-top:15px;"></p>
+</div>
+
+<div class="card">
+<h3>📋 Withdraw History</h3>
+<div id="history">No history yet</div>
+<button class="orange" onclick="window.location.href='admin.html'">← Back to CEO Dashboard</button>
 </div>
 
 <script>
-function registerCaregiver(){
-  let n=document.getElementById('name').value.trim();
-  let p=document.getElementById('phone').value.trim();
-  let s=document.getElementById('skill').value;
-  let d=document.getElementById('district').value.trim();
-  let e=document.getElementById('experience').value.trim();
-  
-  if(!n||!p||!s||!d){ alert("Fill all fields!"); return; }
-  if(p.length<10){ alert("Valid MTN number!"); return; }
-  
-  let caregivers=JSON.parse(localStorage.getItem("caregivers")||"[]");
-  
-  // Check duplicate
-  if(caregivers.find(c=>c.phone===p)){ 
-    document.getElementById('msg').innerHTML="⚠️ You already registered! Wait for CEO verification.";
-    return;
-  }
-  
-  let newCare={
-    id:Date.now(),
-    name:n, phone:p, skill:s, district:d, experience:e,
-    status:"PENDING", // CEO will verify to VERIFIED
-    isTop:false,
-    registeredAt:new Date().toLocaleString(),
-    views:0
-  };
-  
-  caregivers.push(newCare);
-  localStorage.setItem("caregivers",JSON.stringify(caregivers));
-  
-  document.getElementById('msg').innerHTML="✅ Registered! CEO will verify you in 24hrs. You will appear on homepage after verification. <br><br>Want to be TOP NURSE? Pay 5K MTN: 076XXXXXXX for 7 days top placement!";
-  document.getElementById('regForm').style.display="none";
-  showList();
+function loadBal(){
+ let views=parseInt(localStorage.getItem("totalViews")||6);
+ let taps=parseInt(localStorage.getItem("totalTaps")||7);
+ let bal=(views*20)+(taps*50);
+ let stored=localStorage.getItem("ceoBalance");
+ if(stored) bal=parseInt(stored);
+ document.getElementById("bal").innerHTML="Balance: UGX "+bal;
+ document.getElementById("stats").innerHTML="Views: "+views+" | Taps: "+taps+" | Total: UGX "+bal;
+ document.getElementById("amount").value=bal;
+ loadHistory();
 }
-
-function showList(){
-  let caregivers=JSON.parse(localStorage.getItem("caregivers")||"[]");
-  let html="";
-  if(caregivers.length===0){ html="No caregivers yet. Be first!"; }
-  else{
-    caregivers.slice(-10).reverse().forEach(c=>{
-      html+=`<div style="border-bottom:1px solid #333;padding:10px 0;">
-      <b>${c.name}</b> - ${c.skill} - ${c.district}
-      <span class="badge ${c.status==='VERIFIED'?'verified':'pending'}">${c.status}</span>
-      ${c.isTop?'<span class="badge top">⭐ TOP</span>':''}
-      <br><small>${c.phone} | ${c.experience} yrs | ${c.registeredAt}</small>
-      </div>`;
-    });
-  }
-  document.getElementById('list').innerHTML=html;
+function withdraw(){
+ let num=document.getElementById("momoNumber").value.trim();
+ let amt=parseInt(document.getElementById("amount").value);
+ let net=document.getElementById("network").value;
+ if(num.length<10){ alert("Enter valid MTN 076XXXXXXX"); return; }
+ if(!amt || amt<100){ alert("Minimum 100 UGX to withdraw!"); return; }
+ 
+ let currentBal=parseInt(localStorage.getItem("ceoBalance")|| ((parseInt(localStorage.getItem("totalViews")||6)*20)+(parseInt(localStorage.getItem("totalTaps")||7)*50)) );
+ if(amt>currentBal){ alert("You have UGX "+currentBal+" only!"); return; }
+ 
+ let reqs=JSON.parse(localStorage.getItem("withdrawRequests")||"[]");
+ reqs.push({number:num,amount:amt,network:net,date:new Date().toLocaleString(),status:"PENDING"});
+ localStorage.setItem("withdrawRequests",JSON.stringify(reqs));
+ 
+ // For now deduct balance
+ let newBal=currentBal-amt;
+ localStorage.setItem("ceoBalance",newBal);
+ 
+ document.getElementById("msg").innerHTML="✅ SUCCESS! UGX "+amt+" withdraw request to "+num+" saved!<br><br><b>MANUAL STEP:</b> Dial *165# → Send Money → "+num+" → UGX "+amt+"<br><br>Balance now: UGX "+newBal;
+ loadBal();
 }
-showList();
-
-// Auto-show TOP nurses on index page
-if(caregivers=>{}){
+function loadHistory(){
+ let reqs=JSON.parse(localStorage.getItem("withdrawRequests")||"[]");
+ if(reqs.length===0){ document.getElementById("history").innerHTML="No withdraw yet"; return; }
+ let h="";
+ reqs.slice(-5).reverse().forEach(r=>{
+   h+=`<div style="padding:8px;border-bottom:1px solid #333;">${r.date}<br>UGX ${r.amount} → ${r.number} (${r.network}) - ${r.status}</div>`;
+ });
+ document.getElementById("history").innerHTML=h;
 }
+loadBal();
 </script>
 </body>
 </html>
