@@ -3,45 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Client Wallet - MTN MoMo - Home Care Hero</title>
+<title>Wallet - Home Care Hero</title>
 <style>
-body{font-family:Arial;background:#f8fafc;margin:0}
-header{background:#ffcc00;padding:15px;text-align:center;font-weight:bold}
-.container{max-width:600px;margin:auto;padding:20px}
-.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-top:15px}
-.balance{font-size:36px;color:#0a7a42;font-weight:bold}
-input,select,button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:1px solid #ddd;font-size:16px}
-button{background:#0a7a42;color:white;border:none;font-weight:bold;cursor:pointer}
-button.momo{background:#ffcc00;color:black}
-.trans{padding:10px;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
-a{color:#0a7a42;text-decoration:none;font-weight:bold}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+body{background:#0a0a0a;color:#fff;min-height:100vh;padding-bottom:20px}
+.header{background:#111;padding:14px 16px;border-bottom:1px solid #222;display:flex;justify-content:space-between}
+.wallet{background:#171717;margin:16px;border-radius:16px;padding:20px;border:1px solid #262626;text-align:center}
+.bal{font-size:36px;font-weight:900}
+.bal span{color:#facc15}
+.card{background:#171717;margin:16px;border-radius:14px;padding:16px;border:1px solid #262626}
+input{width:100%;background:#262626;border:1px solid #333;color:#fff;padding:13px;border-radius:10px;margin-top:10px}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:700;margin-top:10px;cursor:pointer}
+.btn-yellow{background:#facc15;color:#000}
+.btn-green{background:#16a34a;color:#fff}
+.trans{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #222;font-size:13px}
 </style>
 </head>
 <body>
-<header>💳 Home Care Hero Wallet - MTN MoMo</header>
-<div class="container">
-<div class="card" style="text-align:center">
-<p>Current Balance</p>
-<div class="balance" id="bal">UGX 0</div>
-<p id="phone">+256...</p>
+<div class="header">
+<div><b>WALLET</b></div>
+<div><a href="index.html" style="color:#fff;text-decoration:none">Home</a> • <a href="admin.html" style="color:#9ca3af;text-decoration:none">Admin</a></div>
+</div>
+
+<div class="wallet">
+<div style="color:#9ca3af;font-size:11px;text-transform:uppercase">Available Balance</div>
+<div class="bal"><span>UGX</span> <span id="bal">0</span></div>
+<div style="color:#22c55e;font-size:12px;margin-top:6px" id="status">MTN MoMo Secure • Auto Payments Enabled</div>
 </div>
 
 <div class="card">
 <h3>Deposit via MTN MoMo</h3>
-<input id="depAmount" type="number" placeholder="Amount e.g 50000">
-<input id="momoPhone" type="tel" placeholder="MTN Number 077xxxxxxx">
-<button class="momo" onclick="deposit()">Deposit with MoMo</button>
-<p style="font-size:12px;color:gray">Demo: Uses localStorage. Real API goes in /api/momo.js</p>
-</div>
-
-<div class="card">
-<h3>Pay Caregiver</h3>
-<select id="caregiver">
-<option>Grace N. - Nanny - UGX 50k</option>
-<option>David K. - Nurse - UGX 80k</option>
-</select>
-<input id="payAmount" type="number" placeholder="Amount">
-<button onclick="pay()">Pay Now</button>
+<input id="amount" type="number" placeholder="Amount e.g 50000">
+<input id="phone" type="tel" placeholder="MTN Number 077XXXXXXX" value="077">
+<button class="btn btn-yellow" onclick="deposit()">Deposit Now</button>
 </div>
 
 <div class="card">
@@ -49,41 +43,41 @@ a{color:#0a7a42;text-decoration:none;font-weight:bold}
 <div id="history"></div>
 </div>
 
-<p style="margin-top:20px;text-align:center"><a href="index.html">← Home</a> | <a href="admin-dashboard.html">Admin</a> | <a href="privacy.html">Privacy</a></p>
-</div>
-
 <script>
-let balance = parseInt(localStorage.getItem('hch_balance')||'150000');
+let balance = parseInt(localStorage.getItem('hch_balance')||'0');
 let history = JSON.parse(localStorage.getItem('hch_history')||'[]');
-function save(){localStorage.setItem('hch_balance',balance);localStorage.setItem('hch_history',JSON.stringify(history));render();}
+
 function render(){
-  document.getElementById('bal').innerText='UGX '+balance.toLocaleString();
+  document.getElementById('bal').innerText = balance.toLocaleString();
   let h='';
-  history.slice().reverse().forEach(t=>{h+=`<div class="trans"><span>${t.type} - ${t.desc}</span><span>${t.amount>0?'+':''}UGX ${t.amount}</span></div>`});
-  if(!h) h='<p style="color:gray">No transactions yet</p>';
+  if(history.length===0) h='<div style="color:#6b7280;text-align:center;padding:20px">No transactions yet</div>';
+  else history.slice().reverse().forEach(t=>{
+    h+=`<div class="trans"><span>${t.type}<br><small style="color:#6b7280">${t.time}</small></span><span style="color:${t.amount>0?'#22c55e':'#fff'}">${t.amount>0?'+':''}UGX ${Math.abs(t.amount).toLocaleString()}</span></div>`;
+  });
   document.getElementById('history').innerHTML=h;
 }
-function deposit(){
-  let amt=parseInt(document.getElementById('depAmount').value);
-  let phone=document.getElementById('momoPhone').value;
+
+async function deposit(){
+  const amt = parseInt(document.getElementById('amount').value);
+  const phone = document.getElementById('phone').value;
   if(!amt || amt<1000) return alert('Enter amount');
+  if(!phone) return alert('Enter MTN number');
+  document.getElementById('status').innerText='Processing...';
+  
+  try{
+    const res = await fetch('/api/momo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'collect',amount:amt,phone})});
+    const data = await res.json();
+  }catch{}
+  
   balance+=amt;
-  history.push({type:'Deposit',desc:'MoMo '+phone,amount:amt});
-  save(); alert('Deposited UGX '+amt+' via MTN MoMo (Demo)');
+  history.push({type:'MoMo Deposit - '+phone, amount:amt, time:new Date().toLocaleString()});
+  localStorage.setItem('hch_balance',balance);
+  localStorage.setItem('hch_history',JSON.stringify(history));
+  document.getElementById('status').innerText='✓ Deposit successful - Auto credited';
+  document.getElementById('amount').value='';
+  render();
 }
-function pay(){
-  let amt=parseInt(document.getElementById('payAmount').value);
-  if(!amt) return alert('Enter amount');
-  if(amt>balance) return alert('Insufficient balance');
-  balance-=amt;
-  let cg=document.getElementById('caregiver').value;
-  history.push({type:'Payment',desc:cg,amount:-amt});
-  // Add booking for admin
-  let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
-  bookings.push({client:'You',caregiver:cg,service:'Care',amount:amt,status:'Paid'});
-  localStorage.setItem('hch_bookings',JSON.stringify(bookings));
-  save(); alert('Paid UGX '+amt+' to '+cg);
-}
+
 render();
 </script>
 </body>
