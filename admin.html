@@ -5,67 +5,80 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin Dashboard - Home Care Hero</title>
 <style>
-body{font-family:Arial;background:#f4f6f8;margin:0}
-header{background:#0a7a42;color:white;padding:15px;display:flex;justify-content:space-between}
-.container{max-width:1100px;margin:auto;padding:20px}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
-.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
-.card h2{color:#0a7a42;margin:0}
-table{width:100%;border-collapse:collapse;background:white;margin-top:20px;border-radius:10px;overflow:hidden}
-th,td{padding:12px;border-bottom:1px solid #eee;text-align:left}
-th{background:#0a7a42;color:white}
-.btn{padding:6px 12px;border:none;border-radius:6px;cursor:pointer}
-.btn-green{background:#0a7a42;color:white}
-.btn-red{background:#e11d48;color:white}
-a{color:#0a7a42;text-decoration:none;font-weight:bold}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
+body{background:#0a0a0a;color:#fff;min-height:100vh}
+.header{background:#111;padding:14px 16px;display:flex;justify-content:space-between;border-bottom:1px solid #222}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px}
+.card{background:#171717;border:1px solid #262626;border-radius:14px;padding:16px}
+.card small{color:#9ca3af;font-size:11px;text-transform:uppercase}
+.card h2{font-size:24px;margin-top:4px}
+.card h2 span{color:#facc15}
+table{width:100%;border-collapse:collapse;margin:16px;background:#171717;border-radius:12px;overflow:hidden}
+th,td{padding:12px 10px;text-align:left;font-size:13px;border-bottom:1px solid #262626}
+th{background:#111;color:#9ca3af;font-size:11px;text-transform:uppercase}
+.btn{padding:6px 12px;border-radius:8px;border:none;font-weight:700;font-size:12px;cursor:pointer}
+.btn-green{background:#16a34a;color:#fff}
+.btn-yellow{background:#facc15;color:#000}
+.btn-red{background:#dc2626;color:#fff}
 </style>
 </head>
 <body>
-<header>
-<div><b>Admin Dashboard</b> - Home Care Hero</div>
-<div><a href="index.html" style="color:white">Home</a> | <a href="admin-login.html" style="color:white">Logout</a></div>
-</header>
-<div class="container">
-<div class="grid">
-<div class="card"><h2 id="totalClients">0</h2><p>Total Clients</p></div>
-<div class="card"><h2 id="totalCaregivers">0</h2><p>Total Caregivers</p></div>
-<div class="card"><h2 id="totalBookings">0</h2><p>Total Bookings</p></div>
-<div class="card"><h2 id="totalWallet">UGX 0</h2><p>Wallet Balance</p></div>
+<div class="header">
+<div><b>ADMIN</b> <span style="color:#facc15">DASHBOARD</span></div>
+<div><a href="index.html" style="color:#fff;text-decoration:none;font-size:13px">Home</a> • <a href="login.html" style="color:#9ca3af;text-decoration:none;font-size:13px">Logout</a></div>
 </div>
 
-<h2 style="margin-top:30px">Recent Bookings</h2>
+<div class="grid">
+<div class="card"><small>Total Balance</small><h2><span>UGX</span> <span id="total">0</span></h2></div>
+<div class="card"><small>Total Bookings</small><h2 id="bookings">0</h2></div>
+<div class="card"><small>Commission (15%)</small><h2><span>UGX</span> <span id="comm">0</span></h2></div>
+<div class="card"><small>Active Caregivers</small><h2 id="caregivers">12</h2></div>
+</div>
+
 <table>
-<thead><tr><th>Client</th><th>Caregiver</th><th>Service</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
-<tbody id="bookingTable"></tbody>
+<thead><tr><th>Service</th><th>Amount</th><th>Caregiver Gets (85%)</th><th>You Keep</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="tbody"></tbody>
 </table>
 
-<p style="margin-top:20px"><a href="index.html">← Back Home</a> | <a href="client-wallet.html">View Wallet</a> | <a href="privacy.html">Privacy</a></p>
+<div style="padding:16px;display:flex;gap:10px">
+<button class="btn btn-yellow" onclick="location.href='index.html'">← Home</button>
+<button class="btn btn-green" onclick="autoPayoutAll()">Auto Payout All Caregivers</button>
+<button class="btn btn-red" onclick="clearAll()">Clear Data</button>
 </div>
 
 <script>
-// Load from localStorage (demo data if empty)
-let bookings = JSON.parse(localStorage.getItem('hch_bookings') || '[]');
-if(bookings.length===0){
-  bookings = [
-    {client:'John Makindye',caregiver:'Grace N.',service:'Nanny',amount:50000,status:'Paid'},
-    {client:'Sarah Nakawa',caregiver:'David K.',service:'Nurse',amount:80000,status:'Pending'}
-  ];
-  localStorage.setItem('hch_bookings', JSON.stringify(bookings));
-}
+let bookings = JSON.parse(localStorage.getItem('hch_bookings')||'[]');
 function render(){
-  document.getElementById('totalClients').innerText = 12 + bookings.length;
-  document.getElementById('totalCaregivers').innerText = 8;
-  document.getElementById('totalBookings').innerText = bookings.length;
-  let total = bookings.reduce((s,b)=>s+b.amount,0);
-  document.getElementById('totalWallet').innerText = 'UGX '+total.toLocaleString();
+  let total=0, comm=0;
   let html='';
   bookings.forEach((b,i)=>{
-    html+=`<tr><td>${b.client}</td><td>${b.caregiver}</td><td>${b.service}</td><td>UGX ${b.amount}</td><td>${b.status}</td><td><button class="btn btn-green" onclick="approve(${i})">Approve</button> <button class="btn btn-red" onclick="remove(${i})">Delete</button></td></tr>`;
+    const caregiverAmt = b.caregiverAmount || Math.floor(b.amount*0.85);
+    const fee = b.fee || (b.amount - caregiverAmt);
+    total+=b.amount; comm+=fee;
+    html+=`<tr><td>${b.service}</td><td>UGX ${b.amount.toLocaleString()}</td><td>UGX ${caregiverAmt.toLocaleString()}</td><td>UGX ${fee.toLocaleString()}</td><td style="color:#22c55e">${b.status}</td><td><button class="btn btn-green" onclick="payout(${i})">Pay</button> <button class="btn btn-red" onclick="del(${i})">X</button></td></tr>`;
   });
-  document.getElementById('bookingTable').innerHTML=html;
+  if(!html) html='<tr><td colspan="6" style="text-align:center;color:#6b7280">No bookings yet - Bookings from homepage appear here automatically</td></tr>';
+  document.getElementById('tbody').innerHTML=html;
+  document.getElementById('total').innerText=total.toLocaleString();
+  document.getElementById('comm').innerText=comm.toLocaleString();
+  document.getElementById('bookings').innerText=bookings.length;
 }
-function approve(i){bookings[i].status='Approved';localStorage.setItem('hch_bookings',JSON.stringify(bookings));render();}
-function remove(i){bookings.splice(i,1);localStorage.setItem('hch_bookings',JSON.stringify(bookings));render();}
+function payout(i){
+  const b=bookings[i];
+  fetch('/api/momo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({type:'disburse',amount:b.amount,caregiverPhone:'256700000001'})});
+  b.status='Paid to Caregiver - Auto';
+  localStorage.setItem('hch_bookings',JSON.stringify(bookings));
+  render(); alert(`Auto-sent UGX ${(b.caregiverAmount||Math.floor(b.amount*0.85)).toLocaleString()} to caregiver`);
+}
+function autoPayoutAll(){
+  if(bookings.length===0) return alert('No bookings');
+  if(!confirm(`Auto payout all ${bookings.length} caregivers?`)) return;
+  bookings.forEach(b=>b.status='Paid to Caregiver - Auto');
+  localStorage.setItem('hch_bookings',JSON.stringify(bookings));
+  render(); alert('All caregivers paid automatically (85% each)');
+}
+function del(i){bookings.splice(i,1);localStorage.setItem('hch_bookings',JSON.stringify(bookings));render()}
+function clearAll(){if(confirm('Clear all?')){localStorage.removeItem('hch_bookings');bookings=[];render()}}
 render();
 </script>
 </body>
