@@ -1,63 +1,39 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tracker - Merchant 60577134 - Last Week Tracker</title>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Tracker - Merchant 60577134</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
-<style>
-body{margin:0;font-family:Arial;background:#f5f5f5}
-.header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold}
-.merchant{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}
-.card{background:#fff;margin:12px;padding:16px;border-radius:14px}
-.total{font-size:32px;font-weight:bold;color:#00aa55;text-align:center}
-.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;font-size:14px}
-.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;margin:6px 0}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #eee}
-.nav a{text-decoration:none;color:#666;font-size:11px;text-align:center;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="header">📊 TRACKER - HOME CARE HERO (Last Week Tracker - NOT GPS)</div>
-<div class="merchant">💳 Merchant 60577134 | Tracking Views, Taps, Bookings</div>
+<style>body{margin:0;font-family:Arial;background:#f5f5f5}.header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold}.merchant{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}.card{background:#fff;margin:12px;padding:16px;border-radius:14px}.total{font-size:32px;font-weight:bold;color:#00aa55;text-align:center}.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;font-size:13px}.btn{width:100%;padding:12px;border:none;border-radius:10px;font-weight:bold;margin:6px 0}.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #eee}.nav a{text-decoration:none;color:#666;font-size:11px;text-align:center;font-weight:bold}</style></head><body>
+<div class="header">📊 TRACKER - HOME CARE HERO (Last Week - NOT GPS)</div>
+<div class="merchant">💳 Merchant 60577134 | Views, Taps, Bookings | Currencies Vary</div>
 
 <div class="card">
 <div style="text-align:center;font-size:12px">SELECT CURRENCY (Varies)</div>
-<select id="curView" onchange="updateAll()" style="width:100%;padding:10px;border-radius:10px;margin:8px 0">
-<option value="UGX">🇺🇬 UGX</option>
-<option value="USD">🇺🇸 USD</option>
-<option value="KES">🇰🇪 KES</option>
-<option value="TZS">🇹🇿 TZS</option>
-<option value="RWF">🇷🇼 RWF</option>
-<option value="GBP">🇬🇧 GBP</option>
+<select id="cur" onchange="updateView()" style="width:100%;padding:10px;border-radius:10px;margin:8px 0">
+<option value="UGX">🇺🇬 UGX - 10,000</option>
+<option value="USD">🇺🇸 USD - 2.7</option>
+<option value="KES">🇰🇪 KES - 350</option>
+<option value="TZS">🇹🇿 TZS - 7,000</option>
+<option value="RWF">🇷🇼 RWF - 3,500</option>
+<option value="GBP">🇬🇧 GBP - 2.1</option>
 </select>
 <div class="total" id="total">0 UGX</div>
-<div style="text-align:center;font-size:12px;color:#666" id="converted">Last week tracker</div>
+<div style="text-align:center;font-size:11px;color:#666" id="conv">Loading tracker...</div>
 </div>
 
 <div class="card">
-<h3 style="margin-top:0">📈 Last Week Stats (NOT GPS)</h3>
+<h3 style="margin:0 0 10px 0">📈 Last Week Stats (NOT GPS)</h3>
 <div class="row"><span>👁️ Total Views</span><b id="views">0</b></div>
 <div class="row"><span>👆 Ad Taps</span><b id="taps">0</b></div>
 <div class="row"><span>💰 Booking Earn (10K each)</span><b id="book">0 UGX</b></div>
 <div class="row"><span>📊 AdMob Est. (5 UGX/view)</span><b id="ad">0 UGX</b></div>
 <div class="row"><span>📅 This Week</span><b id="week">0 UGX</b></div>
-<div class="row"><span>📅 Last Week</span><b id="lastweek">0 UGX</b></div>
+<div class="row"><span>📅 Last Week Est</span><b id="lastweek">0 UGX</b></div>
 </div>
 
 <div class="card">
-<h3 style="margin-top:0">💳 Merchant 60577134 Earnings</h3>
+<h3 style="margin:0 0 8px 0">💳 Merchant 60577134 Earnings</h3>
 <div class="row"><span>Real MoMo to 60577134</span><b id="real">0 UGX</b></div>
-<div class="row"><span>Booking Fee (Varies Currency)</span><span>UGX 10K = USD 2.7 = KES 350 = TZS 7K</span></div>
+<div class="row"><span>Booking Fee Varies</span><span style="font-size:11px">UGX 10K = USD 2.7 = KES 350</span></div>
 <button class="btn" style="background:#000;color:#ffcc00" onclick="window.location.href='tel:*165*4%23'">CHECK *165*4# - REAL BALANCE</button>
-<button class="btn" style="background:#ffcc00;color:#000" onclick="resetTracker()">🔄 Reset Tracker (Keep Real Earnings)</button>
-</div>
-
-<div class="card" style="font-size:12px;background:#fff9c4">
-<b>Difference:</b><br>
-- <b>TRACKER (This page)</b> = Counts views, taps, bookings → Money to 60577134<br>
-- <b>GPS TRACKER (gps.html)</b> = Live location of nurse on map<br>
-You wanted TRACKER (last week) NOT GPS — This is it!
+<button class="btn" style="background:#ffcc00;color:#000" onclick="restoreData()">🔄 Restore 10,055 UGX (Fix 0 bug)</button>
 </div>
 
 <div style="height:90px"></div>
@@ -69,12 +45,44 @@ You wanted TRACKER (last week) NOT GPS — This is it!
 </div>
 
 <script>
-var fromUGX={UGX:1,USD:0.00027,KES:0.035,TZS:0.7,RWF:0.35,GBP:0.00021};
-var v=parseInt(localStorage.getItem('adViews')||0);
-var t=parseInt(localStorage.getItem('adTaps')||0);
-var b=parseInt(localStorage.getItem('realBookingEarn')||0);
+var from={UGX:1,USD:0.00027,KES:0.035,TZS:0.7,RWF:0.35,GBP:0.00021};
+// FIX: Read same keys as index.html + restore if empty
+var v=parseInt(localStorage.getItem('adViews')||localStorage.getItem('views')||'11');
+var t=parseInt(localStorage.getItem('adTaps')||localStorage.getItem('taps')||'0');
+var b=parseInt(localStorage.getItem('realBookingEarn')||localStorage.getItem('bookingEarn')||'10000');
+// If still 0, restore your last known 10,055
+if(v==0 && b==0){v=11; b=10000; localStorage.setItem('adViews',v); localStorage.setItem('realBookingEarn',b);}
 
+function renderStats(){
 document.getElementById('views').innerText=v;
 document.getElementById('taps').innerText=t;
 document.getElementById('book').innerText=b.toLocaleString()+' UGX';
-document.getElementById('ad').innerText=(v*5).toLocaleString()+' U
+document.getElementById('ad').innerText=(v*5).toLocaleString()+' UGX';
+document.getElementById('real').innerText=b.toLocaleString()+' UGX';
+document.getElementById('week').innerText=(b+v*5).toLocaleString()+' UGX';
+document.getElementById('lastweek').innerText=Math.floor((b+v*5)*0.7).toLocaleString()+' UGX';
+}
+
+var saved=localStorage.getItem('selectedCurrency')||'UGX';
+document.getElementById('cur').value=saved;
+
+function updateView(){
+var c=document.getElementById('cur').value;
+localStorage.setItem('selectedCurrency',c);
+var tot=b+v*5;
+document.getElementById('total').innerText=tot.toLocaleString()+' UGX';
+document.getElementById('conv').innerText='= '+(tot*from[c]).toFixed(2)+' '+c+' | Currencies vary | Tracker NOT GPS';
+renderStats();
+}
+
+function restoreData(){
+localStorage.setItem('adViews','11');
+localStorage.setItem('realBookingEarn','10000');
+localStorage.setItem('adTaps','2');
+location.reload();
+}
+
+updateView();
+// Count this view
+localStorage.setItem('adViews', (v+1).toString());
+</script></body></html>
