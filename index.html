@@ -10,9 +10,10 @@ body{margin:0;font-family:Arial;background:#f5f7fa}
 .header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold}
 .header span{color:#fff;font-size:11px;display:block;margin-top:3px}
 .merchant-bar{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}
-.search{margin:12px;background:#fff;padding:12px;border-radius:12px;display:flex;gap:8px}
-.search input{flex:1;padding:12px;border-radius:10px;border:1px solid #ddd}
-.search button{padding:12px 16px;background:#ffcc00;border:none;border-radius:10px;font-weight:bold}
+.top-bar{margin:12px;background:#fff;padding:10px;border-radius:12px;display:flex;gap:6px;align-items:center}
+.top-bar select{padding:10px;border-radius:8px;border:1px solid #ddd;font-weight:bold}
+.top-bar input{flex:1;padding:12px;border-radius:10px;border:1px solid #ddd}
+.top-bar button{padding:12px;background:#ffcc00;border:none;border-radius:10px;font-weight:bold}
 .card{background:#fff;margin:12px;padding:14px;border-radius:14px;display:flex;gap:12px}
 .card img{width:60px;height:60px;border-radius:50%}
 .btn{padding:10px 14px;border:none;border-radius:10px;font-weight:bold;font-size:12px;margin-right:6px}
@@ -25,17 +26,28 @@ body{margin:0;font-family:Arial;background:#f5f7fa}
 </head>
 <body>
 <div class="header">🏥 HOME CARE HERO<span>Find Nurses & Caregivers - Kampala, Uganda</span></div>
-<div class="merchant-bar">💳 Merchant Code: 60577134 | Booking Fee: 10,000 UGX - Secure Pay</div>
-<div class="search">
-<input id="q" placeholder="Search nurse, caregiver, location..." oninput="doFilter()">
+<div class="merchant-bar">💳 Merchant Code: 60577134 | Booking Fee Varies by Currency</div>
+
+<div class="top-bar">
+<select id="currency" onchange="updateCurrency()">
+<option value="UGX">🇺🇬 UGX</option>
+<option value="USD">🇺🇸 USD</option>
+<option value="KES">🇰🇪 KES</option>
+<option value="TZS">🇹🇿 TZS</option>
+<option value="RWF">🇷🇼 RWF</option>
+<option value="GBP">🇬🇧 GBP</option>
+</select>
+<input id="q" placeholder="Search nurse..." oninput="doFilter()">
 <button onclick="doFilter()">Search</button>
 </div>
-<div id="list">Loading nurses...</div>
+<div style="text-align:center;font-size:12px">Fee: <b id="feeDisplay">10,000 UGX</b></div>
+
+<div id="list">Loading...</div>
 <div style="height:90px"></div>
 <div class="nav">
 <a href="index.html" class="active">🏠<br>Home</a>
 <a href="momo-wallet.html">💰<br>Wallet<br><span id="navBal" style="font-size:9px;color:#00aa55">10K</span></a>
-<a href="pay.html">💳<br>Pay 10K</a>
+<a href="pay.html">💳<br>Pay</a>
 <a href="wallet.html">📊<br>Stats</a>
 </div>
 
@@ -46,16 +58,17 @@ var nurses=[
 {name:"Nakato Sarah - Midwife",skill:"Postnatal, Newborn Care",loc:"Wakiso - Kira",img:"https://i.pravatar.cc/100?img=32"},
 {name:"Okello Levi - General Nurse",skill:"Wound Care, Home Care",loc:"Kampala - Central",img:"https://i.pravatar.cc/100?img=15"}
 ];
+var rates={UGX:10000,USD:2.7,KES:350,TZS:7000,RWF:3500,GBP:2.1};
+var symbols={UGX:"UGX",USD:"$",KES:"KSh",TZS:"TSh",RWF:"RWF",GBP:"£"};
 
 function render(arr){
 var html="";
 for(var i=0;i<arr.length;i++){
 var n=arr[i];
-html+='<div class="card"><img src="'+n.img+'"><div style="flex:1"><b>'+n.name+'</b><p style="font-size:12px;color:#666;margin:3px 0">⭐ '+n.skill+'</p><p style="font-size:12px;color:#666">📍 '+n.loc+'</p><div style="margin-top:8px"><button class="btn btn-book" onclick="bookNurse(\''+n.name+'\')">Book 10K</button><button class="btn btn-call" onclick="goPay()">Call</button></div></div></div>';
+html+='<div class="card"><img src="'+n.img+'"><div style="flex:1"><b>'+n.name+'</b><p style="font-size:12px;color:#666;margin:3px 0">⭐ '+n.skill+'</p><p style="font-size:12px;color:#666">📍 '+n.loc+'</p><div style="margin-top:8px"><button class="btn btn-book" onclick="bookNurse(\''+n.name+'\')">Book '+document.getElementById('feeDisplay').innerText+'</button><button class="btn btn-call" onclick="goPay()">Call</button></div></div></div>';
 }
 document.getElementById('list').innerHTML=html;
 }
-
 function doFilter(){
 var q=document.getElementById('q').value.toLowerCase();
 var f=[];
@@ -67,21 +80,23 @@ render(f.length?f:nurses);
 var t=parseInt(localStorage.getItem('adTaps')||0)+1;
 localStorage.setItem('adTaps',t);
 }
-
-function bookNurse(name){
-localStorage.setItem('selectedNurse',name);
-window.location.href='pay.html';
-}
+function bookNurse(name){localStorage.setItem('selectedNurse',name);window.location.href='pay.html';}
 function goPay(){window.location.href='pay.html';}
-
-// Count view to merchant wallet 60577134
+function updateCurrency(){
+var c=document.getElementById('currency').value;
+localStorage.setItem('selectedCurrency',c);
+document.getElementById('feeDisplay').innerText=rates[c].toLocaleString()+' '+c;
+render(nurses);
+}
+var saved=localStorage.getItem('selectedCurrency')||'UGX';
+document.getElementById('currency').value=saved;
+updateCurrency();
 var v=parseInt(localStorage.getItem('adViews')||0)+1;
 localStorage.setItem('adViews',v);
 var b=parseInt(localStorage.getItem('realBookingEarn')||0);
 var tot=b+v*5;
 var nav=document.getElementById('navBal');
 if(nav) nav.innerHTML=tot.toLocaleString()+' UGX';
-
 render(nurses);
 </script>
 </body>
