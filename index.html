@@ -18,6 +18,7 @@ body{margin:0;font-family:Arial;background:#f5f7fa}
 .card img{width:60px;height:60px;border-radius:50%}
 .btn{padding:10px 14px;border:none;border-radius:10px;font-weight:bold;font-size:12px;margin-right:6px}
 .btn-book{background:#000;color:#ffcc00}
+.btn-gps{background:#e3f2fd;color:#1976d2}
 .btn-call{background:#e8f5e9;color:#00aa55}
 .nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #eee}
 .nav a{text-decoration:none;color:#666;font-size:11px;text-align:center;font-weight:bold}
@@ -26,7 +27,7 @@ body{margin:0;font-family:Arial;background:#f5f7fa}
 </head>
 <body>
 <div class="header">🏥 HOME CARE HERO<span>Find Nurses & Caregivers - Kampala, Uganda</span></div>
-<div class="merchant-bar">💳 Merchant Code: 60577134 | Booking Fee Varies by Currency</div>
+<div class="merchant-bar">💳 Merchant Code: 60577134 | Booking Fee Varies by Currency | GPS Live</div>
 
 <div class="top-bar">
 <select id="currency" onchange="updateCurrency()">
@@ -46,9 +47,9 @@ body{margin:0;font-family:Arial;background:#f5f7fa}
 <div style="height:90px"></div>
 <div class="nav">
 <a href="index.html" class="active">🏠<br>Home</a>
+<a href="gps.html">📍<br>GPS</a>
 <a href="momo-wallet.html">💰<br>Wallet<br><span id="navBal" style="font-size:9px;color:#00aa55">10K</span></a>
 <a href="pay.html">💳<br>Pay</a>
-<a href="wallet.html">📊<br>Stats</a>
 </div>
 
 <script>
@@ -59,13 +60,12 @@ var nurses=[
 {name:"Okello Levi - General Nurse",skill:"Wound Care, Home Care",loc:"Kampala - Central",img:"https://i.pravatar.cc/100?img=15"}
 ];
 var rates={UGX:10000,USD:2.7,KES:350,TZS:7000,RWF:3500,GBP:2.1};
-var symbols={UGX:"UGX",USD:"$",KES:"KSh",TZS:"TSh",RWF:"RWF",GBP:"£"};
 
 function render(arr){
 var html="";
 for(var i=0;i<arr.length;i++){
 var n=arr[i];
-html+='<div class="card"><img src="'+n.img+'"><div style="flex:1"><b>'+n.name+'</b><p style="font-size:12px;color:#666;margin:3px 0">⭐ '+n.skill+'</p><p style="font-size:12px;color:#666">📍 '+n.loc+'</p><div style="margin-top:8px"><button class="btn btn-book" onclick="bookNurse(\''+n.name+'\')">Book '+document.getElementById('feeDisplay').innerText+'</button><button class="btn btn-call" onclick="goPay()">Call</button></div></div></div>';
+html+='<div class="card"><img src="'+n.img+'"><div style="flex:1"><b>'+n.name+'</b><p style="font-size:12px;color:#666;margin:3px 0">⭐ '+n.skill+'</p><p style="font-size:12px;color:#666">📍 '+n.loc+'</p><div style="margin-top:8px"><button class="btn btn-book" onclick="bookNurse(\''+n.name+'\')">Book '+document.getElementById('feeDisplay').innerText+'</button><button class="btn btn-gps" onclick="viewGPS(\''+n.name+'\')">📍 GPS</button></div></div></div>';
 }
 document.getElementById('list').innerHTML=html;
 }
@@ -81,7 +81,7 @@ var t=parseInt(localStorage.getItem('adTaps')||0)+1;
 localStorage.setItem('adTaps',t);
 }
 function bookNurse(name){localStorage.setItem('selectedNurse',name);window.location.href='pay.html';}
-function goPay(){window.location.href='pay.html';}
+function viewGPS(name){localStorage.setItem('selectedNurse',name);window.location.href='gps.html';}
 function updateCurrency(){
 var c=document.getElementById('currency').value;
 localStorage.setItem('selectedCurrency',c);
