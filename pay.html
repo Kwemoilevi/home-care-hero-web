@@ -1,22 +1,48 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pay 10K - Merchant 60577134</title></head><body style="margin:0;font-family:Arial;background:#f5f5f5">
-<div style="background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold">PAY TO MERCHANT 60577134 - REAL NOW</div>
-<div style="background:#fff;margin:15px;padding:20px;border-radius:15px;text-align:center">
-<h2>Booking Fee: 10,000 UGX</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pay - Merchant 60577134 - Multi Currency</title>
+<style>body{margin:0;font-family:Arial;background:#f5f5f5}.header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold}.card{background:#fff;margin:15px;padding:20px;border-radius:15px}select,button{width:100%;padding:14px;border-radius:10px;margin:8px 0}.btn-pay{background:#000;color:#ffcc00;border:none;font-weight:bold;font-size:16px}</style>
+</head>
+<body>
+<div class="header">PAY TO MERCHANT CODE 60577134</div>
+<div class="card">
+<label>Select Currency:</label>
+<select id="cur" onchange="calc()">
+<option value="UGX">🇺🇬 UGX - 10,000 UGX</option>
+<option value="USD">🇺🇸 USD - $2.7</option>
+<option value="KES">🇰🇪 KES - KSh 350</option>
+<option value="TZS">🇹🇿 TZS - TSh 7,000</option>
+<option value="RWF">🇷🇼 RWF - RWF 3,500</option>
+<option value="GBP">🇬🇧 GBP - £2.1</option>
+</select>
+<h2>Fee: <span id="amt">10,000 UGX</span></h2>
 <p>Nurse: <b id="nurse">Loading...</b></p>
-<p style="font-size:12px;color:#666">Pay directly to Home Care Hero Merchant Account</p>
-<div style="background:#ffcc00;padding:12px;border-radius:10px;margin:15px 0;font-weight:bold">MERCHANT CODE: 60577134<br>USSD: *165*3*60577134*10000#</div>
-<button onclick="payNow()" style="width:100%;padding:18px;background:#000;color:#ffcc00;border:none;border-radius:12px;font-weight:bold;font-size:18px">👉 TAP TO PAY 10K NOW</button>
-<div id="m" style="margin-top:15px;display:none"></div>
-<a href="momo-wallet.html" style="display:block;margin-top:15px;color:#00aa55;font-weight:bold">View Wallet After Paying →</a>
+<div style="background:#ffcc00;padding:12px;border-radius:10px;font-weight:bold;text-align:center">MERCHANT: 60577134<br>MTN USSD: *165*3*60577134*10000#</div>
+<p style="font-size:11px;color:#666;margin-top:10px">All currencies converted to 10,000 UGX for MTN Merchant. Client sees price in own currency, you receive 10K UGX REAL.</p>
+<button class="btn-pay" onclick="payNow()">PAY NOW IN <span id="curText">UGX</span></button>
+<div id="m" style="margin-top:15px;display:none;padding:12px;background:#e8f5e9;border-radius:10px"></div>
+<a href="momo-wallet.html" style="display:block;text-align:center;margin-top:15px;font-weight:bold;color:#00aa55;text-decoration:none">View Wallet →</a>
 </div>
 <script>
-document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Selected Caregiver';
+var rates={UGX:10000,USD:2.7,KES:350,TZS:7000,RWF:3500,GBP:2.1};
+document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Caregiver';
+var saved=localStorage.getItem('selectedCurrency')||'UGX';
+document.getElementById('cur').value=saved;
+function calc(){
+var c=document.getElementById('cur').value;
+localStorage.setItem('selectedCurrency',c);
+document.getElementById('amt').innerText=rates[c].toLocaleString()+' '+c+' (~10,000 UGX)';
+document.getElementById('curText').innerText=c;
+}
+calc();
 function payNow(){
-let box=document.getElementById('m'); box.style.display='block';
-box.innerHTML='<p style=color:#00aa55;font-weight:bold>Opening MTN MoMo... Dial *165*3*60577134*10000#<br>Enter PIN to pay 10K REAL</p>';
-// REAL USSD - WORKS NOW
-window.location.href='tel:*165*3*60577134*10000%23';
-let b=parseInt(localStorage.getItem('realBookingEarn')||0)+10000;
+var c=document.getElementById('cur').value;
+document.getElementById('m').style.display='block';
+document.getElementById('m').innerHTML='<b>Paying '+rates[c]+' '+c+' = 10,000 UGX</b><br>To Merchant 60577134<br><br>Dialing MTN...';
+setTimeout(function(){window.location.href='tel:*165*3*60577134*10000%23';},600);
+var b=parseInt(localStorage.getItem('realBookingEarn')||0)+10000;
 localStorage.setItem('realBookingEarn',b);
 }
-</script></body></html>
+</script>
+</body>
+</html>
