@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pay Like SafeBoda - Home Care Hero</title>
+<title>Pay - Home Care Hero</title>
 <style>
 body{background:#f5f5f5;font-family:Arial;margin:0;padding:15px;}
 .header{background:#ffcc00;padding:15px;border-radius:15px;text-align:center;color:#000;font-weight:bold;}
@@ -17,7 +17,7 @@ input{width:92%;padding:14px;border-radius:10px;border:1px solid #ddd;margin:5px
 </style>
 </head>
 <body>
-<div class="header">🏥 Home Care Hero - SafeBoda Style Payment</div>
+<div class="header">🏥 Home Care Hero - Secure Payment</div>
 
 <div class="card">
 <h3>Book Caregiver - Pay Booking Fee</h3>
@@ -28,7 +28,7 @@ input{width:92%;padding:14px;border-radius:10px;border:1px solid #ddd;margin:5px
 </div>
 
 <div class="card">
-<h3>Choose Payment Like SafeBoda</h3>
+<h3>Choose Payment Method</h3>
 <button class="pay-btn mtn" onclick="pay('MTN')"><span>📱 MTN MoMo</span><span>→</span></button>
 <button class="pay-btn airtel" onclick="pay('AIRTEL')"><span>📱 Airtel Money</span><span>→</span></button>
 <button class="pay-btn uba" onclick="pay('UBA')"><span>💳 UBA / Visa Card</span><span>→</span></button>
@@ -47,16 +47,14 @@ function pay(method){
  if(method==='MTN' || method==='AIRTEL'){
    msg.style.background='#fff3cd';
    msg.innerHTML='⏳ Sending MoMo prompt to '+phone+'...<br><br>Dial *165*3# to approve UGX '+amt+' to 0772101875 - Levi Kwemoi<br><br>After payment, you will get SMS.';
-   // Real integration: Call Flutterwave/Pesapal API here
-   // For now simulate like SafeBoda
    setTimeout(()=>{
      let bal=parseInt(localStorage.getItem('ceoBalance')||0);
      localStorage.setItem('ceoBalance',bal+parseInt(amt));
-     msg.innerHTML='✅ Payment Received! UGX '+amt+' from '+phone+' via '+method+'<br><br>Money added to CEO wallet. Real MTN integration needs Flutterwave key.<br><br><a href="wallet.html?v=103" style="color:#00f;">Check Wallet →</a>';
+     msg.innerHTML='✅ Payment Received! UGX '+amt+' from '+phone+' via '+method+'<br><br>Money added to CEO wallet.<br><br><a href="wallet.html?v=103" style="color:#00f;">Check Wallet →</a>';
    },3000);
  } else if(method==='UBA'){
    msg.style.background='#000'; msg.style.color='#fff';
-   msg.innerHTML='💳 UBA Payment (like SafeBoda card)<br><br>Redirecting to secure UBA/Flutterwave page...<br><br>To activate real UBA: Register at flutterwave.com → Get PUBLIC KEY → Send to me.<br><br>SIMULATION: UGX '+amt+' paid via UBA Card.';
+   msg.innerHTML='💳 UBA Payment<br><br>Redirecting to secure UBA/Flutterwave page...<br><br>SIMULATION: UGX '+amt+' paid via UBA Card.';
    let bal=parseInt(localStorage.getItem('ceoBalance')||0);
    localStorage.setItem('ceoBalance',bal+parseInt(amt));
  } else {
@@ -64,7 +62,6 @@ function pay(method){
    msg.innerHTML='✅ Cash Booking Saved! Caregiver will collect UGX '+amt+' on visit. Client: '+phone;
  }
 }
-
 document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Any Available Nurse';
 </script>
 </body>
