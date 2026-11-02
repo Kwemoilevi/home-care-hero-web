@@ -3,94 +3,32 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Wallet - Withdraw - Private</title>
+<title>CEO Wallet - Auto Withdraw - Home Care Hero</title>
 <script>
-// CEO privacy guard
 if(localStorage.getItem("isCEO")!=="true"){
-  alert("Login as CEO first!");
+  alert("CEO only! Login first");
   window.location.href="admin-login.html";
 }
 </script>
 <style>
-body{background:#0a0a0a;color:#fff;font-family:Arial;padding:15px;}
+body{background:#0a0a0a;color:#fff;font-family:Arial;padding:15px;margin:0;}
 .card{background:#1a1a1a;padding:20px;border-radius:12px;margin:15px 0;border:1px solid #333;}
-input,select{padding:12px;width:92%;border-radius:8px;border:none;margin:8px 0;}
-button{padding:14px;width:100%;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;}
+input,select{padding:14px;width:92%;border-radius:8px;border:none;margin:8px 0;font-size:16px;}
+button{padding:14px;width:100%;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;font-size:16px;}
 .green{background:#00ff88;color:#000;}
-.red{background:#ff4444;color:#fff;}
 .orange{background:#ffaa00;color:#000;}
+.red{background:#ff4444;color:#fff;}
+.blue{background:#0088ff;color:#fff;}
+.msgBox{padding:12px;border-radius:8px;margin-top:10px;display:none;}
+.success{background:#002a14;color:#00ff88;border:1px solid #00ff88;}
+.error{background:#2a0000;color:#ff8888;border:1px solid #ff4444;}
+.pending{background:#2a1a00;color:#ffaa00;border:1px solid #ffaa00;}
 </style>
 </head>
 <body>
-<h2>💰 CEO Wallet - Withdraw</h2>
+<h2>💰 CEO Wallet - AUTO Withdraw</h2>
 
 <div class="card">
-<h3 id="bal">Balance: Loading...</h3>
-<p id="stats"></p>
-<p style="color:#00ff88;">Earning: 20 UGX per view, 50 UGX per tap</p>
-</div>
-
-<div class="card">
-<h3>📤 Withdraw to MTN MoMo</h3>
-<input id="momoNumber" type="tel" placeholder="Your MTN Number 076XXXXXXX">
-<select id="network">
-<option value="MTN">MTN MoMo Uganda</option>
-<option value="AIRTEL">Airtel Money</option>
-</select>
-<input id="amount" type="number" placeholder="Amount">
-<button class="green" onclick="withdraw()">✅ WITHDRAW NOW</button>
-<p id="msg" style="margin-top:15px;"></p>
-</div>
-
-<div class="card">
-<h3>📋 Withdraw History</h3>
-<div id="history">No history yet</div>
-<button class="orange" onclick="window.location.href='admin.html'">← Back to CEO Dashboard</button>
-</div>
-
-<script>
-function loadBal(){
- let views=parseInt(localStorage.getItem("totalViews")||6);
- let taps=parseInt(localStorage.getItem("totalTaps")||7);
- let bal=(views*20)+(taps*50);
- let stored=localStorage.getItem("ceoBalance");
- if(stored) bal=parseInt(stored);
- document.getElementById("bal").innerHTML="Balance: UGX "+bal;
- document.getElementById("stats").innerHTML="Views: "+views+" | Taps: "+taps+" | Total: UGX "+bal;
- document.getElementById("amount").value=bal;
- loadHistory();
-}
-function withdraw(){
- let num=document.getElementById("momoNumber").value.trim();
- let amt=parseInt(document.getElementById("amount").value);
- let net=document.getElementById("network").value;
- if(num.length<10){ alert("Enter valid MTN 076XXXXXXX"); return; }
- if(!amt || amt<100){ alert("Minimum 100 UGX to withdraw!"); return; }
- 
- let currentBal=parseInt(localStorage.getItem("ceoBalance")|| ((parseInt(localStorage.getItem("totalViews")||6)*20)+(parseInt(localStorage.getItem("totalTaps")||7)*50)) );
- if(amt>currentBal){ alert("You have UGX "+currentBal+" only!"); return; }
- 
- let reqs=JSON.parse(localStorage.getItem("withdrawRequests")||"[]");
- reqs.push({number:num,amount:amt,network:net,date:new Date().toLocaleString(),status:"PENDING"});
- localStorage.setItem("withdrawRequests",JSON.stringify(reqs));
- 
- // For now deduct balance
- let newBal=currentBal-amt;
- localStorage.setItem("ceoBalance",newBal);
- 
- document.getElementById("msg").innerHTML="✅ SUCCESS! UGX "+amt+" withdraw request to "+num+" saved!<br><br><b>MANUAL STEP:</b> Dial *165# → Send Money → "+num+" → UGX "+amt+"<br><br>Balance now: UGX "+newBal;
- loadBal();
-}
-function loadHistory(){
- let reqs=JSON.parse(localStorage.getItem("withdrawRequests")||"[]");
- if(reqs.length===0){ document.getElementById("history").innerHTML="No withdraw yet"; return; }
- let h="";
- reqs.slice(-5).reverse().forEach(r=>{
-   h+=`<div style="padding:8px;border-bottom:1px solid #333;">${r.date}<br>UGX ${r.amount} → ${r.number} (${r.network}) - ${r.status}</div>`;
- });
- document.getElementById("history").innerHTML=h;
-}
-loadBal();
-</script>
-</body>
-</html>
+<h3 id="bal">Loading...</h3>
+<p id="stats" style="color:#888;"></p>
+<p style="color:#00ff88;font-size:13px;">💵 Earn: 20 UGX per view, 50 UGX
