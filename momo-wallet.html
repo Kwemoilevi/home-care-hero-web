@@ -1,54 +1,90 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wallet - Merchant 60577134</title>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
-<style>body{margin:0;font-family:Arial;background:#f5f5f5}.header{background:#000;color:#ffcc00;padding:16px;text-align:center;font-weight:bold}.card{background:#fff;margin:12px;padding:18px;border-radius:14px}.total{font-size:28px;font-weight:bold;color:#00aa55;text-align:center;margin:10px 0}.stat{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee;font-size:14px}.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;margin:6px 0}.btn-merchant{background:#000;color:#ffcc00}.btn-mtn{background:#ffcc00;color:#000}</style>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Client Wallet - MTN MoMo - Home Care Hero</title>
+<style>
+body{font-family:Arial;background:#f8fafc;margin:0}
+header{background:#ffcc00;padding:15px;text-align:center;font-weight:bold}
+.container{max-width:600px;margin:auto;padding:20px}
+.card{background:white;padding:20px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-top:15px}
+.balance{font-size:36px;color:#0a7a42;font-weight:bold}
+input,select,button{width:100%;padding:12px;margin-top:10px;border-radius:8px;border:1px solid #ddd;font-size:16px}
+button{background:#0a7a42;color:white;border:none;font-weight:bold;cursor:pointer}
+button.momo{background:#ffcc00;color:black}
+.trans{padding:10px;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
+a{color:#0a7a42;text-decoration:none;font-weight:bold}
+</style>
 </head>
 <body>
-<div class="header">📱 WALLET - MERCHANT 60577134<br><span style="color:#fff;font-size:12px">Multi-Currency View + GPS</span></div>
+<header>💳 Home Care Hero Wallet - MTN MoMo</header>
+<div class="container">
+<div class="card" style="text-align:center">
+<p>Current Balance</p>
+<div class="balance" id="bal">UGX 0</div>
+<p id="phone">+256...</p>
+</div>
+
 <div class="card">
-<div style="text-align:center">
-<select id="curView" onchange="updateView()" style="padding:8px;border-radius:8px">
-<option value="UGX">UGX</option><option value="USD">USD</option><option value="KES">KES</option><option value="TZS">TZS</option><option value="RWF">RWF</option><option value="GBP">GBP</option>
+<h3>Deposit via MTN MoMo</h3>
+<input id="depAmount" type="number" placeholder="Amount e.g 50000">
+<input id="momoPhone" type="tel" placeholder="MTN Number 077xxxxxxx">
+<button class="momo" onclick="deposit()">Deposit with MoMo</button>
+<p style="font-size:12px;color:gray">Demo: Uses localStorage. Real API goes in /api/momo.js</p>
+</div>
+
+<div class="card">
+<h3>Pay Caregiver</h3>
+<select id="caregiver">
+<option>Grace N. - Nanny - UGX 50k</option>
+<option>David K. - Nurse - UGX 80k</option>
 </select>
+<input id="payAmount" type="number" placeholder="Amount">
+<button onclick="pay()">Pay Now</button>
 </div>
-<div class="total" id="total">10,055 UGX</div>
-<div style="text-align:center;font-size:12px" id="converted"></div>
-<hr>
-<div class="stat"><span>👁️ Views</span><b id="views">0</b></div>
-<div class="stat"><span>👆 Taps</span><b id="taps">0</b></div>
-<div class="stat"><span>💰 Bookings</span><b id="book">0 UGX</b></div>
-<div class="stat"><span>📊 Ad Est.</span><b id="ad">0 UGX</b></div>
-</div>
+
 <div class="card">
-<button class="btn btn-merchant" onclick="window.location.href='tel:*165*4%23'">CHECK MERCHANT BALANCE *165*4#</button>
-<button class="btn btn-mtn" onclick="window.location.href='tel:*165*3*60577134*10000%23'">TEST PAY TO 60577134</button>
-<a href="gps.html" style="display:block;text-align:center;margin-top:10px;font-weight:bold;text-decoration:none;background:#e3f2fd;color:#1976d2;padding:12px;border-radius:10px">📍 GPS TRACKER</a>
-<a href="index.html" style="display:block;text-align:center;margin-top:10px;font-weight:bold;text-decoration:none;color:#000">← Back to Home</a>
+<h3>Transaction History</h3>
+<div id="history"></div>
 </div>
-<div class="card" style="font-size:12px;background:#fff9c4">
-<b>Currencies Vary:</b> UGX 10,000 = USD 2.7 = KES 350 = TZS 7,000 = RWF 3,500 = GBP 2.1<br>All payments land as 10K UGX in Merchant 60577134.
+
+<p style="margin-top:20px;text-align:center"><a href="index.html">← Home</a> | <a href="admin-dashboard.html">Admin</a> | <a href="privacy.html">Privacy</a></p>
 </div>
+
 <script>
-var fromUGX={UGX:1,USD:0.00027,KES:0.035,TZS:0.7,RWF:0.35,GBP:0.00021};
-var v=parseInt(localStorage.getItem('adViews')||0)||2;
-var t=parseInt(localStorage.getItem('adTaps')||0)||0;
-var b=parseInt(localStorage.getItem('realBookingEarn')||0)||10000;
-document.getElementById('views').innerText=v;
-document.getElementById('taps').innerText=t;
-document.getElementById('book').innerText=b.toLocaleString()+' UGX';
-document.getElementById('ad').innerText=(v*5).toLocaleString()+' UGX';
-var saved=localStorage.getItem('selectedCurrency')||'UGX';
-document.getElementById('curView').value=saved;
-function updateView(){
-var c=document.getElementById('curView').value;
-localStorage.setItem('selectedCurrency',c);
-var tot=b+v*5;
-var conv=(tot*fromUGX[c]).toFixed(2);
-document.getElementById('total').innerText=tot.toLocaleString()+' UGX';
-document.getElementById('converted').innerText='= '+conv+' '+c+' (Rate varies)';
+let balance = parseInt(localStorage.getItem('hch_balance')||'150000');
+let history = JSON.parse(localStorage.getItem('hch_history')||'[]');
+function save(){localStorage.setItem('hch_balance',balance);localStorage.setItem('hch_history',JSON.stringify(history));render();}
+function render(){
+  document.getElementById('bal').innerText='UGX '+balance.toLocaleString();
+  let h='';
+  history.slice().reverse().forEach(t=>{h+=`<div class="trans"><span>${t.type} - ${t.desc}</span><span>${t.amount>0?'+':''}UGX ${t.amount}</span></div>`});
+  if(!h) h='<p style="color:gray">No transactions yet</p>';
+  document.getElementById('history').innerHTML=h;
 }
-updateView();
+function deposit(){
+  let amt=parseInt(document.getElementById('depAmount').value);
+  let phone=document.getElementById('momoPhone').value;
+  if(!amt || amt<1000) return alert('Enter amount');
+  balance+=amt;
+  history.push({type:'Deposit',desc:'MoMo '+phone,amount:amt});
+  save(); alert('Deposited UGX '+amt+' via MTN MoMo (Demo)');
+}
+function pay(){
+  let amt=parseInt(document.getElementById('payAmount').value);
+  if(!amt) return alert('Enter amount');
+  if(amt>balance) return alert('Insufficient balance');
+  balance-=amt;
+  let cg=document.getElementById('caregiver').value;
+  history.push({type:'Payment',desc:cg,amount:-amt});
+  // Add booking for admin
+  let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
+  bookings.push({client:'You',caregiver:cg,service:'Care',amount:amt,status:'Paid'});
+  localStorage.setItem('hch_bookings',JSON.stringify(bookings));
+  save(); alert('Paid UGX '+amt+' to '+cg);
+}
+render();
 </script>
 </body>
 </html>
