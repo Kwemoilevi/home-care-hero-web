@@ -1,73 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>CEO Admin | Home Care Hero</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CEO Dashboard - Private</title>
+<script>
+// ===== CEO PRIVACY GUARD - DO NOT REMOVE =====
+if(localStorage.getItem("isCEO")!=="true"){
+  alert("Private CEO area only! Please login.");
+  window.location.href="admin-login.html";
+}
+if(Date.now() - parseInt(localStorage.getItem("ceoLoginTime")||0) > 3600000){
+  localStorage.removeItem("isCEO");
+  alert("Session expired, login again.");
+  window.location.href="admin-login.html";
+}
+// ===== END GUARD =====
+</script>
 <style>
-body{font-family:'Segoe UI',sans-serif;background:#0f172a;color:white;margin:0;padding:0}
-.header{background:#1e293b;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.logo{font-weight:900;color:#22c55e;font-size:20px}
-.nav{display:flex;gap:8px;flex-wrap:wrap}
-.tab{padding:8px 14px;border-radius:20px;background:#334155;cursor:pointer;font-size:13px;font-weight:600}
-.tab.active{background:#22c55e;color:white}
-.container{padding:15px;max-width:1200px;margin:0 auto}
-.card{background:#1e293b;border-radius:16px;padding:16px;margin:10px 0;border:1px solid #334155}
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.stat{background:#0f172a;padding:12px;border-radius:12px;text-align:center}
-.stat h3{margin:0;color:#22c55e;font-size:22px}
-.stat p{margin:5px 0 0;font-size:12px;color:#94a3b8}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th,td{padding:10px;text-align:left;border-bottom:1px solid #334155}
-th{color:#94a3b8;font-size:11px;text-transform:uppercase}
-.btn{padding:6px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:12px;margin:2px}
-.btn-green{background:#22c55e;color:white}
-.btn-red{background:#ef4444;color:white}
-.btn-blue{background:#3b82f6;color:white}
-.btn-gray{background:#475569;color:white}
-.badge{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700}
-.badge-pending{background:#f59e0b;color:white}
-.badge-verified{background:#22c55e;color:white}
-.badge-rejected{background:#ef4444;color:white}
-input,select{padding:8px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:white}
-.section-title{font-size:16px;font-weight:800;margin:20px 0 10px;color:#e2e8f0}
-a{color:#22c55e}
-.small{font-size:11px;color:#94a3b8}
+body{background:#0a0a0a;color:#fff;font-family:Arial;padding:20px;}
+.header{display:flex;justify-content:space-between;align-items:center;}
+.logout{background:#ff4444;color:#fff;padding:8px 15px;border:none;border-radius:5px;cursor:pointer;}
+.card{background:#1a1a1a;padding:20px;border-radius:10px;margin:15px 0;}
 </style>
 </head>
 <body>
 <div class="header">
-<div class="logo">👨‍💼 HOME CARE HERO — CEO</div>
-<div style="display:flex;gap:10px;align-items:center">
-<span id="ceoName" style="font-size:13px">Chairman</span>
-<button class="btn btn-gray" onclick="logout()">Logout</button>
-</div>
-</div>
-
-<div class="container">
-<div class="nav">
-<div class="tab active" onclick="showTab('dash')" id="t-dash">📊 Dashboard</div>
-<div class="tab" onclick="showTab('verify')" id="t-verify">🔐 LC1 Verifications <span id="verifyCount" style="background:#ef4444;padding:2px 6px;border-radius:10px;margin-left:5px">0</span></div>
-<div class="tab" onclick="showTab('bookings')" id="t-bookings">📅 Bookings</div>
-<div class="tab" onclick="showTab('nurses')" id="t-nurses">👩‍⚕️ Nurses</div>
-<div class="tab" onclick="showTab('clients')" id="t-clients">🤗 Clients</div>
-<div class="tab" onclick="showTab('wallet')" id="t-wallet">💰 Wallet</div>
-</div>
-
-<!-- DASHBOARD -->
-<div id="dashTab">
-<div class="stat-grid">
-<div class="stat"><h3 id="s-book">0</h3><p>Total Bookings</p></div>
-<div class="stat"><h3 id="s-pend">0</h3><p>Pending LC1</p></div>
-<div class="stat"><h3 id="s-ver">0</h3><p>Verified Nurses</p></div>
-<div class="stat"><h3 id="s-wallet">0 UGX</h3><p>Your 20% Profit</p></div>
+<h2>👨‍💼 CEO • Chairman CEO - PRIVATE</h2>
+<button class="logout" onclick="logout()">Logout</button>
 </div>
 
 <div class="card">
-<h3>🚀 CEO Quick Links</h3>
-<p class="small">
-<a href="admin-live-map.html">📍 Live Map (GPS)</a> • 
-<a href="wallet.html">💰 Wallet</a> • 
-<a href="clients.html">🤗 Client View</a> • 
-<a href="caregivers.html">👩‍⚕️ Nurse View</a> • 
-<a href="caregiver-verification.html">📝
+<h3>💰 Wallet: UGX 400</h3>
+<p>Your 20% Earnings - Private</p>
+</div>
+
+<div class="card">
+<h3>🌍 Global Operations</h3>
+<p>Clients: Pan-Africa | Caregivers: Verified</p>
+<button onclick="window.location.href='clients.html'">View Clients</button>
+<button onclick="window.location.href='caregiver.html'">View Caregivers</button>
+<button onclick="window.location.href='wallet.html'">Wallet Details</button>
+<button onclick="window.location.href='tracker.html'">Live Tracker</button>
+</div>
+
+<script>
+function logout(){
+  localStorage.removeItem("isCEO");
+  localStorage.removeItem("ceoLoginTime");
+  window.location.href="index.html";
+}
+</script>
+</body>
+</html>
