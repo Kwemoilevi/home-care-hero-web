@@ -1,46 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Home Care Hero - Hire Nurses in Kampala</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Home Care Hero - Find Nurses in Uganda</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
 <style>
-body{margin:0;font-family:Arial;background:#f5f5f5}
-.header{background:#000;color:#fff;padding:15px;text-align:center;font-weight:bold;position:sticky;top:0;z-index:10}
-.hero{background:#ffcc00;padding:30px 15px;text-align:center}
-.card{background:#fff;margin:12px;padding:15px;border-radius:14px;box-shadow:0 2px 10px #0001}
-.btn{background:#000;color:#fff;padding:14px 22px;border-radius:10px;text-decoration:none;display:inline-block;font-weight:bold;margin:5px;border:none}
-.btn-green{background:#00aa55}
-.nurse{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid #eee}
-.adbox{background:#fffbe6;border:1px dashed #ffb300;padding:12px;text-align:center;margin:12px;border-radius:10px;color:#666;font-size:12px}
-.small{font-size:12px;color:#666}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Arial;background:#f5f7fa}
+.header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold;position:sticky;top:0;z-index:10}
+.header span{color:#fff;font-size:11px;display:block;margin-top:3px}
+.search{margin:12px;background:#fff;padding:12px;border-radius:12px;display:flex;gap:8px}
+.search input{flex:1;padding:12px;border-radius:10px;border:1px solid #ddd}
+.search button{padding:12px 16px;background:#ffcc00;border:none;border-radius:10px;font-weight:bold}
+.card{background:#fff;margin:12px;padding:14px;border-radius:14px;display:flex;gap:12px;box-shadow:0 1px 6px rgba(0,0,0,0.06)}
+.card img{width:60px;height:60px;border-radius:50%;object-fit:cover}
+.card b{font-size:15px}
+.card p{font-size:12px;color:#666;margin:3px 0}
+.btn{padding:10px 14px;border:none;border-radius:10px;font-weight:bold;font-size:12px;cursor:pointer;margin-right:6px}
+.btn-book{background:#000;color:#ffcc00}
+.btn-call{background:#e8f5e9;color:#00aa55}
+.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:10px;border-top:1px solid #eee}
+.nav a{text-decoration:none;color:#666;font-size:11px;text-align:center;font-weight:bold}
+.nav a.active{color:#000}
+.merchant-bar{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}
 </style>
 </head>
 <body>
-<div class="header">🏥 HOME CARE HERO - KAMPALA | 0772101875</div>
+<div class="header">🏥 HOME CARE HERO<span>Find Nurses & Caregivers - Kampala, Uganda</span></div>
+<div class="merchant-bar">💳 Merchant Code: 60577134 | Booking Fee: 10,000 UGX - Secure Pay</div>
 
-<div class="hero">
-<h2 style="margin:0">Hire Trusted Nurses & Caregivers</h2>
-<p class="small">Professional Home Care in Kampala - Pay Securely via MTN, Airtel, UBA</p>
-<p>Views Today: <b id="vc">0</b> → Each view = 150 UGX real</p>
-<a class="btn" href="pay.html">BOOK NOW - 10K FEE</a>
-<a class="btn btn-green" href="wallet.html">CEO REAL WALLET</a>
+<div class="search">
+<input id="q" placeholder="Search nurse, caregiver, location..." oninput="filter()">
+<button onclick="filter()">Search</button>
 </div>
 
-<div class="adbox">Your Google Ads will appear here - You earn per view</div>
+<div id="list"></div>
 
-<!-- AUTO GOOGLE AD -->
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-1149562102145695"
-     data-ad-slot="auto"
-     data-ad-format="auto"
-     data-full-width-responsive="true"></ins>
-<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<div style="height:80px"></div>
+<div class="nav">
+<a href="index.html" class="active">🏠<br>Home</a>
+<a href="momo-wallet.html">💰<br>Wallet<br><span id="navBal" style="font-size:9px;color:#00aa55">10K</span></a>
+<a href="pay.html">💳<br>Pay 10K</a>
+<a href="wallet.html">📊<br>Stats</a>
+</div>
 
-<div class="card">
-<h3 style="margin-top:0">👩‍⚕️ Available Caregivers Today</h3>
+<script>
+// DATA
+const nurses=[
+{name:"Auma Grace - Enrolled Nurse",skill:"Home Nursing, Injections",loc:"Kampala - Ntinda",img:"https://i.pravatar.cc/100?img=5"},
+{name:"Mukasa John - Caregiver",skill:"Elderly Care, Bathing",loc:"Kampala - Bweyogerere",img:"https://i.pravatar.cc/100?img=12"},
+{name:"Nakato Sarah - Midwife",skill:"Postnatal, Newborn Care",loc:"Wakiso - Kira",img:"https://i.pravatar.cc/100?img=32"},
+{name:"Okello Levi - General Nurse",skill:"Wound Care, Home Care",loc:"Kampala - Central",img:"https://i.pravatar.cc/100?img=15"},
+{name:"Babirye Hope - Nurse Assistant",skill:"Patient Care, Feeding",loc:"Mukono",img:"https://i.pravatar.cc/100?img=23"}
+];
 
-<div class="nurse">
-<div><b>Sarah N
+function render(arr){
+let h='';
+arr.forEach(n=>{
+h+=`<div class="card">
+<img src="${n.img}">
+<div style="flex:1">
+<b>${n.name}</b>
+<p>⭐ ${n.skill}</p>
+<p>📍 ${n.loc}</p>
+<div style="margin-top:8px">
+<button class="btn btn-book" onclick="book('${n.name}')">Book 10K</button>
+<button class="btn btn-call" onclick="callNurse()">Call</button>
+</div>
+</div>
+</div>`;
+});
+document.getElementById('list').innerHTML=h;
+}
+
+function filter(){
+let q=document.getElementById('q').value.toLowerCase();
+let f=nurses.filter(n=> n.name.toLowerCase().includes(q) || n.loc.toLowerCase().includes(q) || n.skill.toLowerCase().includes(q));
+render(f);
+// Count as tap for merchant wallet
+let t=parseInt(localStorage.getItem('adTaps')||0)+1;
+localStorage.setItem('adTaps',t);
+}
