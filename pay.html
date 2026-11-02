@@ -1,19 +1,22 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pay - Merchant Code</title></head><body style="margin:0;font-family:Arial;background:#f5f5f5">
-<div style="background:#ffcc00;padding:15px;text-align:center;font-weight:bold;border-radius:10px">PAY TO MERCHANT CODE 60577134</div>
-<div style="background:#fff;margin:15px;padding:20px;border-radius:15px">
-<h3>Booking Fee: 10,000 UGX</h3>
-<p style="font-size:13px;color:#666">Pay to Home Care Hero Merchant - Secure & Real</p>
-<p>Nurse: <b id="nurse">Selected</b></p>
-<button onclick="payMerchant()" style="width:100%;padding:18px;background:#ffcc00;border:none;border-radius:12px;font-weight:bold;font-size:16px">PAY 10K TO MERCHANT 60577134</button>
-<div id="m" style="margin-top:15px;display:none;padding:15px;background:#e8f5e9;border-radius:10px"></div>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pay 10K - Merchant 60577134</title></head><body style="margin:0;font-family:Arial;background:#f5f5f5">
+<div style="background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold">PAY TO MERCHANT 60577134 - REAL NOW</div>
+<div style="background:#fff;margin:15px;padding:20px;border-radius:15px;text-align:center">
+<h2>Booking Fee: 10,000 UGX</h2>
+<p>Nurse: <b id="nurse">Loading...</b></p>
+<p style="font-size:12px;color:#666">Pay directly to Home Care Hero Merchant Account</p>
+<div style="background:#ffcc00;padding:12px;border-radius:10px;margin:15px 0;font-weight:bold">MERCHANT CODE: 60577134<br>USSD: *165*3*60577134*10000#</div>
+<button onclick="payNow()" style="width:100%;padding:18px;background:#000;color:#ffcc00;border:none;border-radius:12px;font-weight:bold;font-size:18px">👉 TAP TO PAY 10K NOW</button>
+<div id="m" style="margin-top:15px;display:none"></div>
+<a href="momo-wallet.html" style="display:block;margin-top:15px;color:#00aa55;font-weight:bold">View Wallet After Paying →</a>
 </div>
 <script>
-document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Caregiver';
-function payMerchant(){
+document.getElementById('nurse').innerText=localStorage.getItem('selectedNurse')||'Selected Caregiver';
+function payNow(){
+let box=document.getElementById('m'); box.style.display='block';
+box.innerHTML='<p style=color:#00aa55;font-weight:bold>Opening MTN MoMo... Dial *165*3*60577134*10000#<br>Enter PIN to pay 10K REAL</p>';
+// REAL USSD - WORKS NOW
+window.location.href='tel:*165*3*60577134*10000%23';
 let b=parseInt(localStorage.getItem('realBookingEarn')||0)+10000;
 localStorage.setItem('realBookingEarn',b);
-let box=document.getElementById('m'); box.style.display='block';
-box.innerHTML='<b>✓ Opening MTN Merchant Payment</b><br><br>Merchant Code: <b>60577134</b><br>Amount: <b>10,000 UGX</b><br><br>USSD: <b>*165*3*60577134*10000#</b><br><br><a href=momo-wallet.html style=background:#00aa55;color:#fff;padding:12px 20px;border-radius:10px;text-decoration:none;display:inline-block>CONFIRM PAYMENT → WALLET</a>';
-setTimeout(()=>{window.location.href='tel:*165*3*60577134*10000%23';},800);
 }
 </script></body></html>
