@@ -1,32 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CEO Real Wallet</title>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
-<style>body{background:#000;color:#fff;font-family:Arial;padding:15px}.card{background:#111;border:1px solid #00ff88;border-radius:15px;padding:20px;margin:10px 0}.big{font-size:32px;color:#00ff88;font-weight:bold}.btn{width:100%;padding:15px;background:#00ff88;color:#000;border:none;border-radius:10px;font-weight:bold}</style>
-</head>
-<body>
-<h2>💰 CEO Real Wallet - 0772101875</h2>
-<div class="card">
-Views: <b id="views">0</b> → Ad Earn: UGX <b id="adEarn">0</b><br><br>
-Taps: <b id="taps">0</b> → Booking Earn: UGX <b id="bookEarn">0</b><hr>
-<div class="big">Total Real: UGX <span id="total">0</span></div>
-<p style="font-size:11px;color:#aaa">150 UGX per view (Google) + Real client payments from pay.html</p>
-<button class="btn" onclick="withdraw()">Withdraw to MoMo 0772101875</button>
-<div id="msg"></div>
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wallet Real</title></head><body style="font-family:Arial;background:#f5f5f5;padding:10px">
+<div style="background:#ffcc00;padding:12px;text-align:center;font-weight:bold;border-radius:10px">WALLET 0772101875</div>
+<div style="background:#fff;padding:15px;border-radius:12px;margin-top:10px">
+<p>Views: <b id="v">0</b></p>
+<p>Taps: <b id="t">0</b></p>
+<p>Booking: <b id="b">0</b> UGX</p>
+<h2>Total: <span id="tot">0</span> UGX</h2>
+<button onclick="window.location.href='tel:*165*4%23'" style="width:100%;padding:14px;background:#00aa55;color:#fff;border:none;border-radius:10px;font-weight:bold">CHECK REAL MOMO BALANCE *165*4#</button>
 </div>
 <script>
-let views=parseInt(localStorage.getItem('totalViews')||0);
-let taps=parseInt(localStorage.getItem('totalTaps')||0);
-let adEarn=views*150;
-let bookEarn=parseInt(localStorage.getItem('realBookingEarn')||0);
-document.getElementById('views').innerText=views;
-document.getElementById('taps').innerText=taps;
-document.getElementById('adEarn').innerText=adEarn;
-document.getElementById('bookEarn').innerText=bookEarn;
-document.getElementById('total').innerText=adEarn+bookEarn;
-function withdraw(){let t=adEarn+bookEarn; if(t<5000){document.getElementById('msg').innerHTML='<p style="color:orange">Need 5000 UGX min. You have '+t+'</p>';return}document.getElementById('msg').innerHTML='✅ Request: UGX '+t+' → To 0772101875. Add Flutterwave to make automatic.'}
-</script>
-</body>
-</html>
+let views=parseInt(localStorage.getItem('adViews')||0)+1; localStorage.setItem('adViews',views);
+let taps=parseInt(localStorage.getItem('adTaps')||0); 
+let book=parseInt(localStorage.getItem('realBookingEarn')||0);
+document.getElementById('v').innerText=views;
+document.getElementById('t').innerText=taps;
+document.getElementById('b').innerText=book.toLocaleString();
+document.getElementById('tot').innerText=(views*5+book).toLocaleString();
+</script></body></html>
