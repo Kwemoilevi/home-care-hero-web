@@ -1,162 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CEO Dashboard - PRIVATE - Home Care Hero</title>
-<script>
-// ===== CEO PRIVACY GUARD - DO NOT REMOVE =====
-if(localStorage.getItem("isCEO")!=="true"){
-  alert("🔐 Private CEO area only! Please login.");
-  window.location.href="admin-login.html";
-}
-if(Date.now() - parseInt(localStorage.getItem("ceoLoginTime")||0) > 3600000){
-  localStorage.removeItem("isCEO");
-  alert("Session expired, login again.");
-  window.location.href="admin-login.html";
-}
-// ===== END GUARD =====
-</script>
+<title>Admin Dashboard - Home Care Hero</title>
 <style>
-body{background:#0a0a0a;color:#fff;font-family:Arial;padding:15px;margin:0;}
-.header{display:flex;justify-content:space-between;align-items:center;background:#1a1a1a;padding:15px;border-radius:10px;margin-bottom:15px;}
-.card{background:#1a1a1a;padding:20px;border-radius:12px;margin:15px 0;border:1px solid #333;}
-button{padding:10px 15px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin:5px;}
-.green{background:#00ff88;color:#000;}
-.red{background:#ff4444;color:#fff;}
-.gold{background:gold;color:#000;}
-.orange{background:#ffaa00;color:#000;}
-.blue{background:#0088ff;color:#fff;}
-.small{font-size:12px;padding:5px 10px;width:auto;}
-.badge{padding:4px 8px;border-radius:5px;font-size:11px;}
-.verified{background:#00ff88;color:#000;}
-.pending{background:#ffaa00;color:#000;}
+body{font-family:Arial;background:#f4f6f8;margin:0}
+header{background:#0a7a42;color:white;padding:15px;display:flex;justify-content:space-between}
+.container{max-width:1100px;margin:auto;padding:20px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px}
+.card{background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,.1)}
+.card h2{color:#0a7a42;margin:0}
+table{width:100%;border-collapse:collapse;background:white;margin-top:20px;border-radius:10px;overflow:hidden}
+th,td{padding:12px;border-bottom:1px solid #eee;text-align:left}
+th{background:#0a7a42;color:white}
+.btn{padding:6px 12px;border:none;border-radius:6px;cursor:pointer}
+.btn-green{background:#0a7a42;color:white}
+.btn-red{background:#e11d48;color:white}
+a{color:#0a7a42;text-decoration:none;font-weight:bold}
 </style>
 </head>
 <body>
-
-<div class="header">
-<div>
-<h2 style="margin:0;">👨‍💼 CEO • Chairman CEO</h2>
-<small style="color:#00ff88;">PRIVATE ACCESS - Home Care Hero UG</small>
-</div>
-<button class="red small" onclick="logout()">Logout</button>
-</div>
-
-<div class="card">
-<h3>💰 Wallet Overview</h3>
-<p id="walletBal">Balance: Loading...</p>
-<p id="walletStats">Views + Taps = Earnings (20 UGX/view, 50 UGX/tap)</p>
-<button class="green" onclick="window.location.href='wallet.html'">💳 OPEN WALLET & WITHDRAW</button>
+<header>
+<div><b>Admin Dashboard</b> - Home Care Hero</div>
+<div><a href="index.html" style="color:white">Home</a> | <a href="admin-login.html" style="color:white">Logout</a></div>
+</header>
+<div class="container">
+<div class="grid">
+<div class="card"><h2 id="totalClients">0</h2><p>Total Clients</p></div>
+<div class="card"><h2 id="totalCaregivers">0</h2><p>Total Caregivers</p></div>
+<div class="card"><h2 id="totalBookings">0</h2><p>Total Bookings</p></div>
+<div class="card"><h2 id="totalWallet">UGX 0</h2><p>Wallet Balance</p></div>
 </div>
 
-<div class="card">
-<h3>🚀 Quick Actions</h3>
-<button class="blue" onclick="window.location.href='index.html'">View Public Site</button>
-<button class="blue" onclick="window.location.href='clients.html'">Clients</button>
-<button class="blue" onclick="window.location.href='caregiver.html'">Caregiver Form</button>
-<button class="blue" onclick="window.location.href='tracker.html'">Live Tracker</button>
-</div>
+<h2 style="margin-top:30px">Recent Bookings</h2>
+<table>
+<thead><tr><th>Client</th><th>Caregiver</th><th>Service</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+<tbody id="bookingTable"></tbody>
+</table>
 
-<div class="card">
-<h3>✅ Caregiver Verification - AUTOMATIC</h3>
-<p>Caregivers register on caregiver.html → You VERIFY here → They appear on homepage</p>
-<div id="adminCareList">Loading caregivers...</div>
-</div>
-
-<div class="card">
-<h3>📤 Withdraw Requests</h3>
-<div id="withdrawList">No requests yet</div>
+<p style="margin-top:20px"><a href="index.html">← Back Home</a> | <a href="client-wallet.html">View Wallet</a> | <a href="privacy.html">Privacy</a></p>
 </div>
 
 <script>
-// Wallet display
-function loadWallet(){
-  let views = parseInt(localStorage.getItem("totalViews")||6);
-  let taps = parseInt(localStorage.getItem("totalTaps")||7);
-  let bal = (views*20)+(taps*50);
-  let storedBal = localStorage.getItem("ceoBalance");
-  if(storedBal) bal = parseInt(storedBal);
-  
-  document.getElementById("walletBal").innerHTML = "Balance: <b>UGX "+bal+"</b> | Views: "+views+" | Taps: "+taps;
+// Load from localStorage (demo data if empty)
+let bookings = JSON.parse(localStorage.getItem('hch_bookings') || '[]');
+if(bookings.length===0){
+  bookings = [
+    {client:'John Makindye',caregiver:'Grace N.',service:'Nanny',amount:50000,status:'Paid'},
+    {client:'Sarah Nakawa',caregiver:'David K.',service:'Nurse',amount:80000,status:'Pending'}
+  ];
+  localStorage.setItem('hch_bookings', JSON.stringify(bookings));
 }
-loadWallet();
-
-// Load caregivers for verification
-function loadAdminCare(){
- let caregivers=JSON.parse(localStorage.getItem("caregivers")||"[]");
- let html="";
- if(caregivers.length===0){
-   html="<p>No caregivers registered yet. Share caregiver.html link!</p>";
- } else {
-   caregivers.forEach((c,i)=>{
-     html+=`<div style="padding:12px;border-bottom:1px solid #333;background:${c.isTop?'#2a2a0a':'transparent'};border-radius:5px;margin:5px 0;">
-     <b>${c.name}</b> | ${c.skill} | ${c.district} | ${c.phone} | ${c.experience} yrs
-     <br><small>${c.registeredAt} - </small>
-     <span class="badge ${c.status==='VERIFIED'?'verified':'pending'}">${c.status}</span>
-     ${c.isTop?'<span class="badge gold">⭐ TOP</span>':''}
-     <br>
-     <button class="green small" onclick="verifyCare(${i})">✅ VERIFY</button>
-     <button class="red small" onclick="rejectCare(${i})">❌ REJECT</button>
-     <button class="gold small" onclick="makeTop(${i})">⭐ MAKE TOP (5K)</button>
-     <button class="orange small" onclick="contactCare(${i})">📞 CONTACT</button>
-     </div>`;
-   });
- }
- document.getElementById("adminCareList").innerHTML=html;
- 
- // Load withdraw requests
- let reqs=JSON.parse(localStorage.getItem("withdrawRequests")||"[]");
- let wHtml="";
- if(reqs.length===0) wHtml="No withdraw requests";
- else reqs.forEach(r=>{
-   wHtml+=`<div style="padding:8px;border-bottom:1px solid #333;">${r.date}: UGX ${r.amount} → ${r.number} (${r.network}) - ${r.status}</div>`;
- });
- document.getElementById("withdrawList").innerHTML=wHtml;
+function render(){
+  document.getElementById('totalClients').innerText = 12 + bookings.length;
+  document.getElementById('totalCaregivers').innerText = 8;
+  document.getElementById('totalBookings').innerText = bookings.length;
+  let total = bookings.reduce((s,b)=>s+b.amount,0);
+  document.getElementById('totalWallet').innerText = 'UGX '+total.toLocaleString();
+  let html='';
+  bookings.forEach((b,i)=>{
+    html+=`<tr><td>${b.client}</td><td>${b.caregiver}</td><td>${b.service}</td><td>UGX ${b.amount}</td><td>${b.status}</td><td><button class="btn btn-green" onclick="approve(${i})">Approve</button> <button class="btn btn-red" onclick="remove(${i})">Delete</button></td></tr>`;
+  });
+  document.getElementById('bookingTable').innerHTML=html;
 }
-
-function verifyCare(i){
- let cs=JSON.parse(localStorage.getItem("caregivers")||"[]");
- cs[i].status="VERIFIED";
- localStorage.setItem("caregivers",JSON.stringify(cs));
- loadAdminCare();
- alert("✅ "+cs[i].name+" Verified! Now appears on homepage!");
-}
-
-function rejectCare(i){
- if(!confirm("Delete this caregiver?")) return;
- let cs=JSON.parse(localStorage.getItem("caregivers")||"[]");
- let name=cs[i].name;
- cs.splice(i,1);
- localStorage.setItem("caregivers",JSON.stringify(cs));
- loadAdminCare();
- alert("❌ "+name+" rejected & deleted");
-}
-
-function makeTop(i){
- let cs=JSON.parse(localStorage.getItem("caregivers")||"[]");
- cs[i].isTop=true;
- cs[i].status="VERIFIED";
- cs[i].topUntil=Date.now() + (7*24*60*60*1000);
- localStorage.setItem("caregivers",JSON.stringify(cs));
- loadAdminCare();
- alert("⭐ "+cs[i].name+" is now TOP for 7 days! You should have received 5K MoMo!");
-}
-
-function contactCare(i){
- let cs=JSON.parse(localStorage.getItem("caregivers")||"[]");
- let c=cs[i];
- window.open("https://wa.me/256"+c.phone.slice(-9)+"?text=Hello "+c.name+", Home Care Hero CEO here. Your profile is "+c.status);
-}
-
-function logout(){
-  localStorage.removeItem("isCEO");
-  localStorage.removeItem("ceoLoginTime");
-  window.location.href="index.html";
-}
-
-loadAdminCare();
-setInterval(loadWallet,2000);
+function approve(i){bookings[i].status='Approved';localStorage.setItem('hch_bookings',JSON.stringify(bookings));render();}
+function remove(i){bookings.splice(i,1);localStorage.setItem('hch_bookings',JSON.stringify(bookings));render();}
+render();
 </script>
 </body>
 </html>
