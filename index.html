@@ -8,26 +8,24 @@
 <style>
 body{margin:0;font-family:Arial;background:#f5f7fa}
 .header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold}
-.header span{color:#fff;font-size:11px;display:block;margin-top:3px}
 .merchant-bar{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}
-.top-bar{margin:12px;background:#fff;padding:10px;border-radius:12px;display:flex;gap:6px;align-items:center}
+.top-bar{margin:12px;background:#fff;padding:10px;border-radius:12px;display:flex;gap:6px}
 .top-bar select{padding:10px;border-radius:8px;border:1px solid #ddd;font-weight:bold}
 .top-bar input{flex:1;padding:12px;border-radius:10px;border:1px solid #ddd}
 .top-bar button{padding:12px;background:#ffcc00;border:none;border-radius:10px;font-weight:bold}
-.card{background:#fff;margin:12px;padding:14px;border-radius:14px;display:flex;gap:12px}
-.card img{width:60px;height:60px;border-radius:50%}
-.btn{padding:10px 14px;border:none;border-radius:10px;font-weight:bold;font-size:12px;margin-right:6px}
+.card{background:#fff;margin:12px;padding:14px;border-radius:14px;display:flex;gap:12px;align-items:center;border-left:4px solid #ffcc00}
+.avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:bold;font-size:22px;flex-shrink:0}
+.btn{padding:9px 12px;border:none;border-radius:10px;font-weight:bold;font-size:11px;margin-right:5px}
 .btn-book{background:#000;color:#ffcc00}
 .btn-gps{background:#e3f2fd;color:#1976d2}
-.btn-call{background:#e8f5e9;color:#00aa55}
+.verified{font-size:10px;background:#e8f5e9;color:#00aa55;padding:2px 6px;border-radius:10px;font-weight:bold}
 .nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #eee}
 .nav a{text-decoration:none;color:#666;font-size:11px;text-align:center;font-weight:bold}
-.nav a.active{color:#000}
 </style>
 </head>
 <body>
-<div class="header">🏥 HOME CARE HERO<span>Find Nurses & Caregivers - Kampala, Uganda</span></div>
-<div class="merchant-bar">💳 Merchant Code: 60577134 | Booking Fee Varies by Currency | GPS Live</div>
+<div class="header">🏥 HOME CARE HERO<span style="color:#fff;font-size:11px;display:block">Verified Nurses & Caregivers - Kampala</span></div>
+<div class="merchant-bar">💳 Merchant 60577134 | Booking Fee Varies by Currency | Verified IDs</div>
 
 <div class="top-bar">
 <select id="currency" onchange="updateCurrency()">
@@ -38,26 +36,26 @@ body{margin:0;font-family:Arial;background:#f5f7fa}
 <option value="RWF">🇷🇼 RWF</option>
 <option value="GBP">🇬🇧 GBP</option>
 </select>
-<input id="q" placeholder="Search nurse..." oninput="doFilter()">
+<input id="q" placeholder="Search skill: wound, elderly, newborn..." oninput="doFilter()">
 <button onclick="doFilter()">Search</button>
 </div>
-<div style="text-align:center;font-size:12px">Fee: <b id="feeDisplay">10,000 UGX</b></div>
+<div style="text-align:center;font-size:12px">Fee: <b id="feeDisplay">10,000 UGX</b> | <span class="verified">✓ ID Verified</span></div>
 
-<div id="list">Loading...</div>
+<div id="list"></div>
 <div style="height:90px"></div>
 <div class="nav">
-<a href="index.html" class="active">🏠<br>Home</a>
+<a href="index.html" style="color:#000">🏠<br>Home</a>
+<a href="tracker.html">📊<br>Tracker</a>
 <a href="gps.html">📍<br>GPS</a>
-<a href="momo-wallet.html">💰<br>Wallet<br><span id="navBal" style="font-size:9px;color:#00aa55">10K</span></a>
-<a href="pay.html">💳<br>Pay</a>
+<a href="momo-wallet.html">💰<br>Wallet</a>
 </div>
 
 <script>
 var nurses=[
-{name:"Auma Grace - Enrolled Nurse",skill:"Home Nursing, Injections",loc:"Kampala - Ntinda",img:"https://i.pravatar.cc/100?img=5"},
-{name:"Mukasa John - Caregiver",skill:"Elderly Care, Bathing",loc:"Kampala - Bweyogerere",img:"https://i.pravatar.cc/100?img=12"},
-{name:"Nakato Sarah - Midwife",skill:"Postnatal, Newborn Care",loc:"Wakiso - Kira",img:"https://i.pravatar.cc/100?img=32"},
-{name:"Okello Levi - General Nurse",skill:"Wound Care, Home Care",loc:"Kampala - Central",img:"https://i.pravatar.cc/100?img=15"}
+{name:"Auma Grace",skill:"Enrolled Nurse - Injections, Home Nursing",loc:"Ntinda, Kampala",id:"UNMC 4521",color:"#e91e63",init:"AG"},
+{name:"Mukasa John",skill:"Caregiver - Elderly Care, Bathing, Feeding",loc:"Bweyogerere, Kampala",id:"HCH 1023",color:"#3f51b5",init:"MJ"},
+{name:"Nakato Sarah",skill:"Midwife - Postnatal, Newborn Care",loc:"Kira, Wakiso",id:"UNMC 8892",color:"#009688",init:"NS"},
+{name:"Okello Levi",skill:"General Nurse - Wound Care, Home Care Hero Owner",loc:"Central, Kampala",id:"HCH OWNER",color:"#ff9800",init:"OL"}
 ];
 var rates={UGX:10000,USD:2.7,KES:350,TZS:7000,RWF:3500,GBP:2.1};
 
@@ -65,20 +63,14 @@ function render(arr){
 var html="";
 for(var i=0;i<arr.length;i++){
 var n=arr[i];
-html+='<div class="card"><img src="'+n.img+'"><div style="flex:1"><b>'+n.name+'</b><p style="font-size:12px;color:#666;margin:3px 0">⭐ '+n.skill+'</p><p style="font-size:12px;color:#666">📍 '+n.loc+'</p><div style="margin-top:8px"><button class="btn btn-book" onclick="bookNurse(\''+n.name+'\')">Book '+document.getElementById('feeDisplay').innerText+'</button><button class="btn btn-gps" onclick="viewGPS(\''+n.name+'\')">📍 GPS</button></div></div></div>';
+html+='<div class="card"><div class="avatar" style="background:'+n.color+'">'+n.init+'</div><div style="flex:1"><b>'+n.name+' <span class="verified">✓ '+n.id+'</span></b><p style="font-size:12px;color:#333;margin:4px 0">'+n.skill+'</p><p style="font-size:11px;color:#666">📍 '+n.loc+' | No photo - ID Verified</p><div style="margin-top:8px"><button class="btn btn-book" onclick="bookNurse(\''+n.name+'\')">Book '+document.getElementById('feeDisplay').innerText+'</button><button class="btn btn-gps" onclick="viewGPS(\''+n.name+'\')">📍 GPS</button></div></div></div>';
 }
 document.getElementById('list').innerHTML=html;
 }
 function doFilter(){
 var q=document.getElementById('q').value.toLowerCase();
-var f=[];
-for(var i=0;i<nurses.length;i++){
-var n=nurses[i];
-if(n.name.toLowerCase().indexOf(q)>-1 || n.loc.toLowerCase().indexOf(q)>-1 || n.skill.toLowerCase().indexOf(q)>-1){f.push(n)}
-}
+var f=nurses.filter(n=>n.name.toLowerCase().includes(q)||n.skill.toLowerCase().includes(q)||n.loc.toLowerCase().includes(q));
 render(f.length?f:nurses);
-var t=parseInt(localStorage.getItem('adTaps')||0)+1;
-localStorage.setItem('adTaps',t);
 }
 function bookNurse(name){localStorage.setItem('selectedNurse',name);window.location.href='pay.html';}
 function viewGPS(name){localStorage.setItem('selectedNurse',name);window.location.href='gps.html';}
@@ -93,11 +85,8 @@ document.getElementById('currency').value=saved;
 updateCurrency();
 var v=parseInt(localStorage.getItem('adViews')||0)+1;
 localStorage.setItem('adViews',v);
-var b=parseInt(localStorage.getItem('realBookingEarn')||0);
-var tot=b+v*5;
-var nav=document.getElementById('navBal');
-if(nav) nav.innerHTML=tot.toLocaleString()+' UGX';
 render(nurses);
+}
 </script>
 </body>
 </html>
