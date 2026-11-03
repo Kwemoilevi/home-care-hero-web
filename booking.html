@@ -1,133 +1,30 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Book Global - Auto Currency</title>
-<style>
-body{margin:0;font:14px system-ui;background:#f8fafc}
-header{background:#0f172a;color:#fff;padding:10px;display:flex;justify-content:space-between}
-header a{color:#cbd5e1;text-decoration:none;font-size:13px;margin:0 6px}
-.card{background:#fff;padding:16px;border-radius:12px;max-width:520px;margin:12px auto;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-label{font-weight:700;font-size:12px;margin-top:12px;display:block}
-input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;margin-top:4px}
-.currBox{display:flex;gap:8px;align-items:center;background:#f1f5f9;padding:8px;border-radius:8px;margin-top:4px;border:2px solid #2563eb}
-.btn{width:100%;padding:13px;border:0;border-radius:10px;font-weight:800;color:#fff;background:#2563eb;margin-top:16px;cursor:pointer;font-size:15px}
-.ok{display:none;background:#dcfce7;padding:12px;border-radius:8px;margin-top:12px;color:#166534;text-align:center;font-weight:700}
-.flag{font-size:18px}
-</style>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Book Real Global</title>
+<style>body{margin:0;font:14px system-ui;background:#f8fafc}header{background:#0f172a;color:#fff;padding:10px;display:flex;justify-content:space-between}header a{color:#cbd5e1;text-decoration:none;margin:0 6px;font-size:13px}.card{background:#fff;padding:16px;border-radius:12px;max-width:520px;margin:12px auto;box-shadow:0 2px 8px rgba(0,0,0,.08)}label{font-weight:700;font-size:12px;margin-top:12px;display:block}input,select,textarea{width:100%;padding:11px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;margin-top:4px}.currBox{display:flex;gap:8px;align-items:center;background:#f1f5f9;padding:8px;border-radius:8px;border:2px solid #2563eb}.btn{width:100%;padding:13px;border:0;border-radius:10px;font-weight:800;color:#fff;background:#2563eb;margin-top:16px;cursor:pointer}.ok{display:none;padding:12px;border-radius:8px;margin-top:12px;font-weight:700;text-align:center}</style>
 </head><body>
-<header><div><b>🌍 GlobalCare</b></div><div><a href="index.html">Home</a><a href="client-login.html">Client</a><a href="admin.html">Admin</a></div></header>
-
+<header><div><b>🌍 GlobalCare REAL</b></div><div><a href="index.html">Home</a><a href="admin.html">Admin</a></div></header>
 <div class="card">
-<h2 style="text-align:center;margin:0">🌍 Book Caregiver</h2><p style="text-align:center;color:#64748b;margin:6px 0 14px">Auto currency by country</p>
-
-<label>Your Name *</label><input id="name" placeholder="Full name">
-
-<label>Phone / WhatsApp (with +code) *</label><input id="phone" placeholder="+256771..., +1..., +44...">
-
-<label>🌎 Select Country * (currency auto)</label>
-<select id="country" onchange="autoCurrency()"></select>
-
-<label>City *</label><input id="city" placeholder="Kampala, Nairobi, London, New York...">
-
-<label>Area / Address *</label><input id="area" placeholder="Street, village...">
-
-<div style="margin-top:12px">
-<label style="margin:0">💱 Automatic Price</label>
-<div class="currBox">
-<span class="flag" id="flag">🇺🇬</span>
-<select id="currency" style="flex:1;border:0;background:transparent;font-weight:800"></select>
-<span style="font-weight:800">→</span>
-<input id="price" style="flex:1;border:0;background:transparent;font-weight:800" readonly>
-</div>
-<small id="rateNote" style="color:#64748b">Price auto-adjusted for your country</small>
-</div>
-
+<h2 style="text-align:center;margin:0">🌍 Book Caregiver - REAL</h2><p style="text-align:center;color:#64748b">Auto currency • Saves to real server</p>
+<label>Name *</label><input id="name"><label>Phone *</label><input id="phone" placeholder="+256 / +1...">
+<label>🌎 Country (auto)</label><select id="country" onchange="autoC()"></select>
+<label>City *</label><input id="city" placeholder="Kampala, London, New York"><label>Area *</label><input id="area">
+<div style="margin-top:10px"><div class="currBox"><span id="flag">🇺🇬</span><select id="curr" style="flex:1;border:0;background:0;font-weight:800"></select><span>→</span><input id="price" readonly style="flex:1;border:0;background:0;font-weight:800"></div><small id="note" style="color:#64748b"></small></div>
 <label>Service *</label><select id="service"><option>Elderly Care</option><option>Child Care</option><option>Postnatal Care</option><option>Disability Support</option><option>House Help</option><option>Nursing Care</option></select>
-
-<label>Date *</label><input id="date" type="date">
-
-<label>Details</label><textarea id="details" rows="3" placeholder="Describe needs..."></textarea>
-
-<button class="btn" onclick="book()">✅ Book Now - <span id="btnPrice">UGX 50000</span></button>
-
+<label>Date *</label><input id="date" type="date"><label>Details</label><textarea id="details" rows="2"></textarea>
+<button class="btn" id="btn" onclick="bookReal()">✅ Book REAL - <span id="btnP">UGX 50000</span></button>
 <div id="ok" class="ok"></div>
 </div>
-
 <script>
-const COUNTRIES=[
-{code:"UG",name:"Uganda",flag:"🇺🇬",curr:"UGX",price:50000,rate:"UGX 50,000"},
-{code:"KE",name:"Kenya",flag:"🇰🇪",curr:"KES",price:3500,rate:"KES 3,500"},
-{code:"TZ",name:"Tanzania",flag:"🇹🇿",curr:"TZS",price:80000,rate:"TZS 80,000"},
-{code:"RW",name:"Rwanda",flag:"🇷🇼",curr:"RWF",price:35000,rate:"RWF 35,000"},
-{code:"NG",name:"Nigeria",flag:"🇳🇬",curr:"NGN",price:30000,rate:"NGN 30,000"},
-{code:"ZA",name:"South Africa",flag:"🇿🇦",curr:"ZAR",price:600,rate:"ZAR 600"},
-{code:"US",name:"USA",flag:"🇺🇸",curr:"USD",price:50,rate:"USD $50"},
-{code:"GB",name:"UK",flag:"🇬🇧",curr:"GBP",price:40,rate:"GBP £40"},
-{code:"CA",name:"Canada",flag:"🇨🇦",curr:"CAD",price:65,rate:"CAD $65"},
-{code:"AU",name:"Australia",flag:"🇦🇺",curr:"AUD",price:75,rate:"AUD $75"},
-{code:"AE",name:"UAE",flag:"🇦🇪",curr:"AED",price:180,rate:"AED 180"},
-{code:"IN",name:"India",flag:"🇮🇳",curr:"INR",price:2500,rate:"INR ₹2,500"},
-{code:"Other",name:"Other Country",flag:"🌍",curr:"USD",price:50,rate:"USD $50"}
-];
-
-const sel=document.getElementById('country');
-const curSel=document.getElementById('currency');
-COUNTRIES.forEach(c=>{
-  sel.innerHTML+=`<option value="${c.code}">${c.flag} ${c.name} - ${c.rate}</option>`;
-  curSel.innerHTML+=`<option value="${c.curr}">${c.curr}</option>`;
-});
-
-// Auto detect country from browser
-let userLang=navigator.language||"en-UG";
-let autoCode=userLang.includes("en-KE")?"KE":userLang.includes("en-US")?"US":userLang.includes("en-GB")?"GB":"UG";
-try{
-  const tz=Intl.DateTimeFormat().resolvedOptions().timeZone;
-  if(tz.includes("Nairobi")) autoCode="KE";
-  if(tz.includes("Kampala")) autoCode="UG";
-  if(tz.includes("London")) autoCode="GB";
-  if(tz.includes("New_York")||tz.includes("America")) autoCode="US";
-}catch(e){}
-sel.value=autoCode;
-
-function autoCurrency(){
-  const c=COUNTRIES.find(x=>x.code===sel.value);
-  document.getElementById('flag').innerText=c.flag;
-  document.getElementById('currency').value=c.curr;
-  document.getElementById('price').value=c.price;
-  document.getElementById('btnPrice').innerText=`${c.curr} ${c.price}`;
-  document.getElementById('rateNote').innerText=`Auto: ${c.name} → ${c.curr} ${c.price} | 1 day care`;
+const C=[{code:"UG",name:"Uganda",flag:"🇺🇬",curr:"UGX",price:50000},{code:"KE",name:"Kenya",flag:"🇰🇪",curr:"KES",price:3500},{code:"TZ",name:"Tanzania",flag:"🇹🇿",curr:"TZS",price:80000},{code:"RW",name:"Rwanda",flag:"🇷🇼",curr:"RWF",price:35000},{code:"NG",name:"Nigeria",flag:"🇳🇬",curr:"NGN",price:30000},{code:"ZA",name:"South Africa",flag:"🇿🇦",curr:"ZAR",price:600},{code:"US",name:"USA",flag:"🇺🇸",curr:"USD",price:50},{code:"GB",name:"UK",flag:"🇬🇧",curr:"GBP",price:40},{code:"CA",name:"Canada",flag:"🇨🇦",curr:"CAD",price:65},{code:"AU",name:"Australia",flag:"🇦🇺",curr:"AUD",price:75},{code:"AE",name:"UAE",flag:"🇦🇪",curr:"AED",price:180},{code:"IN",name:"India",flag:"🇮🇳",curr:"INR",price:2500},{code:"Other",name:"Other",flag:"🌍",curr:"USD",price:50}];
+const sel=document.getElementById('country'),curS=document.getElementById('curr');
+C.forEach(x=>{sel.innerHTML+=`<option value="${x.code}">${x.flag} ${x.name} - ${x.curr} ${x.price}</option>`;curS.innerHTML+=`<option>${x.curr}</option>`;});
+sel.value="UG";function autoC(){const c=C.find(x=>x.code===sel.value);document.getElementById('flag').innerText=c.flag;curS.value=c.curr;document.getElementById('price').value=c.price;document.getElementById('btnP').innerText=`${c.curr} ${c.price}`;document.getElementById('note').innerText=`${c.name} → ${c.curr} ${c.price}`;}autoC();
+async function bookReal(){
+ const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),city=document.getElementById('city').value.trim(),area=document.getElementById('area').value.trim(),date=document.getElementById('date').value;
+ if(!name||!phone||!city||!area||!date){alert('Fill all');return;}
+ const ct=C.find(x=>x.code===sel.value);
+ const payload={name,phone,country:ct.name,countryCode:ct.code,flag:ct.flag,city,location:`${city}, ${area} - ${ct.name} ${ct.flag}`,service:document.getElementById('service').value,date,currency:ct.curr,price:ct.price,details:document.getElementById('details').value,status:'pending'};
+ const btn=document.getElementById('btn'),ok=document.getElementById('ok');btn.innerText='⏳ Sending REAL...';btn.disabled=true;
+ try{const r=await fetch('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});const d=await r.json();ok.style.display='block';ok.style.background='#dcfce7';ok.style.color='#166534';ok.innerText=`✅ REAL BOOKED! ${ct.flag} ${city}, ${ct.name} - ${ct.curr} ${ct.price} ID:${d.booking.id}`;}catch(e){ok.style.display='block';ok.style.background='#fee2e2';ok.style.color='#991b1b';ok.innerText='❌ Server offline - check api/bookings.js deployed';}
+ btn.innerText='✅ Book REAL';btn.disabled=false;
 }
-autoCurrency();
-
-function book(){
-  const name=document.getElementById('name').value.trim();
-  const phone=document.getElementById('phone').value.trim();
-  const city=document.getElementById('city').value.trim();
-  const area=document.getElementById('area').value.trim();
-  const date=document.getElementById('date').value;
-  if(!name||!phone||!city||!area||!date){alert('Fill all * fields');return;}
-  const ct=COUNTRIES.find(x=>x.code===sel.value);
-  const b={
-    id:Date.now(),
-    name:name,
-    phone:phone,
-    country:ct.name,
-    countryCode:ct.code,
-    city:city,
-    location:`${city}, ${area} - ${ct.name} ${ct.flag}`,
-    service:document.getElementById('service').value,
-    date:date,
-    currency:ct.curr,
-    price:ct.price,
-    displayPrice:ct.rate,
-    flag:ct.flag,
-    details:document.getElementById('details').value,
-    status:'pending',
-    created:new Date().toLocaleString()
-  };
-  let list=JSON.parse(localStorage.getItem('bookings')||'[]');
-  list.push(b);
-  localStorage.setItem('bookings',JSON.stringify(list));
-  const ok=document.getElementById('ok');
-  ok.style.display='block';
-  ok.innerText=`✅ Booked! ${ct.flag} ${city}, ${ct.name} - ${ct.curr} ${ct.price} - Admin will assign caregiver`;
-}
-</script>
-</body></html>
+</script></body></html>
