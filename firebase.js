@@ -2,12 +2,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import { getFirestore, collection, addDoc, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD-Your-Key-Here",
-  authDomain: "globalcare-xxxxx.firebaseapp.com",
-  projectId: "globalcare-xxxxx",
-  storageBucket: "globalcare-xxxxx.appspot.com",
+  apiKey: "AIzaSyD-xxxx-PASTE-YOURS",
+  authDomain: "globalcare-xxxx.firebaseapp.com",
+  projectId: "globalcare-xxxx",
+  storageBucket: "globalcare-xxxx.appspot.com",
   messagingSenderId: "123456789",
-  appId: "1:123456789:web:abcdef"
+  appId: "1:123456789:web:xxxx"
 };
 
 const app = initializeApp(firebaseConfig);
