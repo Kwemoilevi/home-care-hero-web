@@ -1,82 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>GPS Tracker - Merchant 60577134</title>
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<style>
-body{margin:0;font-family:Arial;background:#f5f5f5}
-.header{background:#000;color:#ffcc00;padding:14px;text-align:center;font-weight:bold}
-.merchant{background:#ffcc00;padding:8px;text-align:center;font-size:12px;font-weight:bold}
-#map{height:50vh;width:100%}
-.card{background:#fff;margin:12px;padding:14px;border-radius:14px}
-.btn{width:100%;padding:14px;border:none;border-radius:10px;font-weight:bold;margin:6px 0}
-.btn-gps{background:#000;color:#ffcc00}
-.btn-share{background:#25D366;color:#fff}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#fff;display:flex;justify-content:space-around;padding:12px;border-top:1px solid #eee}
-.nav a{text-decoration:none;color:#666;font-size:11px;text-align:center;font-weight:bold}
-</style>
-</head>
-<body>
-<div class="header">📍 LIVE GPS TRACKER - HOME CARE HERO</div>
-<div class="merchant">💳 Merchant 60577134 | Booking 10K (Varies Currency) | GPS LIVE</div>
-<div id="map"></div>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GPS Live Tracker REAL</title>
+<style>body{margin:0;font:14px system-ui;background:#f1f5f9}header{background:#0f172a;color:#fff;padding:10px;display:flex;justify-content:space-between} .card{background:#fff;margin:10px;padding:12px;border-radius:12px} #map{width:100%;height:320px;background:#e2e8f0;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#64748b;font-weight:700} .btn{padding:10px 14px;border:0;border-radius:8px;font-weight:800;cursor:pointer;color:#fff}.blue{background:#2563eb}.green{background:#16a34a}.red{background:#ef4444}</style>
+</head><body>
+<header><div><b>📍 GPS Live REAL</b> <small id="status">OFF</small></div><div><a href="admin.html" style="color:#60a5fa">Admin</a></div></header>
+
 <div class="card">
-<h3 style="margin:0">Nurse: <span id="nurseName">Okello Levi</span></h3>
-<p style="font-size:12px;color:#666">Status: <b id="status" style="color:#00aa55">● Ready</b></p>
-<p style="font-size:12px">📍 <span id="locText">Kampala - Central, Tap START</span></p>
-<p style="font-size:11px">Lat: <span id="lat">0.3476</span> Lng: <span id="lng">32.5825</span> | Acc: <span id="acc">-</span>m | Curr: <span id="currShow">UGX</span></p>
-<button class="btn btn-gps" onclick="startTracking()">🔄 START LIVE TRACKING</button>
-<button class="btn btn-share" onclick="shareLocation()">📤 SHARE LOCATION TO CLIENT ON WHATSAPP</button>
-<a href="pay.html" style="display:block;text-align:center;margin-top:10px;font-weight:bold;text-decoration:none;background:#ffcc00;color:#000;padding:12px;border-radius:10px">💳 Client Paid? Track Now</a>
+<h3 style="margin:0">👩‍⚕️ Caregiver: Share Live Location</h3>
+<p style="color:#64748b;margin:6px 0">Tap Start → your GPS goes live to Admin + Client</p>
+<label>Booking ID / Caregiver Name</label><input id="cid" placeholder="e.g. 1234 or Mary">
+<div style="display:flex;gap:8px;margin-top:10px">
+<button class="btn green" onclick="startGPS()">▶️ Start GPS</button>
+<button class="btn red" onclick="stopGPS()">⏹ Stop</button>
+<button class="btn blue" onclick="viewLive()">👁 View Live</button>
 </div>
-<div class="card" style="font-size:12px;background:#fff9c4">
-<b>How GPS + Currencies work:</b><br>
-• Fee varies: UGX 10K = USD 2.7 = KES 350 = TZS 7K = RWF 3.5K = GBP 2.1<br>
-• Client pays 10K UGX to 60577134 (MTN only UGX)<br>
-• Nurse taps START → GPS live → Client tracks on map
+<div style="margin-top:10px"><b>Status:</b> <span id="log">Ready</span><br><b>Coords:</b> <span id="coords">-</span></div>
 </div>
-<div style="height:90px"></div>
-<div class="nav">
-<a href="index.html">🏠<br>Home</a>
-<a href="gps.html" style="color:#000">📍<br>GPS</a>
-<a href="momo-wallet.html">💰<br>Wallet</a>
-<a href="pay.html">💳<br>Pay</a>
+
+<div class="card">
+<h3 style="margin:0">🗺️ Live Map</h3>
+<div id="map">No GPS yet - Start tracking</div>
+<div style="margin-top:8px"><small id="mapLink"></small></div>
 </div>
+
+<div class="card">
+<h3 style="margin:0">📍 All Live Trackers (Admin View)</h3>
+<div id="allTracks">Loading...</div>
+</div>
+
 <script>
-var map=L.map('map').setView([0.3476,32.5825],13);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-var marker=L.marker([0.3476,32.5825]).addTo(map).bindPopup("Nurse Location - Merchant 60577134");
-var nurse=localStorage.getItem('selectedNurse')||'Okello Levi - General Nurse';
-document.getElementById('nurseName').innerText=nurse;
-var cur=localStorage.getItem('selectedCurrency')||'UGX';
-document.getElementById('currShow').innerText=cur;
-function startTracking(){
- if(!navigator.geolocation){alert("GPS not supported");return;}
- document.getElementById('status').innerText="● Getting GPS...";
- document.getElementById('status').style.color="#ff9800";
- navigator.geolocation.watchPosition(function(pos){
-  var lat=pos.coords.latitude; var lng=pos.coords.longitude; var acc=pos.coords.accuracy;
-  document.getElementById('lat').innerText=lat.toFixed(6);
-  document.getElementById('lng').innerText=lng.toFixed(6);
-  document.getElementById('acc').innerText=Math.round(acc);
-  document.getElementById('locText').innerText="Live: Tracking - "+new Date().toLocaleTimeString();
-  document.getElementById('status').innerText="● LIVE - "+Math.round(acc)+"m";
-  document.getElementById('status').style.color="#00aa55";
-  map.setView([lat,lng],15);
-  marker.setLatLng([lat,lng]).bindPopup(nurse+"<br>Merchant 60577134<br>"+lat.toFixed(4)+","+lng.toFixed(4)).openPopup();
-  localStorage.setItem('nurseLat',lat); localStorage.setItem('nurseLng',lng);
- },function(err){alert("Enable GPS: "+err.message)}, {enableHighAccuracy:true, maximumAge:0});
+let watchId=null;
+let API='/api/tracker';
+if(!localStorage.getItem('tracker_api')) localStorage.setItem('tracker_api',JSON.stringify([]));
+
+function log(m){document.getElementById('log').innerText=m;}
+function startGPS(){
+ const name=document.getElementById('cid').value.trim();
+ if(!name){alert('Enter Booking ID or Caregiver Name');return;}
+ if(!navigator.geolocation){alert('GPS not supported');return;}
+ document.getElementById('status').innerText='LIVE...';log('Getting GPS...');
+ watchId=navigator.geolocation.watchPosition(async pos=>{
+  const {latitude,longitude}=pos.coords;
+  document.getElementById('coords').innerText=`${latitude.toFixed(6)}, ${longitude.toFixed(6)}`;
+  document.getElementById('map').innerHTML=`📍 LIVE<br>${latitude.toFixed(5)}, ${longitude.toFixed(5)}<br><a href="https://maps.google.com/?q=${latitude},${longitude}" target="_blank" style="color:#2563eb">Open Google Maps</a>`;
+  document.getElementById('mapLink').innerHTML=`<a href="https://maps.google.com/?q=${latitude},${longitude}" target="_blank">📍 Open in Google Maps: ${latitude}, ${longitude}</a>`;
+  // save REAL
+  const payload={id:name,name:name,lat:latitude,lng:longitude,time:new Date().toISOString()};
+  try{
+   await fetch(API,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+  }catch(e){}
+  // fallback local
+  let all=JSON.parse(localStorage.getItem('live_gps')||'[]');
+  all=all.filter(x=>x.id!==name);all.push(payload);
+  localStorage.setItem('live_gps',JSON.stringify(all));
+  log(`Live @ ${new Date().toLocaleTimeString()}`);
+ },err=>{log('GPS Error: '+err.message);},{enableHighAccuracy:true,maximumAge:0,timeout:10000});
 }
-function shareLocation(){
- var lat=document.getElementById('lat').innerText; var lng=document.getElementById('lng').innerText;
- var link="https://www.google.com/maps?q="+lat+","+lng;
- var msg="HOME CARE HERO - Merchant 60577134%0ANurse: "+nurse+"%0ABooking: 10K varies by currency%0ALive Location: "+link+"%0ATrack: https://home-care-hero-web.vercel.app/gps.html";
- window.open("https://wa.me/?text="+msg, "_blank");
+
+function stopGPS(){
+ if(watchId!==null){navigator.geolocation.clearWatch(watchId);watchId=null;document.getElementById('status').innerText='OFF';log('Stopped');}
 }
-var savedLat=localStorage.getItem('nurseLat'); var savedLng=localStorage.getItem('nurseLng');
-if(savedLat){map.setView([savedLat,savedLng],15); marker.setLatLng([savedLat,savedLng]); document.getElementById('lat').innerText=savedLat; document.getElementById('lng').innerText=savedLng;}
+
+async function viewLive(){
+ let data=[];
+ try{const r=await fetch(API);if(r.ok) data=await r.json();}catch(e){}
+ if(data.length===0) data=JSON.parse(localStorage.getItem('live_gps')||'[]');
+ let h='<table style="width:100%;border-collapse:collapse"><tr><th>Caregiver/ID</th><th>Location</th><th>Time</th></tr>';
+ if(data.length===0) h+='<tr><td colspan=3>No live trackers</td></tr>';
+ else data.slice().reverse().forEach(t=>{h+=`<tr><td><b>${t.name}</b><br><small>${t.id}</small></td><td><a href="https://maps.google.com/?q=${t.lat},${t.lng}" target="_blank">${t.lat.toFixed(5)}, ${t.lng.toFixed(5)} 📍</a></td><td><small>${new Date(t.time).toLocaleString()}</small><br><button class="btn blue" style="padding:4px 8px;font-size:11px" onclick="window.open('https://maps.google.com/?q=${t.lat},${t.lng}','_blank')">Map</button></td></tr>`;});
+ h+='</table>';document.getElementById('allTracks').innerHTML=h;
+}
+setInterval(viewLive,5000);
+viewLive();
 </script>
-</body>
-</html>
+</body></html>
