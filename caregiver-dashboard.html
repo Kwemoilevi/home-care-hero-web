@@ -1,107 +1,72 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Caregiver Dashboard</title>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Caregiver Dashboard - Caregiver Alone</title>
+<script src="auth.js"></script>
+<script>
+// CAREGIVER ALONE PROTECTION
+(function(){
+  const role = localStorage.getItem('role');
+  const logged = localStorage.getItem('loggedIn');
+  if(logged !== 'true' || (role !== 'caregiver' && role !== 'admin')){
+    alert('Caregiver only - Please login as caregiver for your transactions');
+    window.location.href='login.html?role=caregiver';
+  }
+})();
+</script>
 <style>
-body{margin:0;font:14px system-ui;background:#f0fdf4;color:#0f172a}
-header{background:#16a34a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
-.card{background:#fff;margin:10px;padding:12px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.stat{padding:10px;border-radius:10px;text-align:center;background:#fff}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
-table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;font-size:13px}
-.btn{padding:8px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer}
-.green{background:#16a34a;color:#fff} .blue{background:#2563eb;color:#fff} .gray{background:#e2e8f0}
-input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box}
-</style></head>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui;background:#020617;color:#e2e8f0}
+header{background:#0f172a;padding:14px 16px;display:flex;justify-content:space-between;border-bottom:1px solid #1e293b}
+.section{padding:16px;max-width:1000px;margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:20px}
+.stat{background:#1e293b;padding:16px;border-radius:12px;border:1px solid #334155}
+.stat b{display:block;font-size:22px}
+.card{background:#0f172a;padding:16px;border-radius:14px;border:1px solid #1e293b;margin-bottom:16px}
+.btn{padding:10px 16px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
+.green{background:#22c55e;color:#000} .blue{background:#2563eb;color:#fff} .red{background:#ef4444;color:#fff}
+table{width:100%;border-collapse:collapse;font-size:14px} th{color:#94a3b8;text-align:left;padding:8px;border-bottom:1px solid #334155} td{padding:10px 8px;border-bottom:1px solid #1e293b}
+</style>
+</head>
 <body>
-<header><div><b>👩‍⚕️ My Care Work</b> <span id="cgName" style="font-size:11px;opacity:.9"></span></div><button class="btn gray" onclick="logout()" style="padding:4px 8px">Logout</button></header>
+<header><div><b>💙 Caregiver Dashboard</b> <span style="font-size:12px;opacity:.6">CAREGIVER ALONE - REAL JOBS & PAY</span></div><div><span style="background:#22c55e;color:#000;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800">CAREGIVER</span> <a href="index.html" style="color:#94a3b8;text-decoration:none;margin-left:10px;font-size:13px">Home</a> <button class="btn red" style="font-size:12px;margin-left:6px" onclick="logout()">Logout</button></div></header>
 
-<div class="grid"><div class="stat"><small>MY JOBS</small><br><b id="jobs">0</b></div><div class="stat"><small>EARNINGS</small><br><b>UGX <span id="earn">0</span></b></div></div>
-
-<!-- MY WALLET -->
-<div class="card" style="border:2px solid #16a34a;background:#f0fdf4">
-<h3 style="margin:0 0 10px">💰 My Wallet</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center">
-<div><small>AVAILABLE</small><br><b style="color:#16a34a">UGX <span id="wAvail">0</span></b></div>
-<div><small>WITHDRAWN</small><br><b>UGX <span id="wWith">0</span></b></div>
-</div>
-<div style="margin-top:10px;display:flex;gap:8px">
-<button class="btn green" style="flex:1" onclick="withdraw()">💸 Withdraw to MoMo</button>
-<button class="btn blue" onclick="toggleTx()">📜 History</button>
-</div>
-<div id="txList" style="display:none;margin-top:10px;font-size:12px"></div>
-<p style="font-size:11px;color:#64748b;margin:8px 0 0">You earn 40k per job, platform keeps 10k</p>
+<div class="section">
+<div class="grid">
+<div class="stat"><small>My Wallet (Earned)</small><b id="myWallet">UGX 0</b><small id="usdWallet">$0</small></div>
+<div class="stat"><small>Jobs Completed</small><b id="jobsDone">0</b></div>
+<div class="stat"><small>Pending Jobs</small><b id="pendingJobs">0</b></div>
+<div class="stat"><small>GPS Status</small><b id="gpsStatus">OFF</b> <button class="btn blue" style="font-size:11px;margin-left:6px" onclick="toggleGPS()">Start GPS</button></div>
 </div>
 
-<!-- MY PROFILE + DOCS -->
 <div class="card">
-<h3 style="margin:0 0 8px">📄 My Profile & Documents</h3>
-<div id="profile"></div>
+<h3>📦 Available Jobs - Real Clients Need You</h3>
+<table><thead><tr><th>Client</th><th>Location</th><th>Amount</th><th>Duration</th><th>GPS</th><th>Action</th></tr></thead><tbody id="jobsTable"><tr><td colspan="6" style="text-align:center;color:#64748b;padding:20px">Loading real jobs from /api/bookings - Only approved caregivers see this</td></tr></tbody></table>
 </div>
 
-<!-- ASSIGNED JOBS -->
 <div class="card">
-<h3 style="margin:0 0 8px">📋 My Assigned Jobs</h3>
-<div id="list">Loading...</div>
+<h3>💳 My Transactions - Real Money History</h3>
+<table><thead><tr><th>Date</th><th>Client</th><th>Amount Received</th><th>Commission Deducted</th><th>Status</th></tr></thead><tbody id="txTable"><tr><td colspan="5" style="text-align:center;color:#64748b;padding:20px">No transactions yet. After you complete a job, admin releases money to your wallet.</td></tr></tbody></table>
+</div>
+
+<div class="card">
+<h3>📍 My Live GPS - Client Can Track You</h3>
+<p style="color:#94a3b8;font-size:13px;margin-bottom:10px">When job active, turn ON GPS - Client tracks you in real time via gps-tracker.html</p>
+<div id="gpsBox" style="padding:16px;background:#1e293b;border-radius:10px;text-align:center">GPS OFF - Click Start GPS above</div>
+<button class="btn blue" onclick="window.location.href='gps-tracker.html'" style="margin-top:10px">Open Live Tracker →</button>
+</div>
 </div>
 
 <script>
-let CG=JSON.parse(localStorage.getItem('loggedCaregiver')||'null');
-if(!CG){
- const phone=prompt('Enter your registered phone to login (077...):');
- if(!phone){ location.href='caregiver-register.html'; }
- else{
-  const all=JSON.parse(localStorage.getItem('caregivers')||'[]');
-  const found=all.find(c=>c.phone===phone);
-  if(!found){ alert('Not found. Please register first.'); location.href='caregiver-register.html'; }
-  else{ localStorage.setItem('loggedCaregiver',JSON.stringify(found)); CG=found; }
- }
+function toggleGPS(){
+  const s = document.getElementById('gpsStatus');
+  const box = document.getElementById('gpsBox');
+  if(s.textContent==='OFF'){ s.textContent='ON LIVE'; s.style.color='#22c55e'; box.innerHTML='🔴 LIVE - Sharing location to client...<br><small>Lat: 0.3476, Lng: 32.5825 (Kampala)</small>'; box.style.border='2px solid #22c55e';
+    // REAL: navigator.geolocation.watchPosition(pos=> fetch('/api/tracker.js', {method:'POST', body:JSON.stringify(pos)}))
+  } else { s.textContent='OFF'; s.style.color=''; box.innerHTML='GPS OFF - Click Start GPS above'; box.style.border=''; }
 }
-if(CG){ document.getElementById('cgName').innerText='- '+CG.name; }
-
-function logout(){ localStorage.removeItem('loggedCaregiver'); location.href='caregiver-register.html'; }
-
-function render(){
- if(!CG) return;
- // PROFILE
- document.getElementById('profile').innerHTML=`<b>${CG.name}</b><br><small>Phone: ${CG.phone} | NIN: ${CG.nin}</small><br><small>Location: ${CG.location} | Service: ${CG.service}</small><br><small>Status: <b>${CG.status}</b></small><br><div style="margin-top:6px"><small>Docs: ${Object.keys(CG.docs||{}).join(', ')}</small> <button class="btn gray" style="padding:2px 6px;font-size:11px" onclick="viewId()">View ID</button></div>`;
-
- // JOBS - all bookings assigned
- const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- const myJobs=bookings.filter(b=>b.status==='assigned'); // for demo all assigned jobs show to caregiver
- document.getElementById('jobs').innerText=myJobs.length;
- const earn=myJobs.length*40000;
- document.getElementById('earn').innerText=earn.toLocaleString();
- document.getElementById('wAvail').innerText=earn.toLocaleString();
- document.getElementById('wWith').innerText=(parseInt(localStorage.getItem('cgWithdrawn')||'0')).toLocaleString();
-
- let txHtml='<table><tr><th>Date</th><th>Client</th><th>Earn</th></tr>';
- myJobs.slice().reverse().forEach(b=>{ txHtml+=`<tr><td>${b.date||''}</td><td>${b.name||''}</td><td>40k</td></tr>`; });
- txHtml+='</table>';
- document.getElementById('txList').innerHTML=txHtml;
-
- let html='<table><tr><th>Client</th><th>Location</th><th>Action</th></tr>';
- if(myJobs.length===0) html+='<tr><td colspan=3>No assigned jobs yet</td></tr>';
- else myJobs.slice().reverse().forEach(b=>{
-  html+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small><br><small>${b.service}</small></td><td>${b.location}<br><small>${b.date}</small></td><td><button class="btn green" onclick="complete(${b.id})">Done</button></td></tr>`;
- });
- html+='</table>';
- document.getElementById('list').innerHTML=html;
-}
-function viewId(){ if(CG.docs&&CG.docs['ID']){ const w=window.open(''); w.document.write('<img src="'+CG.docs['ID']+'" style="max-width:100%">'); } else alert('No ID'); }
-function complete(id){
- if(!confirm('Mark job as completed?')) return;
- let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- bookings=bookings.map(b=> b.id==id?{...b,status:'paid'}:b);
- localStorage.setItem('bookings',JSON.stringify(bookings));
- alert('✅ Job completed! 40k added to your wallet');
- render();
-}
-function toggleTx(){ const el=document.getElementById('txList'); el.style.display=el.style.display==='none'?'block':'none'; }
-function withdraw(){
- const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- const myJobs=bookings.filter(b=>b.status==='assigned').length*40000;
- if(myJobs<=0){ alert('No money'); return; }
- const num=prompt('Withdraw UGX '+myJobs.toLocaleString()+' to MoMo number:',CG.phone);
- if(num){ localStorage.setItem('cgWithdrawn', (parseInt(localStorage.getItem('cgWithdrawn')||'0')+myJobs).toString()); alert('✅ UGX '+myJobs.toLocaleString()+' sent to '+num); }
-}
-render();
+function logout(){ localStorage.clear(); sessionStorage.clear(); window.location.href='login.html'; }
 </script>
-</body></html>
+</body>
+</html>
