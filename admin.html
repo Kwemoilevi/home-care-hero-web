@@ -1,98 +1,107 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard - Wallet</title>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Caregiver Dashboard</title>
 <style>
-body{margin:0;font:14px system-ui;background:#f1f5f9;color:#0f172a}
-header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+body{margin:0;font:14px system-ui;background:#f0fdf4;color:#0f172a}
+header{background:#16a34a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
 .card{background:#fff;margin:10px;padding:12px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.stat{padding:10px;border-radius:10px;text-align:center;background:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
-.stat{background:#fff;padding:12px;border-radius:12px;text-align:center}
-table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
-.btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}
-.blue{background:#2563eb;color:#fff} .green{background:#16a34a;color:#fff} .red{background:#ef4444;color:#fff} .gray{background:#e2e8f0}
-input{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
-.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700} .pending{background:#fef3c7;color:#92400e} .assigned{background:#dbeafe;color:#1e40af} .paid{background:#dcfce7;color:#166534}
+table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;font-size:13px}
+.btn{padding:8px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer}
+.green{background:#16a34a;color:#fff} .blue{background:#2563eb;color:#fff} .gray{background:#e2e8f0}
+input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box}
 </style></head>
 <body>
-<header><div><b>🏠 Admin</b> <span id="dbStatus" style="opacity:.7;font-size:11px">LOCAL</span></div><div><a href="admin-live-map.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">Map</a><button class="btn red" onclick="logout()">Logout</button></div></header>
+<header><div><b>👩‍⚕️ My Care Work</b> <span id="cgName" style="font-size:11px;opacity:.9"></span></div><button class="btn gray" onclick="logout()" style="padding:4px 8px">Logout</button></header>
 
-<div class="grid"><div class="stat"><small>TOTAL BOOKINGS</small><br><b id="total">0</b></div><div class="stat"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>ONLINE</small><br><b id="online">0</b></div></div>
+<div class="grid"><div class="stat"><small>MY JOBS</small><br><b id="jobs">0</b></div><div class="stat"><small>EARNINGS</small><br><b>UGX <span id="earn">0</span></b></div></div>
 
-<!-- GENERAL WALLET -->
+<!-- MY WALLET -->
 <div class="card" style="border:2px solid #16a34a;background:#f0fdf4">
-<h3 style="margin:0 0 10px">💰 General Wallet</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center">
-<div><small>TOTAL</small><br><b>UGX <span id="wTotal">0</span></b></div>
-<div><small>PAID IN</small><br><b style="color:#16a34a">UGX <span id="wPaid">0</span></b></div>
-<div><small>PENDING</small><br><b style="color:#d97706">UGX <span id="wPend">0</span></b></div>
+<h3 style="margin:0 0 10px">💰 My Wallet</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center">
+<div><small>AVAILABLE</small><br><b style="color:#16a34a">UGX <span id="wAvail">0</span></b></div>
+<div><small>WITHDRAWN</small><br><b>UGX <span id="wWith">0</span></b></div>
 </div>
 <div style="margin-top:10px;display:flex;gap:8px">
 <button class="btn green" style="flex:1" onclick="withdraw()">💸 Withdraw to MoMo</button>
-<button class="btn gray" onclick="toggleTx()">📜 Transactions</button>
+<button class="btn blue" onclick="toggleTx()">📜 History</button>
 </div>
 <div id="txList" style="display:none;margin-top:10px;font-size:12px"></div>
+<p style="font-size:11px;color:#64748b;margin:8px 0 0">You earn 40k per job, platform keeps 10k</p>
 </div>
 
+<!-- MY PROFILE + DOCS -->
 <div class="card">
-<div style="display:flex;gap:8px;margin-bottom:10px"><input id="search" placeholder="Search name, phone, location..." oninput="render()"><button class="btn gray" onclick="load()">↻ Refresh</button></div>
+<h3 style="margin:0 0 8px">📄 My Profile & Documents</h3>
+<div id="profile"></div>
+</div>
+
+<!-- ASSIGNED JOBS -->
+<div class="card">
+<h3 style="margin:0 0 8px">📋 My Assigned Jobs</h3>
 <div id="list">Loading...</div>
 </div>
 
 <script>
-if(localStorage.getItem('adminLoggedIn')!=='true'){ location.href='admin-login.html'; }
-function logout(){ localStorage.removeItem('adminLoggedIn'); location.href='admin-login.html'; }
-let BOOKINGS=[];
-async function load(){
- document.getElementById('list').innerHTML='Loading...';
- try{
-  const r=await fetch('/api/bookings',{cache:'no-store'});
-  if(r.ok){ const data=await r.json(); if(Array.isArray(data)){ BOOKINGS=data; document.getElementById('dbStatus').innerText='REAL API'; render(); return; } }
- }catch(e){}
- try{ BOOKINGS=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){ BOOKINGS=[]; }
- document.getElementById('dbStatus').innerText='LOCAL MODE';
- render();
+let CG=JSON.parse(localStorage.getItem('loggedCaregiver')||'null');
+if(!CG){
+ const phone=prompt('Enter your registered phone to login (077...):');
+ if(!phone){ location.href='caregiver-register.html'; }
+ else{
+  const all=JSON.parse(localStorage.getItem('caregivers')||'[]');
+  const found=all.find(c=>c.phone===phone);
+  if(!found){ alert('Not found. Please register first.'); location.href='caregiver-register.html'; }
+  else{ localStorage.setItem('loggedCaregiver',JSON.stringify(found)); CG=found; }
+ }
 }
+if(CG){ document.getElementById('cgName').innerText='- '+CG.name; }
+
+function logout(){ localStorage.removeItem('loggedCaregiver'); location.href='caregiver-register.html'; }
+
 function render(){
- const q=(document.getElementById('search').value||'').toLowerCase();
- const filtered=BOOKINGS.filter(b=> ((b.name||'')+(b.phone||'')+(b.location||'')).toLowerCase().includes(q));
- document.getElementById('total').innerText=BOOKINGS.length;
- document.getElementById('rev').innerText=(BOOKINGS.length*50000).toLocaleString();
- document.getElementById('pending').innerText=BOOKINGS.filter(b=>b.status==='pending').length;
- document.getElementById('online').innerText= localStorage.getItem('caregiverLocation')?'1':'0';
- // WALLET CALC
- const total=BOOKINGS.length*50000;
- const paid=BOOKINGS.filter(b=>b.status==='paid').length*50000;
- const pend=total-paid;
- document.getElementById('wTotal').innerText=total.toLocaleString();
- document.getElementById('wPaid').innerText=paid.toLocaleString();
- document.getElementById('wPend').innerText=pend.toLocaleString();
- let txHtml='<table><tr><th>Date</th><th>Client</th><th>Amount</th><th>Status</th></tr>';
- BOOKINGS.slice().reverse().slice(0,20).forEach(b=>{
-  txHtml+=`<tr><td>${b.date||''}</td><td>${b.name||''}</td><td>50k</td><td>${b.status||''}</td></tr>`;
- });
+ if(!CG) return;
+ // PROFILE
+ document.getElementById('profile').innerHTML=`<b>${CG.name}</b><br><small>Phone: ${CG.phone} | NIN: ${CG.nin}</small><br><small>Location: ${CG.location} | Service: ${CG.service}</small><br><small>Status: <b>${CG.status}</b></small><br><div style="margin-top:6px"><small>Docs: ${Object.keys(CG.docs||{}).join(', ')}</small> <button class="btn gray" style="padding:2px 6px;font-size:11px" onclick="viewId()">View ID</button></div>`;
+
+ // JOBS - all bookings assigned
+ const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
+ const myJobs=bookings.filter(b=>b.status==='assigned'); // for demo all assigned jobs show to caregiver
+ document.getElementById('jobs').innerText=myJobs.length;
+ const earn=myJobs.length*40000;
+ document.getElementById('earn').innerText=earn.toLocaleString();
+ document.getElementById('wAvail').innerText=earn.toLocaleString();
+ document.getElementById('wWith').innerText=(parseInt(localStorage.getItem('cgWithdrawn')||'0')).toLocaleString();
+
+ let txHtml='<table><tr><th>Date</th><th>Client</th><th>Earn</th></tr>';
+ myJobs.slice().reverse().forEach(b=>{ txHtml+=`<tr><td>${b.date||''}</td><td>${b.name||''}</td><td>40k</td></tr>`; });
  txHtml+='</table>';
  document.getElementById('txList').innerHTML=txHtml;
- let html='<table><tr><th>Client</th><th>Service</th><th>Status</th><th>Action</th></tr>';
- if(filtered.length===0) html+='<tr><td colspan=4>No bookings. Go to /booking.html</td></tr>';
- else filtered.slice().reverse().forEach(b=>{
-  const badge=b.status==='assigned'?'<span class="badge assigned">ASSIGNED</span>':b.status==='paid'?'<span class="badge paid">PAID</span>':'<span class="badge pending">PENDING</span>';
-  html+=`<tr><td><b>${b.name||''}</b><br><small>${b.phone||''}</small><br><small>${b.location||''}</small></td><td>${b.service||''}<br><small>${b.date||''}</small></td><td>${badge}</td><td><button class="btn blue" onclick="updateStatus(${b.id},'assigned')">Assign</button> <button class="btn green" onclick="updateStatus(${b.id},'paid')">Paid</button> <button class="btn red" onclick="del(${b.id})">X</button></td></tr>`;
+
+ let html='<table><tr><th>Client</th><th>Location</th><th>Action</th></tr>';
+ if(myJobs.length===0) html+='<tr><td colspan=3>No assigned jobs yet</td></tr>';
+ else myJobs.slice().reverse().forEach(b=>{
+  html+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small><br><small>${b.service}</small></td><td>${b.location}<br><small>${b.date}</small></td><td><button class="btn green" onclick="complete(${b.id})">Done</button></td></tr>`;
  });
  html+='</table>';
  document.getElementById('list').innerHTML=html;
 }
-async function updateStatus(id,status){
- try{ await fetch('/api/bookings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})}); }catch(e){}
- BOOKINGS=BOOKINGS.map(b=> b.id==id?{...b,status}:b);
- localStorage.setItem('bookings',JSON.stringify(BOOKINGS));
+function viewId(){ if(CG.docs&&CG.docs['ID']){ const w=window.open(''); w.document.write('<img src="'+CG.docs['ID']+'" style="max-width:100%">'); } else alert('No ID'); }
+function complete(id){
+ if(!confirm('Mark job as completed?')) return;
+ let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
+ bookings=bookings.map(b=> b.id==id?{...b,status:'paid'}:b);
+ localStorage.setItem('bookings',JSON.stringify(bookings));
+ alert('✅ Job completed! 40k added to your wallet');
  render();
 }
-async function del(id){ if(!confirm('Delete?')) return; BOOKINGS=BOOKINGS.filter(b=>b.id!=id); localStorage.setItem('bookings',JSON.stringify(BOOKINGS)); render(); }
 function toggleTx(){ const el=document.getElementById('txList'); el.style.display=el.style.display==='none'?'block':'none'; }
 function withdraw(){
- const paid=BOOKINGS.filter(b=>b.status==='paid').length*50000;
- if(paid<=0){ alert('No paid money to withdraw'); return; }
- const num=prompt('Wallet has UGX '+paid.toLocaleString()+' PAID.\nEnter MoMo number to withdraw:','077');
- if(num){ alert('✅ Request sent! UGX '+paid.toLocaleString()+' will be sent to '+num); }
+ const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
+ const myJobs=bookings.filter(b=>b.status==='assigned').length*40000;
+ if(myJobs<=0){ alert('No money'); return; }
+ const num=prompt('Withdraw UGX '+myJobs.toLocaleString()+' to MoMo number:',CG.phone);
+ if(num){ localStorage.setItem('cgWithdrawn', (parseInt(localStorage.getItem('cgWithdrawn')||'0')+myJobs).toString()); alert('✅ UGX '+myJobs.toLocaleString()+' sent to '+num); }
 }
-load();
+render();
 </script>
 </body></html>
