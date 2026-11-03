@@ -1,50 +1,32 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Global Admin</title>
-<style>body{margin:0;font:14px system-ui;background:#f1f5f9}header{background:#0f172a;color:#fff;padding:12px;display:flex;justify-content:space-between;position:sticky;top:0}.card{background:#fff;margin:10px;padding:12px;border-radius:12px}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px}.stat{background:#fff;padding:10px;border-radius:10px;text-align:center}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #eee;font-size:13px;text-align:left}.btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}.blue{background:#2563eb;color:#fff}.green{background:#16a34a;color:#fff}.red{background:#ef4444;color:#fff}.gray{background:#e2e8f0}input,select{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}.badge{padding:2px 8px;border-radius:20px;font-size:11px}.pending{background:#fef3c7}.paid{background:#dcfce7}.assigned{background:#dbeafe}</style></head>
-<body>
-<header><div><b>🌍 Global Admin</b> <span id="mode" style="font-size:11px;opacity:.7">LOCAL</span></div><div><a href="caregiver-register.html" style="color:#60a5fa;font-size:12px;margin-right:6px">+Caregiver</a><button class="btn red" onclick="localStorage.removeItem('adminLoggedIn');location.href='admin-login.html'">Logout</button></div></header>
-<div class="grid"><div class="stat"><small>TOTAL</small><br><b id="total">0</b></div><div class="stat"><small>REVENUE</small><br><b id="rev">0</b></div><div class="stat"><small>CAREGIVERS</small><br><b id="cgT">0</b></div></div>
-
-<div class="card" style="border:2px solid #16a34a;background:#f0fdf4">
-<h3 style="margin:0 0 8px">💰 Global Wallet</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center"><div><small>TOTAL</small><br><b id="wTot">0</b></div><div><small>PAID</small><br><b id="wPaid" style="color:#16a34a">0</b></div><div><small>PEND</small><br><b id="wPend" style="color:#d97706">0</b></div></div>
-<button class="btn green" style="width:100%;margin-top:8px" onclick="withdraw()">💸 Withdraw</button>
-</div>
-
-<div class="card"><div style="display:flex;gap:6px;margin-bottom:8px"><input id="q" placeholder="Search name, city, country..." oninput="render()" style="flex:2"><select id="countryFilter" onchange="render()" style="flex:1"><option value="">All Countries</option></select><button class="btn gray" onclick="load()">↻</button></div><div id="list">Loading...</div></div>
-
-<div class="card" style="border:2px solid #2563eb;background:#eff6ff"><h3 style="margin:0 0 8px">👩‍⚕️ Caregivers Global (<span id="cgC">0</span>)</h3><div id="cgList"></div></div>
-
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Real Global</title>
+<style>body{margin:0;font:14px system-ui;background:#f1f5f9}header{background:#0f172a;color:#fff;padding:10px;display:flex;justify-content:space-between;position:sticky;top:0}.card{background:#fff;margin:10px;padding:12px;border-radius:12px}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #eee;font-size:13px}.btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}.blue{background:#2563eb;color:#fff}.green{background:#16a34a;color:#fff}.red{background:#ef4444;color:#fff}.badge{padding:2px 8px;border-radius:20px;font-size:11px}.pending{background:#fef3c7}.paid{background:#dcfce7}</style>
+</head><body>
+<header><div><b>🌍 Admin REAL</b> <small id="mode">CONNECTING...</small></div><div><a href="index.html" style="color:#60a5fa">Home</a> <button class="btn red" onclick="localStorage.clear();location.reload()">Clear</button></div></header>
+<div class="card" style="border:2px solid #16a34a;background:#f0fdf4"><h3 style="margin:0">💰 Global Wallet REAL</h3><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;margin-top:8px"><div><small>TOTAL</small><br><b id="wTot">0</b></div><div><small>PAID</small><br><b id="wPaid">0</b></div><div><small>PENDING</small><br><b id="wPend">0</b></div></div></div>
+<div class="card"><div style="display:flex;gap:6px"><input id="q" placeholder="Search city country..." oninput="render()" style="flex:2;padding:8px;border-radius:8px;border:1px solid #ddd"><select id="cFilt" onchange="render()" style="flex:1;padding:8px;border-radius:8px"><option value="">All Countries</option></select><button class="btn blue" onclick="load()">↻ Real</button></div><div id="list" style="margin-top:10px">Loading real...</div></div>
 <script>
-if(localStorage.getItem('adminLoggedIn')!=='true')location.href='admin-login.html';
-let BOOKS=[]; async function load(){
- try{const r=await fetch('/api/bookings',{cache:'no-store'});if(r.ok){const d=await r.json();if(Array.isArray(d)){BOOKS=d;document.getElementById('mode').innerText='REAL API';render();return;}}}catch(e){}
- BOOKS=JSON.parse(localStorage.getItem('bookings')||'[]');document.getElementById('mode').innerText='LOCAL GLOBAL';render();
+let BOOKS=[];
+async function load(){
+ try{
+  const r=await fetch('/api/bookings',{cache:'no-store'});
+  if(r.ok){BOOKS=await r.json();document.getElementById('mode').innerText=`REAL LIVE (${BOOKS.length})`;render();return;}
+ }catch(e){}
+ BOOKS=JSON.parse(localStorage.getItem('bookings')||'[]');
+ document.getElementById('mode').innerText='LOCAL FALLBACK';
+ render();
 }
 function render(){
- const q=(document.getElementById('q').value||'').toLowerCase(); const cf=document.getElementById('countryFilter').value;
- let filtered=BOOKS.filter(b=>{const txt=(b.name+b.phone+b.location+b.country+b.city).toLowerCase(); const matchQ=txt.includes(q); const matchC=cf? (b.country||'').includes(cf)|| (b.location||'').includes(cf):true; return matchQ&&matchC;});
- // country filter options
- const countries=[...new Set(BOOKS.map(b=>b.country).filter(Boolean))]; const sel=document.getElementById('countryFilter'); const curVal=sel.value;
- sel.innerHTML='<option value="">All Countries</option>'; countries.forEach(c=>sel.innerHTML+=`<option ${c===curVal?'selected':''}>${c}</option>`);
- document.getElementById('total').innerText=BOOKS.length; document.getElementById('rev').innerText=BOOKS.length*50000;
- document.getElementById('wTot').innerText=(BOOKS.length*50000).toLocaleString(); document.getElementById('wPaid').innerText=(BOOKS.filter(b=>b.status==='paid').length*50000).toLocaleString(); document.getElementById('wPend').innerText=(BOOKS.filter(b=>b.status!=='paid').length*50000).toLocaleString();
- let html='<table><tr><th>Client / Phone</th><th>Location / Country</th><th>Status</th><th>Act</th></tr>';
- if(filtered.length===0) html+='<tr><td colspan=4>No bookings. Try booking.html</td></tr>';
- else filtered.slice().reverse().forEach(b=>{
-  const badge=b.status==='paid'?'<span class="badge paid">PAID</span>':b.status==='assigned'?'<span class="badge assigned">ASSIGNED</span>':'<span class="badge pending">PENDING</span>';
-  html+=`<tr><td><b>${b.name||''}</b><br><small>${b.phone||''}</small><br><small>${b.currency||''} ${b.price||''}</small></td><td>${b.city||''}<br><small>${b.country||''}</small><br><small>${b.location||''}</small></td><td>${badge}<br><small>${b.service||''}</small></td><td><button class="btn blue" onclick="upd(${b.id},'assigned')">Assign</button><br><button class="btn green" onclick="upd(${b.id},'paid')" style="margin-top:4px">Paid</button><br><button class="btn red" onclick="delB(${b.id})" style="margin-top:4px">X</button></td></tr>`;
- }); html+='</table>'; document.getElementById('list').innerHTML=html;
- const cgs=JSON.parse(localStorage.getItem('caregivers')||'[]'); document.getElementById('cgT').innerText=cgs.length; document.getElementById('cgC').innerText=cgs.length;
- let ch='<table><tr><th>Name</th><th>Country / City</th><th>Docs</th><th>Act</th></tr>';
- if(cgs.length===0) ch+='<tr><td colspan=4>No caregivers. Share caregiver-register.html worldwide</td></tr>';
- else cgs.slice().reverse().forEach(c=>{ ch+=`<tr><td><b>${c.name}</b><br><small>${c.phone}</small></td><td>${c.city}<br><small>${c.country}</small><br><small>${c.service}</small></td><td><small>${Object.keys(c.docs||{}).join(',')}</small><br><button class="btn gray" onclick="viewDoc(${c.id})">ID</button></td><td><span class="badge pending">${c.status}</span><br><button class="btn green" onclick="approveCg(${c.id})">Approve</button><br><button class="btn red" onclick="delCg(${c.id})">X</button></td></tr>`; });
- ch+='</table>'; document.getElementById('cgList').innerHTML=ch;
+ const q=(document.getElementById('q').value||'').toLowerCase(),cf=document.getElementById('cFilt').value;
+ const countries=[...new Set(BOOKS.map(b=>b.country).filter(Boolean))];
+ const sel=document.getElementById('cFilt'),cur=sel.value;sel.innerHTML='<option value="">All Countries</option>';countries.forEach(c=>sel.innerHTML+=`<option ${c===cur?'selected':''}>${c}</option>`);
+ let filt=BOOKS.filter(b=>{const t=(b.name+b.phone+b.location+b.country+b.city).toLowerCase();return t.includes(q)&&(!cf||b.country===cf);});
+ document.getElementById('wTot').innerText=filt.length;document.getElementById('wPaid').innerText=filt.filter(b=>b.status==='paid').length;document.getElementById('wPend').innerText=filt.filter(b=>b.status!=='paid').length;
+ let h='<table><tr><th>Client</th><th>Location</th><th>Status</th><th>Action</th></tr>';
+ if(filt.length===0)h+='<tr><td colspan=4>No real bookings yet. Book from booking.html REAL</td></tr>';
+ else filt.slice().reverse().forEach(b=>{h+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small><br><small>${b.currency} ${b.price}</small></td><td>${b.city||''}<br><small>${b.country||''} ${b.flag||''}</small><br><small>${b.location||''}</small></td><td><span class="badge ${b.status==='paid'?'paid':'pending'}">${b.status}</span><br><small>${b.service}</small></td><td><button class="btn blue" onclick="setS(${b.id},'paid')">Paid</button><br><button class="btn red" onclick="delB(${b.id})" style="margin-top:4px">Del</button></td></tr>`;});
+ h+='</table>';document.getElementById('list').innerHTML=h;
 }
-function upd(id,s){BOOKS=BOOKS.map(b=>b.id==id?{...b,status:s}:b);localStorage.setItem('bookings',JSON.stringify(BOOKS));render();}
-function delB(id){if(!confirm('Delete?'))return;BOOKS=BOOKS.filter(b=>b.id!=id);localStorage.setItem('bookings',JSON.stringify(BOOKS));render();}
-function approveCg(id){let L=JSON.parse(localStorage.getItem('caregivers')||'[]');L=L.map(c=>c.id==id?{...c,status:'approved'}:c);localStorage.setItem('caregivers',JSON.stringify(L));render();}
-function delCg(id){if(!confirm('Delete caregiver?'))return;let L=JSON.parse(localStorage.getItem('caregivers')||'[]');L=L.filter(c=>c.id!=id);localStorage.setItem('caregivers',JSON.stringify(L));render();}
-function viewDoc(id){const L=JSON.parse(localStorage.getItem('caregivers')||'[]');const c=L.find(x=>x.id==id);if(c&&c.docs&&c.docs['ID']){const w=window.open('');w.document.write('<img src="'+c.docs['ID']+'" style="max-width:100%">');}else alert('No ID');}
-function withdraw(){const paid=BOOKS.filter(b=>b.status==='paid').length*50000;if(paid<=0){alert('No paid');return;}const n=prompt('Withdraw UGX '+paid+' to MoMo:','077');if(n)alert('✅ Sent '+paid+' to '+n);}
+function setS(id,s){BOOKS=BOOKS.map(b=>b.id==id?{...b,status:s}:b);render();}
+async function delB(id){if(!confirm('Delete real?'))return;try{await fetch('/api/bookings?id='+id,{method:'DELETE'});}catch(e){}BOOKS=BOOKS.filter(b=>b.id!=id);render();}
 load();
 </script></body></html>
