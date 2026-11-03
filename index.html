@@ -2,164 +2,146 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Home Care Hero - Nanny, Nurse, Cook in Kampala | Pay with MTN MoMo</title>
-<meta name="description" content="Book trusted nannies, nurses and cooks in Kampala. Instant booking, pay with MTN MoMo, automatic payouts to caregivers.">
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Inter,Arial,sans-serif}
-body{background:#0a0a0a;color:#fff;min-height:100vh;padding-bottom:80px}
-.header{background:#111;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20;border-bottom:1px solid #222}
-.logo{font-weight:800;font-size:18px;letter-spacing:-0.5px}
-.logo b{color:#facc15}
-.btn{border:none;border-radius:10px;font-weight:700;cursor:pointer}
-.wallet{background:#171717;margin:16px;border-radius:16px;padding:20px;border:1px solid #262626}
-.wallet small{color:#9ca3af;font-size:12px;letter-spacing:0.5px;text-transform:uppercase}
-.bal{font-size:34px;font-weight:900;margin:6px 0}
-.bal span{color:#facc15}
-.btn-primary{background:#facc15;color:#000;padding:14px;width:100%;font-size:16px;margin-top:12px}
-.row{display:flex;gap:10px;margin-top:12px}
-.row input{flex:1;background:#262626;border:1px solid #333;color:#fff;padding:13px;border-radius:10px}
-.row .btn-green{background:#16a34a;color:#fff;padding:13px 16px}
-.section{padding:0 16px;margin-top:22px;display:flex;justify-content:space-between}
-.services{display:flex;gap:12px;overflow:auto;padding:12px 16px}
-.card{min-width:150px;background:#171717;border:1px solid #262626;border-radius:16px;padding:16px;text-align:center}
-.card .ico{width:56px;height:56px;border-radius:50%;background:#facc15;color:#000;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px;font-weight:800}
-.card h3{font-size:15px;margin-bottom:4px}
-.card p{font-size:11px;color:#9ca3af}
-.card .pill{margin-top:10px;background:#16a34a;color:#fff;font-size:10px;padding:4px 10px;border-radius:20px;display:inline-block;font-weight:700}
-.booking{background:#171717;margin:12px 16px;border-radius:14px;padding:14px;display:flex;justify-content:space-between;align-items:center;border:1px solid #262626}
-.nav{position:fixed;bottom:0;left:0;right:0;background:#111;border-top:1px solid #222;display:flex;justify-content:space-around;padding:8px 0}
-.nav a{color:#6b7280;text-decoration:none;font-size:10px;text-align:center}
-.nav a.active{color:#facc15}
-.nav a span{display:block;font-size:18px}
-.footer{padding:20px;text-align:center;color:#555;font-size:11px}
-.footer a{color:#555;text-decoration:none;margin:0 6px}
-</style>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Care Hero</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen">
 
-<div class="header">
-<div class="logo">HOME CARE <b>HERO</b></div>
-<div style="display:flex;gap:16px"><a href="admin.html" style="text-decoration:none;color:#fff">🔔</a><a href="login.html" style="text-decoration:none;color:#fff">👤</a></div>
+<!-- HEADER -->
+<div class="bg-blue-600 text-white p-4">
+  <h1 class="text-xl font-bold">Home Care Hero</h1>
+  <p class="text-sm opacity-80">Book care, pay with MTN MoMo</p>
 </div>
 
-<div class="wallet">
-<small>Available Balance</small>
-<div class="bal"><span>UGX</span> <span id="bal">0</span></div>
-<button class="btn btn-primary" onclick="location.href='momo-wallet.html'">+ Deposit Funds</button>
-<div class="row">
-<input id="amt" type="number" placeholder="Enter amount">
-<button class="btn btn-green" onclick="autoDeposit()">Pay with MoMo</button>
-</div>
-<div id="status" style="margin-top:10px;font-size:12px;color:#22c55e"></div>
-</div>
+<div class="p-4 max-w-md mx-auto">
 
-<div class="section"><h3>Services</h3><a href="client.html" style="color:#16a34a;text-decoration:none;font-size:13px">View all</a></div>
-<div class="services">
-<div class="card" onclick="autoBook('Nanny',15000)"><div class="ico">N</div><h3>Nanny</h3><p>From UGX 15,000/hr</p><span class="pill">Instant Booking</span></div>
-<div class="card" onclick="autoBook('Nurse',25000)"><div class="ico" style="background:#16a34a;color:#fff">N</div><h3>Nurse</h3><p>From UGX 25,000/hr</p><span class="pill" style="background:#facc15;color:#000">24/7 Available</span></div>
-<div class="card" onclick="autoBook('Cook',12000)"><div class="ico">C</div><h3>Cook</h3><p>From UGX 12,000/hr</p><span class="pill">Verified</span></div>
-</div>
+  <!-- WALLET CARD -->
+  <div class="bg-white rounded-2xl shadow p-5 mb-4">
+    <p class="text-gray-500 text-sm">Wallet Balance</p>
+    <h2 id="balance" class="text-3xl font-bold text-gray-800">UGX 6,000</h2>
+    <p id="statusText" class="text-green-600 text-sm mt-1">Ready to book</p>
+  </div>
 
-<div class="section"><h3>Recent Activity</h3></div>
-<div id="recent"><div class="booking"><span style="color:#9ca3af;font-size:13px">No bookings yet - Make your first booking</span></div></div>
+  <!-- DEPOSIT CARD -->
+  <div class="bg-white rounded-2xl shadow p-5">
+    <h3 class="font-semibold mb-3">Deposit Funds</h3>
+    
+    <label class="text-sm text-gray-600">Amount (UGX)</label>
+    <input id="amountInput" type="number" placeholder="Enter amount" 
+      class="w-full border rounded-xl p-3 mb-3 mt-1 text-lg" value="1000">
 
-<div class="footer">
-<a href="privacy.html">Privacy</a> <a href="about.html">About</a> <a href="terms.html">Terms</a> <a href="ads.txt">ads.txt</a><br>© 2026 Home Care Hero • MTN MoMo Secure Payments • Kampala, Uganda
-</div>
+    <label class="text-sm text-gray-600">MTN Number</label>
+    <input id="phoneInput" type="tel" placeholder="07XXXXXXXX" 
+      class="w-full border rounded-xl p-3 mb-4 mt-1 text-lg">
 
-<div class="nav">
-<a class="active" href="index.html"><span>⌂</span>Home</a>
-<a href="client.html"><span>⚡</span>Services</a>
-<a href="dashboard.html"><span>≡</span>Bookings</a>
-<a href="momo-wallet.html"><span>◫</span>Wallet</a>
-<a href="login.html"><span>◍</span>Account</a>
+    <label class="text-sm text-gray-600">Payment Method</label>
+    <div class="border rounded-xl p-3 mb-4 flex items-center gap-2 bg-yellow-50 border-yellow-400">
+      <span class="text-xl">📱</span>
+      <span class="font-medium">MTN Mobile Money</span>
+      <span class="ml-auto text-xs bg-yellow-400 px-2 py-1 rounded">REAL</span>
+    </div>
+
+    <button id="payBtn" onclick="payReal()"
+      class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-xl text-lg">
+      Pay with MoMo
+    </button>
+
+    <p id="log" class="text-xs text-gray-500 mt-3 text-center"></p>
+  </div>
+
+  <!-- INFO -->
+  <div class="bg-blue-50 p-3 rounded-xl mt-4 text-xs text-blue-800">
+    ✅ Real MTN MoMo: You will get PIN prompt on your phone. Balance only updates after you approve.
+  </div>
 </div>
 
 <script>
-// LIVE WORKING LOGIC
-let balance = parseInt(localStorage.getItem('hch_balance')||'0');
-let bookings = JSON.parse(localStorage.getItem('hch_bookings')||'[]');
-let transactions = JSON.parse(localStorage.getItem('hch_history')||'[]');
+let balance = 6000;
+const balanceEl = document.getElementById('balance');
+const logEl = document.getElementById('log');
+const statusEl = document.getElementById('statusText');
 
-function render(){
-  document.getElementById('bal').innerText = balance.toLocaleString();
-  let html = '';
-  if(bookings.length===0) html = '<div class="booking"><span style="color:#9ca3af;font-size:13px">No bookings yet</span></div>';
-  else bookings.slice(-3).reverse().forEach(b=>{
-    html+=`<div class="booking"><div><b>${b.service} • ${b.time||'Today'}</b><br><small style="color:#9ca3af">${b.caregiver} • UGX ${b.amount.toLocaleString()}</small></div><span style="color:#22c55e;font-size:12px">${b.status}</span></div>`;
-  });
-  document.getElementById('recent').innerHTML = html;
+function updateBalanceUI(){
+  balanceEl.innerText = `UGX ${balance.toLocaleString()}`;
 }
 
-async function autoDeposit(){
-  const amount = parseInt(document.getElementById('amt').value);
-  if(!amount || amount < 1000){alert('Enter amount min 1000');return}
-  document.getElementById('status').innerText = 'Processing MoMo payment...';
+async function payReal(){
+  const amount = document.getElementById('amountInput').value;
+  const phone = document.getElementById('phoneInput').value;
+  const btn = document.getElementById('payBtn');
   
+  if(!amount || Number(amount) < 500){ alert('Enter amount min 500'); return; }
+  if(!phone || phone.length < 10){ alert('Enter MTN number 07...'); return; }
+
+  const oldText = btn.innerText;
+  btn.innerText = 'Sending to MTN...';
+  btn.disabled = true;
+  logEl.innerText = 'Requesting MTN...';
+  statusEl.innerText = 'Contacting MTN...';
+  statusEl.className = 'text-orange-600 text-sm mt-1';
+
   try{
-    const res = await fetch('/api/momo', {
+    const res = await fetch('/api/momo',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({type:'collect', amount, phone:'256700000000'})
+      body: JSON.stringify({amount, phone})
     });
     const data = await res.json();
-    if(data.success || res.ok){
-      balance += amount;
-      transactions.push({type:'Deposit', amount, time:new Date().toLocaleString()});
-      localStorage.setItem('hch_balance', balance);
-      localStorage.setItem('hch_history', JSON.stringify(transactions));
-      document.getElementById('status').innerText = '✓ Payment received - Balance updated';
-      render();
-    } else throw new Error();
-  }catch{
-    // WORKING FALLBACK - Works even without API keys configured yet
-    balance += amount;
-    transactions.push({type:'Deposit (Auto)', amount, time:new Date().toLocaleString()});
-    localStorage.setItem('hch_balance', balance);
-    localStorage.setItem('hch_history', JSON.stringify(transactions));
-    document.getElementById('status').innerText = '✓ Deposit successful - Ready to book';
-    render();
+    
+    if(!data.success) throw new Error(data.message);
+    
+    logEl.innerText = `Sent! ID: ${data.transactionId}`;
+    statusEl.innerText = 'Check your phone! Enter MoMo PIN now';
+    statusEl.className = 'text-blue-600 font-bold text-sm mt-1';
+    alert(data.message);
+
+    // Poll every 4 seconds for confirmation
+    let tries = 0;
+    const poll = setInterval(async()=>{
+      tries++;
+      logEl.innerText = `Checking status... ${tries}/15`;
+      try{
+        const sRes = await fetch(`/api/momo-status?id=${data.transactionId}`);
+        const sData = await sRes.json();
+        console.log('MoMo Status:', sData);
+        
+        if(sData.status === 'SUCCESSFUL'){
+          clearInterval(poll);
+          balance += Number(amount);
+          updateBalanceUI();
+          statusEl.innerText = 'Deposit successful - Ready to book';
+          statusEl.className = 'text-green-600 text-sm mt-1';
+          logEl.innerText = `✅ Confirmed! UGX ${amount} added`;
+          alert(`✅ SUCCESS! UGX ${amount} added.\nNew balance: UGX ${balance}`);
+        } else if(sData.status === 'FAILED'){
+          clearInterval(poll);
+          statusEl.innerText = 'Payment failed / Rejected';
+          statusEl.className = 'text-red-600 text-sm mt-1';
+          logEl.innerText = `❌ Failed: ${sData.reason || 'Rejected'}`;
+          alert('❌ Payment failed or you rejected it');
+        }
+      }catch(e){ console.log(e); }
+      
+      if(tries >= 15){
+        clearInterval(poll);
+        logEl.innerText = 'Timeout - Check MoMo transactions';
+        statusEl.innerText = 'Check your MTN MoMo message';
+      }
+    },4000);
+
+  }catch(e){
+    alert('Error: '+e.message);
+    logEl.innerText = 'Error: '+e.message;
+    statusEl.innerText = 'Failed';
+    statusEl.className = 'text-red-600 text-sm mt-1';
+  }finally{
+    btn.innerText = oldText;
+    btn.disabled = false;
   }
-  document.getElementById('amt').value='';
 }
 
-function autoBook(service, price){
-  if(balance < price){
-    alert('Insufficient balance. Please deposit first.');
-    document.getElementById('amt').focus();
-    return;
-  }
-  if(!confirm(`Book ${service} for UGX ${price.toLocaleString()}? Payment will be held and auto-sent to caregiver after service.`)) return;
-  
-  balance -= price;
-  const caregiverAmount = Math.floor(price * 0.85);
-  const fee = price - caregiverAmount;
-  
-  bookings.push({
-    service, amount:price, caregiver: service + ' Pro',
-    status:'Paid - Auto disbursing 85%',
-    time: new Date().toLocaleHoursString? new Date().toLocaleString() : new Date().toLocaleString(),
-    caregiverAmount, fee
-  });
-  transactions.push({type:`Book ${service}`, amount:-price, time:new Date().toLocaleString()});
-  
-  localStorage.setItem('hch_balance', balance);
-  localStorage.setItem('hch_bookings', JSON.stringify(bookings));
-  localStorage.setItem('hch_history', JSON.stringify(transactions));
-  
-  // Auto-disburse call
-  fetch('/api/momo', {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({type:'disburse', amount:price, caregiverPhone:'256700000001'})
-  }).catch(()=>{});
-  
-  render();
-  alert(`Booked ${service}! UGX ${caregiverAmount.toLocaleString()} will auto-send to caregiver, UGX ${fee.toLocaleString()} commission retained.`);
-}
-
-render();
+updateBalanceUI();
 </script>
 </body>
 </html>
