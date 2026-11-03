@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pharmacy Marketplace - GlobalCare</title>
+<script src="auth.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:#f8fafc;color:#0f172a}
+header{background:#0f172a;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center}
+header a{color:#fff;text-decoration:none;font-size:13px;margin-left:10px}
+.wrap{max-width:1200px;margin:0 auto;padding:16px}
+.search{width:100%;padding:13px;border-radius:12px;border:1px solid #cbd5e1;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px}
+.card{background:#fff;border-radius:14px;padding:12px;border:1px solid #e2e8f0}
+.card img{width:100%;height:130px;object-fit:cover;border-radius:10px}
+.badge{background:#dcfce7;color:#166534;font-size:10px;font-weight:800;padding:4px 8px;border-radius:20px}
+.btn{width:100%;background:#0f172a;color:#fff;padding:10px;border-radius:10px;border:0;font-weight:700;margin-top:8px}
+</style>
+</head>
+<body>
+<header>
+<div><b>💊 Pharmacy Marketplace</b></div>
+<div><a href="index.html">Home</a> <a href="booking.html">Book Caregiver</a> <a href="pharmacy-dashboard.html">Pharmacy Login</a></div>
+</header>
+<div class="wrap">
+<h2>Find Medicines Near You</h2>
+<p style="color:#64748b;font-size:13px">Verified pharmacies • Same day delivery • Pay with wallet</p>
+<input class="search" id="q" placeholder="Search medicine, e.g. Panadol, Vitamins, Baby care..." onkeyup="filterProducts()">
+<div style="display:flex;gap:8px;margin:10px 0;overflow-x:auto">
+<button style="padding:7px 12px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;font-size:12px">All</button>
+<button style="padding:7px 12px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;font-size:12px">Pain Relief</button>
+<button style="padding:7px 12px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;font-size:12px">Baby Care</button>
+<button style="padding:7px 12px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;font-size:12px">Elderly Care</button>
+<button style="padding:7px 12px;border-radius:20px;border:1px solid #e2e8f0;background:#fff;font-size:12px">Vitamins</button>
+</div>
+<div class="grid" id="products">
+<!-- PRODUCTS WILL LOAD HERE -->
+</div>
+</div>
+<script>
+// Demo products - replace with /api/pharmacy later
+const demoProducts=[
+{name:"Panadol Extra",pharmacy:"Kampala Pharma",price:"UGX 5000",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300",cat:"Pain Relief"},
+{name:"Baby Diapers Pack",pharmacy:"Care Meds",price:"UGX 45000",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300",cat:"Baby Care"},
+{name:"Blood Pressure Monitor",pharmacy:"Global Health",price:"UGX 120000",img:"https://images.unsplash.com/photo-1579154204601-01588f351e67?w=300",cat:"Elderly Care"},
+{name:"Vitamin C 1000mg",pharmacy:"Wellness Hub",price:"UGX 25000",img:"https://images.unsplash.com/photo-1550572017-edd951b55104?w=300",cat:"Vitamins"},
+{name:"Adult Diapers",pharmacy:"Kampala Pharma",price:"UGX 60000",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300",cat:"Elderly Care"},
+{name:"First Aid Kit",pharmacy:"Care Meds",price:"UGX 35000",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300",cat:"Pain Relief"},
+];
+
+function render(list){
+  const el=document.getElementById('products');
+  el.innerHTML=list.map(p=>`
+  <div class="card">
+    <img src="${p.img}">
+    <div style="margin-top:8px;display:flex;justify-content:space-between;align-items:center"><span class="badge">VERIFIED</span><small style="color:#64748b">${p.pharmacy}</small></div>
+    <b style="display:block;margin:6px 0">${p.name}</b>
+    <div style="color:#2563eb;font-weight:800">${p.price}</div>
+    <button class="btn" onclick="order('${p.name}')">🛒 Order Now</button>
+  </div>`).join('');
+}
+function filterProducts(){
+  const q=document.getElementById('q').value.toLowerCase();
+  render(demoProducts.filter(p=>p.name.toLowerCase().includes(q) || p.cat.toLowerCase().includes(q)));
+}
+function order(name){
+  alert(name+' added to wallet! Redirecting to client-wallet.html');
+  location.href='client-wallet.html';
+}
+render(demoProducts);
+</script>
+</body>
+</html>
