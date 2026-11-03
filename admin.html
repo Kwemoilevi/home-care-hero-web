@@ -1,107 +1,50 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Caregiver Dashboard</title>
-<style>
-body{margin:0;font:14px system-ui;background:#f0fdf4;color:#0f172a}
-header{background:#16a34a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
-.card{background:#fff;margin:10px;padding:12px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
-.stat{padding:10px;border-radius:10px;text-align:center;background:#fff}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
-table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;font-size:13px}
-.btn{padding:8px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer}
-.green{background:#16a34a;color:#fff} .blue{background:#2563eb;color:#fff} .gray{background:#e2e8f0}
-input{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box}
-</style></head>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Global Admin</title>
+<style>body{margin:0;font:14px system-ui;background:#f1f5f9}header{background:#0f172a;color:#fff;padding:12px;display:flex;justify-content:space-between;position:sticky;top:0}.card{background:#fff;margin:10px;padding:12px;border-radius:12px}.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;padding:10px}.stat{background:#fff;padding:10px;border-radius:10px;text-align:center}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #eee;font-size:13px;text-align:left}.btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}.blue{background:#2563eb;color:#fff}.green{background:#16a34a;color:#fff}.red{background:#ef4444;color:#fff}.gray{background:#e2e8f0}input,select{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}.badge{padding:2px 8px;border-radius:20px;font-size:11px}.pending{background:#fef3c7}.paid{background:#dcfce7}.assigned{background:#dbeafe}</style></head>
 <body>
-<header><div><b>👩‍⚕️ My Care Work</b> <span id="cgName" style="font-size:11px;opacity:.9"></span></div><button class="btn gray" onclick="logout()" style="padding:4px 8px">Logout</button></header>
+<header><div><b>🌍 Global Admin</b> <span id="mode" style="font-size:11px;opacity:.7">LOCAL</span></div><div><a href="caregiver-register.html" style="color:#60a5fa;font-size:12px;margin-right:6px">+Caregiver</a><button class="btn red" onclick="localStorage.removeItem('adminLoggedIn');location.href='admin-login.html'">Logout</button></div></header>
+<div class="grid"><div class="stat"><small>TOTAL</small><br><b id="total">0</b></div><div class="stat"><small>REVENUE</small><br><b id="rev">0</b></div><div class="stat"><small>CAREGIVERS</small><br><b id="cgT">0</b></div></div>
 
-<div class="grid"><div class="stat"><small>MY JOBS</small><br><b id="jobs">0</b></div><div class="stat"><small>EARNINGS</small><br><b>UGX <span id="earn">0</span></b></div></div>
-
-<!-- MY WALLET -->
 <div class="card" style="border:2px solid #16a34a;background:#f0fdf4">
-<h3 style="margin:0 0 10px">💰 My Wallet</h3>
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center">
-<div><small>AVAILABLE</small><br><b style="color:#16a34a">UGX <span id="wAvail">0</span></b></div>
-<div><small>WITHDRAWN</small><br><b>UGX <span id="wWith">0</span></b></div>
-</div>
-<div style="margin-top:10px;display:flex;gap:8px">
-<button class="btn green" style="flex:1" onclick="withdraw()">💸 Withdraw to MoMo</button>
-<button class="btn blue" onclick="toggleTx()">📜 History</button>
-</div>
-<div id="txList" style="display:none;margin-top:10px;font-size:12px"></div>
-<p style="font-size:11px;color:#64748b;margin:8px 0 0">You earn 40k per job, platform keeps 10k</p>
+<h3 style="margin:0 0 8px">💰 Global Wallet</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center"><div><small>TOTAL</small><br><b id="wTot">0</b></div><div><small>PAID</small><br><b id="wPaid" style="color:#16a34a">0</b></div><div><small>PEND</small><br><b id="wPend" style="color:#d97706">0</b></div></div>
+<button class="btn green" style="width:100%;margin-top:8px" onclick="withdraw()">💸 Withdraw</button>
 </div>
 
-<!-- MY PROFILE + DOCS -->
-<div class="card">
-<h3 style="margin:0 0 8px">📄 My Profile & Documents</h3>
-<div id="profile"></div>
-</div>
+<div class="card"><div style="display:flex;gap:6px;margin-bottom:8px"><input id="q" placeholder="Search name, city, country..." oninput="render()" style="flex:2"><select id="countryFilter" onchange="render()" style="flex:1"><option value="">All Countries</option></select><button class="btn gray" onclick="load()">↻</button></div><div id="list">Loading...</div></div>
 
-<!-- ASSIGNED JOBS -->
-<div class="card">
-<h3 style="margin:0 0 8px">📋 My Assigned Jobs</h3>
-<div id="list">Loading...</div>
-</div>
+<div class="card" style="border:2px solid #2563eb;background:#eff6ff"><h3 style="margin:0 0 8px">👩‍⚕️ Caregivers Global (<span id="cgC">0</span>)</h3><div id="cgList"></div></div>
 
 <script>
-let CG=JSON.parse(localStorage.getItem('loggedCaregiver')||'null');
-if(!CG){
- const phone=prompt('Enter your registered phone to login (077...):');
- if(!phone){ location.href='caregiver-register.html'; }
- else{
-  const all=JSON.parse(localStorage.getItem('caregivers')||'[]');
-  const found=all.find(c=>c.phone===phone);
-  if(!found){ alert('Not found. Please register first.'); location.href='caregiver-register.html'; }
-  else{ localStorage.setItem('loggedCaregiver',JSON.stringify(found)); CG=found; }
- }
+if(localStorage.getItem('adminLoggedIn')!=='true')location.href='admin-login.html';
+let BOOKS=[]; async function load(){
+ try{const r=await fetch('/api/bookings',{cache:'no-store'});if(r.ok){const d=await r.json();if(Array.isArray(d)){BOOKS=d;document.getElementById('mode').innerText='REAL API';render();return;}}}catch(e){}
+ BOOKS=JSON.parse(localStorage.getItem('bookings')||'[]');document.getElementById('mode').innerText='LOCAL GLOBAL';render();
 }
-if(CG){ document.getElementById('cgName').innerText='- '+CG.name; }
-
-function logout(){ localStorage.removeItem('loggedCaregiver'); location.href='caregiver-register.html'; }
-
 function render(){
- if(!CG) return;
- // PROFILE
- document.getElementById('profile').innerHTML=`<b>${CG.name}</b><br><small>Phone: ${CG.phone} | NIN: ${CG.nin}</small><br><small>Location: ${CG.location} | Service: ${CG.service}</small><br><small>Status: <b>${CG.status}</b></small><br><div style="margin-top:6px"><small>Docs: ${Object.keys(CG.docs||{}).join(', ')}</small> <button class="btn gray" style="padding:2px 6px;font-size:11px" onclick="viewId()">View ID</button></div>`;
-
- // JOBS - all bookings assigned
- const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- const myJobs=bookings.filter(b=>b.status==='assigned'); // for demo all assigned jobs show to caregiver
- document.getElementById('jobs').innerText=myJobs.length;
- const earn=myJobs.length*40000;
- document.getElementById('earn').innerText=earn.toLocaleString();
- document.getElementById('wAvail').innerText=earn.toLocaleString();
- document.getElementById('wWith').innerText=(parseInt(localStorage.getItem('cgWithdrawn')||'0')).toLocaleString();
-
- let txHtml='<table><tr><th>Date</th><th>Client</th><th>Earn</th></tr>';
- myJobs.slice().reverse().forEach(b=>{ txHtml+=`<tr><td>${b.date||''}</td><td>${b.name||''}</td><td>40k</td></tr>`; });
- txHtml+='</table>';
- document.getElementById('txList').innerHTML=txHtml;
-
- let html='<table><tr><th>Client</th><th>Location</th><th>Action</th></tr>';
- if(myJobs.length===0) html+='<tr><td colspan=3>No assigned jobs yet</td></tr>';
- else myJobs.slice().reverse().forEach(b=>{
-  html+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small><br><small>${b.service}</small></td><td>${b.location}<br><small>${b.date}</small></td><td><button class="btn green" onclick="complete(${b.id})">Done</button></td></tr>`;
- });
- html+='</table>';
- document.getElementById('list').innerHTML=html;
+ const q=(document.getElementById('q').value||'').toLowerCase(); const cf=document.getElementById('countryFilter').value;
+ let filtered=BOOKS.filter(b=>{const txt=(b.name+b.phone+b.location+b.country+b.city).toLowerCase(); const matchQ=txt.includes(q); const matchC=cf? (b.country||'').includes(cf)|| (b.location||'').includes(cf):true; return matchQ&&matchC;});
+ // country filter options
+ const countries=[...new Set(BOOKS.map(b=>b.country).filter(Boolean))]; const sel=document.getElementById('countryFilter'); const curVal=sel.value;
+ sel.innerHTML='<option value="">All Countries</option>'; countries.forEach(c=>sel.innerHTML+=`<option ${c===curVal?'selected':''}>${c}</option>`);
+ document.getElementById('total').innerText=BOOKS.length; document.getElementById('rev').innerText=BOOKS.length*50000;
+ document.getElementById('wTot').innerText=(BOOKS.length*50000).toLocaleString(); document.getElementById('wPaid').innerText=(BOOKS.filter(b=>b.status==='paid').length*50000).toLocaleString(); document.getElementById('wPend').innerText=(BOOKS.filter(b=>b.status!=='paid').length*50000).toLocaleString();
+ let html='<table><tr><th>Client / Phone</th><th>Location / Country</th><th>Status</th><th>Act</th></tr>';
+ if(filtered.length===0) html+='<tr><td colspan=4>No bookings. Try booking.html</td></tr>';
+ else filtered.slice().reverse().forEach(b=>{
+  const badge=b.status==='paid'?'<span class="badge paid">PAID</span>':b.status==='assigned'?'<span class="badge assigned">ASSIGNED</span>':'<span class="badge pending">PENDING</span>';
+  html+=`<tr><td><b>${b.name||''}</b><br><small>${b.phone||''}</small><br><small>${b.currency||''} ${b.price||''}</small></td><td>${b.city||''}<br><small>${b.country||''}</small><br><small>${b.location||''}</small></td><td>${badge}<br><small>${b.service||''}</small></td><td><button class="btn blue" onclick="upd(${b.id},'assigned')">Assign</button><br><button class="btn green" onclick="upd(${b.id},'paid')" style="margin-top:4px">Paid</button><br><button class="btn red" onclick="delB(${b.id})" style="margin-top:4px">X</button></td></tr>`;
+ }); html+='</table>'; document.getElementById('list').innerHTML=html;
+ const cgs=JSON.parse(localStorage.getItem('caregivers')||'[]'); document.getElementById('cgT').innerText=cgs.length; document.getElementById('cgC').innerText=cgs.length;
+ let ch='<table><tr><th>Name</th><th>Country / City</th><th>Docs</th><th>Act</th></tr>';
+ if(cgs.length===0) ch+='<tr><td colspan=4>No caregivers. Share caregiver-register.html worldwide</td></tr>';
+ else cgs.slice().reverse().forEach(c=>{ ch+=`<tr><td><b>${c.name}</b><br><small>${c.phone}</small></td><td>${c.city}<br><small>${c.country}</small><br><small>${c.service}</small></td><td><small>${Object.keys(c.docs||{}).join(',')}</small><br><button class="btn gray" onclick="viewDoc(${c.id})">ID</button></td><td><span class="badge pending">${c.status}</span><br><button class="btn green" onclick="approveCg(${c.id})">Approve</button><br><button class="btn red" onclick="delCg(${c.id})">X</button></td></tr>`; });
+ ch+='</table>'; document.getElementById('cgList').innerHTML=ch;
 }
-function viewId(){ if(CG.docs&&CG.docs['ID']){ const w=window.open(''); w.document.write('<img src="'+CG.docs['ID']+'" style="max-width:100%">'); } else alert('No ID'); }
-function complete(id){
- if(!confirm('Mark job as completed?')) return;
- let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- bookings=bookings.map(b=> b.id==id?{...b,status:'paid'}:b);
- localStorage.setItem('bookings',JSON.stringify(bookings));
- alert('✅ Job completed! 40k added to your wallet');
- render();
-}
-function toggleTx(){ const el=document.getElementById('txList'); el.style.display=el.style.display==='none'?'block':'none'; }
-function withdraw(){
- const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- const myJobs=bookings.filter(b=>b.status==='assigned').length*40000;
- if(myJobs<=0){ alert('No money'); return; }
- const num=prompt('Withdraw UGX '+myJobs.toLocaleString()+' to MoMo number:',CG.phone);
- if(num){ localStorage.setItem('cgWithdrawn', (parseInt(localStorage.getItem('cgWithdrawn')||'0')+myJobs).toString()); alert('✅ UGX '+myJobs.toLocaleString()+' sent to '+num); }
-}
-render();
-</script>
-</body></html>
+function upd(id,s){BOOKS=BOOKS.map(b=>b.id==id?{...b,status:s}:b);localStorage.setItem('bookings',JSON.stringify(BOOKS));render();}
+function delB(id){if(!confirm('Delete?'))return;BOOKS=BOOKS.filter(b=>b.id!=id);localStorage.setItem('bookings',JSON.stringify(BOOKS));render();}
+function approveCg(id){let L=JSON.parse(localStorage.getItem('caregivers')||'[]');L=L.map(c=>c.id==id?{...c,status:'approved'}:c);localStorage.setItem('caregivers',JSON.stringify(L));render();}
+function delCg(id){if(!confirm('Delete caregiver?'))return;let L=JSON.parse(localStorage.getItem('caregivers')||'[]');L=L.filter(c=>c.id!=id);localStorage.setItem('caregivers',JSON.stringify(L));render();}
+function viewDoc(id){const L=JSON.parse(localStorage.getItem('caregivers')||'[]');const c=L.find(x=>x.id==id);if(c&&c.docs&&c.docs['ID']){const w=window.open('');w.document.write('<img src="'+c.docs['ID']+'" style="max-width:100%">');}else alert('No ID');}
+function withdraw(){const paid=BOOKS.filter(b=>b.status==='paid').length*50000;if(paid<=0){alert('No paid');return;}const n=prompt('Withdraw UGX '+paid+' to MoMo:','077');if(n)alert('✅ Sent '+paid+' to '+n);}
+load();
+</script></body></html>
