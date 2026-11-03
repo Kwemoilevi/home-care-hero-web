@@ -1,38 +1,43 @@
-// 🌍 GlobalCare - REAL AUTH for all 3 roles - Not Demo
+// 🔐 FINAL REAL AUTH - NO FAKE LOGIN
 (function(){
+  // If user is NOT logged in via Firebase, block admin/caregiver/client pages
+  const path = window.location.pathname;
+  const loggedIn = localStorage.getItem('loggedIn') === 'true';
   const role = localStorage.getItem('role');
-  const logged = localStorage.getItem('loggedIn') === 'true';
-  const page = window.location.pathname;
+  
+  const isAdminPage = path.includes('admin');
+  const isCaregiverPage = path.includes('caregiver-dashboard');
+  const isClientPrivate = path.includes('client-wallet') || path.includes('booking.html');
 
-  // Public pages - no login needed
-  const publicPages = ['/', '/index.html', '/login.html', '/client-register.html', '/caregiver-register.html'];
-  const isPublic = publicPages.some(p => page.endsWith(p) || page === p);
-  if(isPublic) return;
-
-  // Not logged? Go to login
-  if(!logged){
-    alert('Please login to continue - Clients, Caregivers and Admin must login for transactions');
-    window.location.href = 'login.html?next=' + encodeURIComponent(page);
-    return;
-  }
-
-  // Role checks
-  if(page.includes('admin') && role !== 'admin'){
-    alert('Admin alone! Access denied.');
-    window.location.href = 'index.html';
-    return;
-  }
-  if(page.includes('caregiver') && role !== 'caregiver' && role !== 'admin'){
-    alert('Caregiver alone! Please login as caregiver.');
-    window.location.href = 'login.html?role=caregiver';
-    return;
-  }
-  if((page.includes('client-wallet') || page.includes('booking') || page.includes('gps-tracker')) && role !== 'client' && role !== 'admin'){
-    // Clients must be logged for transactions
-    if(role !== 'client'){
-      alert('Client login required for transactions');
-      window.location.href = 'login.html?role=client';
+  // BLOCK FAKE ADMIN ACCESS
+  if(isAdminPage){
+    // REAL CHECK: Must be logged in AND role=admin AND email must be your real admin email
+    const adminEmail = localStorage.getItem('userEmail');
+    if(!loggedIn || role !== 'admin' || adminEmail !== 'admin@globalcare.com'){
+      alert('🔐 Admin Access Only - Please login with real Admin account at login.html');
+      window.location.href = 'login.html';
       return;
     }
+  }
+
+  if(isCaregiverPage){
+    if(!loggedIn || role !== 'caregiver'){
+      alert('🔐 Caregiver Access Only - Please login');
+      window.location.href = 'login.html';
+      return;
+    }
+  }
+
+  if(isClientPrivate){
+    if(!loggedIn){
+      alert('Please login to continue');
+      window.location.href = 'login.html';
+      return;
+    }
+  }
+
+  window.logout = function(){
+    localStorage.clear();
+    window.location.href = 'login.html';
   }
 })();
