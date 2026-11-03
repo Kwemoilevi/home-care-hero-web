@@ -1,25 +1,22 @@
-<!DOCTYPE html>
-<html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Dashboard</title>
-<style>body{font-family:system-ui;background:#f1f5f9;margin:0} header{background:#0f172a;color:white;padding:16px;display:flex;justify-content:space-between} .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px} .card{background:white;padding:16px;border-radius:12px} table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}</style>
-</head><body>
-<script>if(localStorage.getItem('adminLoggedIn')!=='true'){location.href='admin-login.html';}</script>
-<header><b>HomeCare Hero - Admin</b><div><a href="admin-live-map.html" style="color:#60a5fa;margin-right:10px">Live Map</a><button onclick="localStorage.removeItem('adminLoggedIn');location.href='admin-login.html'" style="background:#ef4444;color:white;border:0;padding:6px 12px;border-radius:6px">Logout</button></div></header>
-<div class="grid">
-<div class="card"><h3>📦 Bookings (<span id="count">0</span>)</h3><div id="bookingsList">Loading...</div></div>
-<div class="card"><h3>👥 Quick Actions</h3><a href="caregiver.html">View Caregivers</a><br><br><button onclick="if(confirm('Clear all bookings?')){localStorage.removeItem('bookings');location.reload()}">Clear Bookings</button></div>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Login</title>
+<style>body{margin:0;font:14px system-ui;background:#0f172a;display:flex;justify-content:center;align-items:center;min-height:100vh} .box{background:#fff;padding:20px;border-radius:12px;width:90%;max-width:320px} input{width:100%;padding:10px;margin:8px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box} button{width:100%;padding:10px;background:#0f172a;color:#fff;border:0;border-radius:8px;font-weight:700}</style></head>
+<body>
+<div class="box">
+<h3 style="margin:0 0 10px">Admin Login</h3>
+<p style="font-size:12px;color:#64748b">admin / HomeCare2024!</p>
+<input id="u" placeholder="Username" value="admin">
+<input id="p" type="password" placeholder="Password" value="HomeCare2024!">
+<button onclick="login()">Login</button>
+<p id="msg" style="color:red;font-size:12px"></p>
 </div>
 <script>
-function load(){
- const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- document.getElementById('count').innerText=bookings.length;
- let html='<table><tr><th>Name</th><th>Phone</th><th>Service</th><th>Date</th></tr>';
- bookings.reverse().forEach(b=>{
-  html+=`<tr><td>${b.name}</td><td>${b.phone}</td><td>${b.service}</td><td>${b.date}<br><small>${b.location}</small></td></tr>`;
- });
- html+='</table>'; if(bookings.length===0) html='No bookings yet. Test booking.html';
- document.getElementById('bookingsList').innerHTML=html;
+function login(){
+ if(document.getElementById('u').value==='admin' && document.getElementById('p').value==='HomeCare2024!'){
+  localStorage.setItem('adminLoggedIn','true');
+  location.href='admin.html';
+ }else{
+  document.getElementById('msg').innerText='Wrong username or password';
+ }
 }
-load();
 </script>
 </body></html>
