@@ -1,32 +1,117 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Real Global</title>
-<style>body{margin:0;font:14px system-ui;background:#f1f5f9}header{background:#0f172a;color:#fff;padding:10px;display:flex;justify-content:space-between;position:sticky;top:0}.card{background:#fff;margin:10px;padding:12px;border-radius:12px}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #eee;font-size:13px}.btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}.blue{background:#2563eb;color:#fff}.green{background:#16a34a;color:#fff}.red{background:#ef4444;color:#fff}.badge{padding:2px 8px;border-radius:20px;font-size:11px}.pending{background:#fef3c7}.paid{background:#dcfce7}</style>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin - Care Verification REAL</title>
+<style>
+body{margin:0;font:13px system-ui;background:#f1f5f9}header{background:#0f172a;color:#fff;padding:10px;display:flex;justify-content:space-between;position:sticky;top:0;z-index:10}header a{color:#60a5fa;text-decoration:none;font-size:13px;margin-left:8px}
+.tabs{display:flex;gap:6px;padding:10px;background:#fff;position:sticky;top:44px;z-index:9;overflow-x:auto} .tab{padding:8px 14px;border-radius:20px;border:1px solid #cbd5e1;background:#f8fafc;cursor:pointer;font-weight:700;white-space:nowrap} .tab.active{background:#0f172a;color:#fff}
+.card{background:#fff;margin:10px;padding:12px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:12px;vertical-align:top}
+.btn{padding:5px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:11px;margin:2px}.blue{background:#2563eb;color:#fff}.green{background:#16a34a;color:#fff}.red{background:#ef4444;color:#fff}.yellow{background:#facc15}
+.badge{padding:2px 8px;border-radius:20px;font-size:10px;font-weight:800}.pending{background:#fef3c7;color:#92400e}.paid{background:#dcfce7;color:#166534}.verified{background:#dcfce7;color:#166534}.unverified{background:#fee2e2;color:#991b1b}
+img.doc{width:60px;height:60px;object-fit:cover;border-radius:6px;border:1px solid #ddd;margin:2px}
+.wallet{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;margin-top:8px} .wbox{background:#f8fafc;padding:8px;border-radius:8px;border:1px solid #e2e8f0}
+</style>
 </head><body>
-<header><div><b>🌍 Admin REAL</b> <small id="mode">CONNECTING...</small></div><div><a href="index.html" style="color:#60a5fa">Home</a> <button class="btn red" onclick="localStorage.clear();location.reload()">Clear</button></div></header>
-<div class="card" style="border:2px solid #16a34a;background:#f0fdf4"><h3 style="margin:0">💰 Global Wallet REAL</h3><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;margin-top:8px"><div><small>TOTAL</small><br><b id="wTot">0</b></div><div><small>PAID</small><br><b id="wPaid">0</b></div><div><small>PENDING</small><br><b id="wPend">0</b></div></div></div>
-<div class="card"><div style="display:flex;gap:6px"><input id="q" placeholder="Search city country..." oninput="render()" style="flex:2;padding:8px;border-radius:8px;border:1px solid #ddd"><select id="cFilt" onchange="render()" style="flex:1;padding:8px;border-radius:8px"><option value="">All Countries</option></select><button class="btn blue" onclick="load()">↻ Real</button></div><div id="list" style="margin-top:10px">Loading real...</div></div>
+<header><div><b>🌍 Admin REAL</b> <small id="mode">CONNECTING</small></div><div><a href="index.html">Home</a><a href="booking.html">Book</a></div></header>
+
+<div class="tabs">
+<button class="tab active" onclick="showTab('bookings')">📅 Bookings</button>
+<button class="tab" onclick="showTab('caregivers')">👩‍⚕️ Caregivers (Verify)</button>
+<button class="tab" onclick="showTab('wallet')">💰 Global Wallet</button>
+</div>
+
+<!-- BOOKINGS -->
+<div id="tab-bookings" class="card">
+<h3 style="margin:0">📅 Real Bookings <button class="btn blue" onclick="loadBookings()">↻ Real</button></h3>
+<input id="q" placeholder="Search city, country, name..." oninput="renderBookings()" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd;margin-top:8px">
+<div id="bookingsList" style="margin-top:10px">Loading...</div>
+</div>
+
+<!-- CAREGIVERS VERIFICATION -->
+<div id="tab-caregivers" class="card" style="display:none">
+<h3 style="margin:0">👩‍⚕️ Caregivers Verification - ID Docs <button class="btn blue" onclick="loadCaregivers()">↻ Real</button></h3>
+<p style="color:#64748b;margin:4px 0">Verify ID, certificates, photo before they get jobs</p>
+<input id="qCare" placeholder="Search caregiver, country..." oninput="renderCaregivers()" style="width:100%;padding:8px;border-radius:8px;border:1px solid #ddd">
+<div id="careList" style="margin-top:10px">Loading caregivers...</div>
+</div>
+
+<!-- WALLET -->
+<div id="tab-wallet" class="card" style="display:none">
+<h3 style="margin:0">💰 Global Wallet REAL</h3>
+<div class="wallet"><div class="wbox"><small>TOTAL BOOKINGS</small><br><b id="wTot" style="font-size:18px">0</b></div><div class="wbox"><small>PAID</small><br><b id="wPaid" style="font-size:18px;color:#16a34a">0</b></div><div class="wbox"><small>PENDING</small><br><b id="wPend" style="font-size:18px;color:#ca8a04">0</b></div></div>
+<div style="margin-top:12px"><b>Revenue by Country (Auto Currency):</b><div id="revByCountry"></div></div>
+</div>
+
 <script>
-let BOOKS=[];
-async function load(){
+let BOOKS=[], CARES=[];
+function showTab(t){
+ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+ document.getElementById('tab-bookings').style.display=t==='bookings'?'block':'none';
+ document.getElementById('tab-caregivers').style.display=t==='caregivers'?'block':'none';
+ document.getElementById('tab-wallet').style.display=t==='wallet'?'block':'none';
+ document.querySelector(`[onclick="showTab('${t}')"]`).classList.add('active');
+ if(t==='bookings') loadBookings();
+ if(t==='caregivers') loadCaregivers();
+ if(t==='wallet') renderWallet();
+}
+
+async function loadBookings(){
  try{
   const r=await fetch('/api/bookings',{cache:'no-store'});
-  if(r.ok){BOOKS=await r.json();document.getElementById('mode').innerText=`REAL LIVE (${BOOKS.length})`;render();return;}
- }catch(e){}
- BOOKS=JSON.parse(localStorage.getItem('bookings')||'[]');
- document.getElementById('mode').innerText='LOCAL FALLBACK';
- render();
+  if(r.ok){BOOKS=await r.json();document.getElementById('mode').innerText=`REAL LIVE ${BOOKS.length}`;}
+  else throw new Error();
+ }catch(e){
+  BOOKS=JSON.parse(localStorage.getItem('bookings')||'[]');
+  document.getElementById('mode').innerText=`LOCAL ${BOOKS.length}`;
+ }
+ renderBookings();renderWallet();
 }
-function render(){
- const q=(document.getElementById('q').value||'').toLowerCase(),cf=document.getElementById('cFilt').value;
- const countries=[...new Set(BOOKS.map(b=>b.country).filter(Boolean))];
- const sel=document.getElementById('cFilt'),cur=sel.value;sel.innerHTML='<option value="">All Countries</option>';countries.forEach(c=>sel.innerHTML+=`<option ${c===cur?'selected':''}>${c}</option>`);
- let filt=BOOKS.filter(b=>{const t=(b.name+b.phone+b.location+b.country+b.city).toLowerCase();return t.includes(q)&&(!cf||b.country===cf);});
- document.getElementById('wTot').innerText=filt.length;document.getElementById('wPaid').innerText=filt.filter(b=>b.status==='paid').length;document.getElementById('wPend').innerText=filt.filter(b=>b.status!=='paid').length;
- let h='<table><tr><th>Client</th><th>Location</th><th>Status</th><th>Action</th></tr>';
- if(filt.length===0)h+='<tr><td colspan=4>No real bookings yet. Book from booking.html REAL</td></tr>';
- else filt.slice().reverse().forEach(b=>{h+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small><br><small>${b.currency} ${b.price}</small></td><td>${b.city||''}<br><small>${b.country||''} ${b.flag||''}</small><br><small>${b.location||''}</small></td><td><span class="badge ${b.status==='paid'?'paid':'pending'}">${b.status}</span><br><small>${b.service}</small></td><td><button class="btn blue" onclick="setS(${b.id},'paid')">Paid</button><br><button class="btn red" onclick="delB(${b.id})" style="margin-top:4px">Del</button></td></tr>`;});
- h+='</table>';document.getElementById('list').innerHTML=h;
+
+function renderBookings(){
+ const q=(document.getElementById('q').value||'').toLowerCase();
+ let filt=BOOKS.filter(b=>(b.name+b.phone+b.location+b.country+b.city+b.currency).toLowerCase().includes(q));
+ let h='<table><tr><th>Client</th><th>Location</th><th>Pay</th><th>Status</th></tr>';
+ if(filt.length===0) h+='<tr><td colspan=4>No bookings. Book from booking.html</td></tr>';
+ else filt.slice().reverse().forEach(b=>{
+  h+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small><br><small>${b.currency} ${b.price}</small></td><td><small>${b.flag||''} ${b.city||''}, ${b.country||''}</small><br><small>${b.location||''}</small><br><small>${b.service}</small></td><td>${b.currency} ${b.price}</td><td><span class="badge ${b.status}">${b.status}</span><br><button class="btn blue" onclick="setBookingStatus(${b.id},'paid')">Paid</button><button class="btn red" onclick="delBooking(${b.id})">Del</button></td></tr>`;
+ });
+ h+='</table>';document.getElementById('bookingsList').innerHTML=h;
 }
-function setS(id,s){BOOKS=BOOKS.map(b=>b.id==id?{...b,status:s}:b);render();}
-async function delB(id){if(!confirm('Delete real?'))return;try{await fetch('/api/bookings?id='+id,{method:'DELETE'});}catch(e){}BOOKS=BOOKS.filter(b=>b.id!=id);render();}
-load();
-</script></body></html>
+
+// CAREGIVERS
+async function loadCaregivers(){
+ try{
+  const r=await fetch('/api/caregivers',{cache:'no-store'});
+  if(r.ok){CARES=await r.json();}else throw new Error();
+ }catch(e){
+  CARES=JSON.parse(localStorage.getItem('caregivers')||'[]');
+ }
+ renderCaregivers();
+}
+
+function renderCaregivers(){
+ const q=(document.getElementById('qCare').value||'').toLowerCase();
+ let filt=CARES.filter(c=>(c.name+c.phone+c.country+c.city+c.skills).toLowerCase().includes(q));
+ let h='<table><tr><th>Caregiver + Docs</th><th>Country</th><th>Verify</th></tr>';
+ if(filt.length===0) h+='<tr><td colspan=3>No caregivers. Register from caregiver-register.html</td></tr>';
+ else filt.slice().reverse().forEach(c=>{
+  h+=`<tr><td><b>${c.name}</b><br><small>${c.phone}</small><br><small>${c.skills||''}</small><br>${c.idPhoto?`<img class="doc" src="${c.idPhoto}">`:''}${c.certPhoto?`<img class="doc" src="${c.certPhoto}">`:''}<br><small>ID: ${c.idNumber||'N/A'}</small></td><td><small>${c.flag||''} ${c.city||''}, ${c.country||''}</small><br><small>${c.experience||''} yrs</small></td><td><span class="badge ${c.verified?'verified':'unverified'}">${c.verified?'VERIFIED':'UNVERIFIED'}</span><br><button class="btn green" onclick="verifyCare(${c.id},true)">✓ Verify</button><br><button class="btn yellow" onclick="verifyCare(${c.id},false)">✗ Unverify</button><br><button class="btn red" onclick="delCare(${c.id})">Del</button></td></tr>`;
+ });
+ h+='</table>';document.getElementById('careList').innerHTML=h;
+}
+
+function setBookingStatus(id,s){BOOKS=BOOKS.map(b=>b.id==id?{...b,status:s}:b);localStorage.setItem('bookings',JSON.stringify(BOOKS));renderBookings();renderWallet();}
+async function delBooking(id){if(!confirm('Delete?'))return;try{await fetch('/api/bookings?id='+id,{method:'DELETE'});}catch(e){}BOOKS=BOOKS.filter(b=>b.id!=id);localStorage.setItem('bookings',JSON.stringify(BOOKS));renderBookings();}
+
+function verifyCare(id,v){CARES=CARES.map(c=>c.id==id?{...c,verified:v}:c);localStorage.setItem('caregivers',JSON.stringify(CARES));renderCaregivers();}
+function delCare(id){if(!confirm('Delete caregiver?'))return;CARES=CARES.filter(c=>c.id!=id);localStorage.setItem('caregivers',JSON.stringify(CARES));renderCaregivers();}
+
+function renderWallet(){
+ document.getElementById('wTot').innerText=BOOKS.length;
+ document.getElementById('wPaid').innerText=BOOKS.filter(b=>b.status==='paid').length;
+ document.getElementById('wPend').innerText=BOOKS.filter(b=>b.status!=='paid').length;
+ let rev={};BOOKS.forEach(b=>{const k=`${b.flag||''} ${b.country||''} - ${b.currency||''}`;rev[k]=(rev[k]||0)+Number(b.price||0);});
+ let h='<table>';for(let k in rev){h+=`<tr><td>${k}</td><td><b>${rev[k]}</b></td></tr>`;}h+='</table>';document.getElementById('revByCountry').innerHTML=h;
+}
+
+loadBookings();loadCaregivers();
+</script>
+</body></html>
