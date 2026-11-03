@@ -1,104 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Join as Caregiver - Home Care Hero</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#f5f5f7] p-4">
-<div class="max-w-lg mx-auto bg-white rounded-[2rem] p-7 border shadow-xl mt-6">
-<div class="text-center">
-<div class="w-14 h-14 bg-[#ffcc00] rounded-full flex items-center justify-center mx-auto font-black text-xl border-2 border-black">H</div>
-<h1 class="font-black text-2xl mt-3">Become a Verified Hero 💛</h1>
-<p class="text-xs text-gray-500 mt-1">Upload LC + ID to get approved in 2 hours. Earn 20k-45k/day</p>
-</div>
-
-<div class="mt-6 space-y-4">
-<input id="name" placeholder="Full Name (e.g., Namatovu Jane)" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<input id="phone" placeholder="Phone (e.g., 0772101875)" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<select id="service" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<option value="Babysitting">Babysitting</option>
-<option value="Qualified Nurse">Qualified Nurse</option>
-<option value="Nursing">Nursing Assistant</option>
-<option value="House Cleaning">House Cleaning</option>
-<option value="Elderly Care">Elderly Care</option>
-<option value="Cooking">Cooking</option>
-</select>
-<input id="loc" placeholder="Your Village / Location (e.g., Kamwokya)" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<input id="exp" placeholder="Experience (e.g., 2 years with kids)" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-
-<div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mt-2">
-<h3 class="font-black text-sm">📄 Verification Documents (Required)</h3>
-<p class="text-[11px] text-gray-600 mt-1">We need these to keep clients safe. Trusted caregivers get more jobs.</p>
-
-<label class="block text-xs font-black mt-3">1. LC1 Letter Photo *Required</label>
-<input id="lc" type="file" accept="image/*" class="w-full text-xs mt-1">
-
-<label class="block text-xs font-black mt-3">2. National ID (Front) *Required</label>
-<input id="id1" type="file" accept="image/*" class="w-full text-xs mt-1">
-
-<label class="block text-xs font-black mt-3">3. Certificate / Training (Optional but +pay)</label>
-<input id="cert" type="file" accept="image/*" class="w-full text-xs mt-1">
-<p class="text-[10px] text-gray-500">e.g., First Aid, Nursing Certificate</p>
-</div>
-
-<input id="ref1" placeholder="Reference 1: Name + Phone (e.g., Mrs Atim 070...)" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<input id="ref2" placeholder="Reference 2: Name + Phone" class="w-full px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-
-<label class="flex gap-2 items-start mt-2 text-[11px]"><input type="checkbox" id="agree" class="mt-1"> <span>I confirm my LC letter and ID are real. Fake documents = permanent ban and police report.</span></label>
-
-<button onclick="submitApp()" class="w-full bg-black text-white py-4 rounded-xl font-black mt-4">Submit For Verification ✅</button>
-
-<div id="msg" class="hidden text-center mt-4">
-<div class="bg-green-100 border border-green-200 p-4 rounded-xl">
-<p class="font-black text-sm">Application Sent! 🎉</p>
-<p class="text-xs mt-1">We received: <span id="docStatus"></span></p>
-<p class="text-[11px] mt-2">Admin will verify your LC and call your references. You will get WhatsApp in 2 hours if approved.</p>
-</div>
-</div>
-</div>
-
-<script>
-function submitApp(){
-let name=document.getElementById('name').value.trim();
-let phone=document.getElementById('phone').value.trim();
-let agree=document.getElementById('agree').checked;
-if(!name||!phone){alert('Please enter name and phone');return;}
-if(!agree){alert('Please agree to verification');return;}
-
-let hasLC=document.getElementById('lc').files.length>0;
-let hasID=document.getElementById('id1').files.length>0;
-let hasCert=document.getElementById('cert').files.length>0;
-
-if(!hasLC||!hasID){if(!confirm('You did NOT attach LC or ID photo. You will be marked ❌ and may not get approved. Continue anyway?'))return;}
-
-let app={
-name:name,
-phone:phone,
-service:document.getElementById('service').value,
-loc:document.getElementById('loc').value,
-exp:document.getElementById('exp').value,
-ref1:document.getElementById('ref1').value,
-ref2:document.getElementById('ref2').value,
-hasLC:hasLC,
-hasID:hasID,
-hasCert:hasCert,
-status:'pending',
-date:new Date().toLocaleDateString()
-};
-
-let apps=JSON.parse(localStorage.getItem('hch_caregiver_apps')||'[]');
-apps.push(app);
-localStorage.setItem('hch_caregiver_apps',JSON.stringify(apps));
-
-document.getElementById('docStatus').textContent=`LC:${hasLC?'Yes ✅':'No ❌'} | ID:${hasID?'Yes ✅':'No ❌'} | Cert:${hasCert?'Yes':'No'}`;
-document.getElementById('msg').classList.remove('hidden');
-
-// Auto WhatsApp to CEO
-let text=`NEW CAREGIVER APPLICATION%0A%0AName: ${name}%0APhone: ${phone}%0AService: ${app.service}%0ALocation: ${app.loc}%0AExp: ${app.exp}%0A%0ADocs:%0ALC Letter: ${hasLC?'YES ✅':'NO ❌'}%0ANational ID: ${hasID?'YES ✅':'NO ❌'}%0ACertificate: ${hasCert?'YES':'NO'}%0A%0ARef1: ${app.ref1}%0ARef2: ${app.ref2}%0A%0APlease verify in Admin`;
-window.open(`https://wa.me/256772101875?text=${text}`,'_blank');
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Global Caregiver Registration</title>
+<style>body{margin:0;font:14px system-ui;background:#f8fafc;padding:12px}.card{background:#fff;padding:14px;border-radius:12px;max-width:480px;margin:0 auto;box-shadow:0 1px 4px rgba(0,0,0,.08)}input,select,textarea{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;margin-top:4px}label{font-weight:700;font-size:12px;margin-top:10px;display:block}.btn{width:100%;padding:12px;border:0;border-radius:10px;font-weight:800;color:#fff;background:#16a34a;margin-top:14px}.doc{border:1px dashed #94a3b8;border-radius:8px;padding:10px;margin-top:8px;background:#f1f5f9}.ok{display:none;background:#dcfce7;padding:10px;border-radius:8px;margin-top:10px;color:#166534;text-align:center;font-weight:700}</style></head>
+<body><div class="card">
+<h2 style="text-align:center;margin:0">🌍 Caregiver Registration</h2><p style="text-align:center;color:#64748b;margin:4px 0 12px">Work worldwide, get clients globally</p>
+<label>Full Name *</label><input id="name" placeholder="Name">
+<label>Phone with country code *</label><input id="phone" placeholder="+256, +1, +44...">
+<label>Country *</label><select id="country"></select>
+<label>City / Area *</label><input id="city" placeholder="Kampala, London, New York...">
+<label>National ID / Passport No *</label><input id="nin" placeholder="NIN / Passport">
+<label>Experience</label><select id="exp"><option>0-1 year</option><option>1-3 years</option><option>3-5 years</option><option>5+ years</option></select>
+<label>Services</label><select id="service"><option>Elderly Care</option><option>Child Care</option><option>Postnatal</option><option>Disability</option><option>All Services</option></select>
+<label>About You</label><textarea id="about" rows="3" placeholder="Skills..."></textarea>
+<div class="doc"><b>📄 Upload Documents *</b><label>ID / Passport Photo</label><input type="file" id="idDoc" accept="image/*"><label>Certificate</label><input type="file" id="certDoc" accept="image/*,.pdf"><label>Recommendation / LC1 / Reference</label><input type="file" id="lcDoc" accept="image/*,.pdf"><div id="prev" style="font-size:12px;margin-top:6px"></div></div>
+<label><input type="checkbox" id="agree" style="width:auto"> I confirm docs are real</label>
+<button class="btn" onclick="reg()">✅ Submit Global Registration</button>
+<div id="ok" class="ok">✅ Sent! Admin will verify. You can work worldwide.</div>
+<p style="text-align:center;margin-top:10px"><a href="caregiver-dashboard.html">My Dashboard</a> | <a href="admin.html">Admin</a></p>
+</div><script>
+const C=[["UG","Uganda"],["KE","Kenya"],["TZ","Tanzania"],["RW","Rwanda"],["NG","Nigeria"],["ZA","South Africa"],["US","USA"],["GB","UK"],["CA","Canada"],["AU","Australia"],["AE","UAE"],["IN","India"],["Other","Other Country"]];
+const sel=document.getElementById('country');C.forEach(c=>sel.innerHTML+=`<option value="${c[1]}">${c[1]}</option>`);
+let docs={};function read(inp,key){const f=inp.files[0];if(!f)return;const r=new FileReader();r.onload=e=>{docs[key]=e.target.result;document.getElementById('prev').innerHTML+=`<div>✅ ${key}: ${f.name}</div>`};r.readAsDataURL(f);}
+document.getElementById('idDoc').addEventListener('change',function(){read(this,'ID')});document.getElementById('certDoc').addEventListener('change',function(){read(this,'Cert')});document.getElementById('lcDoc').addEventListener('change',function(){read(this,'Ref')});
+function reg(){
+ const n=document.getElementById('name').value.trim(),p=document.getElementById('phone').value.trim(),nin=document.getElementById('nin').value.trim(),city=document.getElementById('city').value.trim();
+ if(!n||!p||!nin||!city){alert('Fill name, phone, NIN, city');return;}
+ if(!document.getElementById('agree').checked){alert('Tick agree');return;}
+ if(!docs['ID']){alert('Upload ID');return;}
+ const cg={id:Date.now(),name:n,phone:p,nin:nin,country:sel.value,city:city,location:city+', '+sel.value,exp:document.getElementById('exp').value,service:document.getElementById('service').value,about:document.getElementById('about').value,docs:docs,status:'pending_verification',date:new Date().toLocaleDateString()};
+ let L=JSON.parse(localStorage.getItem('caregivers')||'[]');L.push(cg);localStorage.setItem('caregivers',JSON.stringify(L));
+ document.getElementById('ok').style.display='block';alert('Saved! Total: '+L.length);
 }
-</script>
-</body>
-</html>
+</script></body></html>
