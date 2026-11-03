@@ -20,7 +20,7 @@ header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-cont
 .n5{background:#ef4444;color:#fff}
 .n6{background:#fff;color:#000}
 .hero{max-width:1200px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;background:#fff}
-.hero h1{font-size:34px;line-height:1.1;margin-bottom:12px}
+.hero h1{font-size:32px;line-height:1.15;margin-bottom:12px}
 .hero h1 span{color:#2563eb}
 .hero p{color:#475569;font-size:14.5px;margin-bottom:18px;line-height:1.5}
 .btns{display:flex;gap:10px;flex-wrap:wrap}
@@ -30,14 +30,19 @@ header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-cont
 .stats b{font-size:16px}
 .stats small{color:#64748b;font-size:12px}
 .hero-img{background:#eef6ff;border-radius:18px;padding:10px;border:1px solid #dbeafe}
-.hero-img img{width:100%;height:320px;object-fit:cover;border-radius:12px}
-.features{max-width:1200px;margin:0 auto;padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
-.feat{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center}
-.feat b{font-size:13px}
-.feat small{color:#64748b;font-size:11px;display:block;margin-top:4px}
+.hero-img img{width:100%;height:320px;object-fit:cover;border-radius:12px;display:block}
+.story{max-width:1200px;margin:0 auto;padding:28px 16px;background:#fff;margin-top:12px;border-radius:16px;border:1px solid #e2e8f0}
+.story h2{text-align:center;font-size:22px;margin-bottom:6px}
+.story .sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:20px}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card-story{background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden}
+.card-story img{width:100%;height:180px;object-fit:cover}
+.card-story .txt{padding:12px}
+.card-story b{font-size:14px}
+.card-story p{font-size:12.5px;color:#475569;margin-top:6px;line-height:1.5}
 @media(max-width:800px){
 .hero{grid-template-columns:1fr}
-.hero h1{font-size:28px}
+.hero h1{font-size:26px}
 .hero-img img{height:240px}
 }
 </style>
@@ -67,4 +72,42 @@ header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-cont
 </div>
 <div class="stats">
 <div><b>10K+</b><br><small>Families</small></div>
-<div><b>5K+</b
+<div><b>5K+</b><br><small>Caregivers</small></div>
+<div><b>120+</b><br><small>Pharmacies</small></div>
+<div><b>4.9/5</b><br><small>Trust</small></div>
+</div>
+</div>
+<div class="hero-img">
+<img src="https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=600&h=400&fit=crop" alt="Home Care Hero">
+</div>
+</div>
+
+<div class="story">
+<h2>🌟 Meet Our Home Care Heroes</h2>
+<div class="sub">Not just caregivers — they are family, nurses, teachers, and friends</div>
+<div class="grid4">
+<div class="card-story">
+<img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400&h=300&fit=crop">
+<div class="txt"><b>💙 Elderly Companionship</b><p>Heroes who hold hands, share stories, cook meals and bring dignity to aging parents living alone. "She brought my mother's smile back."</p></div>
+</div>
+<div class="card-story">
+<img src="https://images.unsplash.com/photo-1579154204601-01588f351e67?w=400&h=300&fit=crop">
+<div class="txt"><b>🏥 Post-Surgery Recovery</b><p>Trained in vitals, wound care, medicine reminders. Recovery is 70% faster at home with live GPS and photo updates for family.</p></div>
+</div>
+<div class="card-story">
+<img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop">
+<div class="txt"><b>👶 Child Care While You Work</b><p>Verified babysitters who teach, not just watch. Blocks, books, games — with hourly photo updates while you work from home.</p></div>
+</div>
+<div class="card-story">
+<img src="https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=400&h=300&fit=crop">
+<div class="txt"><b>💊 Pharmacy + Caregiver = Full Care</b><p>Order Panadol, adult diapers, BP machines from Pharmacy page. Your Hero delivers same day. One platform, full health.</p></div>
+</div>
+</div>
+</div>
+
+<div style="text-align:center;padding:18px;color:#94a3b8;font-size:11px">
+Trusted in Uganda, Kenya, USA, UK, UAE • Admin approves all caregivers & pharmacies • Secure wallet payments
+</div>
+
+</body>
+</html>
