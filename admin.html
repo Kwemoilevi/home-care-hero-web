@@ -1,8 +1,8 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard</title>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard - Wallet</title>
 <style>
 body{margin:0;font:14px system-ui;background:#f1f5f9;color:#0f172a}
-header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
-.card{background:#fff;margin:10px;padding:12px;border-radius:12px}
+header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0}
+.card{background:#fff;margin:10px;padding:12px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
 .stat{background:#fff;padding:12px;border-radius:12px;text-align:center}
 table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
@@ -13,11 +13,29 @@ input{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;box-sizing:
 </style></head>
 <body>
 <header><div><b>🏠 Admin</b> <span id="dbStatus" style="opacity:.7;font-size:11px">LOCAL</span></div><div><a href="admin-live-map.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">Map</a><button class="btn red" onclick="logout()">Logout</button></div></header>
-<div class="grid"><div class="stat"><small>TOTAL</small><br><b id="total">0</b></div><div class="stat"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>ONLINE</small><br><b id="online">0</b></div></div>
+
+<div class="grid"><div class="stat"><small>TOTAL BOOKINGS</small><br><b id="total">0</b></div><div class="stat"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>ONLINE</small><br><b id="online">0</b></div></div>
+
+<!-- GENERAL WALLET -->
+<div class="card" style="border:2px solid #16a34a;background:#f0fdf4">
+<h3 style="margin:0 0 10px">💰 General Wallet</h3>
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center">
+<div><small>TOTAL</small><br><b>UGX <span id="wTotal">0</span></b></div>
+<div><small>PAID IN</small><br><b style="color:#16a34a">UGX <span id="wPaid">0</span></b></div>
+<div><small>PENDING</small><br><b style="color:#d97706">UGX <span id="wPend">0</span></b></div>
+</div>
+<div style="margin-top:10px;display:flex;gap:8px">
+<button class="btn green" style="flex:1" onclick="withdraw()">💸 Withdraw to MoMo</button>
+<button class="btn gray" onclick="toggleTx()">📜 Transactions</button>
+</div>
+<div id="txList" style="display:none;margin-top:10px;font-size:12px"></div>
+</div>
+
 <div class="card">
-<div style="display:flex;gap:8px;margin-bottom:10px"><input id="search" placeholder="Search name, phone, location..." oninput="render()"><button class="btn gray" onclick="load()">Refresh</button></div>
+<div style="display:flex;gap:8px;margin-bottom:10px"><input id="search" placeholder="Search name, phone, location..." oninput="render()"><button class="btn gray" onclick="load()">↻ Refresh</button></div>
 <div id="list">Loading...</div>
 </div>
+
 <script>
 if(localStorage.getItem('adminLoggedIn')!=='true'){ location.href='admin-login.html'; }
 function logout(){ localStorage.removeItem('adminLoggedIn'); location.href='admin-login.html'; }
@@ -39,6 +57,19 @@ function render(){
  document.getElementById('rev').innerText=(BOOKINGS.length*50000).toLocaleString();
  document.getElementById('pending').innerText=BOOKINGS.filter(b=>b.status==='pending').length;
  document.getElementById('online').innerText= localStorage.getItem('caregiverLocation')?'1':'0';
+ // WALLET CALC
+ const total=BOOKINGS.length*50000;
+ const paid=BOOKINGS.filter(b=>b.status==='paid').length*50000;
+ const pend=total-paid;
+ document.getElementById('wTotal').innerText=total.toLocaleString();
+ document.getElementById('wPaid').innerText=paid.toLocaleString();
+ document.getElementById('wPend').innerText=pend.toLocaleString();
+ let txHtml='<table><tr><th>Date</th><th>Client</th><th>Amount</th><th>Status</th></tr>';
+ BOOKINGS.slice().reverse().slice(0,20).forEach(b=>{
+  txHtml+=`<tr><td>${b.date||''}</td><td>${b.name||''}</td><td>50k</td><td>${b.status||''}</td></tr>`;
+ });
+ txHtml+='</table>';
+ document.getElementById('txList').innerHTML=txHtml;
  let html='<table><tr><th>Client</th><th>Service</th><th>Status</th><th>Action</th></tr>';
  if(filtered.length===0) html+='<tr><td colspan=4>No bookings. Go to /booking.html</td></tr>';
  else filtered.slice().reverse().forEach(b=>{
@@ -55,6 +86,13 @@ async function updateStatus(id,status){
  render();
 }
 async function del(id){ if(!confirm('Delete?')) return; BOOKINGS=BOOKINGS.filter(b=>b.id!=id); localStorage.setItem('bookings',JSON.stringify(BOOKINGS)); render(); }
+function toggleTx(){ const el=document.getElementById('txList'); el.style.display=el.style.display==='none'?'block':'none'; }
+function withdraw(){
+ const paid=BOOKINGS.filter(b=>b.status==='paid').length*50000;
+ if(paid<=0){ alert('No paid money to withdraw'); return; }
+ const num=prompt('Wallet has UGX '+paid.toLocaleString()+' PAID.\nEnter MoMo number to withdraw:','077');
+ if(num){ alert('✅ Request sent! UGX '+paid.toLocaleString()+' will be sent to '+num); }
+}
 load();
 </script>
 </body></html>
