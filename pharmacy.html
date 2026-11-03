@@ -1,49 +1,34 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pharmacy Marketplace - REAL</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui;background:#f8fafc}
-header{background:#0f172a;color:#fff;padding:12px 16px;display:flex;justify-content:space-between}
-.grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;padding:16px}
-.card{background:#fff;border-radius:14px;padding:12px;border:1px solid #e2e8f0}
-.card img{width:100%;height:130px;object-fit:cover;border-radius:10px}
-.btn{width:100%;background:#0f172a;color:#fff;padding:10px;border-radius:10px;border:0;font-weight:700;margin-top:8px;cursor:pointer}
-</style>
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Pharmacy</title>
+<style>body{font-family:Arial;padding:20px;background:#f5f7fb}.card{background:white;padding:15px;margin:10px 0;border-radius:10px;box-shadow:0 2px 5px rgba(0,0,0,.1);display:flex;justify-content:space-between;align-items:center}.order{background:#0a7a07;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer}</style>
 </head>
 <body>
-<header><div><b>💊 Pharmacy Marketplace - REAL Revenue</b></div><div><a href="index.html" style="color:#fff;text-decoration:none">Home</a> <a href="admin.html" style="color:#fff;text-decoration:none;margin-left:10px">Admin</a></div></header>
-<div style="max-width:1200px;margin:12px auto;padding:0 16px;font-size:12px;color:#64748b">Every product view = UGX 100, every Order click = UGX 500 tracked in Firebase</div>
-<div class="grid" id="products"></div>
+<h2>City Pharmacy - REAL Orders = REAL UGX 500</h2>
+<div id="products"></div>
+<a href="admin.html">Go to Admin REAL Revenue</a> | <a href="index.html">Home</a>
 
 <script type="module">
 import { trackView, trackClick } from "./firebase.js";
-await trackView("pharmacy","all-pharmacies");
+await trackView("pharmacy","city-pharma");
 
-const list=[
-{name:"Panadol Extra",pharmacy:"kampala-pharma",price:"UGX 5,000",img:"https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=300"},
-{name:"Baby Diapers Pack",pharmacy:"care-meds",price:"UGX 45,000",img:"https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=300"},
-{name:"BP Monitor",pharmacy:"global-health",price:"UGX 120,000",img:"https://images.unsplash.com/photo-1579154204601-01588f351e67?w=300"},
-{name:"Vitamin C",pharmacy:"wellness-hub",price:"UGX 25,000",img:"https://images.unsplash.com/photo-1550572017-edd951b55104?w=300"},
+const items=[
+{name:"Paracetamol 500mg",price:"5,000 UGX"},
+{name:"Amoxicillin 500mg",price:"12,000 UGX"},
+{name:"Vitamin C",price:"8,000 UGX"},
+{name:"ORS Sachet",price:"1,500 UGX"}
 ];
 
-window.orderNow = async (name, pharma) => {
-  await trackClick("product", pharma, name);
-  alert('REAL: Click saved for '+name+' in Firebase. You earned UGX 500. Check admin.html');
-  location.href='client-wallet.html';
-};
-
-document.getElementById('products').innerHTML = list.map(p=>`
-<div class="card">
-<img src="${p.img}">
-<b style="display:block;margin:6px 0">${p.name}</b>
-<small style="color:#64748b">${p.pharmacy}</small>
-<div style="color:#2563eb;font-weight:800;margin-top:4px">${p.price}</div>
-<button class="btn" onclick="orderNow('${p.name}','${p.pharmacy}')">🛒 Order Now (REAL UGX 500)</button>
-</div>`).join('');
+const div=document.getElementById('products');
+items.forEach(p=>{
+  const el=document.createElement('div'); el.className='card';
+  el.innerHTML=`<div><b>${p.name}</b><br><small>${p.price}</small></div><button class="order">Order</button>`;
+  el.querySelector('button').onclick=async()=>{
+    await trackClick("product_order","city-pharma",p.name);
+    alert(`REAL! Order tracked: ${p.name} - You earned UGX 500 REAL. Check admin.html`);
+  };
+  div.appendChild(el);
+});
 </script>
 </body>
 </html>
