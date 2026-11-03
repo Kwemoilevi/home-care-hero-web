@@ -1,26 +1,25 @@
 <!DOCTYPE html>
 <html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin Login - HomeCare Hero</title>
-<style>body{font-family:system-ui;background:#0f172a;display:flex;height:100vh;align-items:center;justify-content:center} .box{background:white;padding:32px;border-radius:16px;width:90%;max-width:400px} input{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px} button{width:100%;padding:12px;background:#0f172a;color:white;border-radius:8px;font-weight:bold}</style>
+<title>Admin Dashboard</title>
+<style>body{font-family:system-ui;background:#f1f5f9;margin:0} header{background:#0f172a;color:white;padding:16px;display:flex;justify-content:space-between} .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:16px} .card{background:white;padding:16px;border-radius:12px} table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:14px}</style>
 </head><body>
-<div class="box">
-<h2>CEO / Admin Login</h2>
-<form id="loginForm">
-<input id="username" placeholder="Username" required>
-<input id="password" type="password" placeholder="Password" required>
-<button type="submit">Login</button>
-</form>
-<p style="font-size:12px;color:gray;margin-top:10px">Default: admin / HomeCare2024!</p>
+<script>if(localStorage.getItem('adminLoggedIn')!=='true'){location.href='admin-login.html';}</script>
+<header><b>HomeCare Hero - Admin</b><div><a href="admin-live-map.html" style="color:#60a5fa;margin-right:10px">Live Map</a><button onclick="localStorage.removeItem('adminLoggedIn');location.href='admin-login.html'" style="background:#ef4444;color:white;border:0;padding:6px 12px;border-radius:6px">Logout</button></div></header>
+<div class="grid">
+<div class="card"><h3>📦 Bookings (<span id="count">0</span>)</h3><div id="bookingsList">Loading...</div></div>
+<div class="card"><h3>👥 Quick Actions</h3><a href="caregiver.html">View Caregivers</a><br><br><button onclick="if(confirm('Clear all bookings?')){localStorage.removeItem('bookings');location.reload()}">Clear Bookings</button></div>
 </div>
 <script>
-document.getElementById('loginForm').addEventListener('submit',(e)=>{
- e.preventDefault();
- const u=document.getElementById('username').value;
- const p=document.getElementById('password').value;
- if(u==='admin' && p==='HomeCare2024!'){
-  localStorage.setItem('adminLoggedIn','true');
-  window.location.href='admin.html';
- } else { alert('Wrong credentials'); }
-});
+function load(){
+ const bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
+ document.getElementById('count').innerText=bookings.length;
+ let html='<table><tr><th>Name</th><th>Phone</th><th>Service</th><th>Date</th></tr>';
+ bookings.reverse().forEach(b=>{
+  html+=`<tr><td>${b.name}</td><td>${b.phone}</td><td>${b.service}</td><td>${b.date}<br><small>${b.location}</small></td></tr>`;
+ });
+ html+='</table>'; if(bookings.length===0) html='No bookings yet. Test booking.html';
+ document.getElementById('bookingsList').innerHTML=html;
+}
+load();
 </script>
 </body></html>
