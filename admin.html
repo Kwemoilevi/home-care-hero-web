@@ -1,128 +1,72 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin - HomeCare Hero</title>
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:system-ui;background:#f1f5f9}
-header{background:#0f172a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;padding:16px}
-@media(max-width:700px){.stat-grid{grid-template-columns:1fr 1fr}}
-.stat{background:white;padding:16px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.stat h3{margin:0;font-size:13px;color:#64748b} .stat b{font-size:22px}
-.tabs{display:flex;gap:8px;padding:0 16px;overflow:auto}
-.tab{padding:10px 16px;background:white;border-radius:20px;cursor:pointer;font-weight:600;font-size:14px;border:1px solid #e2e8f0;white-space:nowrap}
-.tab.active{background:#0f172a;color:white}
-.card{background:white;margin:12px 16px;padding:16px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-table{width:100%;border-collapse:collapse;font-size:14px} th,td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:left}
-.badge{padding:3px 8px;border-radius:20px;font-size:11px;font-weight:bold}
-.pending{background:#fef3c7;color:#92400e} .paid{background:#dcfce7;color:#166534} .assigned{background:#dbeafe;color:#1e40af}
-.btn{padding:6px 12px;border:0;border-radius:8px;font-weight:600;cursor:pointer;font-size:12px}
-.btn-blue{background:#2563eb;color:white} .btn-green{background:#16a34a;color:white} .btn-red{background:#ef4444;color:white} .btn-gray{background:#f1f5f9}
-input,select{padding:8px 10px;border:1px solid #ddd;border-radius:8px}
+body{margin:0;font-family:system-ui;background:#f1f5f9}
+header{background:#0f172a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
+.card{background:white;margin:12px;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+.stat{background:white;padding:14px;border-radius:12px;text-align:center}
+.btn{padding:8px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer}
+.btn-blue{background:#2563eb;color:white} .btn-red{background:#ef4444;color:white}
+table{width:100%;border-collapse:collapse;font-size:13px} td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}
 </style>
 </head>
 <body>
-<script>if(localStorage.getItem('adminLoggedIn')!=='true'){location.href='admin-login.html';}</script>
 <header>
-<div><b>🏠 HomeCare Hero - CEO</b></div>
-<div style="display:flex;gap:8px">
-<a href="admin-live-map.html" style="background:#1e293b;color:#60a5fa;padding:6px 12px;border-radius:8px;text-decoration:none;font-size:13px">🗺️ Live Map</a>
-<a href="caregiver.html" style="background:#1e293b;color:white;padding:6px 12px;border-radius:8px;text-decoration:none;font-size:13px">Caregivers</a>
-<button onclick="localStorage.removeItem('adminLoggedIn');location.href='admin-login.html'" class="btn btn-red">Logout</button>
-</div>
+<div><b>HomeCare Hero - Admin</b></div>
+<div><a href="admin-live-map.html" style="color:#60a5fa;text-decoration:none;margin-right:10px">Map</a><button class="btn btn-red" onclick="logout()">Logout</button></div>
 </header>
 
 <div class="stat-grid">
-<div class="stat"><h3>📦 TOTAL BOOKINGS</h3><b id="totalBookings">0</b><div style="color:#16a34a;font-size:12px;margin-top:4px" id="todayBookings">Today: 0</div></div>
-<div class="stat"><h3>💰 WALLET / REVENUE</h3><b>UGX <span id="totalRevenue">0</span></b><div style="color:gray;font-size:12px">From MoMo</div></div>
-<div class="stat"><h3>👩‍⚕️ CAREGIVERS ONLINE</h3><b id="onlineCG">0 / 0</b><div style="color:gray;font-size:12px">Live GPS</div></div>
-<div class="stat"><h3>💳 PENDING PAYOUTS</h3><b>UGX <span id="pendingPay">0</span></b><div style="color:gray;font-size:12px">To pay caregivers</div></div>
+<div class="stat"><small>TOTAL BOOKINGS</small><br><b id="totalBookings">0</b></div>
+<div class="stat"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div>
+<div class="stat"><small>CAREGIVERS</small><br><b id="cgCount">1</b></div>
+<div class="stat"><small>ONLINE</small><br><b id="online">0</b></div>
 </div>
 
-<div class="tabs">
-<div class="tab active" onclick="showTab('bookings',this)">📋 Bookings</div>
-<div class="tab" onclick="showTab('caregivers',this)">👩‍⚕️ Caregivers</div>
-<div class="tab" onclick="showTab('payments',this)">💰 Payments</div>
-<div class="tab" onclick="showTab('settings',this)">⚙️ Settings</div>
-</div>
-
-<div id="tab-bookings" class="card">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-<h3 style="margin:0">Recent Bookings</h3>
-<div><input id="searchBooking" placeholder="Search name/phone..." onkeyup="load()"><button class="btn btn-gray" onclick="clearBookings()">Clear All</button></div>
-</div>
-<div id="bookingsList">Loading...</div>
-</div>
-
-<div id="tab-caregivers" class="card" style="display:none">
-<h3>Caregiver Team</h3>
-<div id="cgList"></div>
-<div style="margin-top:12px"><input id="newCGName" placeholder="New caregiver name"><input id="newCGPhone" placeholder="Phone"><button class="btn btn-blue" onclick="addCG()">Add</button></div>
-</div>
-
-<div id="tab-payments" class="card" style="display:none">
-<h3>MoMo Transactions</h3>
-<table><tr><th>Phone</th><th>Amount</th><th>Status</th><th>Time</th></tr><tbody id="payList"></tbody></table>
-</div>
-
-<div id="tab-settings" class="card" style="display:none">
-<h3>Business Settings</h3>
-<p>Booking Price: UGX <input id="price" value="50000" style="width:100px"> <button class="btn btn-blue" onclick="savePrice()">Save</button></p>
-<p>Admin Password: <input id="adminPass" type="text" value="HomeCare2024!"> (change in admin-login.html)</p>
-<p><b>Vercel Domain:</b> <span id="domain"></span></p>
+<div class="card">
+<h3 style="margin:0 0 10px">Bookings</h3>
+<input id="search" placeholder="Search..." oninput="load()" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px">
+<div id="list">Loading...</div>
+<div style="margin-top:10px"><button class="btn" onclick="clearAll()">Clear All</button></div>
 </div>
 
 <script>
-function showTab(name,el){
- document.querySelectorAll('[id^="tab-"]').forEach(d=>d.style.display='none');
- document.getElementById('tab-'+name).style.display='block';
- document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
- el.classList.add('active');
- if(name==='caregivers') loadCG();
- if(name==='payments') loadPayments();
-}
+// Login check
+if(localStorage.getItem('adminLoggedIn')!=='true'){ location.href='admin-login.html'; }
+
+function logout(){ localStorage.removeItem('adminLoggedIn'); location.href='admin-login.html'; }
+
 function load(){
- let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- let search=(document.getElementById('searchBooking').value||'').toLowerCase();
- let filtered=bookings.filter(b=> (b.name+b.phone+b.service).toLowerCase().includes(search));
- document.getElementById('totalBookings').innerText=bookings.length;
- document.getElementById('totalRevenue').innerText=(bookings.length*50000).toLocaleString();
- document.getElementById('todayBookings').innerText='Today: '+bookings.filter(b=>b.created&&b.created.includes(new Date().toLocaleDateString())).length;
- // table
- let html='<table><tr><th>Client</th><th>Service</th><th>Location</th><th>Date</th><th>Status</th><th>Action</th></tr>';
- if(filtered.length===0) html+='<tr><td colspan=6>No bookings yet. Test booking.html</td></tr>';
- else filtered.slice().reverse().forEach(b=>{
-  html+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small></td><td>${b.service}</td><td>${b.location||''}<br><small>${b.notes||''}</small></td><td>${b.date}<br><small>${b.created||''}</small></td><td><span class="badge pending">${b.status||'pending'}</span></td><td><button class="btn btn-green" onclick="assign(${b.id})">Assign</button> <button class="btn btn-blue" onclick="markPaid(${b.id})">Paid</button></td></tr>`;
- });
- html+='</table>';
- document.getElementById('bookingsList').innerHTML=html;
- // online cg
- let cgLoc=localStorage.getItem('caregiverLocation');
- document.getElementById('onlineCG').innerText=(cgLoc?'1':'0')+' / '+(JSON.parse(localStorage.getItem('caregivers')||'[]').length||1);
- document.getElementById('domain').innerText=window.location.host;
+ try{
+  let bookings=[]; try{ bookings=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){ bookings=[]; }
+  let search=(document.getElementById('search').value||'').toLowerCase();
+  let filtered=bookings.filter(b=> (b.name||''+b.phone||'').toLowerCase().includes(search));
+  document.getElementById('totalBookings').innerText=bookings.length;
+  document.getElementById('rev').innerText=(bookings.length*50000).toLocaleString();
+  document.getElementById('cgCount').innerText=JSON.parse(localStorage.getItem('caregivers')||'[]').length||1;
+  document.getElementById('online').innerText= localStorage.getItem('caregiverLocation')?'1':'0';
+
+  let html='<table><tr><th>Client</th><th>Service</th><th>Location</th><th>Status</th><th>Action</th></tr>';
+  if(filtered.length==0){ html+='<tr><td colspan=5>No bookings yet. Go to /booking.html and make a test booking.</td></tr>'; }
+  else {
+    filtered.slice().reverse().forEach(b=>{
+      html+='<tr><td><b>'+(b.name||'')+'</b><br><small>'+(b.phone||'')+'</small></td><td>'+(b.service||'')+'</td><td>'+(b.location||'')+'<br><small>'+(b.date||'')+'</small></td><td>'+(b.status||'pending')+'</td><td><button class="btn btn-blue" onclick="assign('+b.id+')">Assign</button></td></tr>';
+    });
+  }
+  html+='</table>';
+  document.getElementById('list').innerHTML=html;
+ }catch(err){
+  document.getElementById('list').innerHTML='Error: '+err.message+' <br><button class="btn btn-blue" onclick="localStorage.clear();location.reload()">Reset Storage</button>';
+ }
 }
-function assign(id){ let b=JSON.parse(localStorage.getItem('bookings')||'[]'); let found=b.find(x=>x.id==id); if(found){found.status='assigned'; localStorage.setItem('bookings',JSON.stringify(b)); alert('Assigned '+found.name+' to caregiver'); load();}}
-function markPaid(id){ let b=JSON.parse(localStorage.getItem('bookings')||'[]'); let found=b.find(x=>x.id==id); if(found){found.status='paid'; localStorage.setItem('bookings',JSON.stringify(b)); load();}}
-function clearBookings(){ if(confirm('Clear all bookings?')){localStorage.removeItem('bookings'); load();}}
-function loadCG(){
- let cgs=JSON.parse(localStorage.getItem('caregivers')||'[]');
- if(cgs.length==0){ cgs=[{name:'Nurse Diana',phone:'0770000000',service:'Nursing',status:'online'}]; localStorage.setItem('caregivers',JSON.stringify(cgs));}
- let html='<table><tr><th>Name</th><th>Phone</th><th>Service</th><th>Status</th></tr>';
- cgs.forEach(c=>{ html+=`<tr><td>${c.name}</td><td>${c.phone}</td><td>${c.service}</td><td><span class="badge ${c.status=='online'?'paid':'pending'}">${c.status}</span></td></tr>`;});
- html+='</table>'; document.getElementById('cgList').innerHTML=html;
-}
-function addCG(){ let name=document.getElementById('newCGName').value; let phone=document.getElementById('newCGPhone').value; if(!name) return; let cgs=JSON.parse(localStorage.getItem('caregivers')||'[]'); cgs.push({name,phone,service:'Nursing',status:'offline'}); localStorage.setItem('caregivers',JSON.stringify(cgs)); loadCG(); }
-function loadPayments(){
- let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- let html=''; bookings.forEach(b=>{ html+=`<tr><td>${b.phone}</td><td>50,000</td><td><span class="badge paid">MoMo OK</span></td><td>${b.created||''}</td></tr>`;});
- if(!html) html='<tr><td colspan=4>No payments yet</td></tr>';
- document.getElementById('payList').innerHTML=html;
- document.getElementById('pendingPay').innerText=(bookings.length*30000).toLocaleString();
-}
-function savePrice(){ alert('Price saved: '+document.getElementById('price').value); localStorage.setItem('bookingPrice',document.getElementById('price').value); }
+function assign(id){ let b=JSON.parse(localStorage.getItem('bookings')||'[]'); let f=b.find(x=>x.id==id); if(f){ f.status='assigned'; localStorage.setItem('bookings',JSON.stringify(b)); alert('Assigned '+f.name); load(); } }
+function clearAll(){ if(confirm('Clear all?')){ localStorage.removeItem('bookings'); load(); } }
 load();
-setInterval(load,3000);
 </script>
 </body>
 </html>
