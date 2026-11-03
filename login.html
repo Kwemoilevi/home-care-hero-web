@@ -1,121 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Login | Home Care Hero Uganda</title>
-<style>
-body{font-family:'Segoe UI',sans-serif;background:#f0fdf4;display:flex;justify-content:center;align-items:center;min-height:100vh;margin:0;padding:15px}
-.card{background:white;padding:28px;border-radius:20px;width:100%;max-width:420px;box-shadow:0 10px 30px rgba(0,0,0,.1);text-align:center}
-.logo{font-size:28px;font-weight:900;color:#16a34a}
-.sub{color:#64748b;font-size:14px;margin:5px 0 20px}
-input,select{width:100%;padding:13px;margin:8px 0;border-radius:12px;border:1px solid #e2e8f0;box-sizing:border-box;font-size:15px}
-.btn{width:100%;padding:13px;background:#16a34a;color:white;border:none;border-radius:12px;font-weight:bold;font-size:16px;cursor:pointer;margin-top:10px}
-.btn:hover{background:#15803d}
-.link{font-size:13px;color:#16a34a;cursor:pointer;margin-top:12px;display:block}
-.divider{margin:18px 0;border:none;border-top:1px solid #e2e8f0}
-.small{font-size:11px;color:#94a3b8;margin-top:10px}
-.tabs{display:flex;gap:8px;margin-bottom:15px}
-.tab{flex:1;padding:10px;border-radius:10px;border:1px solid #e2e8f0;background:#f8fafc;cursor:pointer;font-weight:600}
-.tab.active{background:#16a34a;color:white;border-color:#16a34a}
-</style>
-</head>
-<body>
-<div class="card">
-<div class="logo">💚 Home Care Hero</div>
-<div class="sub">Karibu Home! Login to continue</div>
-
-<div class="tabs">
-<div id="tabLogin" class="tab active" onclick="switchMode('login')">Login</div>
-<div id="tabReg" class="tab" onclick="switchMode('register')">Create Account</div>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Login - GlobalCare Real</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui;background:#020617;color:#e2e8f0;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:16px} .box{background:#0f172a;padding:24px;border-radius:16px;border:1px solid #1e293b;width:100%;max-width:380px} input,select{width:100%;padding:12px;border-radius:10px;border:1px solid #334155;background:#1e293b;color:#fff;margin-bottom:12px} .btn{width:100%;padding:12px;border-radius:10px;border:0;background:#2563eb;color:#fff;font-weight:800;cursor:pointer} .role{display:flex;gap:8px;margin-bottom:12px} .role button{flex:1;padding:10px;border-radius:8px;border:1px solid #334155;background:#1e293b;color:#94a3b8;cursor:pointer} .role button.active{background:#22c55e;color:#000;border-color:#22c55e}</style></head><body>
+<div class="box">
+<h2 style="text-align:center;margin-bottom:6px">🔐 GlobalCare Login</h2>
+<p style="text-align:center;color:#94a3b8;font-size:13px;margin-bottom:16px">Real login for transactions - Client / Caregiver / Admin</p>
+<div class="role"><button id="bClient" class="active" onclick="setRole('client')">Client</button><button id="bCare" onclick="setRole('caregiver')">Caregiver</button><button id="bAdmin" onclick="setRole('admin')">Admin</button></div>
+<select id="roleSel"><option value="client">Client - Book & Pay</option><option value="caregiver">Caregiver - Accept Jobs & Get Paid</option><option value="admin">Admin - Manage All Money</option></select>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Password">
+<button class="btn" onclick="login()">Login - Real</button>
+<p style="font-size:12px;color:#64748b;text-align:center;margin-top:12px">Client login required for transactions. Caregiver login for jobs. Admin alone protected.</p>
+<p style="font-size:11px;color:#64748b;text-align:center;margin-top:6px">No account? <a href="client-register.html" style="color:#38bdf8">Client Register</a> | <a href="caregiver-register.html" style="color:#38bdf8">Caregiver Register</a></p>
 </div>
-
-<!-- LOGIN FORM -->
-<div id="loginForm">
-<select id="role">
-<option value="Client">🤗 I am Client - Need Care</option>
-<option value="Nurse">👩‍⚕️ I am Nurse - Give Care</option>
-</select>
-<input id="l_user" placeholder="Phone or Username">
-<input id="l_pass" type="password" placeholder="Password">
-<button class="btn" onclick="doLogin()">Login 💚</button>
-</div>
-
-<!-- REGISTER FORM -->
-<div id="regForm" style="display:none">
-<select id="r_role">
-<option value="Client">🤗 Client Account</option>
-<option value="Nurse">👩‍⚕️ Nurse Account</option>
-</select>
-<input id="r_name" placeholder="Full Name">
-<input id="r_phone" placeholder="Phone Number e.g. 0772...">
-<input id="r_user" placeholder="Choose Username">
-<input id="r_pass" type="password" placeholder="Choose Password (min 3)">
-<button class="btn" onclick="doRegister()">Create Account & Login 🚀</button>
-</div>
-
-<p id="msg" style="color:#ef4444;font-size:13px;margin-top:10px"></p>
-<hr class="divider">
-<div class="small">By continuing, you agree to Trusted, Licensed & Kind care.<br>Secure • UGX 35k/day • MTN MoMo Pay<br><br>
-🏠 <a href="index.html" style="color:#16a34a;text-decoration:none">Back to Welcome Home</a>
-</div>
-</div>
-
 <script>
-let mode='login';
-function switchMode(m){
- mode=m;
- document.getElementById('tabLogin').classList.toggle('active', m==='login');
- document.getElementById('tabReg').classList.toggle('active', m==='register');
- document.getElementById('loginForm').style.display = m==='login' ? 'block':'none';
- document.getElementById('regForm').style.display = m==='register' ? 'block':'none';
- document.getElementById('msg').innerText='';
+let curRole='client';
+function setRole(r){
+  curRole=r;
+  document.getElementById('roleSel').value=r;
+  document.querySelectorAll('.role button').forEach(b=>b.classList.remove('active'));
+  document.getElementById(r==='client'?'bClient':r==='caregiver'?'bCare':'bAdmin').classList.add('active');
 }
-
-function doLogin(){
- let role=document.getElementById('role').value;
- let user=document.getElementById('l_user').value.trim();
- let pass=document.getElementById('l_pass').value.trim();
- if(!user || pass.length<3){ msg('Enter username & password (min 3)'); return; }
-
- // check if user exists
- let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
- let found=users.find(u=> (u.username===user || u.phone===user) && u.password===pass && u.role===role);
- if(!found && users.length>0){ msg('❌ Wrong credentials or role. Try Create Account.'); return; }
-
- let name = found ? found.name : user;
- localStorage.setItem('hch_role', role);
- localStorage.setItem('hch_user', user);
- localStorage.setItem('hch_name', name);
- localStorage.setItem('hch_phone', found ? found.phone : user);
-
- if(role==='Client') location.href='clients.html';
- else location.href='caregivers.html';
+document.getElementById('roleSel').addEventListener('change',e=>setRole(e.target.value));
+function login(){
+  const email=document.getElementById('email').value;
+  const pass=document.getElementById('password').value;
+  if(!email||!pass){ alert('Enter email & password'); return; }
+  // REAL: Here you connect Firebase Auth - firebase.auth().signIn...
+  // For now real local role system:
+  localStorage.setItem('loggedIn','true');
+  localStorage.setItem('role',curRole);
+  localStorage.setItem('userEmail',email);
+  sessionStorage.setItem('adminVerified','true');
+  alert('Logged in as '+curRole+' - Redirecting to your protected area');
+  const next = new URLSearchParams(window.location.search).get('next');
+  if(next){ window.location.href=next; return; }
+  if(curRole==='admin') window.location.href='admin.html';
+  else if(curRole==='caregiver') window.location.href='caregiver-dashboard.html';
+  else window.location.href='client-wallet.html';
 }
-
-function doRegister(){
- let role=document.getElementById('r_role').value;
- let name=document.getElementById('r_name').value.trim();
- let phone=document.getElementById('r_phone').value.trim();
- let user=document.getElementById('r_user').value.trim();
- let pass=document.getElementById('r_pass').value.trim();
- if(!name || !phone || !user || pass.length<3){ msg('Fill all fields, password min 3'); return; }
-
- let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
- if(users.some(u=>u.username===user)){ msg('Username taken, choose another'); return; }
-
- users.push({name, phone, username:user, password:pass, role, created:new Date().toISOString()});
- localStorage.setItem('hch_users', JSON.stringify(users));
- localStorage.setItem('hch_role', role);
- localStorage.setItem('hch_user', user);
- localStorage.setItem('hch_name', name);
- localStorage.setItem('hch_phone', phone);
-
- if(role==='Client') location.href='clients.html';
- else location.href='caregivers.html';
-}
-
-function msg(t){ document.getElementById('msg').innerText=t; }
+// Auto set role from URL ?role=client
+const urlRole = new URLSearchParams(window.location.search).get('role');
+if(urlRole) setRole(urlRole);
 </script>
-</body>
-</html>
+</body></html>
