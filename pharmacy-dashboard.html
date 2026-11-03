@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pharmacy Dashboard</title>
+<script src="auth.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:system-ui,sans-serif;background:#f8fafc}
+header{background:#0f172a;color:#fff;padding:12px 16px;display:flex;justify-content:space-between}
+.card{max-width:600px;margin:16px auto;background:#fff;border-radius:14px;padding:18px;border:1px solid #e2e8f0}
+input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #cbd5e1;margin-top:6px;margin-bottom:12px}
+.btn{width:100%;background:#22c55e;color:#000;padding:13px;border-radius:10px;border:0;font-weight:800}
+</style>
+</head>
+<body>
+<header>
+<div><b>💊 Pharmacy Dashboard</b></div>
+<div><a href="pharmacy.html" style="color:#fff;text-decoration:none">View Marketplace →</a></div>
+</header>
+<div class="card">
+<h3>Register Your Pharmacy to Advertise</h3>
+<p style="color:#64748b;font-size:13px;margin-bottom:12px">Admin will approve you. Then you can add products.</p>
+<label>Pharmacy Name *</label><input id="pname" placeholder="e.g. Kampala Pharma">
+<label>License Number *</label><input id="license" placeholder="Pharmacy Council License">
+<label>Location / City *</label><input id="loc" placeholder="Kampala, Nakawa">
+<label>Phone *</label><input id="phone" placeholder="+256...">
+<label>Product to Advertise *</label><input id="product" placeholder="e.g. Panadol, Vitamins">
+<label>Price *</label><input id="price" placeholder="e.g. UGX 5000">
+<label>Description</label><textarea id="desc" rows="2"></textarea>
+<button class="btn" onclick="submitPharma()">📢 Submit for Admin Approval</button>
+<p style="font-size:11px;color:#64748b;text-align:center;margin-top:10px">After approval, your product appears in pharmacy.html for all clients worldwide.</p>
+</div>
+<script>
+function submitPharma(){
+  const pname=document.getElementById('pname').value;
+  const product=document.getElementById('product').value;
+  if(!pname||!product){alert('Fill pharmacy name & product');return;}
+  alert('✅ Submitted! Admin will approve in admin.html → Caregiver Approvals section');
+  // Here save to /api/pharmacies or Firebase - keep your existing logic
+  localStorage.setItem('pharmacy_pending', JSON.stringify({pname,product}));
+}
+</script>
+</body>
+</html>
