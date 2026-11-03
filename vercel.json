@@ -1,7 +1,4 @@
 {
-  "functions": {
-    "api/*.js": {
-      "includeFiles": "api/**"
-    }
-  }
+  "cleanUrls": false,
+  "public": true
 }
