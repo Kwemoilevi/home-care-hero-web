@@ -1,59 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Book Caregiver - HomeCare Hero</title>
-<style>
-body{font-family:system-ui;background:#f8fafc;padding:20px}
-.card{max-width:600px;margin:20px auto;background:white;padding:24px;border-radius:16px;box-shadow:0 4px 20px rgba(0,0,0,.08)}
-input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px}
-.btn{width:100%;padding:14px;background:#2563eb;color:white;border:0;border-radius:10px;font-weight:bold;font-size:16px}
-</style>
-</head>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Book Care</title>
+<style>body{margin:0;font:14px system-ui;background:#f8fafc;padding:16px} .card{background:#fff;padding:16px;border-radius:12px;max-width:400px;margin:0 auto} input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box} button{width:100%;padding:12px;background:#2563eb;color:#fff;border:0;border-radius:8px;font-weight:700}</style></head>
 <body>
 <div class="card">
-<h2>📅 Book a Caregiver</h2>
-<form id="bookForm">
-<input id="name" placeholder="Your Name" required>
-<input id="phone" placeholder="MTN Number e.g. 0770000000" required>
-<select id="service" required>
-<option value="">Select Service</option>
-<option>Elderly Care</option><option>Child Care</option><option>Post-Surgery Care</option><option>Physiotherapy</option><option>Nursing</option>
-</select>
-<input id="date" type="date" required>
-<input id="location" placeholder="Your Location in Kampala" required>
-<textarea id="notes" placeholder="Notes (optional)"></textarea>
-<button class="btn" type="submit">Confirm Booking & Pay with MoMo</button>
-</form>
-<p id="msg"></p>
-<a href="index.html">← Back Home</a>
+<h3>📅 Book Home Care</h3><p style="font-size:12px;color:#64748b">UGX 50,000 per visit - MTN MoMo</p>
+<input id="name" placeholder="Your Name">
+<input id="phone" placeholder="Phone e.g. 0770000000">
+<select id="service"><option>Nursing Care</option><option>Baby Care</option><option>Physiotherapy</option><option>Elderly Care</option></select>
+<input id="location" placeholder="Location e.g. Kiwatule, Kampala">
+<input id="date" type="date">
+<textarea id="notes" placeholder="Notes"></textarea>
+<button onclick="book()" id="btn">Book Now - UGX 50k</button>
+<p id="msg" style="font-size:13px"></p>
+<a href="index.html">← Home</a> | <a href="admin-login.html">Admin</a>
 </div>
 <script>
-document.getElementById('bookForm').addEventListener('submit', async (e)=>{
- e.preventDefault();
- const data = {
-  id: Date.now(),
-  name: document.getElementById('name').value,
-  phone: document.getElementById('phone').value,
-  service: document.getElementById('service').value,
-  date: document.getElementById('date').value,
-  location: document.getElementById('location').value,
-  notes: document.getElementById('notes').value,
-  status: 'pending',
-  created: new Date().toLocaleString()
- };
- let bookings = JSON.parse(localStorage.getItem('bookings')||'[]');
- bookings.push(data);
- localStorage.setItem('bookings', JSON.stringify(bookings));
- document.getElementById('msg').innerHTML = '✅ Booking Saved! Redirecting to payment...';
- 
- // Call your MoMo API if you have it
- try{
-  const res = await fetch('/api/momo-status', {method:'POST', body:JSON.stringify({phone:data.phone, amount:50000})});
- } catch(e){}
-
- setTimeout(()=>{ alert('Booking successful! Admin will call you on '+data.phone); window.location.href='index.html'; }, 1500);
-});
+async function book(){
+ const data={name:document.getElementById('name').value,phone:document.getElementById('phone').value,service:document.getElementById('service').value,location:document.getElementById('location').value,date:document.getElementById('date').value,notes:document.getElementById('notes').value};
+ if(!data.name||!data.phone||!data.location){ document.getElementById('msg').innerText='Fill name, phone, location'; return; }
+ document.getElementById('btn').innerText='Booking...';
+ try{ await fetch('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }catch(e){}
+ let bookings=[]; try{ bookings=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){} data.id=Date.now(); data.status='pending'; bookings.push(data); localStorage.setItem('bookings',JSON.stringify(bookings));
+ document.getElementById('msg').innerText='✅ Booked! Admin will call you. Reference #'+data.id;
+ document.getElementById('btn').innerText='Booked';
+}
 </script>
-</body>
-</html>
+</body></html>
