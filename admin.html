@@ -1,72 +1,24 @@
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin - HomeCare Hero</title>
-<style>
-body{margin:0;font-family:system-ui;background:#f1f5f9}
-header{background:#0f172a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center}
-.card{background:white;margin:12px;padding:16px;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
-.stat{background:white;padding:14px;border-radius:12px;text-align:center}
-.btn{padding:8px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer}
-.btn-blue{background:#2563eb;color:white} .btn-red{background:#ef4444;color:white}
-table{width:100%;border-collapse:collapse;font-size:13px} td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}
-</style>
-</head>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin REAL</title>
+<style>body{margin:0;font:14px system-ui;background:#f1f5f9}header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between} .c{background:#fff;margin:10px;padding:12px;border-radius:10px} .g{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px} .s{background:#fff;padding:10px;border-radius:10px;text-align:center} table{width:100%;border-collapse:collapse} td,th{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px} .b{padding:6px 10px;border:0;border-radius:6px;font-weight:700} .blue{background:#2563eb;color:#fff} .red{background:#ef4444;color:#fff}</style></head>
 <body>
-<header>
-<div><b>HomeCare Hero - Admin</b></div>
-<div><a href="admin-live-map.html" style="color:#60a5fa;text-decoration:none;margin-right:10px">Map</a><button class="btn btn-red" onclick="logout()">Logout</button></div>
-</header>
-
-<div class="stat-grid">
-<div class="stat"><small>TOTAL BOOKINGS</small><br><b id="totalBookings">0</b></div>
-<div class="stat"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div>
-<div class="stat"><small>CAREGIVERS</small><br><b id="cgCount">1</b></div>
-<div class="stat"><small>ONLINE</small><br><b id="online">0</b></div>
-</div>
-
-<div class="card">
-<h3 style="margin:0 0 10px">Bookings</h3>
-<input id="search" placeholder="Search..." oninput="load()" style="width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px">
-<div id="list">Loading...</div>
-<div style="margin-top:10px"><button class="btn" onclick="clearAll()">Clear All</button></div>
-</div>
-
+<header><div>🏠 Admin REAL</div><div><a href="admin-live-map.html" style="color:#60a5fa">Map</a> <button class="b red" onclick="localStorage.clear();location.href='admin-login.html'">Logout</button></div></header>
+<div class="g"><div class="s"><small>BOOKINGS</small><br><b id="tb">0</b></div><div class="s"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div></div>
+<div class="c"><h3 style="margin:0 0 8px">REAL Bookings (shared)</h3><div id="list">Loading real data...</div></div>
 <script>
-// Login check
-if(localStorage.getItem('adminLoggedIn')!=='true'){ location.href='admin-login.html'; }
-
-function logout(){ localStorage.removeItem('adminLoggedIn'); location.href='admin-login.html'; }
-
-function load(){
+const API='/api/bookings';
+async function load(){
  try{
-  let bookings=[]; try{ bookings=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){ bookings=[]; }
-  let search=(document.getElementById('search').value||'').toLowerCase();
-  let filtered=bookings.filter(b=> (b.name||''+b.phone||'').toLowerCase().includes(search));
-  document.getElementById('totalBookings').innerText=bookings.length;
-  document.getElementById('rev').innerText=(bookings.length*50000).toLocaleString();
-  document.getElementById('cgCount').innerText=JSON.parse(localStorage.getItem('caregivers')||'[]').length||1;
-  document.getElementById('online').innerText= localStorage.getItem('caregiverLocation')?'1':'0';
-
-  let html='<table><tr><th>Client</th><th>Service</th><th>Location</th><th>Status</th><th>Action</th></tr>';
-  if(filtered.length==0){ html+='<tr><td colspan=5>No bookings yet. Go to /booking.html and make a test booking.</td></tr>'; }
-  else {
-    filtered.slice().reverse().forEach(b=>{
-      html+='<tr><td><b>'+(b.name||'')+'</b><br><small>'+(b.phone||'')+'</small></td><td>'+(b.service||'')+'</td><td>'+(b.location||'')+'<br><small>'+(b.date||'')+'</small></td><td>'+(b.status||'pending')+'</td><td><button class="btn btn-blue" onclick="assign('+b.id+')">Assign</button></td></tr>';
-    });
-  }
-  html+='</table>';
-  document.getElementById('list').innerHTML=html;
- }catch(err){
-  document.getElementById('list').innerHTML='Error: '+err.message+' <br><button class="btn btn-blue" onclick="localStorage.clear();location.reload()">Reset Storage</button>';
- }
+  const r=await fetch(API); const data=await r.json();
+  document.getElementById('tb').innerText=data.length;
+  document.getElementById('rev').innerText=(data.length*50000).toLocaleString();
+  let h='<table><tr><th>Client</th><th>Service</th><th>Location</th><th>Action</th></tr>';
+  if(data.length==0) h+='<tr><td colspan=4>No real bookings yet. Test booking.html</td></tr>';
+  else data.slice().reverse().forEach(b=>{
+    h+=`<tr><td><b>${b.name||''}</b><br><small>${b.phone||''}</small></td><td>${b.service||''}<br><small>${b.date||''}</small></td><td>${b.location||''}</td><td><button class="b blue" onclick="assign(${b.id})">Assign</button></td></tr>`;
+  });
+  h+='</table>'; document.getElementById('list').innerHTML=h;
+ }catch(e){ document.getElementById('list').innerHTML='Error: '+e.message+'<br>Did you create KV Storage in Vercel?'; }
 }
-function assign(id){ let b=JSON.parse(localStorage.getItem('bookings')||'[]'); let f=b.find(x=>x.id==id); if(f){ f.status='assigned'; localStorage.setItem('bookings',JSON.stringify(b)); alert('Assigned '+f.name); load(); } }
-function clearAll(){ if(confirm('Clear all?')){ localStorage.removeItem('bookings'); load(); } }
-load();
-</script>
-</body>
-</html>
+async function assign(id){ await fetch(API,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status:'assigned'})}); alert('Assigned'); load(); }
+load(); setInterval(load,5000);
+</script></body></html>
