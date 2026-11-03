@@ -1,162 +1,39 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Admin - Real Revenue - GlobalCare</title>
-<script src="auth.js"></script>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,sans-serif;background:#f1f5f9;color:#0f172a}
-header{background:#0f172a;color:#fff;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-header a{color:#fff;text-decoration:none;font-size:13px;margin-left:12px}
-.wrap{max-width:1300px;margin:0 auto;padding:16px}
-.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:16px}
-.card h4{font-size:12px;color:#64748b;text-transform:uppercase;letter-spacing:.5px}
-.card h2{font-size:26px;margin:8px 0 4px}
-.small{font-size:11px;color:#64748b;line-height:1.4}
-.table{width:100%;background:#fff;border-radius:14px;border:1px solid #e2e8f0;overflow:hidden;margin-top:16px}
-.table h3{padding:14px 16px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
-.row{display:flex;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f1f5f9;font-size:13px}
-.row:last-child{border:0}
-.btn{padding:8px 14px;border-radius:8px;border:0;font-weight:700;cursor:pointer;font-size:12px}
-.btn-green{background:#22c55e;color:#000}
-.btn-red{background:#ef4444;color:#fff}
-.btn-dark{background:#0f172a;color:#fff}
-.badge{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:800}
-.b-live{background:#dcfce7;color:#166534}
-</style>
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin REAL Revenue</title>
+<style>body{font-family:Arial;padding:20px;background:#111;color:white}.box{background:#222;padding:20px;border-radius:12px;margin:10px 0}.big{font-size:32px;color:#12d10e}.btn{background:#12d10e;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;margin:5px}</style>
 </head>
 <body>
-<header>
-<div><b>🔐 GlobalCare Admin</b> <span class="badge b-live">REAL FIREBASE LIVE</span></div>
-<div><a href="index.html">Home</a><a href="pharmacy.html">Pharmacy</a><a href="gps-tracker.html">GPS</a></div>
-</header>
-
-<div class="wrap">
-
-<!-- REAL REVENUE CARDS -->
-<div class="grid4">
-<div class="card">
-<h4>Total Bookings</h4>
-<h2 id="bookings">0</h2>
-<div class="small">From booking.html</div>
-</div>
-
-<div class="card" style="border:2px solid #22c55e; background:linear-gradient(180deg,#f0fdf4,#fff)">
-<h4>💰 REAL Ad Revenue</h4>
-<h2 id="adminRev">Loading...</h2>
-<div class="small" id="adminDetails">Fetching from Firebase ad_views + ad_clicks...</div>
-<div class="small" style="margin-top:8px">Rate: 100 UGX / view + 500 UGX / click</div>
-<button onclick="loadRevenue()" class="btn btn-dark" style="margin-top:10px">↻ Refresh Real Data</button>
-</div>
-
-<div class="card" style="border:1px solid #3b82f6">
-<h4>👁️ Total Views</h4>
-<h2 id="adminViews" style="color:#2563eb">0</h2>
-<div class="small">All pages homepage + pharmacy</div>
-<div class="small" style="margin-top:4px">Earning: <b id="viewEarn">UGX 0</b></div>
-</div>
-
-<div class="card" style="border:1px solid #f59e0b">
-<h4>🖱️ Total Clicks</h4>
-<h2 id="adminClicks" style="color:#d97706">0</h2>
-<div class="small">Banner + Product clicks</div>
-<div class="small" style="margin-top:4px">Earning: <b id="clickEarn">UGX 0</b></div>
-</div>
-</div>
-
-<!-- PHARMACY INVOICING -->
-<div class="grid4" style="margin-top:16px">
-<div class="card">
-<h4>Pharmacy Wallet Balance</h4>
-<h2>UGX 50,000</h2>
-<div class="small">kampala-pharma • Auto deducts per view/click</div>
-<button class="btn btn-green" style="margin-top:8px" onclick="alert('Invoice: Kampala Pharma used '+document.getElementById('adminViews').innerText+' views + '+document.getElementById('adminClicks').innerText+' clicks = '+document.getElementById('adminRev').innerText)">Generate Invoice</button>
-</div>
-
-<div class="card">
-<h4>Top Earning Product</h4>
-<h2 id="topProduct">Panadol</h2>
-<div class="small" id="topProductDet">Most clicked product</div>
-</div>
-
-<div class="card">
-<h4>Ads Status</h4>
-<h2 style="color:#16a34a">ACTIVE</h2>
-<div class="small">Balance > UGX 5,000 so ads running. If < 5k ads pause automatically.</div>
-</div>
-
-<div class="card">
-<h4>Export</h4>
-<h2 style="font-size:16px">Download CSV</h2>
-<div class="small">For URA / Tax</div>
-<button class="btn btn-dark" style="margin-top:8px" onclick="exportCSV()">⬇️ Export Revenue CSV</button>
-</div>
-</div>
-
-<!-- TRANSACTIONS TABLE -->
-<div class="table">
-<h3>🔴 LIVE Transactions (Firebase ad_views + ad_clicks)</h3>
-<div id="transList"><div class="row"><span>Loading real transactions from Firebase...</span></div></div>
-</div>
-
-<div class="table">
-<h3>Caregiver Approvals</h3>
-<div class="row"><span>Sarah N. - Kampala - Elderly Care - 4.9★</span><span><button class="btn btn-green">Approve</button> <button class="btn btn-red">Reject</button></span></div>
-<div class="row"><span>John K. - Nairobi - Post Surgery - 4.8★</span><span><button class="btn btn-green">Approve</button> <button class="btn btn-red">Reject</button></span></div>
-</div>
-
-</div>
+<h1>Admin — REAL Revenue (Firebase)</h1>
+<div class="box">Total Views: <span id="views" class="big">0</span> = UGX <span id="vUGX">0</span> (100 each)</div>
+<div class="box">Total Clicks: <span id="clicks" class="big">0</span> = UGX <span id="cUGX">0</span> (500 each)</div>
+<div class="box"><h2>TOTAL REAL: UGX <span id="total" class="big">0</span></h2><p id="status">Connecting to Firebase REAL...</p></div>
+<button class="btn" onclick="load()">Refresh REAL</button>
+<button class="btn" onclick="exportCSV()">Export CSV Invoice</button>
+<br><br><a href="index.html" style="color:#12d10e">Home</a> | <a href="pharmacy.html" style="color:#12d10e">Pharmacy</a>
 
 <script type="module">
 import { getRevenue } from "./firebase.js";
-import { db } from "./firebase.js";
-import { collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-window.loadRevenue = async function(){
+window.load=async()=>{
   try{
-    const d = await getRevenue();
-    document.getElementById('adminRev').innerText = 'UGX '+d.total.toLocaleString();
-    document.getElementById('adminViews').innerText = d.views;
-    document.getElementById('adminClicks').innerText = d.clicks;
-    document.getElementById('viewEarn').innerText = 'UGX '+(d.views*100).toLocaleString();
-    document.getElementById('clickEarn').innerText = 'UGX '+(d.clicks*500).toLocaleString();
-    document.getElementById('adminDetails').innerText = `${d.views} views x100 + ${d.clicks} clicks x500 = ${d.total} UGX total from all users worldwide - REAL`;
-
-    // Load last 20 transactions
-    const vSnap = await getDocs(query(collection(db, "ad_views"), orderBy("timestamp","desc"), limit(10)));
-    const cSnap = await getDocs(query(collection(db, "ad_clicks"), orderBy("timestamp","desc"), limit(10)));
-    let html='';
-    cSnap.forEach(doc=>{
-      const data=doc.data();
-      html+=`<div class="row"><span>🖱️ CLICK - ${data.type} - ${data.pharmacyId} - ${data.product || ''} - <b>+UGX 500</b></span><span style="color:#64748b">${data.timestamp ? new Date().toLocaleTimeString() : ''}</span></div>`;
-    });
-    vSnap.forEach(doc=>{
-      const data=doc.data();
-      html+=`<div class="row"><span>👁️ VIEW - ${data.page} - ${data.pharmacyId} - <b>+UGX 100</b></span><span style="color:#64748b">${data.timestamp ? new Date().toLocaleTimeString() : ''}</span></div>`;
-    });
-    if(html=='') html='<div class="row"><span>No views/clicks yet. Open index.html on another phone to generate real data.</span></div>';
-    document.getElementById('transList').innerHTML = html;
-
+    const r=await getRevenue();
+    document.getElementById('views').textContent=r.views;
+    document.getElementById('clicks').textContent=r.clicks;
+    document.getElementById('vUGX').textContent=(r.views*100).toLocaleString();
+    document.getElementById('cUGX').textContent=(r.clicks*500).toLocaleString();
+    document.getElementById('total').textContent=r.total.toLocaleString();
+    document.getElementById('status').textContent="REAL - Live from Firestore - Updates every 3 sec";
+    window._last=r;
   }catch(e){
-    document.getElementById('adminRev').innerText = 'Set Firebase Keys!';
-    document.getElementById('adminDetails').innerText = 'Error: '+e.message+' - Paste your firebaseConfig in firebase.js';
-    console.error(e);
+    document.getElementById('status').textContent="ERROR: "+e.message+" - Check firebase.js keys + Firestore Rules";
   }
 };
-
-window.exportCSV = async function(){
-  const d = await getRevenue();
-  const csv = `Type,Count,Rate,Total\nViews,${d.views},100,${d.views*100}\nClicks,${d.clicks},500,${d.clicks*500}\nTOTAL,,,"UGX ${d.total}"`;
-  const blob = new Blob([csv], {type:'text/csv'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a'); a.href=url; a.download='globalcare_revenue.csv'; a.click();
+window.exportCSV=()=>{
+  if(!window._last) return alert("Load first");
+  const csv=`Type,Count,Rate,Total\nViews,${window._last.views},100,${window._last.views*100}\nClicks,${window._last.clicks},500,${window._last.clicks*500}\nTOTAL,,,${window._last.total}`;
+  const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`invoice-${Date.now()}.csv`; a.click();
 };
-
-loadRevenue();
-setInterval(loadRevenue, 5000);
+load(); setInterval(load,3000);
 </script>
 </body>
 </html>
