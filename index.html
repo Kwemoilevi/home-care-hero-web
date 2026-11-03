@@ -7,49 +7,64 @@
 <script src="auth.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:system-ui,sans-serif;background:#f8fafc;color:#0f172a}
-header{background:#0f172a;color:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20;flex-wrap:wrap;gap:10px}
-.nav{display:flex;gap:7px;overflow-x:auto}
-.nav a{white-space:nowrap;padding:8px 14px;border-radius:22px;font-size:12px;font-weight:700;text-decoration:none}
-.n1{background:#000;color:#fff;border:1px solid #333} .n2{background:#22c55e;color:#000} .n3{background:#f59e0b;color:#000} .n4{background:#ef4444;color:#fff} .n5{background:#fff;color:#000}
-@media(max-width:700px){.grid{grid-template-columns:1fr!important}}
+body{font-family:system-ui,Segoe UI,Roboto,sans-serif;background:#f8fafc;color:#0f172a}
+header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:20;flex-wrap:wrap;gap:10px}
+.logo{font-weight:800;display:flex;align-items:center;gap:8px}
+.nav{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nav a{white-space:nowrap;padding:8px 13px;border-radius:22px;font-size:11.5px;font-weight:800;text-decoration:none}
+.n1{background:#000;color:#fff;border:1px solid #333}
+.n2{background:#22c55e;color:#000}
+.n3{background:#f59e0b;color:#000}
+.n4{background:#86efac;color:#000}
+.n5{background:#ef4444;color:#fff}
+.n6{background:#fff;color:#000}
+.hero{max-width:1200px;margin:0 auto;padding:24px 16px;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;background:#fff}
+.hero h1{font-size:34px;line-height:1.1;margin-bottom:12px}
+.hero h1 span{color:#2563eb}
+.hero p{color:#475569;font-size:14.5px;margin-bottom:18px;line-height:1.5}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-black{background:#0f172a;color:#fff;padding:14px 22px;border-radius:12px;font-weight:800;text-decoration:none;font-size:13px}
+.btn-white{background:#fff;color:#0f172a;padding:14px 22px;border-radius:12px;font-weight:700;text-decoration:none;border:1px solid #e2e8f0;font-size:13px}
+.stats{display:flex;gap:22px;margin-top:22px}
+.stats b{font-size:16px}
+.stats small{color:#64748b;font-size:12px}
+.hero-img{background:#eef6ff;border-radius:18px;padding:10px;border:1px solid #dbeafe}
+.hero-img img{width:100%;height:320px;object-fit:cover;border-radius:12px}
+.features{max-width:1200px;margin:0 auto;padding:14px 16px;display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.feat{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;text-align:center}
+.feat b{font-size:13px}
+.feat small{color:#64748b;font-size:11px;display:block;margin-top:4px}
+@media(max-width:800px){
+.hero{grid-template-columns:1fr}
+.hero h1{font-size:28px}
+.hero-img img{height:240px}
+}
 </style>
 </head>
 <body>
+
 <header>
-<div><b>🌍 GlobalCare</b></div>
+<div class="logo">🌍 GlobalCare</div>
 <div class="nav">
 <a href="booking.html" class="n1">📦 Book Global</a>
 <a href="client-wallet.html" class="n2">💳 Client Wallet</a>
 <a href="caregiver-dashboard.html" class="n3">💼 Caregiver Login</a>
-<a href="admin.html" class="n4">🔐 Admin Login</a>
-<a href="gps-tracker.html" class="n5">📍 LIVE GPS</a>
+<a href="pharmacy.html" class="n4">💊 Pharmacy</a>
+<a href="admin.html" class="n5">🔐 Admin Login</a>
+<a href="gps-tracker.html" class="n6">📍 LIVE GPS</a>
 </div>
 </header>
 
-<div style="background:#fff;padding:28px 16px">
-<div class="grid" style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center">
+<div class="hero">
 <div>
-<h1 style="font-size:34px;line-height:1.1;margin-bottom:12px">Find <span style="color:#2563eb">Home Care Heroes</span> Worldwide</h1>
-<p style="color:#475569;font-size:15px;margin-bottom:18px">Verified professional caregivers for elderly, post-surgery, disability and child care. Real bookings, real GPS, real payments.</p>
-<div style="display:flex;gap:10px;flex-wrap:wrap">
-<a href="login.html" style="background:#0f172a;color:#fff;padding:14px 24px;border-radius:12px;font-weight:800;text-decoration:none">🔐 Login to Book →</a>
-<a href="client-register.html" style="background:#fff;color:#0f172a;padding:14px 24px;border-radius:12px;font-weight:700;text-decoration:none;border:1px solid #e2e8f0">Create Account</a>
+<h1>Find <span>Home Care Heroes</span> Worldwide</h1>
+<p>Verified professional caregivers for elderly, post-surgery, disability and child care. Now connected with verified pharmacies for medicines, baby care and elderly supplies.</p>
+<div class="btns">
+<a href="login.html" class="btn-black">🔐 Login to Book →</a>
+<a href="client-register.html" class="btn-white">Create Account</a>
+<a href="pharmacy.html" class="btn-white">💊 Shop Pharmacy</a>
 </div>
-<div style="display:flex;gap:20px;margin-top:22px">
-<div><b>10K+</b><br><small style="color:#64748b">Families</small></div>
-<div><b>5K+</b><br><small style="color:#64748b">Caregivers</small></div>
-<div><b>4.9/5</b><br><small style="color:#64748b">Trust</small></div>
-</div>
-</div>
-<div style="background:#eef6ff;border-radius:18px;padding:12px;border:1px solid #dbeafe">
-<img src="https://images.unsplash.com/photo-1576765607924-3f7b8410a787?w=500&h=380&fit=crop" style="width:100%;height:300px;object-fit:cover;border-radius:12px">
-</div>
-</div>
-</div>
-
-<div style="max-width:1200px;margin:20px auto;padding:0 16px;text-align:center;color:#64748b;font-size:13px">
-🔐 No fake accounts — All users must register with real email. Admin approves caregivers. Firebase Auth protected.
-</div>
-</body>
-</html>
+<div class="stats">
+<div><b>10K+</b><br><small>Families</small></div>
+<div><b>5K+</b
