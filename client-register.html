@@ -1,0 +1,22 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Client Register</title>
+<style>body{margin:0;font:14px system-ui;background:#f8fafc;padding:12px}.card{background:#fff;padding:14px;border-radius:12px;max-width:480px;margin:0 auto;box-shadow:0 1px 4px rgba(0,0,0,.08)}input,select{width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:8px;box-sizing:border-box;margin-top:4px}label{font-weight:700;font-size:12px;margin-top:10px;display:block}.btn{width:100%;padding:12px;border:0;border-radius:10px;font-weight:800;color:#fff;background:#2563eb;margin-top:14px;cursor:pointer}</style></head>
+<body><div class="card">
+<h2 style="text-align:center;margin:0">👤 Client Registration - Global</h2><p style="text-align:center;color:#64748b">Create account, manage wallet, book anywhere</p>
+<label>Full Name *</label><input id="name" placeholder="Your name">
+<label>Phone with country code *</label><input id="phone" placeholder="+256, +1, +44...">
+<label>Country *</label><select id="country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>South Africa</option><option>USA</option><option>UK</option><option>Canada</option><option>Australia</option><option>UAE</option><option>India</option><option>Other</option></select>
+<label>City *</label><input id="city" placeholder="Kampala, London, New York...">
+<label>Create Password *</label><input id="pass" type="password">
+<button class="btn" onclick="reg()">✅ Create Account</button>
+<div id="ok" style="display:none;background:#dcfce7;padding:10px;border-radius:8px;margin-top:10px;text-align:center;color:#166534;font-weight:700">Account created!</div>
+<p style="text-align:center;margin-top:10px"><a href="client-login.html">Already have? Login</a> | <a href="index.html">Home</a></p>
+</div><script>
+function reg(){
+ const n=document.getElementById('name').value.trim(),p=document.getElementById('phone').value.trim(),city=document.getElementById('city').value.trim(),pass=document.getElementById('pass').value.trim();
+ if(!n||!p||!city||!pass){alert('Fill all *');return;}
+ const client={id:Date.now(),name:n,phone:p,country:document.getElementById('country').value,city:city,password:pass,wallet:0,date:new Date().toLocaleDateString()};
+ let L=JSON.parse(localStorage.getItem('clients')||'[]');if(L.find(c=>c.phone===p)){alert('Phone already registered, login');location.href='client-login.html';return;}
+ L.push(client);localStorage.setItem('clients',JSON.stringify(L));localStorage.setItem('loggedClient',JSON.stringify(client));
+ document.getElementById('ok').style.display='block';setTimeout(()=>{location.href='client-dashboard.html';},800);
+}
+</script></body></html>
