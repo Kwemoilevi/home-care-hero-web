@@ -15,9 +15,42 @@
 <div id="adm" class="card"><h3 style="text-align:center">🔒 Admin Login</h3><input id="ae" placeholder="Admin Email"><input id="ap" type="password" placeholder="Password"><button class="g" onclick="admin()">Unlock Admin</button><p id="am" style="text-align:center"></p></div>
 <footer style="text-align:center;padding:12px;color:#666">Home Care Hero © 2026 • WhatsApp +256 771 218 437</footer>
 <script>
-var R={UG:3750,KE:130,TZ:2600,RW:1430,US:1,UK:.79,AE:3.67},S={UG:'UGX ',KE:'KSh ',TZ:'TSh ',RW:'RWF ',US:'$',UK:'£',AE:'AED '},C=localStorage.getItem('heroCountry')||'UG',B=parseFloat(localStorage.getItem('heroRealBal')||0),T=JSON.parse(localStorage.getItem('heroRealTx')||'[]'),P=JSON.parse(localStorage.getItem('heroPending')||'[]'),G=JSON.parse(localStorage.getItem('heroCg')||'[]'),K=JSON.parse(localStorage.getItem('heroBk')||'[]');
-function fmt(u){var v=C=='UG'?u:u/3750*R[C];return C=='US'||C=='UK'?S[C]+v.toFixed(2):S[C]+Math.round(v).toLocaleString()}
-function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
-function chg(){C=document.getElementById('cc').value;localStorage.setItem('heroCountry',C);show()}
-function save(){localStorage.setItem('heroRealBal',B);localStorage.setItem('heroRealTx',JSON.stringify(T));localStorage.setItem('heroPending',JSON.stringify(P));show()}
-function show(){document.getElementById('bal').innerText=fmt(B);document.getElementById('balSub').innerText='Admin: Levi • '+C;document.getElementById('tx').innerHTML=T.length?T.slice(-10).reverse().map(function(t){return '<div style="border-bottom:1px solid #eee;padding:8px 0;display:flex;justify-content:space-between"><span>'+t.d+'<br><small>'+t.dt
+var R={UG:3750,KE:130,TZ:2600,RW:1430,US:1,UK:0.79,AE:3.67};
+var S={UG:"UGX ",KE:"KSh ",TZ:"TSh ",RW:"RWF ",US:"$",UK:"£",AE:"AED "};
+var C=localStorage.getItem("heroCountry")||"UG";
+var B=parseFloat(localStorage.getItem("heroRealBal")||0);
+var T=JSON.parse(localStorage.getItem("heroRealTx")||"[]");
+var P=JSON.parse(localStorage.getItem("heroPending")||"[]");
+var G=JSON.parse(localStorage.getItem("heroCg")||"[]");
+var K=JSON.parse(localStorage.getItem("heroBk")||"[]");
+function fmt(u){var v=C=="UG"?u:u/3750*R[C];if(C=="US"||C=="UK")return S[C]+v.toFixed(2);return S[C]+Math.round(v).toLocaleString()}
+function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
+function chg(){C=document.getElementById("cc").value;localStorage.setItem("heroCountry",C);show()}
+function save(){localStorage.setItem("heroRealBal",B);localStorage.setItem("heroRealTx",JSON.stringify(T));localStorage.setItem("heroPending",JSON.stringify(P));show()}
+function show(){
+document.getElementById("bal").innerText=fmt(B);
+document.getElementById("balSub").innerText="Admin: Levi - "+C;
+var tx=document.getElementById("tx");
+if(T.length==0){tx.innerHTML="<p style=color:#999>No confirmed payments yet</p>"}else{var h="";for(var i=T.length-1;i>=0;i--){h+="<div style=border-bottom:1px solid #eee;padding:8px 0>"+T[i].d+" - <b>"+T[i].a+"</b></div>"}tx.innerHTML=h}
+var pd=document.getElementById("pend");
+if(P.length==0){pd.innerHTML="<p style=text-align:center;color:#999>No pending</p>"}else{var ph="";for(var j=0;j<P.length;j++){ph+="<div style=border:2px solid orange;border-radius:10px;padding:10px;margin-top:8px><b>"+P[j].n+"</b> - UGX "+P[j].a+"<br>Ref: "+P[j].r+"<br><button class=g onclick=ap("+j+")>Approve - I Checked MTN</button><button class=r onclick=rj("+j+")>Reject</button></div>"}pd.innerHTML=ph}
+renderCg();
+document.getElementById("bk").innerText=K.length;
+var bl=document.getElementById("bl");var bh="";for(var k=0;k<K.length;k++){bh+="<p>"+K[k].n+" - "+K[k].s+"</p>"}bl.innerHTML=bh;
+}
+function login(){var u=document.getElementById("lu").value;var p=document.getElementById("lp").value;if(!u||!p){alert("Enter username and password");return}document.getElementById("lm").innerText="Welcome "+u+"! You are logged in.";alert("Welcome "+u+"! You are logged in.")}
+function signup(){var n=document.getElementById("sn").value;var e=document.getElementById("se").value;var p=document.getElementById("sp").value;if(!n||!e||!p){alert("Enter name, email and password");return}document.getElementById("sm").innerText="Account created for "+n+"! Now Login.";alert("Account created for "+n+"! Now Login.");document.getElementById("lu").value=n}
+function admin(){var e=document.getElementById("ae").value;var p=document.getElementById("ap").value;if(!e||!p){alert("Enter Admin email and password");return}document.getElementById("am").innerText="Welcome Admin Levi!";alert("Welcome Admin Levi!")}
+function req(){var n=document.getElementById("pn").value;var a=document.getElementById("pa").value;var m=document.getElementById("pm").value;var r=document.getElementById("pr").value;if(!n||!a||!r){alert("Enter Name, Amount, and MTN Ref");return}P.push({n:n,a:a,m:m,r:r});save();document.getElementById("ps").innerText="Sent. Admin will check MTN Ref "+r+". Balance stays 0 until Approve.";window.open("https://wa.me/256771218437?text="+encodeURIComponent("REAL PAYMENT: "+n+" sent UGX "+a+" Ref: "+r),"_blank")}
+function ap(i){var p=P[i];B=B+Number(p.a);T.push({d:"Confirmed - "+p.n+" Ref "+p.r,a:"UGX "+Number(p.a).toLocaleString()});P.splice(i,1);save();alert("Approved. Balance now UGX "+B.toLocaleString())}
+function rj(i){P.splice(i,1);save();alert("Rejected")}
+function payCg(){if(B<93750){alert("Not enough REAL money. You have UGX "+B.toLocaleString());return}B=B-93750;T.push({d:"Pay Caregiver",a:"-UGX 93,750"});save();alert("Paid caregiver")}
+function wd(){var a=Number(document.getElementById("wa").value);if(!a){alert("Enter amount");return}if(a>B){alert("You only have REAL UGX "+B.toLocaleString());return}B=B-a;T.push({d:"Withdraw",a:"-UGX "+a.toLocaleString()});save();alert("Withdraw request sent")}
+function book(){var n=document.getElementById("bn").value;var p=document.getElementById("bp").value;var s=document.getElementById("bs").value;var d=document.getElementById("bd").value;if(!n||!p){alert("Enter name and phone");return}K.push({n:n,p:p,s:s,d:d});localStorage.setItem("heroBk",JSON.stringify(K));show();window.open("https://wa.me/256771218437?text="+encodeURIComponent("Booking: "+s+" Name: "+n+" Date: "+d),"_blank");alert("Booking sent!")}
+function apply(){var n=document.getElementById("cn").value;var p=document.getElementById("cp").value;var id=document.getElementById("ci").value;var sk=document.getElementById("cs").value;var loc=document.getElementById("cl").value;var ex=document.getElementById("ce").value;var rf=document.getElementById("cr").value;if(!n||!p||!id){alert("Name, Phone, ID required");return}var f=document.getElementById("cph").files[0];if(f){var r=new FileReader();r.onload=function(e){saveCg(n,p,id,sk,loc,ex,rf,e.target.result)};r.readAsDataURL(f)}else{saveCg(n,p,id,sk,loc,ex,rf,"")}}
+function saveCg(n,p,id,sk,loc,ex,rf,ph){G.push({n:n,p:p,id:id,sk:sk,loc:loc,ex:ex,rf:rf,ph:ph,v:false});localStorage.setItem("heroCg",JSON.stringify(G));document.getElementById("cst").innerText="Sent to Admin. PENDING until Admin approves.";show();alert("Application sent!")}
+function renderCg(){var el=document.getElementById("cgList");var no=document.getElementById("noCg");if(G.length==0){el.innerHTML="";no.style.display="block";return}no.style.display="none";var h="";for(var i=0;i<G.length;i++){var b=G[i].v?"VERIFIED":"PENDING";var btn=G[i].v?"":"<button class=g onclick=vo("+i+")>Approve - Make VERIFIED</button>";var ph=G[i].ph?"<br><img src="+G[i].ph+" style=width:100%;max-height:160px;object-fit:cover;border-radius:8px>":"";h+="<div style=border:2px solid #ff8c00;border-radius:10px;padding:10px;margin-top:8px><b>"+G[i].n+"</b> - "+b+"<br>"+G[i].p+" - "+G[i].id+" - "+G[i].loc+"<br>"+G[i].sk+ph+"<br>"+btn+"</div>"}el.innerHTML=h}
+function vo(i){G[i].v=true;localStorage.setItem("heroCg",JSON.stringify(G));show();alert("Verified! "+G[i].n)}
+function verify(){var n=document.getElementById("vn").value;if(!n){alert("Enter caregiver name");return}var f=null;for(var i=0;i<G.length;i++){if(G[i].n.toLowerCase()==n.toLowerCase()){f=G[i]}}if(!f){document.getElementById("vr").innerText="Not found. Apply first.";return}document.getElementById("vr").innerText=f.v?"Verified - "+f.n:"Pending - "+f.n}
+document.getElementById("cc").value=C;show();
+</script></body></html>
