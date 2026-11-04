@@ -5,22 +5,100 @@
 <title>Admin - Home Care Hero</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 p-4">
-<div class="max-w-4xl mx-auto">
-<div class="flex justify-between items-center"><h1 class="text-2xl font-black">Admin</h1><div class="flex gap-2 text-xs"><a href="index.html" class="bg-white border px-3 py-2 rounded-full">Home</a><a href="client.html" class="bg-white border px-3 py-2 rounded-full">Client</a><a href="caregiver.html" class="bg-white border px-3 py-2 rounded-full">Caregiver</a></div></div>
-<div id="loginBox" class="bg-white p-6 rounded-2xl mt-4 shadow"><p class="font-bold">Admin Password</p><input id="pass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50"><button onclick="login()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-bold">Login</button><p class="text-[11px] text-gray-400 mt-2">Password: kwaliver92</p></div>
-<div id="adminBox" class="hidden">
-<div class="grid grid-cols-3 gap-3 mt-4"><div class="bg-white p-4 rounded-2xl text-center"><p class="text-xs text-gray-500">Bookings</p><p id="totalBookings" class="font-black text-2xl">0</p></div><div class="bg-white p-4 rounded-2xl text-center"><p class="text-xs text-gray-500">Deposits</p><p id="totalDeposits" class="font-black text-2xl text-emerald-600">0</p></div><div class="bg-white p-4 rounded-2xl text-center"><p class="text-xs text-gray-500">Balance</p><p id="totalBalance" class="font-black text-2xl text-orange-500">0</p></div></div>
-<div class="bg-white p-4 rounded-2xl mt-4 shadow"><div class="flex justify-between"><h2 class="font-bold">Live Bookings</h2><button onclick="loadBookings()" class="text-xs bg-black text-white px-3 py-2 rounded-full">Refresh</button></div><div id="list" class="mt-4 space-y-3"><p>Loading...</p></div></div>
+<body class="bg-[#fbf8f5] p-4">
+<div class="max-w-md mx-auto">
+
+<div class="flex justify-between items-center">
+<h1 class="font-black text-xl">Admin</h1>
+<div class="flex gap-2 text-[11px]">
+<a href="index.html" class="bg-white border px-2 py-2 rounded-full">Home</a>
+<a href="client.html" class="bg-white border px-2 py-2 rounded-full">Client</a>
+<a href="caregiver.html" class="bg-white border px-2 py-2 rounded-full">Caregiver</a>
+<a href="wallet.html" class="bg-emerald-600 text-white px-2 py-2 rounded-full">💰 Wallet</a>
 </div>
 </div>
+
+<!-- LOGIN -->
+<div id="loginBox" class="bg-white p-5 rounded-2xl shadow mt-4">
+<h2 class="font-bold">Admin Login</h2>
+<p class="text-xs text-gray-500 mt-1">Enter password to see REAL bookings</p>
+<input id="adminPass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<button onclick="login()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-black text-sm">Login</button>
+<p class="text-[11px] text-center text-gray-400 mt-2">Password: kwaliver92</p>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dash" class="hidden">
+<div class="grid grid-cols-3 gap-2 mt-4 text-center">
+<div class="bg-white p-3 rounded-2xl shadow"><p class="text-[11px] text-gray-500">Bookings</p><p id="totalBookings" class="font-black text-lg">0</p></div>
+<div class="bg-white p-3 rounded-2xl shadow"><p class="text-[11px] text-gray-500">Deposits</p><p id="totalDeposits" class="font-black text-emerald-600">0 UGX</p></div>
+<div class="bg-white p-3 rounded-2xl shadow"><p class="text-[11px] text-gray-500">Balance</p><p id="totalBalance" class="font-black text-orange-500">0 UGX</p></div>
+</div>
+
+<div class="bg-white p-4 rounded-2xl shadow mt-3">
+<div class="flex justify-between items-center"><h2 class="font-bold">Live Bookings</h2><button onclick="loadAdmin()" class="text-xs bg-black text-white px-3 py-1 rounded-full">Refresh</button></div>
+<p class="text-[11px] text-gray-500 mt-1">REAL from Firebase. If you see a booking, someone really booked it. Tap Delete to remove test bookings.</p>
+<div id="list" class="mt-3 space-y-2"><p class="text-sm text-gray-500">Loading...</p></div>
+<button onclick="deleteAll()" class="w-full mt-3 bg-red-100 text-red-600 py-2 rounded-xl font-bold text-xs">🗑️ DELETE ALL BOOKINGS - Clear to 0</button>
+</div>
+</div>
+
+</div>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", authDomain: "home-care-hero.firebaseapp.com", projectId: "home-care-hero", storageBucket: "home-care-hero.firebasestorage.app", messagingSenderId: "38632827016", appId: "1:38632827016:web:0ebca8c98541b2fb3e573d", measurementId: "G-ZV09KN6R90" };
 const app = initializeApp(firebaseConfig); const db = getFirestore(app);
-window.login=function(){ if(document.getElementById('pass').value==='kwaliver92'){ document.getElementById('loginBox').classList.add('hidden'); document.getElementById('adminBox').classList.remove('hidden'); loadBookings(); } else alert('Wrong password'); }
-window.loadBookings=async function(){ try{ const q=query(collection(db,"bookings"),orderBy("created","desc")); const snap=await getDocs(q); let html=""; let td=0; let tb=0; let c=0; snap.forEach(doc=>{ let b=doc.data(); c++; td+=(b.deposit||10000); tb+=(b.balance||0); html+=`<div class="border p-3 rounded-xl bg-gray-50"><div class="flex justify-between"><b>${b.id||''}</b><span class="text-[11px] bg-emerald-100 px-2 py-1 rounded-full">${b.status||'BOOKED'}</span></div><p class="text-sm mt-1"><b>${b.name||''}</b> - ${b.phone||''} • ${b.location||''}</p><p class="text-xs">${b.service||''} • Total ${(b.price||0).toLocaleString()} UGX | Deposit ${(b.deposit||10000).toLocaleString()} | Balance ${(b.balance||0).toLocaleString()} | ETA ${b.eta||'60 seconds'}</p><a href="https://wa.me/256${(b.phone||'').replace(/^0/,'')}" target="_blank" class="text-xs bg-[#25D366] text-white px-3 py-1 rounded-full inline-block mt-2">WhatsApp Client</a></div>`; }); if(c===0) html='<p>No bookings yet</p>'; document.getElementById('list').innerHTML=html; document.getElementById('totalBookings').textContent=c; document.getElementById('totalDeposits').textContent=td.toLocaleString()+' UGX'; document.getElementById('totalBalance').textContent=tb.toLocaleString()+' UGX'; }catch(e){ document.getElementById('list').innerHTML='Error: '+e.message; } }
+
+window.login = function(){
+  let p = document.getElementById('adminPass').value;
+  if(p === 'kwaliver92'){
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('dash').classList.remove('hidden');
+    loadAdmin();
+  } else { alert('Wrong password. Password is kwaliver92'); }
+}
+
+window.loadAdmin = async function(){
+  try{
+    const q = query(collection(db,"bookings"), orderBy("created","desc"));
+    const snap = await getDocs(q);
+    let totalDep=0; let totalBal=0; let count=0; let html="";
+    snap.forEach(d=>{
+      let b = d.data(); count++; totalDep += (b.deposit||0); totalBal += (b.balance||0);
+      html += `<div class="border p-3 rounded-xl bg-gray-50">
+        <div class="flex justify-between"><b class="text-sm">${b.id||''}</b><span class="text-[10px] bg-emerald-100 px-2 py-0.5 rounded-full">${b.status||'BOOKED'} - 10k PAID to 0772101875</span></div>
+        <p class="text-xs mt-1"><b>${b.name||''}</b> • ${b.phone||''} • ${b.location||''}</p>
+        <p class="text-xs text-gray-500">${b.service||''} • Total ${(b.price||0).toLocaleString()} UGX | Deposit ${(b.deposit||0).toLocaleString()} | Balance ${(b.balance||0).toLocaleString()} | ETA 60 min</p>
+        <div class="flex gap-2 mt-2">
+          <a href="https://wa.me/256${(b.phone||'').replace(/^0/,'')}" target="_blank" class="bg-emerald-500 text-white text-[11px] px-3 py-1.5 rounded-full font-bold">WhatsApp Client</a>
+          <button onclick="deleteOne('${d.id}')" class="bg-red-500 text-white text-[11px] px-3 py-1.5 rounded-full font-bold">🗑️ Delete This Booking</button>
+        </div>
+      </div>`;
+    });
+    if(count===0) html = '<p class="text-sm text-gray-500">No bookings yet. 0 = Truth. No fake.</p>';
+    document.getElementById('list').innerHTML = html;
+    document.getElementById('totalBookings').textContent = count;
+    document.getElementById('totalDeposits').textContent = totalDep.toLocaleString() + ' UGX';
+    document.getElementById('totalBalance').textContent = totalBal.toLocaleString() + ' UGX';
+  }catch(e){ document.getElementById('list').innerHTML = 'Error: ' + e.message; }
+}
+
+window.deleteOne = async function(docId){
+  if(!confirm('Delete this booking? This is real - it will go to 0.')) return;
+  await deleteDoc(doc(db,"bookings",docId));
+  alert('Deleted!');
+  loadAdmin();
+}
+
+window.deleteAll = async function(){
+  if(!confirm('Delete ALL bookings? This will clear to 0.')) return;
+  const snap = await getDocs(collection(db,"bookings"));
+  for(let d of snap.docs){ await deleteDoc(doc(db,"bookings",d.id)); }
+  alert('All deleted - Now 0');
+  loadAdmin();
+}
 </script>
 </body>
 </html>
