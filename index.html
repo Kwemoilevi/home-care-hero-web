@@ -14,7 +14,7 @@
 .hero h1{margin:0;font-size:32px;line-height:1.05;letter-spacing:-1px}
 .hero p{opacity:.92;font-size:15px;line-height:1.5;max-width:520px}
 .hero-stats{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
-.hero-stats div{background:rgba(255,255,255,.18);backdrop-filter:blur(6px);padding:10px 14px;border-radius:14px;font-weight:800;font-size:13px}
+.hero-stats div{background:rgba(255,255,255,.18);padding:10px 14px;border-radius:14px;font-weight:800;font-size:13px}
 .wrap{max-width:920px;margin:-14px auto 0;padding:0 14px 30px}
 .card{background:#fff;border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:14px;border:1px solid #FFE7D6}
 .tabs{display:flex;gap:8px;background:#fff;padding:6px;border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.07);margin-bottom:14px}
@@ -25,7 +25,6 @@ input,select,textarea{width:100%;padding:14px;border:2px solid #F1F5F9;border-ra
 input:focus,select:focus,textarea:focus{border-color:#7C3AED;background:#fff}
 button{border:0;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;width:100%}
 .btn-main{background:linear-gradient(90deg,#7C3AED,#DB2777);color:#fff;box-shadow:0 8px 20px rgba(219,39,119,.3)}
-.btn-green{background:#16A34A;color:#fff}
 .job{border:1px solid #FFE7D6;background:linear-gradient(180deg,#fff,#FFFBEB);border-radius:18px;padding:16px;margin-top:12px}
 .job-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
 .pill{background:#DCFCE7;color:#166534;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}
@@ -48,10 +47,8 @@ button{border:0;border-radius:14px;padding:15px;font-weight:800;font-size:16px;c
 <p>Post a job in 30 seconds. Verified carers in Kampala see it instantly and contact you directly.</p>
 <div class="hero-stats"><div>⭐ 4.9 Rated Carers</div><div><span class="live-dot"></span> Live Jobs</div><div>📍 Kampala • Entebbe • Wakiso</div></div>
 </div>
-
 <div class="wrap">
 <div class="tabs"><button id="tabClient" class="active" onclick="showTab('client')">🙋 I Need Care</button><button id="tabCarer" onclick="showTab('carer')">💜 I Am a Carer</button></div>
-
 <div id="clientView" class="card">
 <h2 style="margin:0">Post a Care Job → Go Live</h2><p class="muted">Fill this, tap Post. It will appear for carers in real-time.</p>
 <label>Your Name</label><input id="cName" placeholder="e.g. Sarah Nakato">
@@ -63,28 +60,32 @@ button{border:0;border-radius:14px;padding:15px;font-weight:800;font-size:16px;c
 <button class="btn-main" style="margin-top:16px" onclick="postJob()">✨ Post Job - Go Live Now</button>
 <p class="muted" id="postMsg"></p>
 </div>
-
 <div id="carerView" class="card hidden">
 <h2 style="margin:0">🔴 Live Jobs Near You</h2><p class="muted">New jobs appear here automatically. No refresh needed.</p>
 <label>Search by Area</label><input id="filterArea" placeholder="e.g. Ntinda..." oninput="renderJobs()">
 <div id="allJobs"></div>
 </div>
-
 <div class="card"><h3 style="margin:0">My Posted Jobs</h3><div id="myJobs"></div></div>
 <div class="card" style="text-align:center"><b>How it works</b><p class="muted">Client posts → Saved to Firebase → Carer sees instantly → Carer calls / WhatsApps you</p></div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script>
-// --- PASTE YOUR FIREBASE CONFIG HERE ---
-// Paste your block starting with: var firebaseConfig = { ... };
-
+var firebaseConfig = {
+  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
+  authDomain: "home-care-hero.firebaseapp.com",
+  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
+  projectId: "home-care-hero",
+  storageBucket: "home-care-hero.firebasestorage.app",
+  messagingSenderId: "38632827016",
+  appId: "1:38632827016:web:fa1e5fe7642f1f0b3e573d",
+  measurementId: "G-H16EFB8E20"
+};
 var db=null;
 try{
  if(typeof firebaseConfig!=='undefined' && firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE")){
   firebase.initializeApp(firebaseConfig); db=firebase.database();
-  var s=document.getElementById('status'); s.textContent="🟢 REAL LIVE • Firebase Connected"; s.className="live"; s.id="status"; s.style.background="#22C55E"; s.style.color="#fff";
+  var s=document.getElementById('status'); s.textContent="🟢 REAL LIVE • Firebase Connected"; s.style.background="#22C55E"; s.style.color="#fff";
  }
 }catch(e){console.log(e)}
 var jobs=[]; function showTab(t){document.getElementById('clientView').classList.toggle('hidden',t!=='client');document.getElementById('carerView').classList.toggle('hidden',t!=='carer');document.getElementById('tabClient').classList.toggle('active',t==='client');document.getElementById('tabCarer').classList.toggle('active',t==='carer');}
