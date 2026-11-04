@@ -1,81 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - REAL Money Only</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f0f7f4;color:#222}
-.topbar{background:#fff3cd;text-align:center;padding:10px;font-size:13px;font-weight:bold}
-header{background:#0a7a5a;color:#fff;text-align:center;padding:20px 12px}
-header h1{font-size:28px}
-.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0}
-.pills span{background:rgba(0,0,0,.25);padding:5px 10px;border-radius:20px;font-size:12px}
-.btns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0}
-.btns button{border:none;padding:9px 14px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px;background:#fff}
-.btns .black{background:#111;color:#fff}
-.btns .orange{background:#ff8c00;color:#fff}
-.section{padding:15px;max-width:900px;margin:auto}
-.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);margin-bottom:15px}
-.card h3{color:#0a7a5a;margin-bottom:8px;text-align:center}
-input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
-.wallet-btn{width:100%;padding:13px;border:none;border-radius:8px;font-weight:bold;margin:6px 0;font-size:15px;cursor:pointer}
-.green{background:#0a7a5a;color:#fff}.orange{background:#ff8c00;color:#fff}.red{background:#dc3545;color:#fff}.yellow{background:#ffcc00}
-.wallet-box{background:#0a7a5a;color:#fff;text-align:center;padding:15px;border-radius:10px;margin:10px 0}
-.wallet-box h2{font-size:32px}
-.tx{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between;gap:8px}
-.badge{background:#d4edda;color:#155724;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
-.verified-card{border:2px solid #ff8c00;border-radius:10px;padding:12px;margin-top:10px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-@media(max-width:600px){.grid{grid-template-columns:1fr}}
-</style>
-</head>
-<body>
-
-<div class="topbar">👀 Live Visitors | 📅 <span id="realBookings">0</span> Real Bookings | 🌍 Trusted Globally</div>
-
-<div style="background:#fff;text-align:center;padding:10px">
-<label style="font-weight:bold">🌍 Country / Currency: </label>
-<select id="countrySelect" onchange="changeCountry()" style="width:auto;display:inline-block;padding:8px;border-radius:20px;font-weight:bold">
-<option value="UG">🇺🇬 Uganda - UGX</option>
-<option value="KE">🇰🇪 Kenya - KES</option>
-<option value="TZ">🇹🇿 Tanzania - TZS</option>
-<option value="RW">🇷🇼 Rwanda - RWF</option>
-<option value="US">🇺🇸 USA - USD</option>
-<option value="UK">🇬🇧 UK - GBP</option>
-<option value="AE">🇦🇪 UAE - AED</option>
-</select>
-</div>
-
-<header>
-<h1>🏠 Home Care Hero</h1>
-<p>Compassionate, Professional Home Care - Worldwide 🌍<br>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
-<div class="pills"><span>🇺🇬 Uganda</span><span>🇰🇪 Kenya</span><span>🇹🇿 Tanzania</span><span>🇷🇼 Rwanda</span><span>🇺🇸 USA</span><span>🇬🇧 UK</span><span>🇦🇪 UAE</span><span>🌍 + More</span></div>
-<div class="btns">
-<button onclick="document.getElementById('loginSection').scrollIntoView({behavior:'smooth'})">👤 Client Login</button>
-<button onclick="document.getElementById('loginSection').scrollIntoView({behavior:'smooth'})">👩‍⚕️ Caregiver Login</button>
-<button class="black" onclick="document.getElementById('adminModal').scrollIntoView({behavior:'smooth'})">🔒 Admin Login</button>
-<button onclick="document.getElementById('signupModal').scrollIntoView({behavior:'smooth'})">✨ Sign Up</button>
-</div>
-<div class="btns">
-<button class="orange" onclick="document.getElementById('cgApply').scrollIntoView({behavior:'smooth'})">✅ Verify as Caregiver</button>
-<button onclick="document.getElementById('verifiedList').scrollIntoView({behavior:'smooth'})">🏆 View Verified Caregivers</button>
-</div>
-<div style="font-weight:bold;margin-top:10px">Welcome back, Levi (Admin) 👋</div>
-</header>
-
-<div class="section">
-<div style="text-align:center;margin-bottom:15px"><h2>Welcome, Levi !</h2><p>You are Admin. Approve caregivers + see REAL WALLET below.</p></div>
-
-<div class="card" id="verifiedList">
-<h3>🛡️ Caregiver Verifications - Admin Approval</h3>
-<p style="text-align:center;color:#666;font-size:13px">Approve trusted caregivers. Only approved caregivers get jobs.</p>
-<div id="caregiverList"></div>
-<p id="noCg" style="text-align:center;color:#999;margin-top:10px">No caregivers yet. Apply below to be first.</p>
-</div>
-
-<div class="card">
-<h3>💰 Admin Wallet - REAL MONEY ONLY</h3>
-<p style="text-align:center;font-size:13px;color:#b00;font-weight:bold">⚠️ This is NOT bank money until you receive MTN / M-Pesa. No fake adds.</p>
-<div class="wallet-box"><p>Confirmed Real Balance - Money You Actually Received</p><h
+<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Care Hero</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}body{background:#f0f7f4}header{background:#0a7a5a;color:#fff;text-align:center;padding:20px 12px}.card{background:#fff;padding:15px;border-radius:12px;margin:12px;box-shadow:0 2px 8px rgba(0,0,0,.07)}input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px}button{width:100%;padding:12px;border:none;border-radius:8px;font-weight:700;margin:5px 0;cursor:pointer}.g{background:#0a7a5a;color:#fff}.o{background:#ff8c00;color:#fff}.r{background:#dc3545;color:#fff}.y{background:#ffcc00}.w{background:#0a7a5a;color:#fff;text-align:center;padding:12px;border-radius:10px}.top{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px}.top button{width:auto;padding:8px 13px;border-radius:20px;background:#fff;color:#111}.top .b{background:#111;color:#fff}</style></head><body>
+<div style="background:#fff3cd;text-align:center;padding:9px;font-size:13px;font-weight:700">👀 Live | 📅 <span id="bk">0</span> Bookings | 🌍 Trusted</div>
+<div style="text-align:center;padding:10px;background:#fff">🌍 <select id="cc" onchange="chg()" style="width:auto;padding:7px;border-radius:20px;font-weight:700"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya</option><option value="TZ">🇹🇿 Tanzania</option><option value="RW">🇷🇼 Rwanda</option><option value="US">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="AE">🇦🇪 UAE</option></select></div>
+<header><h1>🏠 Home Care Hero</h1><p>Elderly • Nursing • Baby • Physio - Worldwide 🌍</p><div class="top"><button onclick="go('loginSec')">👤 Client Login</button><button onclick="go('loginSec')">👩‍⚕️ Caregiver Login</button><button class="b" onclick="go('adm')">🔒 Admin</button><button onclick="go('sup')">✨ Sign Up</button></div><div class="top"><button onclick="go('cg')" style="background:#ff8c00;color:#fff">✅ Verify as Caregiver</button><button onclick="go('ver')">🏆 Verified Caregivers</button></div><b>Welcome back, Levi (Admin) 👋</b></header>
+<div class="card" id="ver"><h3 style="color:#0a7a5a;text-align:center">🛡️ Verified Caregivers</h3><div id="cgList"></div><p id="noCg" style="text-align:center;color:#999">No caregivers yet. Apply below.</p></div>
+<div class="card"><h3 style="color:#0a7a5a;text-align:center">💰 Wallet - REAL MONEY ONLY</h3><p style="text-align:center;color:#b00;font-size:12px;font-weight:700">No fake adds. Balance only after you approve real MTN.</p><div class="w"><p>Confirmed Real Balance</p><h2 id="bal">UGX 0</h2><p id="balSub">Admin: Levi</p></div>
+<p style="text-align:center;font-size:13px;margin-top:10px">Send to MTN: <b>0771218437 - Levi</b></p>
+<input id="pn" placeholder="Your Name"><input id="pa" type="number" placeholder="Amount You Sent - e.g. 50000"><select id="pm"><option>MTN Mobile Money</option><option>Airtel Money</option><option>M-Pesa</option><option>Bank</option><option>PayPal</option><option>Cash</option></select><input id="pr" placeholder="MTN Ref - e.g. 1234567890"><button class="o" onclick="req()">📤 I Sent Real Money</button><p id="ps" style="text-align:center;font-size:13px"></p><h4 style="text-align:center;margin-top:10px">Admin Approves</h4><div id="pend"><p style="text-align:center;color:#999">No pending</p></div>
+<button class="g" onclick="payCg()">💸 Pay Caregiver - UGX 93,750</button><input id="wa" type="number" placeholder="Withdraw Amount"><button class="r" onclick="wd()">💸 Withdraw</button><h4 style="margin-top:10px">🧾 Transactions</h4><div id="tx"><p style="color:#999">No confirmed payments yet</p></div></div>
+<div class="card"><h3 style="text-align:center">📅 Book Care</h3><input id="bn" placeholder="Your Name"><input id="bp" placeholder="Phone - 0771218437"><select id="bs"><option>Elderly Care</option><option>Nursing Care</option><option>Child Care</option><option>Home Help</option></select><input id="bd" type="date"><button class="g" onclick="book()">Book On WhatsApp</button><div id="bl"></div></div>
+<div class="card" id="cg"><h3 style="text-align:center">💼 Become Caregiver</h3><input id="cn" placeholder="Full Name - Must match ID"><input id="cp" placeholder="Phone"><input id="ci" placeholder="National ID Number"><select id="cs"><option>Elderly Care</option><option>Nursing</option><option>Child Care</option><option>Home Help</option></select><input id="cl" placeholder="Location - e.g. Kampala"><input id="ce" placeholder="Experience - e.g. 3 years"><input id="cr" placeholder="Reference - e.g. Kampala Hospital"><input type="file" id="cph" accept="image/*"><button class="y" onclick="apply()">Apply As Caregiver</button><p id="cst"></p></div>
+<div class="card"><h3 style="text-align:center">✅ Verify Caregiver</h3><input id="vn" placeholder="Caregiver Name"><button class="g" onclick="verify()">Verify</button><p id="vr"></p></div>
+<div id="loginSec" class="card"><h3 style="text-align:center">👤 Login</h3><input id="lu" placeholder="Username"><input id="lp" type="password" placeholder="Password"><button class="g" onclick="login()">Login</button><p id="lm" style="text-align:center"></p></div>
+<div id="sup" class="card"><h3 style="text-align:center">✨ Sign Up</h3><input id="sn" placeholder="Full Name"><input id="se" placeholder="Email"><input id="sp" type="password" placeholder="Password"><button class="g" onclick="signup()">Create Account</button><p id="sm" style="text-align:center"></p></div>
+<div id="adm" class="card"><h3 style="text-align:center">🔒 Admin Login</h3><input id="ae" placeholder="Admin Email"><input id="ap" type="password" placeholder="Password"><button class="g" onclick="admin()">Unlock Admin</button><p id="am" style="text-align:center"></p></div>
+<footer style="text-align:center;padding:12px;color:#666">Home Care Hero © 2026 • WhatsApp +256 771 218 437</footer>
+<script>
+var R={UG:3750,KE:130,TZ:2600,RW:1430,US:1,UK:.79,AE:3.67},S={UG:'UGX ',KE:'KSh ',TZ:'TSh ',RW:'RWF ',US:'$',UK:'£',AE:'AED '},C=localStorage.getItem('heroCountry')||'UG',B=parseFloat(localStorage.getItem('heroRealBal')||0),T=JSON.parse(localStorage.getItem('heroRealTx')||'[]'),P=JSON.parse(localStorage.getItem('heroPending')||'[]'),G=JSON.parse(localStorage.getItem('heroCg')||'[]'),K=JSON.parse(localStorage.getItem('heroBk')||'[]');
+function fmt(u){var v=C=='UG'?u:u/3750*R[C];return C=='US'||C=='UK'?S[C]+v.toFixed(2):S[C]+Math.round(v).toLocaleString()}
+function go(id){document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+function chg(){C=document.getElementById('cc').value;localStorage.setItem('heroCountry',C);show()}
+function save(){localStorage.setItem('heroRealBal',B);localStorage.setItem('heroRealTx',JSON.stringify(T));localStorage.setItem('heroPending',JSON.stringify(P));show()}
+function show(){document.getElementById('bal').innerText=fmt(B);document.getElementById('balSub').innerText='Admin: Levi • '+C;document.getElementById('tx').innerHTML=T.length?T.slice(-10).reverse().map(function(t){return '<div style="border-bottom:1px solid #eee;padding:8px 0;display:flex;justify-content:space-between"><span>'+t.d+'<br><small>'+t.dt
