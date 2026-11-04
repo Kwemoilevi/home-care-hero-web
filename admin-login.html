@@ -47,23 +47,14 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 </head>
 <body>
 
-<div class="topbar">
-👀 <span id="visitorCount">1,000+</span> Visitors Worldwide | 📅 <span id="bookingCount">0</span> Real Bookings | 🌍 Trusted Globally
-</div>
+<div class="topbar">👀 <span id="visitorCount">1,001</span> Visitors Worldwide | 📅 <span id="bookingCount">0</span> Real Bookings | 🌍 Trusted Globally</div>
 
 <header>
 <h1>🏠 Home Care Hero</h1>
 <p>Compassionate, Professional Home Care - Worldwide 🌍</p>
 <p>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
 <div class="country-row">
-<span class="country-pill">🇺🇬 Uganda</span>
-<span class="country-pill">🇰🇪 Kenya</span>
-<span class="country-pill">🇹🇿 Tanzania</span>
-<span class="country-pill">🇷🇼 Rwanda</span>
-<span class="country-pill">🇺🇸 USA</span>
-<span class="country-pill">🇬🇧 UK</span>
-<span class="country-pill">🇦🇪 UAE</span>
-<span class="country-pill">🌍 + More</span>
+<span class="country-pill">🇺🇬 Uganda</span><span class="country-pill">🇰🇪 Kenya</span><span class="country-pill">🇹🇿 Tanzania</span><span class="country-pill">🇷🇼 Rwanda</span><span class="country-pill">🇺🇸 USA</span><span class="country-pill">🇬🇧 UK</span><span class="country-pill">🇦🇪 UAE</span><span class="country-pill">🌍 + More</span>
 </div>
 <div class="login-row">
 <button class="login-btn" onclick="openLogin('Client')">👤 Client Login</button>
@@ -77,25 +68,12 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 <div class="dashboard" id="dashboard">
 <h3 id="dashTitle">Welcome!</h3>
 <p id="dashText"></p>
-
-<!-- WALLET - ONLY INSIDE ADMIN DASHBOARD -->
 <div id="adminWallet" style="display:none">
 <div class="wallet-box">
 <h3 style="text-align:center;color:#0a7a5a">💰 Admin Wallet - Automatic Transactions</h3>
-<div class="wallet-balance">
-<p style="font-size:13px;opacity:.9">Total Wallet Balance</p>
-<h2>$<span id="walletBal2">0.00</span></h2>
-<p style="font-size:12px">Admin: <span id="walletUser">Levi</span> • Global</p>
-</div>
+<div class="wallet-balance"><p style="font-size:13px;opacity:.9">Total Wallet Balance</p><h2>$<span id="walletBal2">35.00</span></h2><p style="font-size:12px">Admin: <span id="walletUser">Levi</span> • Global</p></div>
 <input type="number" id="addAmount" placeholder="Amount to Add - e.g. 50">
-<select id="addMethod">
-<option>MTN Mobile Money - Uganda</option>
-<option>Airtel Money</option>
-<option>M-Pesa - Kenya</option>
-<option>Bank Card / Visa</option>
-<option>PayPal - International</option>
-<option>Cash</option>
-</select>
+<select id="addMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Card / Visa</option><option>PayPal - International</option><option>Cash</option></select>
 <button class="wallet-btn" style="background:#ff7a00;color:#fff" onclick="addMoney()">➕ Add Money to Wallet</button>
 <button class="wallet-btn" style="background:#0a7a5a;color:#fff" onclick="payCaregiverAuto()">💸 Pay Caregiver - Automatic $25 / Visit</button>
 <h4 style="margin:15px 0 5px">📜 Automatic Transactions</h4>
@@ -103,7 +81,6 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 <p style="font-size:12px;color:#888;text-align:center;margin-top:10px">Receipts go to WhatsApp +256 771 218 437</p>
 </div>
 </div>
-
 <button class="login-btn" onclick="logout()" style="margin-top:12px;background:#ff7a00;color:#fff">Logout</button>
 </div>
 
@@ -126,40 +103,15 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 <form onsubmit="bookNow(event)">
 <input type="text" id="name" placeholder="Your Full Name" required>
 <input type="tel" id="phone" placeholder="Phone / WhatsApp Number" required>
-<select id="country" required>
-<option value="">Select Your Country / Location...</option>
-<option>Uganda - Kampala</option>
-<option>Kenya - Nairobi</option>
-<option>Tanzania - Dar es Salaam</option>
-<option>Rwanda - Kigali</option>
-<option>South Africa - Johannesburg</option>
-<option>Nigeria - Lagos</option>
-<option>USA - New York / Other</option>
-<option>UK - London / Other</option>
-<option>UAE - Dubai / Abu Dhabi</option>
-<option>Canada</option>
-<option>Australia</option>
-<option>Other Country</option>
-</select>
-<select id="service" required>
-<option value="">Choose Service...</option>
-<option>Elderly Care</option>
-<option>Home Nursing</option>
-<option>Baby & Mother Care</option>
-<option>Physiotherapy</option>
-</select>
+<select id="country" required><option value="">Select Your Country / Location...</option><option>Uganda - Kampala</option><option>Kenya - Nairobi</option><option>Tanzania - Dar es Salaam</option><option>Rwanda - Kigali</option><option>South Africa - Johannesburg</option><option>Nigeria - Lagos</option><option>USA - New York / Other</option><option>UK - London / Other</option><option>UAE - Dubai / Abu Dhabi</option><option>Canada</option><option>Australia</option><option>Other Country</option></select>
+<select id="service" required><option value="">Choose Service...</option><option>Elderly Care</option><option>Home Nursing</option><option>Baby & Mother Care</option><option>Physiotherapy</option></select>
 <textarea id="msg" placeholder="Tell us what you need + your city..."></textarea>
 <button class="submit" type="submit">✅ Request Caregiver on WhatsApp</button>
 </form>
 <p style="text-align:center;margin-top:10px;font-size:13px;color:#666">Your booking opens WhatsApp - we reply in minutes, wherever you are.</p>
 </div>
 
-<footer>
-<p>Home Care Hero - Global 🌍</p>
-<p>📞 WhatsApp: +256 771 218 437 | Available 24/7 Worldwide</p>
-<p>Serving Uganda • Kenya • Tanzania • Rwanda • USA • UK • UAE & More</p>
-<p>© 2026 Home Care Hero. All Rights Reserved.</p>
-</footer>
+<footer><p>Home Care Hero - Global 🌍</p><p>📞 WhatsApp: +256 771 218 437 | Available 24/7 Worldwide</p><p>Serving Uganda • Kenya • Tanzania • Rwanda • USA • UK • UAE & More</p><p>© 2026 Home Care Hero. All Rights Reserved.</p></footer>
 
 <div class="modal" id="loginModal">
 <div class="modal-box">
@@ -181,23 +133,16 @@ var txs = JSON.parse(localStorage.getItem('heroWalletTx') || '[]');
 var bookings = parseInt(localStorage.getItem('heroBookings') || '0');
 var visitors = parseInt(localStorage.getItem('heroVisitors') || '1000');
 var currentRole = 'Client';
-
 if(txs.length==0){
-  txs = [
-    {type:'in', desc:'Welcome Bonus - Global Launch', amt:10, date:'2026-11-04'},
-    {type:'out', desc:'Elderly Care - Auto Paid', amt:25, date:'2026-11-03'},
-    {type:'in', desc:'Top Up - MTN MoMo', amt:50, date:'2026-11-02'}
-  ];
+  txs = [{type:'in', desc:'Welcome Bonus - Global Launch', amt:10, date:'2026-11-04'},{type:'out', desc:'Elderly Care - Auto Paid', amt:25, date:'2026-11-03'},{type:'in', desc:'Top Up - MTN MoMo', amt:50, date:'2026-11-02'}];
   walletBal = 35;
   localStorage.setItem('heroWalletTx', JSON.stringify(txs));
   localStorage.setItem('heroWalletBal', walletBal);
 }
-
 visitors = visitors + 1;
 localStorage.setItem('heroVisitors', visitors);
 document.getElementById('visitorCount').innerText = visitors.toLocaleString();
 document.getElementById('bookingCount').innerText = bookings;
-
 function bookNow(e){
   e.preventDefault();
   var name=document.getElementById('name').value;
@@ -219,7 +164,6 @@ function bookNow(e){
   var text = "Hello Home Care Hero, I am "+name+". Country: "+country+". I need "+service+". My Phone: "+phone+". Details: "+msg;
   window.open("https://wa.me/256771218437?text="+encodeURIComponent(text), "_blank");
 }
-
 function openLogin(role){
   currentRole = role;
   var t = document.getElementById('loginTitle');
@@ -236,7 +180,6 @@ function doLogin(){
   var phone=document.getElementById('loginPhone').value;
   var pass=document.getElementById('loginPass').value;
   if(!name || !phone || !pass){ alert('Please fill all fields - Name, Phone, Password'); return; }
-  // ADMIN PASSWORD CHECK - ONLY ADMIN NEEDS kwaliver92
   if(currentRole=='Admin' && pass !== ADMIN_PASSWORD){
     alert('❌ Wrong Admin Password! Try again.');
     document.getElementById('loginMsg').innerText = 'Wrong Admin Password!';
@@ -273,7 +216,6 @@ function logout(){
   document.getElementById('adminWallet').style.display='none';
   alert('Logged out');
 }
-
 function updateWalletUI(){
   var balEl = document.getElementById('walletBal2');
   if(balEl) balEl.innerText = walletBal.toFixed(2);
@@ -310,7 +252,6 @@ function payCaregiverAuto(){
   updateWalletUI();
   alert('✅ $25 automatically sent to Caregiver Wallet!');
 }
-
 var saved = localStorage.getItem('heroUser');
 if(saved){ var u=JSON.parse(saved); showDashboard(u.name, u.role); }
 updateWalletUI();
