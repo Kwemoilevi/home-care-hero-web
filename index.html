@@ -2,41 +2,71 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Book in 60 Seconds</title>
+<title>GlobalCare - Home Care Heroes</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-[#fbf8f5]">
+<body class="bg-[#f8f8f8]">
 
-<!-- TOP NAV - ALL 5 PAGES LINKED -->
-<div class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm px-3 py-3 flex justify-between items-center">
-<a href="index.html" class="font-black text-[15px]">🏠 Home Care Hero</a>
-<div class="flex gap-1 text-[10px] font-bold">
-<a href="client.html" class="bg-emerald-100 text-emerald-700 px-2 py-2 rounded-full">📍 Track</a>
-<a href="admin.html" class="bg-black text-white px-2 py-2 rounded-full">Admin</a>
-<a href="caregiver.html" class="bg-[#ffcc00] border border-black px-2 py-2 rounded-full">Caregiver</a>
-<a href="wallet.html" class="bg-emerald-600 text-white px-2 py-2 rounded-full">💰 Wallet</a>
+<!-- TOP BAR - EXACT LIKE YESTERDAY -->
+<div class="bg-[#0f172a] text-white px-4 py-3 sticky top-0 z-50">
+<div class="flex justify-between items-center max-w-5xl mx-auto">
+<div class="font-black text-lg">🌍 GlobalCare</div>
+<div class="text-xs text-gray-300">home-care-hero-web.vercel.app</div>
 </div>
-</div>
-
-<div class="max-w-md mx-auto p-4">
-
-<!-- HERO -->
-<div class="bg-black text-white p-5 rounded-[1.5rem]">
-<h1 class="text-2xl font-black leading-tight">Nurse / Babysitter<br>At Your Home In<br><span class="text-[#ffcc00]">60 SECONDS</span></h1>
-<p class="text-xs text-gray-300 mt-2">Friendly Prices • Verified Caregivers • Kampala • Pay 10k Deposit</p>
-<div class="grid grid-cols-3 gap-2 mt-4 text-center text-[11px]">
-<div class="bg-white/10 p-2 rounded-xl"><b>Elderly Care</b><br>30k</div>
-<div class="bg-white/10 p-2 rounded-xl"><b>Baby Sitter</b><br>25k</div>
-<div class="bg-white/10 p-2 rounded-xl"><b>Postnatal</b><br>40k</div>
-</div>
-<div class="flex gap-2 mt-3 text-[11px] text-center">
-<div class="flex-1 bg-white/10 p-2 rounded-xl">⭐ 4.9 Rating</div>
-<div class="flex-1 bg-white/10 p-2 rounded-xl">✅ Verified Nurses</div>
-<div class="flex-1 bg-white/10 p-2 rounded-xl">⚡ 60 Sec Booking</div>
+<!-- NAV PILLS - ALL 6 -->
+<div class="flex gap-2 mt-3 overflow-x-auto whitespace-nowrap pb-1 max-w-5xl mx-auto text-[12px] font-bold">
+<a href="#book" class="bg-black border border-white/20 px-3 py-2 rounded-full">📦 Book Global</a>
+<a href="wallet.html" class="bg-emerald-500 text-white px-3 py-2 rounded-full">💳 Wallet</a>
+<a href="caregiver.html" class="bg-amber-400 text-black px-3 py-2 rounded-full">💼 Caregiver</a>
+<a href="pharmacy.html" class="bg-emerald-300 text-black px-3 py-2 rounded-full">💊 Pharmacy</a>
+<a href="admin.html" class="bg-red-500 text-white px-3 py-2 rounded-full">👑 Admin</a>
+<a href="client.html" class="bg-white text-black px-3 py-2 rounded-full">📍 LIVE GPS</a>
 </div>
 </div>
 
-<!-- 4 BIG BUTTONS - ALL LOGINS -->
-<div class="grid grid-cols-4 gap-2 mt-3">
-<a href="client.html" class="bg-white border p-2 rounded-2xl text-center"><p class="text-xl">📍</p><p class="text-[10px] font-bold">Track My<br>Caregiver</p></a>
-<a href="admin.html" class="bg-white border p-2 rounded-2xl text
+<div class="max-w-5xl mx-auto p-4">
+
+<!-- AD SPONSORED - KAMPALA PHARMA -->
+<div class="bg-[#0f172a] text-white p-4 rounded-2xl flex justify-between items-center">
+<div>
+<span class="bg-emerald-500 text-[10px] px-2 py-1 rounded-full font-bold">AD • SPONSORED</span>
+<p class="font-bold mt-2">💊 Kampala Pharma — Free Delivery Today!</p>
+<p class="text-xs text-gray-400">Verified • Same day</p>
+</div>
+<a href="pharmacy.html" class="bg-white text-black text-sm px-4 py-2 rounded-full font-bold whitespace-nowrap">Shop Now →</a>
+</div>
+
+<!-- FIREBASE STATS -->
+<p class="text-xs text-gray-500 mt-3">REAL Firebase: 👁️ <b id="viewsCount">0</b> Views | 🖱️ <b id="clicksCount">0</b> Clicks | 💰 <b class="text-emerald-600">UGX <span id="totalRev">0</span></b> Total Revenue</p>
+
+<!-- HERO - EXACT LIKE YESTERDAY -->
+<div class="bg-white p-5 rounded-2xl shadow mt-3">
+<h1 class="text-3xl font-black leading-tight">Find <span class="text-blue-600">Home Care Heroes</span><br>Worldwide</h1>
+<p class="text-gray-600 text-sm mt-2">Verified caregivers + verified pharmacies. Book caregiver, shop medicines, track live.</p>
+<div class="flex gap-2 mt-4 flex-wrap">
+<a href="#book" class="bg-[#0f172a] text-white px-4 py-3 rounded-xl font-bold text-sm">🔐 Login to Book →</a>
+<a href="pharmacy.html" class="bg-white border px-4 py-3 rounded-xl font-bold text-sm">💊 Shop Pharmacy</a>
+<a href="client.html" class="bg-emerald-100 text-emerald-700 px-4 py-3 rounded-xl font-bold text-sm">📍 Track Caregiver</a>
+<a href="wallet.html" class="bg-amber-100 px-4 py-3 rounded-xl font-bold text-sm">💰 Wallet</a>
+</div>
+<img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-full h-64 object-cover rounded-xl mt-4" alt="Caregiver helping">
+</div>
+
+<!-- BOOKING FORM - IN SECONDS -->
+<div id="book" class="bg-white p-5 rounded-2xl shadow mt-4">
+<h2 class="font-bold text-lg">Book in 60 Seconds - Friendly Prices</h2>
+<p class="text-xs text-gray-500">Pay only 10k deposit to 0772101875. Balance after service.</p>
+<label class="text-xs font-bold mt-4 block">Your Name</label>
+<input id="name" placeholder="e.g Mary Nakato" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<label class="text-xs font-bold mt-3 block">Phone (07...)</label>
+<input id="phone" placeholder="0772101875" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<label class="text-xs font-bold mt-3 block">Service</label>
+<select id="service" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<option value="Elderly Care - 30000">Elderly Care - 30,000 UGX</option>
+<option value="Baby Sitter - 25000">Baby Sitter - 25,000 UGX</option>
+<option value="Postnatal Care - 40000">Postnatal Care - 40,000 UGX</option>
+<option value="Nurse at Home - 35000">Nurse at Home - 35,000 UGX</option>
+</select>
+<label class="text-xs font-bold mt-3 block">Location / Area</label>
+<input id="location" placeholder="e.g Ntinda, Kampala" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<button onclick="bookNow()" id="bookBtn" class="
