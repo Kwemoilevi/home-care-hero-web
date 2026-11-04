@@ -1,117 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Caregiver - HomeCare Hero</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:system-ui;background:#f1f5f9;color:#0f172a}
-header{background:#0f172a;color:white;padding:14px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:16px}
-.card{background:white;margin:12px 16px;padding:16px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.tabs{display:flex;gap:8px;padding:0 16px}
-.tab{padding:10px 16px;background:white;border-radius:20px;cursor:pointer;font-weight:600;font-size:13px;border:1px solid #e2e8f0}
-.tab.active{background:#0f172a;color:white}
-table{width:100%;border-collapse:collapse;font-size:13px} th,td{padding:10px;border-bottom:1px solid #f1f5f9;text-align:left}
-.btn{padding:8px 14px;border:0;border-radius:8px;font-weight:600;cursor:pointer;font-size:12px}
-.btn-blue{background:#2563eb;color:white} .btn-green{background:#16a34a;color:white} .btn-red{background:#ef4444;color:white} .btn-gray{background:#f1f5f9}
-.badge{padding:3px 8px;border-radius:20px;font-size:11px;font-weight:bold} .pending{background:#fef3c7;color:#92400e} .paid{background:#dcfce7;color:#166534}
-</style>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caregiver - Home Care Hero</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<header>
-<div><b>👩‍⚕️ Caregiver App</b> <span id="cgName" style="opacity:.7;font-size:13px">Diana</span></div>
-<div style="display:flex;gap:8px;align-items:center">
-<span id="gpsStatus" style="font-size:11px;background:#1e293b;padding:4px 8px;border-radius:20px">● GPS OFF</span>
-<a href="admin-live-map.html" style="background:#1e293b;color:#60a5fa;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">Map</a>
-<a href="caregiver-wallet.html" style="background:#1e293b;color:white;padding:6px 10px;border-radius:8px;text-decoration:none;font-size:12px">Wallet</a>
+<body class="bg-gray-100 p-4">
+<div class="max-w-md mx-auto">
+<div class="flex justify-between items-center"><h1 class="font-black text-xl">👩‍⚕️ Caregiver</h1><div class="flex gap-2 text-[11px]"><a href="index.html" class="bg-white border px-2 py-2 rounded-full">Home</a><a href="admin.html" class="bg-white border px-2 py-2 rounded-full">Admin</a><a href="client.html" class="bg-white border px-2 py-2 rounded-full">Client</a></div></div>
+<div id="loginBox" class="bg-white p-5 rounded-2xl mt-4 shadow"><h2 class="font-bold">Caregiver Login</h2><p class="text-xs text-gray-500">Enter name + code</p><input id="cgName" placeholder="Your Name e.g Nakato Grace" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm"><input id="cgCode" placeholder="Code e.g NAKATO123" class="w-full mt-2 px-4 py-3 rounded-xl border bg-gray-50 text-sm"><button onclick="cgLogin()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-bold text-sm">Login & See My Jobs</button><p class="text-[11px] text-gray-400 mt-2">Demo: NAKATO123 / AISHA123 / MARY123</p></div>
+<div id="dashBox" class="hidden">
+<div class="bg-white p-4 rounded-2xl mt-4 shadow"><div class="flex items-center gap-3"><div class="w-12 h-12 bg-emerald-500 rounded-full flex items-center justify-center text-white font-black text-xl" id="cgAvatar">N</div><div><p id="cgNameShow" class="font-bold">Nakato</p><p class="text-xs text-green-600">● Online - Ready</p></div></div><button onclick="shareLocation()" class="w-full mt-3 bg-emerald-600 text-white py-2 rounded-xl font-bold text-sm">📍 SHARE MY LIVE LOCATION</button><p id="cgLoc" class="text-[11px] text-center text-gray-500 mt-1">Location: Not shared</p><div class="grid grid-cols-2 gap-2 mt-3 text-center"><div class="bg-gray-50 p-2 rounded-xl"><p class="text-xs text-gray-500">Jobs</p><p id="todayJobs" class="font-black">0</p></div><div class="bg-gray-50 p-2 rounded-xl"><p class="text-xs text-gray-500">Earnings</p><p id="earnings" class="font-black text-emerald-600">0</p></div></div></div>
+<div class="bg-white p-4 rounded-2xl mt-4 shadow"><div class="flex justify-between"><h2 class="font-bold">My Jobs - From Firebase</h2><button onclick="loadJobs()" class="text-xs bg-black text-white px-3 py-1 rounded-full">Refresh</button></div><div id="jobsList" class="mt-3 space-y-3"><p>Loading...</p></div></div>
 </div>
-</header>
-
-<div class="stats">
-<div class="card" style="margin:0;padding:14px;text-align:center"><small>MY JOBS</small><br><b id="myJobs">0</b></div>
-<div class="card" style="margin:0;padding:14px;text-align:center"><small>EARNINGS</small><br><b>UGX <span id="earn">0</span></b></div>
-<div class="card" style="margin:0;padding:14px;text-align:center"><small>RATING</small><br><b>⭐ 4.9</b></div>
 </div>
-
-<div class="tabs">
-<div class="tab active" onclick="showTab('jobs',this)">📋 My Jobs</div>
-<div class="tab" onclick="showTab('earnings',this)">💰 Earnings</div>
-<div class="tab" onclick="showTab('profile',this)">👤 Profile</div>
-</div>
-
-<div id="tab-jobs" class="card">
-<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-<h3 style="margin:0">Assigned Bookings</h3>
-<button id="gpsBtn" class="btn btn-green" onclick="toggleGPS()">📍 Start GPS</button>
-</div>
-<div id="jobsList">No jobs yet. Wait for Admin to Assign in admin.html</div>
-</div>
-
-<div id="tab-earnings" class="card" style="display:none">
-<h3>Wallet & Payouts</h3>
-<p>Balance: <b>UGX <span id="balance">0</span></b> (70% of booking)</p>
-<table><tr><th>Client</th><th>Amount</th><th>Status</th></tr><tbody id="earnList"></tbody></table>
-<div style="margin-top:12px"><button class="btn btn-blue" onclick="requestPayout()">Request Payout via MoMo</button> <small style="color:gray">Min UGX 20k</small></div>
-</div>
-
-<div id="tab-profile" class="card" style="display:none">
-<h3>My Profile</h3>
-<p>Name: <input id="pName" value="Nurse Diana" style="padding:8px;border:1px solid #ddd;border-radius:8px"></p>
-<p>Phone: <input id="pPhone" value="0770000000" style="padding:8px;border:1px solid #ddd;border-radius:8px"></p>
-<p>Service: <select id="pService"><option>Nursing</option><option>Baby Care</option><option>Physio</option></select></p>
-<p>Status: <select id="pStatus" onchange="updateStatus()"><option value="online">🟢 Online</option><option value="offline">🔴 Offline</option></select></p>
-<button class="btn btn-blue" onclick="saveProfile()">Save</button>
-<p style="margin-top:10px;font-size:12px;color:gray">Live Location: <span id="locText">Not sharing</span><br>Clients can track you on Live Map when GPS is ON</p>
-</div>
-
-<script>
-let watchId=null;
-function showTab(n,el){ document.querySelectorAll('[id^="tab-"]').forEach(d=>d.style.display='none'); document.getElementById('tab-'+n).style.display='block'; document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active')); el.classList.add('active'); if(n==='earnings') loadEarnings(); }
-function loadJobs(){
- let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- let assigned=bookings.filter(b=>b.status==='assigned'||b.status==='paid');
- document.getElementById('myJobs').innerText=assigned.length;
- let html='<table><tr><th>Client</th><th>Service</th><th>Date/Location</th><th>Action</th></tr>';
- if(assigned.length==0) html+='<tr><td colspan=4>No jobs assigned yet. Go to admin.html → Assign a booking.</td></tr>';
- else assigned.slice().reverse().forEach(b=>{
-  html+=`<tr><td><b>${b.name}</b><br><small>${b.phone}</small></td><td>${b.service}<br><span class="badge pending">${b.status}</span></td><td>${b.date}<br><small>${b.location}</small></td><td><button class="btn btn-blue" onclick="openMap('${b.location}')">Navigate</button> <button class="btn btn-green" onclick="completeJob(${b.id})">Done</button></td></tr>`;
- });
- html+='</table>'; document.getElementById('jobsList').innerHTML=html;
-}
-function loadEarnings(){
- let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
- let assigned=bookings.filter(b=>b.status==='paid'||b.status==='assigned');
- let total=assigned.length*35000; // 70%
- document.getElementById('earn').innerText=total.toLocaleString();
- document.getElementById('balance').innerText=total.toLocaleString();
- let html=''; assigned.forEach(b=>{ html+=`<tr><td>${b.name}</td><td>UGX 35,000</td><td><span class="badge paid">Earned</span></td></tr>`;});
- if(!html) html='<tr><td colspan=3>No earnings yet</td></tr>';
- document.getElementById('earnList').innerHTML=html;
-}
-function toggleGPS(){
- let btn=document.getElementById('gpsBtn'); let st=document.getElementById('gpsStatus');
- if(watchId===null){
-  if(!navigator.geolocation){ alert('GPS not supported'); return; }
-  st.innerText='● GPS ON'; st.style.background='#166534'; btn.innerText='⏹️ Stop GPS'; btn.className='btn btn-red';
-  watchId=navigator.geolocation.watchPosition(pos=>{
-   let data={lat:pos.coords.latitude,lng:pos.coords.longitude,time:new Date().toISOString()};
-   localStorage.setItem('caregiverLocation',JSON.stringify(data));
-   document.getElementById('locText').innerText=data.lat.toFixed(5)+', '+data.lng.toFixed(5);
-  },err=>{ alert('GPS error: '+err.message); }, {enableHighAccuracy:true});
-  alert('GPS Started! Admin can see you on Live Map now');
- } else {
-  navigator.geolocation.clearWatch(watchId); watchId=null;
-  st.innerText='● GPS OFF'; st.style.background='#1e293b'; btn.innerText='📍 Start GPS'; btn.className='btn btn-green';
-  document.getElementById('locText').innerText='Not sharing';
- }
-}
-function completeJob(id){ let b=JSON.parse(localStorage.getItem('bookings')||'[]'); let f=b.find(x=>x.id==id); if(f){ f.status='completed'; localStorage.setItem('bookings',JSON.stringify(b)); alert('Job completed! UGX 35k added to wallet'); loadJobs(); loadEarnings(); } }
-function openMap(loc){ window.open('https://www.google.com/maps/search/'+encodeURIComponent(loc),'_blank'); }
-function saveProfile(){ localStorage.setItem('cgProfile',JSON.stringify({name:document.getElementById('pName').value,phone:document.getElementById('pPhone').value})); document.getElementById('cgName').innerText=document.getElementById('pName').value; alert('Profile saved'); }
-function updateStatus(){ let s=document.getElementById('pStatus').value; let cgs=JSON.parse(localStorage.getItem('caregivers')||'[]'); if(cgs[0]){ cgs[0].status=s; localStorage.setItem('caregivers',JSON.stringify(cgs)); } }
-function requestPayout(){ alert('Payout requested! Admin will send MoMo to '+document.getElementById('pPhone').value); }
-let prof=JSON.parse(localStorage.getItem('cgProfile')||'null'); if(prof){ document.getElementById('pName').value=prof.name; document.getElementById('cgName').innerText=prof.name; }
-loadJobs(); setInterval(loadJobs,3000);
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", authDomain: "home-care-hero.firebaseapp.com", projectId: "home-care-hero", storageBucket: "home-care-hero.firebasestorage.app", messagingSenderId: "38632827016", appId: "1:38632827016:web:0ebca8c98541b2fb3e573d", measurementId: "G-ZV09KN6R90" };
+const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+let cgNameGlobal="";
+window.cgLogin=function(){ let n=document.getElementById('cgName').value.trim(); let c=document.getElementById('cgCode').value.trim(); if(!n||!c){ alert('Enter name and code'); return; } cgNameGlobal=n; document.getElementById('loginBox').classList.add('hidden'); document.getElementById('dashBox').classList.remove('hidden'); document.getElementById('cgNameShow').textContent=n+' • '+c; document.getElementById('cgAvatar').textContent=n.charAt(0); loadJobs(); }
+window.shareLocation=function(){ if(!navigator.geolocation){ alert('GPS not supported'); return; } navigator.geolocation.getCurrentPosition(pos=>{ document.getElementById('cgLoc').innerHTML=`✅ Live: <b>${pos.coords.latitude.toFixed(4)}, ${pos.coords.longitude.toFixed(4)}</b> • <a href="https://www.google.com/maps?q=${pos.coords.latitude},${pos.coords.longitude}" target="_blank" class="underline">View Map</a>`; }); }
+window.loadJobs=async function(){ try{ const q=query(collection(db,"bookings"),orderBy("created","desc")); const snap=await getDocs(q); let html=""; let cnt=0; let earn=0; snap.forEach(d=>{ let b=d.data(); cnt++; earn+=(b.price||0); html+=`<div class="border p-3 rounded-xl bg-gray-50"><div class="flex justify-between"><b>${b.id||''}</b><span class="text-[11px] bg-emerald-100 px-2 py-1 rounded-full">${b.status||'BOOKED'}</span></div><p class="text-sm mt-1"><b>${b.name||''}</b> - ${b.phone||''} • ${b.location||''}</p><p class="text-xs">${b.service||''} • Total ${(b.price||0).toLocaleString()} • Balance ${(b.balance||0).toLocaleString()}</p><div class="flex gap-2 mt-2"><a href="https://wa.me/256${(b.phone||'').replace(/^0/,'')}?text=Hello I am ${encodeURIComponent(cgNameGlobal)} your caregiver. On my way!" target="_blank" class="flex-1 text-center bg-[#25D366] text-white py-2 rounded-full text-xs font-bold">WhatsApp Client</a><a href="tel:${b.phone||''}" class="flex-1 text-center bg-black text-white py-2 rounded-full text-xs font-bold">Call</a></div></div>`; }); if(cnt===0) html='<p>No jobs yet</p>'; document.getElementById('jobsList').innerHTML=html; document.getElementById('todayJobs').textContent=cnt; document.getElementById('earnings').textContent=earn.toLocaleString()+' UGX'; }catch(e){ document.getElementById('jobsList').innerHTML='Error: '+e.message; } }
 </script>
 </body>
 </html>
