@@ -29,9 +29,6 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 .verified-card{border:2px solid #ff8c00;border-radius:10px;padding:12px;margin-top:10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
-.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center;padding:15px}
-.modal.active{display:flex}
-.modal-box{background:#fff;width:100%;max-width:450px;border-radius:15px;padding:20px;max-height:90vh;overflow:auto}
 </style>
 </head>
 <body>
@@ -56,10 +53,10 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 <p>Compassionate, Professional Home Care - Worldwide 🌍<br>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
 <div class="pills"><span>🇺🇬 Uganda</span><span>🇰🇪 Kenya</span><span>🇹🇿 Tanzania</span><span>🇷🇼 Rwanda</span><span>🇺🇸 USA</span><span>🇬🇧 UK</span><span>🇦🇪 UAE</span><span>🌍 + More</span></div>
 <div class="btns">
-<button onclick="openModal('loginModal')">👤 Client Login</button>
-<button onclick="openModal('loginModal')">👩‍⚕️ Caregiver Login</button>
-<button class="black" onclick="openModal('adminModal')">🔒 Admin Login</button>
-<button onclick="openModal('signupModal')">✨ Sign Up</button>
+<button onclick="document.getElementById('loginSection').scrollIntoView({behavior:'smooth'})">👤 Client Login</button>
+<button onclick="document.getElementById('loginSection').scrollIntoView({behavior:'smooth'})">👩‍⚕️ Caregiver Login</button>
+<button class="black" onclick="document.getElementById('adminModal').scrollIntoView({behavior:'smooth'})">🔒 Admin Login</button>
+<button onclick="document.getElementById('signupModal').scrollIntoView({behavior:'smooth'})">✨ Sign Up</button>
 </div>
 <div class="btns">
 <button class="orange" onclick="document.getElementById('cgApply').scrollIntoView({behavior:'smooth'})">✅ Verify as Caregiver</button>
@@ -81,15 +78,4 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 <div class="card">
 <h3>💰 Admin Wallet - REAL MONEY ONLY</h3>
 <p style="text-align:center;font-size:13px;color:#b00;font-weight:bold">⚠️ This is NOT bank money until you receive MTN / M-Pesa. No fake adds.</p>
-<div class="wallet-box"><p>Confirmed Real Balance - Money You Actually Received</p><h2 id="walletBal2">UGX 0</h2><p id="walletSub">Admin: Levi • Uganda - UGX</p></div>
-
-<h4 style="text-align:center;color:#0a7a5a;margin-top:10px">1. Client Pays - REAL</h4>
-<p style="font-size:13px;text-align:center">Send to MTN: <b>0771218437 - Levi</b><br>Then enter the details + MTN Ref below.</p>
-<input type="text" id="payName" placeholder="Your Name">
-<input type="number" id="payAmount" placeholder="Amount You Actually Sent - e.g. 50000">
-<select id="payMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
-<input type="text" id="payRef" placeholder="MTN Transaction ID / Receipt No - e.g. 1234567890">
-<label>📸 Upload MTN Receipt Screenshot</label>
-<input type="file" id="payProof" accept="image/*">
-<button class="wallet-btn orange" onclick="requestTopUp()">📤 I Sent Real Money - Request Approval</button>
-<p id="payStatus" style
+<div class="wallet-box"><p>Confirmed Real Balance - Money You Actually Received</p><h
