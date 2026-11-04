@@ -43,6 +43,12 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 .tx-plus{color:green;font-weight:bold}
 .tx-minus{color:red;font-weight:bold}
 .wallet-btn{width:100%;padding:12px;border:none;border-radius:10px;font-weight:bold;margin-top:8px;cursor:pointer;font-size:14px}
+.verify-card{background:#fff;border:2px solid #ff7a00;border-radius:14px;padding:14px;margin-top:12px;text-align:left}
+.verify-card b{font-size:15px}
+.badge-pending{background:#FFF3CD;color:#856404;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold}
+.badge-approved{background:#d4edda;color:#155724;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold}
+.badge-rejected{background:#f8d7da;color:#721c24;padding:4px 10px;border-radius:12px;font-size:12px;font-weight:bold}
+.mini-btn{padding:8px 12px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:13px;margin:4px 4px 0 0}
 </style>
 </head>
 <body>
@@ -62,12 +68,26 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 <button class="login-btn login-btn-dark" onclick="openLogin('Admin')">🔐 Admin Login</button>
 <button class="login-btn" onclick="openLogin('Sign Up')">✨ Sign Up</button>
 </div>
+<div class="login-row">
+<button class="login-btn" style="background:#ff7a00;color:#fff" onclick="document.getElementById('verifySection').scrollIntoView({behavior:'smooth'})">✅ Verify as Caregiver</button>
+<button class="login-btn" style="background:#fff;color:#0a7a5a" onclick="document.getElementById('verifiedList').scrollIntoView({behavior:'smooth'})">🏅 View Verified Caregivers</button>
+</div>
 <div id="welcomeMsg" style="margin-top:10px;font-weight:bold;display:none"></div>
 </header>
 
 <div class="dashboard" id="dashboard">
 <h3 id="dashTitle">Welcome!</h3>
 <p id="dashText"></p>
+
+<!-- ADMIN ONLY: PENDING VERIFICATIONS -->
+<div id="adminVerifyBox" style="display:none">
+<div class="wallet-box">
+<h3 style="text-align:center;color:#0a7a5a">🛡️ Caregiver Verifications - Admin Approval</h3>
+<p style="text-align:center;font-size:13px;color:#666;margin:6px 0">Approve trusted caregivers. Only approved caregivers get jobs.</p>
+<div id="adminVerifyList"></div>
+</div>
+</div>
+
 <div id="adminWallet" style="display:none">
 <div class="wallet-box">
 <h3 style="text-align:center;color:#0a7a5a">💰 Admin Wallet - Automatic Transactions</h3>
@@ -96,6 +116,32 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 <div class="card"><span>🩺</span><h3>Home Nursing</h3><p>Professional nurses for wound care, BP & injections</p></div>
 <div class="card"><span>👶</span><h3>Baby & Mother Care</h3><p>Nannies, newborn care & post-natal support</p></div>
 <div class="card"><span>💪</span><h3>Physiotherapy</h3><p>Recovery & mobility exercises at home</p></div>
+</div>
+
+<!-- CAREGIVER VERIFICATION PAGE -->
+<div class="form-box" id="verifySection">
+<h2>✅ Caregiver Verification - Join Home Care Hero</h2>
+<p style="text-align:center;font-size:14px;color:#555;margin-bottom:14px">Fill this form to become a verified caregiver. Admin Levi will review and approve you. Only verified caregivers get paid jobs.</p>
+<form onsubmit="submitVerification(event)">
+<input type="text" id="vName" placeholder="Full Name - e.g. Mary Nakato" required>
+<input type="tel" id="vPhone" placeholder="Phone / WhatsApp - e.g. 077..." required>
+<input type="text" id="vID" placeholder="National ID / Passport Number" required>
+<select id="vCountry" required><option value="">Your Country / City...</option><option>Uganda - Kampala</option><option>Kenya - Nairobi</option><option>Tanzania - Dar es Salaam</option><option>Rwanda - Kigali</option><option>USA</option><option>UK</option><option>UAE - Dubai</option><option>Other</option></select>
+<select id="vService" required><option value="">Your Main Skill...</option><option>Elderly Care</option><option>Home Nursing</option><option>Baby & Mother Care</option><option>Physiotherapy</option></select>
+<select id="vExp" required><option value="">Years of Experience...</option><option>Less than 1 year</option><option>1 - 3 years</option><option>3 - 5 years</option><option>5+ years</option></select>
+<textarea id="vAbout" placeholder="Tell us about your training / certificate - e.g. Nursing certificate, First Aid, etc..."></textarea>
+<input type="text" id="vRef" placeholder="Reference / Previous Employer Name + Phone (Optional)">
+<button class="submit" type="submit">✅ Submit for Verification</button>
+</form>
+<p id="verifyMsg" style="text-align:center;margin-top:10px;font-weight:bold;color:green"></p>
+<p style="text-align:center;margin-top:8px;font-size:13px;color:#666">After submitting, we will send your details to Admin WhatsApp +256 771 218 437 for review.</p>
+</div>
+
+<!-- VERIFIED CAREGIVERS PUBLIC LIST -->
+<div class="form-box" id="verifiedList">
+<h2>🏅 Verified Caregivers - Trusted by Home Care Hero</h2>
+<p style="text-align:center;font-size:13px;color:#666;margin-bottom:12px">Only caregivers approved by Admin appear here with ✅ Verified badge.</p>
+<div id="publicVerifiedList"></div>
 </div>
 
 <div class="form-box" id="book">
@@ -133,16 +179,80 @@ var txs = JSON.parse(localStorage.getItem('heroWalletTx') || '[]');
 var bookings = parseInt(localStorage.getItem('heroBookings') || '0');
 var visitors = parseInt(localStorage.getItem('heroVisitors') || '1000');
 var currentRole = 'Client';
+var caregivers = JSON.parse(localStorage.getItem('heroCaregivers') || '[]');
 if(txs.length==0){
   txs = [{type:'in', desc:'Welcome Bonus - Global Launch', amt:10, date:'2026-11-04'},{type:'out', desc:'Elderly Care - Auto Paid', amt:25, date:'2026-11-03'},{type:'in', desc:'Top Up - MTN MoMo', amt:50, date:'2026-11-02'}];
   walletBal = 35;
   localStorage.setItem('heroWalletTx', JSON.stringify(txs));
   localStorage.setItem('heroWalletBal', walletBal);
 }
+if(caregivers.length==0){
+  caregivers = [{name:'Mary Nakato',phone:'077XXXXXXX',id:'CM123456',country:'Uganda - Kampala',service:'Elderly Care',exp:'3 - 5 years',about:'Certified Nursing Assistant + First Aid',ref:'Kampala Hospital',status:'approved',date:'2026-11-04'}];
+  localStorage.setItem('heroCaregivers', JSON.stringify(caregivers));
+}
 visitors = visitors + 1;
 localStorage.setItem('heroVisitors', visitors);
 document.getElementById('visitorCount').innerText = visitors.toLocaleString();
 document.getElementById('bookingCount').innerText = bookings;
+
+function saveCaregivers(){ localStorage.setItem('heroCaregivers', JSON.stringify(caregivers)); }
+function submitVerification(e){
+  e.preventDefault();
+  var c = {
+    name: document.getElementById('vName').value,
+    phone: document.getElementById('vPhone').value,
+    id: document.getElementById('vID').value,
+    country: document.getElementById('vCountry').value,
+    service: document.getElementById('vService').value,
+    exp: document.getElementById('vExp').value,
+    about: document.getElementById('vAbout').value,
+    ref: document.getElementById('vRef').value,
+    status: 'pending',
+    date: new Date().toISOString().slice(0,10)
+  };
+  caregivers.push(c);
+  saveCaregivers();
+  renderVerifications();
+  document.getElementById('verifyMsg').innerText = '✅ Submitted! Your status is PENDING. Admin Levi will review you soon. Check back here.';
+  var text = "Hello Home Care Hero, NEW CAREGIVER VERIFICATION: Name: "+c.name+", Phone: "+c.phone+", ID: "+c.id+", Country: "+c.country+", Skill: "+c.service+", Exp: "+c.exp+", About: "+c.about+", Ref: "+c.ref;
+  window.open("https://wa.me/256771218437?text="+encodeURIComponent(text), "_blank");
+  e.target.reset();
+  alert('✅ Verification Submitted! Waiting for Admin approval.');
+}
+function renderVerifications(){
+  var adminEl = document.getElementById('adminVerifyList');
+  if(adminEl){
+    if(caregivers.length==0) adminEl.innerHTML = '<p style="text-align:center;color:#999">No caregiver applications yet.</p>';
+    else {
+      var h='';
+      caregivers.slice().reverse().forEach(function(c){
+        var idx = caregivers.indexOf(c);
+        var badge = c.status=='approved' ? '<span class="badge-approved">✅ VERIFIED</span>' : c.status=='rejected' ? '<span class="badge-rejected">❌ REJECTED</span>' : '<span class="badge-pending">⏳ PENDING</span>';
+        h += '<div class="verify-card"><b>'+c.name+'</b> '+badge+'<br><span style="font-size:13px;color:#555">📞 '+c.phone+' • 🪪 '+c.id+' • 📍 '+c.country+'<br>🩺 '+c.service+' • ⏰ '+c.exp+' • 📅 '+c.date+'<br>📝 '+c.about+'<br>👤 Ref: '+(c.ref||'None')+'</span><br>';
+        if(c.status=='pending'){
+          h += '<button class="mini-btn" style="background:#0a7a5a;color:#fff" onclick="approveCaregiver('+idx+')">✅ Approve</button><button class="mini-btn" style="background:#dc3545;color:#fff" onclick="rejectCaregiver('+idx+')">❌ Reject</button>';
+        }
+        h += '</div>';
+      });
+      adminEl.innerHTML = h;
+    }
+  }
+  var pub = document.getElementById('publicVerifiedList');
+  if(pub){
+    var approved = caregivers.filter(function(c){ return c.status=='approved'; });
+    if(approved.length==0) pub.innerHTML = '<p style="text-align:center;color:#999">No verified caregivers yet - be the first to apply above!</p>';
+    else {
+      var ph='';
+      approved.forEach(function(c){
+        ph += '<div class="verify-card"><b>✅ '+c.name+'</b> <span class="badge-approved">✅ VERIFIED</span><br><span style="font-size:13px;color:#555">🩺 '+c.service+' • 📍 '+c.country+' • ⏰ '+c.exp+'<br>📝 '+c.about+'</span><br><a href="https://wa.me/256771218437?text='+encodeURIComponent('Hello, I want to book Verified Caregiver '+c.name+' for '+c.service)+'" style="display:inline-block;margin-top:8px;background:#0a7a5a;color:#fff;padding:8px 14px;border-radius:20px;text-decoration:none;font-size:13px;font-weight:bold">💬 Book '+c.name.split(' ')[0]+'</a></div>';
+      });
+      pub.innerHTML = ph;
+    }
+  }
+}
+function approveCaregiver(i){ caregivers[i].status='approved'; saveCaregivers(); renderVerifications(); alert('✅ '+caregivers[i].name+' is now VERIFIED!'); }
+function rejectCaregiver(i){ caregivers[i].status='rejected'; saveCaregivers(); renderVerifications(); alert('❌ '+caregivers[i].name+' rejected.'); }
+
 function bookNow(e){
   e.preventDefault();
   var name=document.getElementById('name').value;
@@ -197,15 +307,18 @@ function showDashboard(name, role){
   document.getElementById('dashboard').style.display='block';
   document.getElementById('dashTitle').innerText = 'Welcome, '+name+'!';
   if(role=='Admin'){
-    document.getElementById('dashText').innerText = 'You are Admin. You can see bookings, visitors and WALLET below. Manage everything here.';
+    document.getElementById('dashText').innerText = 'You are Admin. Approve caregivers + see WALLET below.';
     document.getElementById('adminWallet').style.display='block';
+    document.getElementById('adminVerifyBox').style.display='block';
     updateWalletUI();
   } else if(role=='Caregiver'){
-    document.getElementById('dashText').innerText = 'You are logged in as Caregiver. Your next shift will be sent via WhatsApp. Your wallet payments are managed by Admin.';
+    document.getElementById('dashText').innerText = 'You are logged in as Caregiver. Scroll down to ✅ Verify as Caregiver to get verified and start earning.';
     document.getElementById('adminWallet').style.display='none';
+    document.getElementById('adminVerifyBox').style.display='none';
   } else {
-    document.getElementById('dashText').innerText = 'You are logged in as Client. You can now book a caregiver below - your details are saved.';
+    document.getElementById('dashText').innerText = 'You are logged in as Client. You can book a verified caregiver below.';
     document.getElementById('adminWallet').style.display='none';
+    document.getElementById('adminVerifyBox').style.display='none';
   }
   window.scrollTo({top:0, behavior:'smooth'});
 }
@@ -214,6 +327,7 @@ function logout(){
   document.getElementById('dashboard').style.display='none';
   document.getElementById('welcomeMsg').style.display='none';
   document.getElementById('adminWallet').style.display='none';
+  document.getElementById('adminVerifyBox').style.display='none';
   alert('Logged out');
 }
 function updateWalletUI(){
@@ -255,6 +369,7 @@ function payCaregiverAuto(){
 var saved = localStorage.getItem('heroUser');
 if(saved){ var u=JSON.parse(saved); showDashboard(u.name, u.role); }
 updateWalletUI();
+renderVerifications();
 </script>
 </body>
 </html>
