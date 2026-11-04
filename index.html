@@ -3,158 +3,184 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Care At Home</title>
+<title>Home Care Hero</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-body{background:#f4f7f6;color:#222}
-header{background:#0a7a5a;color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:99}
-header h1{font-size:22px}
-header button{background:#fff;color:#0a7a5a;border:none;padding:8px 14px;border-radius:20px;font-weight:bold;cursor:pointer;margin-left:5px}
-.hero{background:linear-gradient(135deg,#0a7a5a,#0ec98a);color:#fff;text-align:center;padding:40px 15px}
-.hero h2{font-size:32px;margin-bottom:10px}
-.hero p{font-size:16px;margin-bottom:20px}
-.btn{background:#ffcc00;color:#000;padding:12px 22px;border:none;border-radius:25px;font-weight:bold;cursor:pointer;font-size:16px}
-.section{padding:25px 15px;max-width:900px;margin:auto}
-.card{background:#fff;padding:18px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.08);margin-bottom:15px}
-.card h3{color:#0a7a5a;margin-bottom:8px}
+body{background:#f0f7f4;color:#222}
+.topbar{background:#fff3cd;text-align:center;padding:10px;font-size:13px;font-weight:bold}
+header{background:#0a7a5a;color:#fff;text-align:center;padding:20px 12px}
+header h1{font-size:28px}
+header p{font-size:14px;margin:8px 0 12px}
+.pills{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0}
+.pills span{background:rgba(0,0,0,.25);padding:5px 10px;border-radius:20px;font-size:12px}
+.btns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0}
+.btns button{border:none;padding:9px 14px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px;background:#fff}
+.btns .black{background:#111;color:#fff}
+.btns .orange{background:#ff8c00;color:#fff}
+.welcome{font-weight:bold;margin-top:12px}
+.section{padding:15px;max-width:900px;margin:auto}
+.card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);margin-bottom:15px}
+.card h3{color:#0a7a5a;margin-bottom:8px;text-align:center}
 input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
-button{cursor:pointer}
-.wallet-btn{width:100%;padding:12px;border:none;border-radius:8px;font-weight:bold;margin:6px 0;font-size:15px}
+.wallet-btn{width:100%;padding:13px;border:none;border-radius:8px;font-weight:bold;margin:6px 0;font-size:15px;cursor:pointer}
+.green{background:#0a7a5a;color:#fff}
+.orange{background:#ff8c00;color:#fff}
+.red{background:#dc3545;color:#fff}
+.yellow{background:#ffcc00}
+.wallet-box{background:#0a7a5a;color:#fff;text-align:center;padding:15px;border-radius:10px;margin:10px 0}
+.wallet-box h2{font-size:32px}
+.tx{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between}
+.badge{background:#d4edda;color:#155724;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
+.verified-card{border:2px solid #ff8c00;border-radius:10px;padding:12px;margin-top:10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
-.badge{display:inline-block;background:#e6f7f0;color:#0a7a5a;padding:4px 10px;border-radius:15px;font-size:12px;font-weight:bold}
-.tx{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center;padding:15px}
 .modal.active{display:flex}
 .modal-box{background:#fff;width:100%;max-width:450px;border-radius:15px;padding:20px;max-height:90vh;overflow:auto}
-.close{float:right;font-size:22px;cursor:pointer}
 .hidden{display:none}
-.verified{color:green;font-weight:bold}
-.pending{color:orange;font-weight:bold}
 footer{text-align:center;padding:20px;color:#777;font-size:13px}
 </style>
 </head>
 <body>
 
+<div class="topbar">👀 1,005 Visitors Worldwide | 📅 <span id="visitorCount">0</span> Real Bookings | 🌍 Trusted Globally</div>
+
 <header>
-<h1>🌍 Home Care Hero</h1>
-<div>
-<button onclick="openLogin()">Login</button>
-<button onclick="openAdmin()">Admin</button>
+<h1>🏠 Home Care Hero</h1>
+<p>Compassionate, Professional Home Care - Worldwide 🌍<br>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
+<div class="pills"><span>🇺🇬 Uganda</span><span>🇰🇪 Kenya</span><span>🇹🇿 Tanzania</span><span>🇷🇼 Rwanda</span><span>🇺🇸 USA</span><span>🇬🇧 UK</span><span>🇦🇪 UAE</span><span>🌍 + More</span></div>
+<div class="btns">
+<button onclick="openLogin('Client')">👤 Client Login</button>
+<button onclick="openLogin('Caregiver')">👩‍⚕️ Caregiver Login</button>
+<button class="black" onclick="openAdmin()">🔒 Admin Login</button>
+<button onclick="openLogin('SignUp')">✨ Sign Up</button>
 </div>
+<div class="btns">
+<button class="orange" onclick="document.getElementById('cgApply').scrollIntoView({behavior:'smooth'})">✅ Verify as Caregiver</button>
+<button onclick="document.getElementById('verifiedList').scrollIntoView({behavior:'smooth'})">🏆 View Verified Caregivers</button>
+</div>
+<div class="welcome">Welcome back, Levi (Admin) 👋</div>
 </header>
 
-<div class="hero">
-<h2>Care At Home, With Love</h2>
-<p>Trusted Caregivers • Nurses • Companions • Uganda • Kenya • International</p>
-<button class="btn" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Book Care Now</button>
-</div>
-
 <div class="section">
-<div class="grid">
-<div class="card"><h3>👵 Elderly Care</h3><p>Daily help, companionship, medication reminders.</p><p><b>From $25 / Visit</b></p></div>
-<div class="card"><h3>🩺 Nursing Care</h3><p>Professional nurses for wound care, vitals, post-surgery.</p><p><b>From $35 / Visit</b></p></div>
-<div class="card"><h3>👶 Child Care</h3><p>Safe, loving nannies and babysitters.</p><p><b>From $20 / Visit</b></p></div>
-<div class="card"><h3>🧹 Home Help</h3><p>Cleaning, cooking, errands.</p><p><b>From $15 / Visit</b></p></div>
+<div style="text-align:center;margin-bottom:15px">
+<h2>Welcome, Levi !</h2>
+<p>You are Admin. Approve caregivers + see WALLET below.</p>
 </div>
 
-<div class="card" id="booking">
+<!-- CAREGIVER VERIFICATIONS -->
+<div class="card" id="verifiedList">
+<h3>🛡️ Caregiver Verifications - Admin Approval</h3>
+<p style="text-align:center;color:#666;font-size:13px">Approve trusted caregivers. Only approved caregivers get jobs.</p>
+<div class="verified-card">
+<b>Mary Nakato</b> <span class="badge">✅ VERIFIED</span><br>
+📞 077XXXXXXX • 🪪 CM123456 • 📍 Uganda - Kampala<br>
+🩺 Elderly Care • ⏰ 3 - 5 years • 📅 2026-11-04<br>
+📝 Certified Nursing Assistant + First Aid<br>
+👤 Ref: Kampala Hospital
+</div>
+<div id="caregiverList"></div>
+</div>
+
+<!-- ADMIN WALLET -->
+<div class="card">
+<h3>💰 Admin Wallet - Automatic Transactions</h3>
+<div class="wallet-box">
+<p>Total Wallet Balance</p>
+<h2 id="walletBal2">$35.00</h2>
+<p style="font-size:13px">Admin: Levi • Global</p>
+</div>
+
+<input type="number" id="addAmount" placeholder="Amount to Add - e.g. 50">
+<select id="addMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
+<button class="wallet-btn orange" onclick="addMoney()">➕ Add Money to Wallet</button>
+<button class="wallet-btn green" onclick="payCaregiver()">💸 Pay Caregiver - Automatic $25 / Visit</button>
+
+<!-- WITHDRAW - ONLY NEW PART -->
+<hr style="margin:15px 0">
+<h4 style="text-align:center;color:#0a7a5a">💸 Withdraw From Wallet</h4>
+<input type="number" id="withdrawAmount" placeholder="Amount to Withdraw - e.g. 20">
+<select id="withdrawMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
+<button class="wallet-btn red" onclick="withdrawMoney()">💸 Withdraw Money</button>
+
+<h4 style="margin-top:15px">🧾 Automatic Transactions</h4>
+<div id="txList"><p style="color:#999">No transactions yet</p></div>
+</div>
+
+<!-- SERVICES -->
+<div class="grid">
+<div class="card"><h3>👵 Elderly Care</h3><p>Daily help, companionship, medication reminders.</p><b>From $25 / Visit</b></div>
+<div class="card"><h3>🩺 Nursing Care</h3><p>Professional nurses for wound care, vitals, post-surgery.</p><b>From $35 / Visit</b></div>
+<div class="card"><h3>👶 Child Care</h3><p>Safe, loving nannies and babysitters.</p><b>From $20 / Visit</b></div>
+<div class="card"><h3>🧹 Home Help</h3><p>Cleaning, cooking, errands.</p><b>From $15 / Visit</b></div>
+</div>
+
+<!-- BOOKING -->
+<div class="card">
 <h3>📅 Book Care</h3>
 <input type="text" id="clientName" placeholder="Your Full Name">
 <input type="text" id="clientPhone" placeholder="WhatsApp / Phone - e.g. 0771218437">
 <select id="service"><option>Elderly Care - $25</option><option>Nursing Care - $35</option><option>Child Care - $20</option><option>Home Help - $15</option></select>
 <input type="date" id="bookDate">
 <textarea id="bookNote" placeholder="Tell us what you need..."></textarea>
-<button class="wallet-btn" style="background:#0a7a5a;color:#fff" onclick="bookNow()">Book On WhatsApp</button>
+<button class="wallet-btn green" onclick="bookNow()">Book On WhatsApp</button>
 </div>
 
-<div class="card">
+<!-- BECOME CAREGIVER -->
+<div class="card" id="cgApply">
 <h3>💼 Become a Caregiver - Join Us</h3>
-<p>Apply, get verified, start earning.</p>
 <input type="text" id="cgName" placeholder="Your Full Name">
 <input type="text" id="cgPhone" placeholder="Phone / WhatsApp">
 <select id="cgSkill"><option>Elderly Care</option><option>Nursing</option><option>Child Care</option><option>Home Help</option></select>
 <input type="text" id="cgLocation" placeholder="Location - e.g. Kampala">
-<button class="wallet-btn" style="background:#ffcc00" onclick="applyCaregiver()">Apply As Caregiver</button>
+<button class="wallet-btn yellow" onclick="applyCaregiver()">Apply As Caregiver</button>
 <p id="cgStatus"></p>
 </div>
 
 <div class="card">
 <h3>✅ Caregiver Verification</h3>
-<p>Check if a caregiver is verified by Home Care Hero.</p>
 <input type="text" id="verifyName" placeholder="Enter Caregiver Name">
-<button class="wallet-btn" style="background:#0a7a5a;color:#fff" onclick="verifyCaregiver()">Verify Caregiver</button>
+<button class="wallet-btn green" onclick="verifyCaregiver()">Verify Caregiver</button>
 <p id="verifyResult"></p>
-</div>
-</div>
-
-<!-- LOGIN MODAL -->
-<div class="modal" id="loginModal">
-<div class="modal-box">
-<span class="close" onclick="closeModals()">×</span>
-<h3>Login</h3>
-<input type="text" id="loginUser" placeholder="Username - try admin">
-<input type="password" id="loginPass" placeholder="Password">
-<button class="wallet-btn" style="background:#0a7a5a;color:#fff" onclick="doLogin()">Login</button>
-<p style="font-size:13px;color:#777">Admin Demo: admin / kwaliver92</p>
-</div>
-</div>
-
-<!-- ADMIN MODAL -->
-<div class="modal" id="adminModal">
-<div class="modal-box">
-<span class="close" onclick="closeModals()">×</span>
-<h3>👑 Admin Dashboard</h3>
-<div id="adminLocked">
-<p>Please login as Admin to see Wallet & Controls.</p>
-<input type="password" id="adminPass" placeholder="Admin Password">
-<button class="wallet-btn" style="background:#0a7a5a;color:#fff" onclick="unlockAdmin()">Unlock Admin</button>
-</div>
-
-<div id="adminContent" class="hidden">
-<p>Welcome, Admin Levi 👋</p>
-<span class="badge">● Admin Verified</span>
-
-<!-- WALLET INSIDE ADMIN - ORIGINAL + WITHDRAW ADDED -->
-<div class="card" style="margin-top:15px">
-<h3>💰 My Wallet</h3>
-<h2 style="text-align:center" id="walletBal2">$0.00</h2>
-<p style="text-align:center;font-size:13px;color:#777" id="walletBalText">Balance</p>
-
-<input type="number" id="addAmount" placeholder="Amount to Add - e.g. 50">
-<select id="addMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
-<button class="wallet-btn" style="background:#0a7a5a;color:#fff" onclick="addMoney()">➕ Add Money</button>
-
-<button class="wallet-btn" style="background:#ffcc00" onclick="payCaregiver()">Pay Caregiver - Automatic $25 / Visit</button>
-
-<!-- WITHDRAW - NEW, ADDED WITHOUT REMOVING ANYTHING -->
-<hr style="margin:15px 0">
-<h4 style="text-align:center;color:#0a7a5a">💸 Withdraw From Wallet</h4>
-<input type="number" id="withdrawAmount" placeholder="Amount to Withdraw - e.g. 20">
-<select id="withdrawMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
-<button class="wallet-btn" style="background:#dc3545;color:#fff" onclick="withdrawMoney()">💸 Withdraw Money</button>
-
-<h4 style="margin-top:15px">Recent Transactions</h4>
-<div id="txList"><p style="color:#999">No transactions yet</p></div>
-</div>
-
-<div class="card">
-<h3>👥 Caregivers List</h3>
-<div id="caregiverList"><p style="color:#999">No caregivers yet</p></div>
 </div>
 
 <div class="card">
 <h3>📋 Bookings</h3>
 <div id="bookingList"><p style="color:#999">No bookings yet</p></div>
 </div>
+</div>
 
-<button class="wallet-btn" style="background:#eee" onclick="logoutAdmin()">Logout</button>
-</div>
-</div>
-</div>
+<!-- LOGIN MODAL -->
+<div class="modal" id="loginModal"><div class="modal-box"><span style="float:right;font-size:22px;cursor:pointer" onclick="closeModals()">×</span><h3 id="loginTitle">Login</h3><input type="text" id="loginUser" placeholder="Username"><input type="password" id="loginPass" placeholder="Password"><button class="wallet-btn green" onclick="doLogin()">Login</button><p style="font-size:13px;color:#777">Admin: admin / kwaliver92</p></div></div>
+
+<!-- ADMIN MODAL -->
+<div class="modal" id="adminModal"><div class="modal-box"><span style="float:right;font-size:22px;cursor:pointer" onclick="closeModals()">×</span><h3>👑 Admin Dashboard</h3><div id="adminLocked"><input type="password" id="adminPass" placeholder="Admin Password"><button class="wallet-btn green" onclick="unlockAdmin()">Unlock Admin</button></div><div id="adminContent" class="hidden"><p>Welcome, Admin Levi 👋 - Wallet is on main page below.</p><button class="wallet-btn" style="background:#eee" onclick="logoutAdmin()">Logout</button></div></div></div>
 
 <footer>Home Care Hero © 2026 • Kampala, Uganda • WhatsApp: +256 771 218 437</footer>
 
 <script>
-// ==== DATA ====
-var walletBal = parseFloat(local
+var walletBal = parseFloat(localStorage.getItem('heroWalletBal') || '35');
+var txs = JSON.parse(localStorage.getItem('heroWalletTx') || '[]');
+var caregivers = JSON.parse(localStorage.getItem('heroCaregivers') || '[]');
+var bookings = JSON.parse(localStorage.getItem('heroBookings') || '[]');
+var isAdmin = true;
+function openLogin(t){ document.getElementById('loginTitle').innerText = t + ' Login'; document.getElementById('loginModal').classList.add('active'); }
+function openAdmin(){ document.getElementById('adminModal').classList.add('active'); }
+function closeModals(){ document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active')); }
+function doLogin(){ var u=document.getElementById('loginUser').value; var p=document.getElementById('loginPass').value; if(u==='admin' && p==='kwaliver92'){ alert('Welcome Admin Levi!'); closeModals(); } else if(u && p){ alert('Welcome '+u); closeModals(); } else alert('Enter username and password'); }
+function unlockAdmin(){ var p=document.getElementById('adminPass').value; if(p==='kwaliver92'){ document.getElementById('adminLocked').classList.add('hidden'); document.getElementById('adminContent').classList.remove('hidden'); } else alert('Wrong password'); }
+function logoutAdmin(){ document.getElementById('adminLocked').classList.remove('hidden'); document.getElementById('adminContent').classList.add('hidden'); closeModals(); }
+function updateWalletUI(){ document.getElementById('walletBal2').innerText='$'+walletBal.toFixed(2); var list=document.getElementById('txList'); if(txs.length===0){ list.innerHTML='<p style="color:#999">No transactions yet</p>'; return; } var html=''; for(var i=txs.length-1;i>=0;i--){ var t=txs[i]; var color=t.type==='in'?'green':'red'; var sign=t.type==='in'?'+':'-'; html+='<div class="tx"><span>'+t.desc+'<br><small>'+t.date+'</small></span><b style="color:'+color+'">'+sign+'$'+t.amt.toFixed(2)+'</b></div>'; } list.innerHTML=html; }
+function addMoney(){ var amt=parseFloat(document.getElementById('addAmount').value); var m=document.getElementById('addMethod').value; if(!amt||amt<=0){ alert('Enter amount'); return; } walletBal+=amt; txs.push({type:'in',desc:'Add Money - '+m,amt:amt,date:new Date().toISOString().slice(0,10)}); localStorage.setItem('heroWalletBal',walletBal); localStorage.setItem('heroWalletTx',JSON.stringify(txs)); updateWalletUI(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("I added $"+amt+" via "+m),"_blank"); alert('✅ $'+amt+' added!'); }
+function payCaregiver(){ if(walletBal<25){ alert('Not enough balance: $'+walletBal.toFixed(2)); return; } walletBal-=25; txs.push({type:'out',desc:'Pay Caregiver - $25 / Visit',amt:25,date:new Date().toISOString().slice(0,10)}); localStorage.setItem('heroWalletBal',walletBal); localStorage.setItem('heroWalletTx',JSON.stringify(txs)); updateWalletUI(); alert('✅ $25 paid to Caregiver!'); }
+function withdrawMoney(){ var amt=parseFloat(document.getElementById('withdrawAmount').value); var m=document.getElementById('withdrawMethod').value; if(!amt||amt<=0){ alert('Enter amount to withdraw'); return; } if(amt>walletBal){ alert('❌ Not enough balance. Balance is $'+walletBal.toFixed(2)); return; } walletBal-=amt; txs.push({type:'out',desc:'Withdraw - '+m,amt:amt,date:new Date().toISOString().slice(0,10)}); localStorage.setItem('heroWalletBal',walletBal); localStorage.setItem('heroWalletTx',JSON.stringify(txs)); updateWalletUI(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("I withdrew $"+amt+" via "+m),"_blank"); alert('✅ $'+amt+' withdrawn via '+m+'!'); }
+function bookNow(){ var n=document.getElementById('clientName').value; var ph=document.getElementById('clientPhone').value; var s=document.getElementById('service').value; var d=document.getElementById('bookDate').value; var note=document.getElementById('bookNote').value; if(!n||!ph){ alert('Enter name and phone'); return; } bookings.push({name:n,phone:ph,service:s,date:d,note:note}); localStorage.setItem('heroBookings',JSON.stringify(bookings)); renderBookings(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("Hello Home Care Hero, I want to book: "+s+" | Name: "+n+" | Date: "+d+" | Note: "+note),"_blank"); alert('Booking sent!'); }
+function renderBookings(){ var el=document.getElementById('bookingList'); if(bookings.length===0){ el.innerHTML='<p style="color:#999">No bookings yet</p>'; return; } el.innerHTML=bookings.map(b=>'<div class="tx"><span><b>'+b.name+'</b><br>'+b.service+' - '+b.date+'</span><span>'+b.phone+'</span></div>').join(''); }
+function applyCaregiver(){ var n=document.getElementById('cgName').value; var ph=document.getElementById('cgPhone').value; var sk=document.getElementById('cgSkill').value; var loc=document.getElementById('cgLocation').value; if(!n||!ph){ alert('Enter name and phone'); return; } caregivers.push({name:n,phone:ph,skill:sk,location:loc,verified:false}); localStorage.setItem('heroCaregivers',JSON.stringify(caregivers)); document.getElementById('cgStatus').innerHTML='Application Received - Pending Verification'; renderCaregivers(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("I want to be Caregiver. Name: "+n+" Skill: "+sk+" Location: "+loc),"_blank"); }
+function verifyCaregiver(){ var name=document.getElementById('verifyName').value.trim().toLowerCase(); if(name==='mary nakato'){ document.getElementById('verifyResult').innerHTML='✅ Mary Nakato is VERIFIED - Elderly Care'; return; } var f=caregivers.find(c=>c.name.toLowerCase()===name); var res=document.getElementById('verifyResult'); if(!f){ res.innerHTML='❌ Not found.'; return; } res.innerHTML=f.verified?'✅ '+f.name+' is VERIFIED':'⏳ '+f.name+' is PENDING'; }
+function renderCaregivers(){ var el=document.getElementById('caregiverList'); if(caregivers.length===0) return; el.innerHTML=caregivers.map((c,idx)=>{ var btn=c.verified?'<span class="badge">✅ VERIFIED</span>':'<button onclick="verifyOne('+idx+')" style="background:#0a7a5a;color:#fff;border:none;padding:6px 12px;border-radius:15px">Verify Now</button>'; return '<div class="verified-card"><b>'+c.name+'</b> '+btn+'<br>'+c.skill+' - '+c.location+'</div>'; }).join(''); }
+function verifyOne(idx){ caregivers[idx].verified=true; localStorage.setItem('heroCaregivers',JSON.stringify(caregivers)); renderCaregivers(); alert('✅ '+caregivers[idx].name+' Verified!'); }
+updateWalletUI(); renderBookings(); renderCaregivers();
+</script>
+</body>
+</html>
