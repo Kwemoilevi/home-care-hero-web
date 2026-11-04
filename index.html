@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - REAL</title>
+<title>Home Care Hero</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#f0f7f4;color:#222}
@@ -26,24 +26,129 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 .wallet-box h2{font-size:32px}
 .tx{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between}
 .badge{background:#d4edda;color:#155724;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
-.verified-card{border:2px solid #0a7a5a;border-radius:10px;padding:12px;margin-top:10px}
-.pending-card{border:2px solid orange;border-radius:10px;padding:12px;margin-top:10px}
+.verified-card{border:2px solid #ff8c00;border-radius:10px;padding:12px;margin-top:10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center;padding:15px}
 .modal.active{display:flex}
 .modal-box{background:#fff;width:100%;max-width:450px;border-radius:15px;padding:20px;max-height:90vh;overflow:auto}
 .hidden{display:none}
-img.id-photo{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:8px}
 </style>
 </head>
 <body>
 
-<div class="topbar">👀 <span id="realVisitors">...</span> Live Real Visitors | 📅 <span id="realBookings">0</span> Real Bookings | 🌍 Real Database - Firebase</div>
+<div class="topbar">👀 Live Visitors | 📅 <span id="realBookings">0</span> Real Bookings | 🌍 Trusted Globally</div>
 
 <div style="background:#fff;text-align:center;padding:10px">
 <label style="font-weight:bold">🌍 Country / Currency: </label>
 <select id="countrySelect" onchange="changeCountry()" style="width:auto;display:inline-block;padding:8px;border-radius:20px;font-weight:bold">
 <option value="UG">🇺🇬 Uganda - UGX</option>
 <option value="KE">🇰🇪 Kenya - KES</option>
-<option value="TZ">🇹🇿 Tanzania - TZS</option
+<option value="TZ">🇹🇿 Tanzania - TZS</option>
+<option value="RW">🇷🇼 Rwanda - RWF</option>
+<option value="US">🇺🇸 USA - USD</option>
+<option value="UK">🇬🇧 UK - GBP</option>
+<option value="AE">🇦🇪 UAE - AED</option>
+</select>
+</div>
+
+<header>
+<h1>🏠 Home Care Hero</h1>
+<p>Compassionate, Professional Home Care - Worldwide 🌍<br>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
+<div class="pills"><span>🇺🇬 Uganda</span><span>🇰🇪 Kenya</span><span>🇹🇿 Tanzania</span><span>🇷🇼 Rwanda</span><span>🇺🇸 USA</span><span>🇬🇧 UK</span><span>🇦🇪 UAE</span><span>🌍 + More</span></div>
+<div class="btns">
+<button onclick="openModal('loginModal')">👤 Client Login</button>
+<button onclick="openModal('loginModal')">👩‍⚕️ Caregiver Login</button>
+<button class="black" onclick="openModal('adminModal')">🔒 Admin Login</button>
+<button onclick="openModal('signupModal')">✨ Sign Up</button>
+</div>
+<div class="btns">
+<button class="orange" onclick="document.getElementById('cgApply').scrollIntoView({behavior:'smooth'})">✅ Verify as Caregiver</button>
+<button onclick="document.getElementById('verifiedList').scrollIntoView({behavior:'smooth'})">🏆 View Verified Caregivers</button>
+</div>
+<div style="font-weight:bold;margin-top:10px">Welcome back, Levi (Admin) 👋</div>
+</header>
+
+<div class="section">
+<div style="text-align:center;margin-bottom:15px"><h2>Welcome, Levi !</h2><p>You are Admin. Approve caregivers + see WALLET below.</p></div>
+
+<div class="card" id="verifiedList">
+<h3>🛡️ Caregiver Verifications - Admin Approval</h3>
+<p style="text-align:center;color:#666;font-size:13px">Approve trusted caregivers. Only approved caregivers get jobs.</p>
+<div id="caregiverList"></div>
+<p id="noCg" style="text-align:center;color:#999;margin-top:10px">No caregivers yet. Apply below to be first.</p>
+</div>
+
+<div class="card">
+<h3>💰 Admin Wallet - Automatic Transactions</h3>
+<div class="wallet-box"><p>Total Wallet Balance</p><h2 id="walletBal2">$35.00</h2><p id="walletSub">Admin: Levi • Global</p></div>
+<input type="number" id="addAmount" placeholder="Amount to Add - e.g. 50">
+<select id="addMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
+<button class="wallet-btn orange" onclick="addMoney()">➕ Add Money to Wallet</button>
+<button class="wallet-btn green" onclick="payCaregiver()">💸 Pay Caregiver - Automatic $25 / Visit</button>
+<hr style="margin:15px 0">
+<h4 style="text-align:center;color:#0a7a5a">💸 Withdraw From Wallet</h4>
+<input type="number" id="withdrawAmount" placeholder="Amount to Withdraw - e.g. 20">
+<select id="withdrawMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
+<button class="wallet-btn red" onclick="withdrawMoney()">💸 Withdraw Money</button>
+<h4 style="margin-top:15px">🧾 Automatic Transactions</h4>
+<div id="txList"><p style="color:#999">No transactions yet</p></div>
+</div>
+
+<div class="grid">
+<div class="card"><h3>👵 Elderly Care</h3><p id="priceElderly">From $25 / Visit</p></div>
+<div class="card"><h3>🩺 Nursing Care</h3><p id="priceNursing">From $35 / Visit</p></div>
+<div class="card"><h3>👶 Child Care</h3><p id="priceChild">From $20 / Visit</p></div>
+<div class="card"><h3>🧹 Home Help</h3><p id="priceHome">From $15 / Visit</p></div>
+</div>
+
+<div class="card">
+<h3>📅 Book Care</h3>
+<input type="text" id="clientName" placeholder="Your Full Name">
+<input type="text" id="clientPhone" placeholder="WhatsApp / Phone - e.g. 0771218437">
+<select id="service"><option>Elderly Care</option><option>Nursing Care</option><option>Child Care</option><option>Home Help</option></select>
+<input type="date" id="bookDate">
+<textarea id="bookNote" placeholder="Tell us what you need..."></textarea>
+<button class="wallet-btn green" onclick="bookNow()">Book On WhatsApp</button>
+</div>
+
+<div class="card" id="cgApply">
+<h3>💼 Become a Caregiver - Join Us</h3>
+<input type="text" id="cgName" placeholder="Full Name - Must match ID">
+<input type="text" id="cgPhone" placeholder="Phone / WhatsApp">
+<input type="text" id="cgIdNumber" placeholder="National ID Number">
+<select id="cgSkill"><option>Elderly Care</option><option>Nursing</option><option>Child Care</option><option>Home Help</option></select>
+<input type="text" id="cgLocation" placeholder="Location - e.g. Kampala">
+<input type="text" id="cgExp" placeholder="Years Experience - e.g. 3-5 years">
+<input type="text" id="cgRef" placeholder="Reference - e.g. Kampala Hospital">
+<label>📸 Upload ID / Certificate Photo</label>
+<input type="file" id="cgPhoto" accept="image/*">
+<button class="wallet-btn yellow" onclick="applyCaregiver()">Apply As Caregiver</button>
+<p id="cgStatus"></p>
+</div>
+
+<div class="card">
+<h3>✅ Caregiver Verification</h3>
+<input type="text" id="verifyName" placeholder="Enter Caregiver Name">
+<button class="wallet-btn green" onclick="verifyCaregiver()">Verify Caregiver</button>
+<p id="verifyResult"></p>
+</div>
+
+<div class="card"><h3>📋 Bookings</h3><div id="bookingList"><p style="color:#999">No bookings yet</p></div></div>
+</div>
+
+<div class="modal" id="loginModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Login</h3><input type="text" id="loginUser" placeholder="Username"><input type="password" id="loginPass" placeholder="Password"><button class="wallet-btn green" onclick="doLogin()">Login</button></div></div>
+<div class="modal" id="signupModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Sign Up</h3><input type="text" id="signupName" placeholder="Full Name"><input type="email" id="signupEmail" placeholder="Email"><input type="password" id="signupPass" placeholder="Password"><button class="wallet-btn green" onclick="doSignup()">Create Account</button></div></div>
+<div class="modal" id="adminModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Admin Login</h3><input type="email" id="adminEmail" placeholder="Admin Email"><input type="password" id="adminPass" placeholder="Password"><button class="wallet-btn green" onclick="unlockAdmin()">Unlock Admin</button><p style="font-size:12px">Admin only. Use your private Admin email and password.</p></div></div>
+
+<footer>Home Care Hero © 2026 • Kampala, Uganda • WhatsApp: +256 771 218 437</footer>
+
+<script>
+// NO Firebase here - so it can NEVER go blank. Works like your old working version.
+// Later, when Firebase is ready, we add it in a safe way that cannot blank the page.
+var currencyRates = { UG:{symbol:'UGX ',rate:3750}, KE:{symbol:'KSh ',rate:130}, TZ:{symbol:'TSh ',rate:2600}, RW:{symbol:'RWF ',rate:1430}, US:{symbol:'$',rate:1}, UK:{symbol:'£',rate:0.79}, AE:{symbol:'AED ',rate:3.67} };
+var currentCountry = localStorage.getItem('heroCountry') || 'UG';
+document.getElementById('countrySelect').value = currentCountry;
+function formatMoney(usd){ var c=currencyRates[currentCountry]; var v=usd*c.rate; if(currentCountry==='US'||currentCountry==='UK') return c.symbol+v.toFixed(2); return c.symbol+Math.round(v).toLocaleString(); }
+function changeCountry(){ currentCountry=document.getElementById('countrySelect').value; localStorage.setItem('heroCountry',currentCountry); updatePrices(); updateWalletUI(); }
+function updatePrices(){ document.getElementById('priceElderly').innerText='From '+formatMoney
