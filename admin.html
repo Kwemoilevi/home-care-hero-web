@@ -1,39 +1,89 @@
 <!DOCTYPE html>
-<html>
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin REAL Revenue</title>
-<style>body{font-family:Arial;padding:20px;background:#111;color:white}.box{background:#222;padding:20px;border-radius:12px;margin:10px 0}.big{font-size:32px;color:#12d10e}.btn{background:#12d10e;border:none;padding:10px 15px;border-radius:8px;cursor:pointer;margin:5px}</style>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin - Home Care Hero</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>Admin — REAL Revenue (Firebase)</h1>
-<div class="box">Total Views: <span id="views" class="big">0</span> = UGX <span id="vUGX">0</span> (100 each)</div>
-<div class="box">Total Clicks: <span id="clicks" class="big">0</span> = UGX <span id="cUGX">0</span> (500 each)</div>
-<div class="box"><h2>TOTAL REAL: UGX <span id="total" class="big">0</span></h2><p id="status">Connecting to Firebase REAL...</p></div>
-<button class="btn" onclick="load()">Refresh REAL</button>
-<button class="btn" onclick="exportCSV()">Export CSV Invoice</button>
-<br><br><a href="index.html" style="color:#12d10e">Home</a> | <a href="pharmacy.html" style="color:#12d10e">Pharmacy</a>
+<body class="bg-gray-100 p-4">
+<div class="max-w-4xl mx-auto">
+<div class="flex justify-between items-center">
+<h1 class="text-2xl font-black">Home Care Hero - Admin</h1>
+<a href="index.html" class="text-xs border px-3 py-2 rounded-full bg-white">Back to Site</a>
+</div>
+
+<div id="loginBox" class="bg-white p-6 rounded-2xl mt-4 shadow">
+<p class="font-bold">Enter Admin Password</p>
+<input id="pass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50">
+<button onclick="login()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-bold">Login</button>
+<p class="text-[11px] text-gray-400 mt-2">Password: kwaliver92</p>
+</div>
+
+<div id="adminBox" class="hidden">
+<div class="grid grid-cols-3 gap-3 mt-4">
+<div class="bg-white p-4 rounded-2xl text-center"><p class="text-xs text-gray-500">Total Bookings</p><p id="totalBookings" class="font-black text-2xl">0</p></div>
+<div class="bg-white p-4 rounded-2xl text-center"><p class="text-xs text-gray-500">Deposits (10k each)</p><p id="totalDeposits" class="font-black text-2xl text-emerald-600">0 UGX</p></div>
+<div class="bg-white p-4 rounded-2xl text-center"><p class="text-xs text-gray-500">Balance Pending</p><p id="totalBalance" class="font-black text-2xl text-orange-500">0 UGX</p></div>
+</div>
+
+<div class="bg-white p-4 rounded-2xl mt-4 shadow">
+<div class="flex justify-between items-center"><h2 class="font-bold">Live Bookings - From Firebase</h2><button onclick="loadBookings()" class="text-xs bg-black text-white px-3 py-2 rounded-full">Refresh</button></div>
+<p class="text-[11px] text-gray-400 mt-1">Bookings appear in seconds. Newest first.</p>
+<div id="list" class="mt-4 space-y-3"><p class="text-sm text-gray-500">Loading...</p></div>
+</div>
+</div>
+</div>
 
 <script type="module">
-import { getRevenue } from "./firebase.js";
-window.load=async()=>{
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
+  authDomain: "home-care-hero.firebaseapp.com",
+  projectId: "home-care-hero",
+  storageBucket: "home-care-hero.firebasestorage.app",
+  messagingSenderId: "38632827016",
+  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
+  measurementId: "G-ZV09KN6R90"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+window.login = function(){
+  if(document.getElementById('pass').value === 'kwaliver92'){
+    document.getElementById('loginBox').classList.add('hidden');
+    document.getElementById('adminBox').classList.remove('hidden');
+    loadBookings();
+  } else { alert('Wrong password'); }
+}
+
+window.loadBookings = async function(){
   try{
-    const r=await getRevenue();
-    document.getElementById('views').textContent=r.views;
-    document.getElementById('clicks').textContent=r.clicks;
-    document.getElementById('vUGX').textContent=(r.views*100).toLocaleString();
-    document.getElementById('cUGX').textContent=(r.clicks*500).toLocaleString();
-    document.getElementById('total').textContent=r.total.toLocaleString();
-    document.getElementById('status').textContent="REAL - Live from Firestore - Updates every 3 sec";
-    window._last=r;
-  }catch(e){
-    document.getElementById('status').textContent="ERROR: "+e.message+" - Check firebase.js keys + Firestore Rules";
-  }
-};
-window.exportCSV=()=>{
-  if(!window._last) return alert("Load first");
-  const csv=`Type,Count,Rate,Total\nViews,${window._last.views},100,${window._last.views*100}\nClicks,${window._last.clicks},500,${window._last.clicks*500}\nTOTAL,,,${window._last.total}`;
-  const blob=new Blob([csv],{type:'text/csv'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`invoice-${Date.now()}.csv`; a.click();
-};
-load(); setInterval(load,3000);
+    const q = query(collection(db, "bookings"), orderBy("created", "desc"));
+    const snap = await getDocs(q);
+    let html = "";
+    let totalDeposit = 0; let totalBalance = 0; let count = 0;
+    snap.forEach(doc=>{
+      let b = doc.data(); count++;
+      totalDeposit += (b.deposit || 10000);
+      totalBalance += (b.balance || 0);
+      html += `<div class="border p-3 rounded-xl bg-gray-50">
+        <div class="flex justify-between"><b>${b.id || ''}</b><span class="text-[11px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">${b.status || 'BOOKED'}</span></div>
+        <p class="text-sm mt-1"><b>${b.name || ''}</b> - ${b.phone || ''}</p>
+        <p class="text-xs text-gray-500">${b.service || ''}</p>
+        <p class="text-xs mt-1">Total: <b>${(b.price||0).toLocaleString()} UGX</b> | Deposit: <b class="text-emerald-600">${(b.deposit||10000).toLocaleString()} UGX paid</b> | Balance: <b class="text-orange-500">${(b.balance||0).toLocaleString()} UGX</b></p>
+        <p class="text-[11px] text-gray-400">ETA: ${b.eta || '60 seconds'} | Caregiver: ${b.caregiver || 'Assigning...'}</p>
+        <a href="https://wa.me/256${(b.phone||'').replace(/^0/,'')}?text=Hello ${encodeURIComponent(b.name||'')} your caregiver is on the way! Booked in seconds." target="_blank" class="text-xs bg-[#25D366] text-white px-3 py-1 rounded-full inline-block mt-2">WhatsApp Client</a>
+      </div>`;
+    });
+    if(count===0) html = `<p class="text-sm">No bookings yet. Make a test booking on the main site.</p>`;
+    document.getElementById('list').innerHTML = html;
+    document.getElementById('totalBookings').textContent = count;
+    document.getElementById('totalDeposits').textContent = totalDeposit.toLocaleString()+' UGX';
+    document.getElementById('totalBalance').textContent = totalBalance.toLocaleString()+' UGX';
+  }catch(e){ document.getElementById('list').innerHTML = '<p>Error: '+e.message+'</p>'; }
+}
 </script>
 </body>
 </html>
