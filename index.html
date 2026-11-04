@@ -2,101 +2,88 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Book Caregiver Now</title>
+<title>Home Care Hero - Book in 60 Seconds</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-[#fbf8f5]">
 
-<div class="bg-black text-white text-center py-2 text-xs">🔥 Sponsored: Guardian Pharmacy Ntinda - <a href="https://wa.me/256772101875" class="underline text-yellow-300">Order Drugs on WhatsApp [AD: 100k/week]</a></div>
-
-<nav class="bg-white border-b sticky top-0 z-30 px-6 py-4 flex justify-between items-center">
-<div class="font-black text-xl">Home Care Hero <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">LIVE: Kampala</span></div>
-<div class="flex gap-2"><a href="client.html" class="text-xs border px-3 py-2 rounded-full">Track</a><a href="admin.html" class="text-xs border px-3 py-2 rounded-full">Admin</a></div>
-</nav>
-
-<div class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-8">
-<div>
-<h1 class="text-4xl font-black">Book Trusted Caregiver in <span class="text-emerald-600">60 Min</span></h1>
-<p class="text-gray-500 mt-3 text-sm">Nurses, babysitters, elderly care. Track live like Uber. Pay via MTN MoMo to <b>0772101875</b></p>
-<div class="mt-4 flex items-center gap-2 text-xs text-gray-500"><div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span id="viewCount">1,248</span> views today • Live caregivers: 12</div>
-<div class="mt-6 bg-white p-4 rounded-2xl border-2 border-yellow-400">
-<p class="text-xs font-black">💰 BOOK WITH ONLY 10,000 UGX:</p>
-<div class="flex items-center justify-between mt-2 bg-black text-white p-3 rounded-xl">
-<span class="font-mono font-black text-lg">0772101875</span>
-<button onclick="navigator.clipboard.writeText('0772101875');alert('Number copied!')" class="text-xs bg-white text-black px-3 py-1 rounded-full">COPY</button>
-</div>
-<p class="text-[11px] text-gray-500 mt-2">Kwemo Levi - Home Care Hero. Pay 10k now to book, balance after service.</p>
+<!-- TOP NAV - ALL LOGINS HERE -->
+<div class="sticky top-0 z-50 bg-white/95 backdrop-blur shadow-sm px-4 py-3 flex justify-between items-center">
+<a href="index.html" class="font-black text-base">🏠 Home Care Hero</a>
+<div class="flex gap-1.5 text-[10px] font-bold">
+<a href="client.html" class="bg-emerald-100 text-emerald-700 px-2.5 py-2 rounded-full">📍 Track</a>
+<a href="admin.html" class="bg-black text-white px-2.5 py-2 rounded-full">Admin</a>
+<a href="caregiver.html" class="bg-[#ffcc00] border border-black px-2.5 py-2 rounded-full">Caregiver</a>
 </div>
 </div>
 
-<div class="bg-white p-6 rounded-[2rem] shadow-xl border">
-<h2 class="font-bold text-xl">Book Now - Friendly Prices</h2>
-<input id="name" placeholder="Your full name" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<input id="phone" placeholder="Your MTN number 07..." class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<select id="service" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<option value="30000">Elderly Care - 30,000 UGX / day (Most Popular)</option>
-<option value="25000">Baby Sitter - 25,000 UGX / day</option>
-<option value="40000">Nurse Visit - 40,000 UGX / visit</option>
-<option value="35000">House Help + Care - 35,000 UGX / day</option>
+<div class="max-w-md mx-auto p-4">
+<div class="bg-black text-white p-5 rounded-[1.5rem]">
+<h1 class="text-2xl font-black leading-tight">Nurse / Babysitter<br>At Your Home In<br><span class="text-[#ffcc00]">60 SECONDS</span></h1>
+<p class="text-xs text-gray-300 mt-2">Friendly Prices • Verified Caregivers • Kampala</p>
+<div class="grid grid-cols-3 gap-2 mt-4 text-center text-[11px]">
+<div class="bg-white/10 p-2 rounded-xl"><b>Elderly Care</b><br>30k</div>
+<div class="bg-white/10 p-2 rounded-xl"><b>Baby Sitter</b><br>25k</div>
+<div class="bg-white/10 p-2 rounded-xl"><b>Postnatal</b><br>40k</div>
+</div>
+</div>
+
+<!-- 3 BUTTONS -->
+<div class="grid grid-cols-3 gap-2 mt-3">
+<a href="client.html" class="bg-white border p-3 rounded-2xl text-center"><p class="text-xl">📍</p><p class="text-[11px] font-bold">Track My<br>Caregiver</p></a>
+<a href="admin.html" class="bg-white border p-3 rounded-2xl text-center"><p class="text-xl">🔐</p><p class="text-[11px] font-bold">Admin<br>Login</p></a>
+<a href="caregiver.html" class="bg-white border p-3 rounded-2xl text-center"><p class="text-xl">👩‍⚕️</p><p class="text-[11px] font-bold">Caregiver<br>Login</p></a>
+</div>
+
+<!-- BOOKING FORM -->
+<div class="bg-white p-5 rounded-[1.5rem] shadow mt-4">
+<h2 class="font-bold text-lg">Book Now - In Seconds</h2>
+<p class="text-xs text-gray-500">Pay only 10k deposit to 0772101875. Balance after service.</p>
+<label class="text-xs font-bold mt-4 block">Your Name</label>
+<input id="name" placeholder="e.g Mary Nakato" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<label class="text-xs font-bold mt-3 block">Phone (07...)</label>
+<input id="phone" placeholder="0772101875" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<label class="text-xs font-bold mt-3 block">Service</label>
+<select id="service" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<option value="Elderly Care - 30000">Elderly Care - 30,000 UGX</option>
+<option value="Baby Sitter - 25000">Baby Sitter - 25,000 UGX</option>
+<option value="Postnatal Care - 40000">Postnatal Care - 40,000 UGX</option>
+<option value="Nurse at Home - 35000">Nurse at Home - 35,000 UGX</option>
 </select>
-<div class="bg-emerald-50 border p-3 rounded-xl mt-3 text-xs">
-<p>Total: <b id="total">30,000 UGX</b></p>
-<p class="text-emerald-700">Pay only <b>10,000 UGX now</b> to book, balance after service ✅</p>
-<p class="text-gray-500 mt-1">No hidden booking fee. One simple price.</p>
+<label class="text-xs font-bold mt-3 block">Location / Area</label>
+<input id="location" placeholder="e.g Ntinda, Kampala" class="w-full mt-1 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<button onclick="bookNow()" id="bookBtn" class="w-full mt-4 bg-[#ffcc00] border-2 border-black py-3.5 rounded-xl font-black text-sm">⚡ BOOK IN 60 SECONDS - PAY 10k DEPOSIT</button>
+<p class="text-[11px] text-center text-gray-400 mt-2">Deposit: 10,000 UGX to 0772101875 (MTN MoMo) • Balance after service</p>
+<div id="successBox" class="hidden mt-3 bg-emerald-50 border border-emerald-200 p-3 rounded-xl text-sm"></div>
 </div>
-<button onclick="payWithMoMo()" class="w-full mt-4 bg-[#ffcc00] text-black py-4 rounded-xl font-black text-lg border-2 border-black">📱 BOOK WITH 10k ON MTN MoMo</button>
-<button onclick="confirmPayment()" id="confirmBtn" class="w-full mt-2 bg-black text-white py-3 rounded-xl font-bold text-sm">✅ I Have Paid 10k to 0772101875</button>
-<div id="result" class="hidden mt-4 bg-black text-white p-4 rounded-xl text-center">
-<p class="text-xs">✅ BOOKING CONFIRMED! SAVED TO FIREBASE!</p><p id="rId" class="font-black text-xl mt-1"></p>
-<p class="text-[11px] mt-2">Pay balance after service. Track at client.html</p>
-<a id="waAdmin" href="#" target="_blank" class="mt-3 block bg-[#25D366] py-2 rounded-full font-bold text-sm">Notify Admin on WhatsApp</a>
-</div>
+
+<div class="bg-yellow-50 border border-yellow-200 p-3 rounded-xl mt-4 text-xs text-center">
+Need help? WhatsApp: <a href="https://wa.me/256772101875" class="font-bold underline">0772101875</a> • <a href="client.html" class="underline">Track Caregiver</a> • <a href="caregiver.html" class="underline">Caregiver Login</a> • <a href="admin.html" class="underline">Admin</a>
 </div>
 </div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
-  authDomain: "home-care-hero.firebaseapp.com",
-  projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "38632827016",
-  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
-  measurementId: "G-ZV09KN6R90"
-};
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-let views=parseInt(localStorage.getItem('hch_views')||'1248');views++;localStorage.setItem('hch_views',views);document.getElementById('viewCount').textContent=views.toLocaleString();
-document.getElementById('service').addEventListener('change',e=>{document.getElementById('total').textContent=parseInt(e.target.value).toLocaleString()+' UGX'});
-
-window.payWithMoMo = function(){
- let name=document.getElementById('name').value; if(!name){alert('Enter name first');return;}
- let ussd="*165*3*0772101875*10000%23";
- if(confirm('PAY 10,000 UGX deposit to 0772101875 (Kwemo Levi)?\n\nBalance you pay after service.\n\nTap OK to open MTN MoMo dialer.')){
-   window.location.href="tel:"+ussd;
-   alert('Dialer opened! Enter PIN to pay 10k deposit.\n\nAfter paying, tap "I Have Paid" button.');
- }
-}
-
-window.confirmPayment = async function(){
- let name=document.getElementById('name').value.trim(); let phone=document.getElementById('phone').value.trim(); let service=document.getElementById('service').options[document.getElementById('service').selectedIndex].text;
- if(!name||!phone){alert('Enter name + number');return;}
- document.getElementById('confirmBtn').textContent='Saving to Firebase... Please wait';
- let id='HCH-'+Math.floor(1000+Math.random()*9000);
- let price=parseInt(document.getElementById('service').value);
- let deposit=10000; let balance=price-deposit;
- try{
-   await addDoc(collection(db, "bookings"), {id, name, phone, service, price, deposit, balance, status:'BOOKED - 10k PAID to 0772101875', caregiver:'Not assigned', eta:'60 min', createdAt: serverTimestamp(), created: Date.now()});
-   document.getElementById('rId').textContent=id+' | Deposit 10k Paid | Balance '+balance.toLocaleString()+' UGX';
-   document.getElementById('result').classList.remove('hidden');
-   document.getElementById('waAdmin').href='https://wa.me/256772101875?text=NEW%20BOOKING%20'+id+'%20'+name+'%20PAID%2010k%20deposit%20Balance%20'+balance+'%20Service%20'+encodeURIComponent(service);
-   document.getElementById('confirmBtn').textContent='✅ Saved to Firebase!';
-   alert('✅ BOOKING SAVED! Deposit 10k received. Balance '+balance+' UGX after service.');
- }catch(e){ alert('Error saving: '+e.message); document.getElementById('confirmBtn').textContent='✅ I Have Paid 10k to 0772101875'; }
+import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", authDomain: "home-care-hero.firebaseapp.com", projectId: "home-care-hero", storageBucket: "home-care-hero.firebasestorage.app", messagingSenderId: "38632827016", appId: "1:38632827016:web:0ebca8c98541b2fb3e573d", measurementId: "G-ZV09KN6R90" };
+const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+window.bookNow = async function(){
+let name=document.getElementById('name').value.trim();
+let phone=document.getElementById('phone').value.trim();
+let serviceVal=document.getElementById('service').value;
+let location=document.getElementById('location').value.trim();
+if(!name||!phone){ alert('Enter name and phone'); return; }
+let price = parseInt(serviceVal.split('-')[1].trim());
+let serviceName = serviceVal.split('-')[0].trim();
+let bookingId = 'HCH-' + Math.floor(1000+Math.random()*9000);
+let deposit=10000; let balance=price-deposit;
+document.getElementById('bookBtn').textContent='Booking in seconds...';
+try{
+await addDoc(collection(db,"bookings"),{id:bookingId,name:name,phone:phone,service:serviceName,price:price,deposit:deposit,balance:balance,location:location,status:'BOOKED',eta:'60 seconds',caregiver:'Nakato Grace - Assigning in seconds...',created:new Date()});
+document.getElementById('successBox').classList.remove('hidden');
+document.getElementById('successBox').innerHTML=`✅ <b>Booked!</b> ID: <b>${bookingId}</b><br>Total: ${price.toLocaleString()} UGX | Deposit: 10,000 UGX to 0772101875 | Balance: ${balance.toLocaleString()} UGX<br><a href="client.html" class="underline font-bold">👉 Track Your Caregiver Now</a> • <a href="https://wa.me/256772101875?text=Hi I booked ${bookingId} - ${encodeURIComponent(name)}" target="_blank" class="underline font-bold">WhatsApp Us</a>`;
+document.getElementById('bookBtn').textContent='✅ BOOKED! Book Another';
+}catch(e){ alert('Error: '+e.message); document.getElementById('bookBtn').textContent='⚡ BOOK IN 60 SECONDS'; }
 }
 </script>
 </body>
