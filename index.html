@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero</title>
+<title>Home Care Hero - REAL Money Only</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#f0f7f4;color:#222}
@@ -24,7 +24,7 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 .green{background:#0a7a5a;color:#fff}.orange{background:#ff8c00;color:#fff}.red{background:#dc3545;color:#fff}.yellow{background:#ffcc00}
 .wallet-box{background:#0a7a5a;color:#fff;text-align:center;padding:15px;border-radius:10px;margin:10px 0}
 .wallet-box h2{font-size:32px}
-.tx{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between}
+.tx{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between;gap:8px}
 .badge{background:#d4edda;color:#155724;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
 .verified-card{border:2px solid #ff8c00;border-radius:10px;padding:12px;margin-top:10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -32,7 +32,6 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center;padding:15px}
 .modal.active{display:flex}
 .modal-box{background:#fff;width:100%;max-width:450px;border-radius:15px;padding:20px;max-height:90vh;overflow:auto}
-.hidden{display:none}
 </style>
 </head>
 <body>
@@ -70,7 +69,7 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 </header>
 
 <div class="section">
-<div style="text-align:center;margin-bottom:15px"><h2>Welcome, Levi !</h2><p>You are Admin. Approve caregivers + see WALLET below.</p></div>
+<div style="text-align:center;margin-bottom:15px"><h2>Welcome, Levi !</h2><p>You are Admin. Approve caregivers + see REAL WALLET below.</p></div>
 
 <div class="card" id="verifiedList">
 <h3>🛡️ Caregiver Verifications - Admin Approval</h3>
@@ -80,75 +79,17 @@ input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd
 </div>
 
 <div class="card">
-<h3>💰 Admin Wallet - Automatic Transactions</h3>
-<div class="wallet-box"><p>Total Wallet Balance</p><h2 id="walletBal2">$35.00</h2><p id="walletSub">Admin: Levi • Global</p></div>
-<input type="number" id="addAmount" placeholder="Amount to Add - e.g. 50">
-<select id="addMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
-<button class="wallet-btn orange" onclick="addMoney()">➕ Add Money to Wallet</button>
-<button class="wallet-btn green" onclick="payCaregiver()">💸 Pay Caregiver - Automatic $25 / Visit</button>
-<hr style="margin:15px 0">
-<h4 style="text-align:center;color:#0a7a5a">💸 Withdraw From Wallet</h4>
-<input type="number" id="withdrawAmount" placeholder="Amount to Withdraw - e.g. 20">
-<select id="withdrawMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
-<button class="wallet-btn red" onclick="withdrawMoney()">💸 Withdraw Money</button>
-<h4 style="margin-top:15px">🧾 Automatic Transactions</h4>
-<div id="txList"><p style="color:#999">No transactions yet</p></div>
-</div>
+<h3>💰 Admin Wallet - REAL MONEY ONLY</h3>
+<p style="text-align:center;font-size:13px;color:#b00;font-weight:bold">⚠️ This is NOT bank money until you receive MTN / M-Pesa. No fake adds.</p>
+<div class="wallet-box"><p>Confirmed Real Balance - Money You Actually Received</p><h2 id="walletBal2">UGX 0</h2><p id="walletSub">Admin: Levi • Uganda - UGX</p></div>
 
-<div class="grid">
-<div class="card"><h3>👵 Elderly Care</h3><p id="priceElderly">From $25 / Visit</p></div>
-<div class="card"><h3>🩺 Nursing Care</h3><p id="priceNursing">From $35 / Visit</p></div>
-<div class="card"><h3>👶 Child Care</h3><p id="priceChild">From $20 / Visit</p></div>
-<div class="card"><h3>🧹 Home Help</h3><p id="priceHome">From $15 / Visit</p></div>
-</div>
-
-<div class="card">
-<h3>📅 Book Care</h3>
-<input type="text" id="clientName" placeholder="Your Full Name">
-<input type="text" id="clientPhone" placeholder="WhatsApp / Phone - e.g. 0771218437">
-<select id="service"><option>Elderly Care</option><option>Nursing Care</option><option>Child Care</option><option>Home Help</option></select>
-<input type="date" id="bookDate">
-<textarea id="bookNote" placeholder="Tell us what you need..."></textarea>
-<button class="wallet-btn green" onclick="bookNow()">Book On WhatsApp</button>
-</div>
-
-<div class="card" id="cgApply">
-<h3>💼 Become a Caregiver - Join Us</h3>
-<input type="text" id="cgName" placeholder="Full Name - Must match ID">
-<input type="text" id="cgPhone" placeholder="Phone / WhatsApp">
-<input type="text" id="cgIdNumber" placeholder="National ID Number">
-<select id="cgSkill"><option>Elderly Care</option><option>Nursing</option><option>Child Care</option><option>Home Help</option></select>
-<input type="text" id="cgLocation" placeholder="Location - e.g. Kampala">
-<input type="text" id="cgExp" placeholder="Years Experience - e.g. 3-5 years">
-<input type="text" id="cgRef" placeholder="Reference - e.g. Kampala Hospital">
-<label>📸 Upload ID / Certificate Photo</label>
-<input type="file" id="cgPhoto" accept="image/*">
-<button class="wallet-btn yellow" onclick="applyCaregiver()">Apply As Caregiver</button>
-<p id="cgStatus"></p>
-</div>
-
-<div class="card">
-<h3>✅ Caregiver Verification</h3>
-<input type="text" id="verifyName" placeholder="Enter Caregiver Name">
-<button class="wallet-btn green" onclick="verifyCaregiver()">Verify Caregiver</button>
-<p id="verifyResult"></p>
-</div>
-
-<div class="card"><h3>📋 Bookings</h3><div id="bookingList"><p style="color:#999">No bookings yet</p></div></div>
-</div>
-
-<div class="modal" id="loginModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Login</h3><input type="text" id="loginUser" placeholder="Username"><input type="password" id="loginPass" placeholder="Password"><button class="wallet-btn green" onclick="doLogin()">Login</button></div></div>
-<div class="modal" id="signupModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Sign Up</h3><input type="text" id="signupName" placeholder="Full Name"><input type="email" id="signupEmail" placeholder="Email"><input type="password" id="signupPass" placeholder="Password"><button class="wallet-btn green" onclick="doSignup()">Create Account</button></div></div>
-<div class="modal" id="adminModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Admin Login</h3><input type="email" id="adminEmail" placeholder="Admin Email"><input type="password" id="adminPass" placeholder="Password"><button class="wallet-btn green" onclick="unlockAdmin()">Unlock Admin</button><p style="font-size:12px">Admin only. Use your private Admin email and password.</p></div></div>
-
-<footer>Home Care Hero © 2026 • Kampala, Uganda • WhatsApp: +256 771 218 437</footer>
-
-<script>
-// NO Firebase here - so it can NEVER go blank. Works like your old working version.
-// Later, when Firebase is ready, we add it in a safe way that cannot blank the page.
-var currencyRates = { UG:{symbol:'UGX ',rate:3750}, KE:{symbol:'KSh ',rate:130}, TZ:{symbol:'TSh ',rate:2600}, RW:{symbol:'RWF ',rate:1430}, US:{symbol:'$',rate:1}, UK:{symbol:'£',rate:0.79}, AE:{symbol:'AED ',rate:3.67} };
-var currentCountry = localStorage.getItem('heroCountry') || 'UG';
-document.getElementById('countrySelect').value = currentCountry;
-function formatMoney(usd){ var c=currencyRates[currentCountry]; var v=usd*c.rate; if(currentCountry==='US'||currentCountry==='UK') return c.symbol+v.toFixed(2); return c.symbol+Math.round(v).toLocaleString(); }
-function changeCountry(){ currentCountry=document.getElementById('countrySelect').value; localStorage.setItem('heroCountry',currentCountry); updatePrices(); updateWalletUI(); }
-function updatePrices(){ document.getElementById('priceElderly').innerText='From '+formatMoney
+<h4 style="text-align:center;color:#0a7a5a;margin-top:10px">1. Client Pays - REAL</h4>
+<p style="font-size:13px;text-align:center">Send to MTN: <b>0771218437 - Levi</b><br>Then enter the details + MTN Ref below.</p>
+<input type="text" id="payName" placeholder="Your Name">
+<input type="number" id="payAmount" placeholder="Amount You Actually Sent - e.g. 50000">
+<select id="payMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
+<input type="text" id="payRef" placeholder="MTN Transaction ID / Receipt No - e.g. 1234567890">
+<label>📸 Upload MTN Receipt Screenshot</label>
+<input type="file" id="payProof" accept="image/*">
+<button class="wallet-btn orange" onclick="requestTopUp()">📤 I Sent Real Money - Request Approval</button>
+<p id="payStatus" style
