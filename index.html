@@ -3,14 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Compassionate Home Care in Kampala</title>
+<title>Home Care Hero - Global Compassionate Home Care</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#f7f9fb;color:#222}
 .topbar{background:#FFF3CD;padding:12px;text-align:center;font-weight:bold;border-radius:10px;margin:12px;font-size:15px}
-header{background:#0a7a5a;color:#fff;padding:30px 20px;text-align:center}
+header{background:#0a7a5a;color:#fff;padding:25px 20px;text-align:center}
 header h1{font-size:32px;margin-bottom:8px}
-header p{font-size:17px;opacity:.95}
+header p{font-size:16px;opacity:.95}
+.login-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:15px}
+.login-btn{background:#fff;color:#0a7a5a;padding:9px 14px;border-radius:20px;font-weight:bold;font-size:13px;border:none;cursor:pointer}
+.login-btn-dark{background:#111;color:#fff}
 .hero{padding:30px 20px;text-align:center;background:#fff;margin:15px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
 .hero h2{font-size:26px;color:#0a7a5a;margin-bottom:10px}
 .hero p{font-size:16px;line-height:1.6;margin-bottom:18px}
@@ -24,41 +27,97 @@ header p{font-size:17px;opacity:.95}
 .form-box{background:#fff;margin:15px;padding:20px;border-radius:14px}
 .form-box h2{color:#0a7a5a;margin-bottom:12px;text-align:center}
 input,select,textarea{width:100%;padding:13px;margin-bottom:10px;border:1px solid #ddd;border-radius:10px;font-size:15px}
-button{width:100%;background:#0a7a5a;color:#fff;border:none;padding:15px;border-radius:10px;font-size:17px;font-weight:bold}
+button.submit{width:100%;background:#0a7a5a;color:#fff;border:none;padding:15px;border-radius:10px;font-size:17px;font-weight:bold}
 footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:99;justify-content:center;align-items:center;padding:15px}
+.modal-box{background:#fff;width:100%;max-width:380px;padding:22px;border-radius:16px;position:relative}
+.modal-box h3{color:#0a7a5a;text-align:center;margin-bottom:12px}
+.close{position:absolute;top:10px;right:14px;font-size:22px;cursor:pointer}
+.small{font-size:13px;color:#666;text-align:center;margin-top:8px}
+.dashboard{display:none;background:#e8f8f1;margin:15px;padding:18px;border-radius:12px;text-align:center}
+.country-row{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px;font-size:13px}
+.country-pill{background:rgba(255,255,255,.2);padding:5px 10px;border-radius:15px}
+/* WALLET - FLOATING ONLY, DOES NOT CHANGE BACKGROUND */
+.wallet-float{position:fixed;bottom:20px;right:18px;background:#0a7a5a;color:#fff;padding:14px 16px;border-radius:50px;font-weight:bold;box-shadow:0 4px 15px rgba(0,0,0,.3);z-index:999;cursor:pointer;border:2px solid #fff;font-size:14px}
+.wallet-modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:1000;justify-content:center;align-items:center;padding:15px}
+.wallet-box{background:#fff;width:100%;max-width:400px;padding:22px;border-radius:18px;max-height:90vh;overflow-y:auto}
+.wallet-balance{background:#0a7a5a;color:#fff;padding:18px;border-radius:14px;text-align:center;margin-bottom:12px}
+.wallet-balance h2{font-size:28px}
+.tx-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee;font-size:13px}
+.tx-plus{color:green;font-weight:bold}
+.tx-minus{color:red;font-weight:bold}
+.wallet-btn{width:100%;padding:13px;border:none;border-radius:10px;font-weight:bold;margin-top:8px;cursor:pointer;font-size:15px}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-👀 <span id="visitorCount">Loading...</span> Visitors | 📅 <span id="bookingCount">0</span> Real Bookings | ⭐ Trusted in Kampala
+👀 <span id="visitorCount">Loading...</span> Visitors Worldwide | 📅 <span id="bookingCount">0</span> Real Bookings | 🌍 Trusted Globally
 </div>
 
 <header>
 <h1>🏠 Home Care Hero</h1>
-<p>Compassionate, Professional Home Care in Kampala</p>
+<p>Compassionate, Professional Home Care - Worldwide 🌍</p>
 <p>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
+<div class="country-row">
+<span class="country-pill">🇺🇬 Uganda</span>
+<span class="country-pill">🇰🇪 Kenya</span>
+<span class="country-pill">🇹🇿 Tanzania</span>
+<span class="country-pill">🇷🇼 Rwanda</span>
+<span class="country-pill">🇺🇸 USA</span>
+<span class="country-pill">🇬🇧 UK</span>
+<span class="country-pill">🇦🇪 UAE</span>
+<span class="country-pill">🌍 + More</span>
+</div>
+<div class="login-row">
+<button class="login-btn" onclick="openLogin('Client')">👤 Client Login</button>
+<button class="login-btn" onclick="openLogin('Caregiver')">🧑‍⚕️ Caregiver Login</button>
+<button class="login-btn login-btn-dark" onclick="openLogin('Admin')">🔐 Admin Login</button>
+<button class="login-btn" onclick="openLogin('Sign Up')">✨ Sign Up</button>
+</div>
+<div id="welcomeMsg" style="margin-top:10px;font-weight:bold;display:none"></div>
 </header>
 
+<div class="dashboard" id="dashboard">
+<h3 id="dashTitle">Welcome!</h3>
+<p id="dashText"></p>
+<button class="login-btn" onclick="logout()" style="margin-top:10px;background:#ff7a00;color:#fff">Logout</button>
+</div>
+
 <div class="hero">
-<h2>Care That Comes To Your Home ❤️</h2>
-<p>We send trusted, trained caregivers to your home - so your loved ones get the best care, in the comfort of home.</p>
-<a class="btn" href="https://wa.me/256700000000?text=Hello%20Home%20Care%20Hero,%20I%20need%20a%20caregiver">💬 Book on WhatsApp</a>
+<h2>Care That Comes To Your Home ❤️ - Anywhere in the World</h2>
+<p>We send trusted, trained caregivers to your home - whether you are in Kampala, Nairobi, London, Dubai or New York. Your loved ones get the best care, in the comfort of home.</p>
+<a class="btn" href="https://wa.me/256771218437?text=Hello%20Home%20Care%20Hero,%20I%20need%20a%20caregiver">💬 Book on WhatsApp</a>
 <a class="btn btn-green" href="#book">📅 Book Now</a>
 </div>
 
 <div class="grid">
-<div class="card"><span>👵</span><h3>Elderly Care</h3><p>Daily help, companionship & medication reminders</p></div>
+<div class="card"><span>👵</span><h3>Elderly Care</h3><p>Daily help, companionship & medication reminders - Worldwide</p></div>
 <div class="card"><span>🩺</span><h3>Home Nursing</h3><p>Professional nurses for wound care, BP & injections</p></div>
 <div class="card"><span>👶</span><h3>Baby & Mother Care</h3><p>Nannies, newborn care & post-natal support</p></div>
 <div class="card"><span>💪</span><h3>Physiotherapy</h3><p>Recovery & mobility exercises at home</p></div>
 </div>
 
 <div class="form-box" id="book">
-<h2>📅 Book a Caregiver</h2>
+<h2>📅 Book a Caregiver - Global</h2>
 <form onsubmit="bookNow(event)">
 <input type="text" id="name" placeholder="Your Full Name" required>
 <input type="tel" id="phone" placeholder="Phone / WhatsApp Number" required>
+<select id="country" required>
+<option value="">Select Your Country / Location...</option>
+<option>Uganda - Kampala</option>
+<option>Kenya - Nairobi</option>
+<option>Tanzania - Dar es Salaam</option>
+<option>Rwanda - Kigali</option>
+<option>South Africa - Johannesburg</option>
+<option>Nigeria - Lagos</option>
+<option>USA - New York / Other</option>
+<option>UK - London / Other</option>
+<option>UAE - Dubai / Abu Dhabi</option>
+<option>Canada</option>
+<option>Australia</option>
+<option>Other Country</option>
+</select>
 <select id="service" required>
 <option value="">Choose Service...</option>
 <option>Elderly Care</option>
@@ -66,27 +125,69 @@ footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 <option>Baby & Mother Care</option>
 <option>Physiotherapy</option>
 </select>
-<textarea id="msg" placeholder="Tell us what you need..."></textarea>
-<button type="submit">✅ Request Caregiver on WhatsApp</button>
+<textarea id="msg" placeholder="Tell us what you need + your city..."></textarea>
+<button class="submit" type="submit">✅ Request Caregiver on WhatsApp</button>
 </form>
-<p style="text-align:center;margin-top:10px;font-size:13px;color:#666">Your booking opens WhatsApp - we reply in minutes.</p>
+<p style="text-align:center;margin-top:10px;font-size:13px;color:#666">Your booking opens WhatsApp - we reply in minutes, wherever you are.</p>
 </div>
 
 <footer>
-<p>Home Care Hero - Kampala, Uganda</p>
-<p>📞 WhatsApp: +256 700 000 000 | Available 24/7</p>
+<p>Home Care Hero - Global 🌍</p>
+<p>📞 WhatsApp: +256 771 218 437 | Available 24/7 Worldwide</p>
+<p>Serving Uganda • Kenya • Tanzania • Rwanda • USA • UK • UAE & More</p>
 <p>© 2026 Home Care Hero. All Rights Reserved.</p>
 </footer>
 
+<!-- LOGIN POPUP -->
+<div class="modal" id="loginModal">
+<div class="modal-box">
+<span class="close" onclick="closeLogin()">×</span>
+<h3 id="loginTitle">👤 Client Login</h3>
+<input type="text" id="loginName" placeholder="Full Name / Username">
+<input type="tel" id="loginPhone" placeholder="Phone / WhatsApp Number">
+<input type="password" id="loginPass" placeholder="Password">
+<button class="submit" onclick="doLogin()">Login / Create Account</button>
+<p class="small">Join from anywhere in the world.<br>We will save you on this phone.</p>
+<p class="small" id="loginMsg" style="color:green;font-weight:bold"></p>
+</div>
+</div>
+
+<!-- WALLET FLOATING BUTTON -->
+<div class="wallet-float" onclick="openWallet()">💰 Wallet: $<span id="walletBal">0.00</span> • View</div>
+
+<!-- WALLET POPUP -->
+<div class="wallet-modal" id="walletModal">
+<div class="wallet-box">
+<span style="float:right;font-size:22px;cursor:pointer" onclick="closeWallet()">×</span>
+<h3 style="text-align:center;color:#0a7a5a">💰 My Home Care Hero Wallet</h3>
+<p style="text-align:center;font-size:13px;color:#666">Global Wallet • Automatic Transactions</p>
+<div class="wallet-balance">
+<p style="font-size:13px;opacity:.9">Available Balance</p>
+<h2>$<span id="walletBal2">0.00</span></h2>
+<p style="font-size:12px">User: <span id="walletUser">Guest</span> • <span id="walletRole">Client</span></p>
+</div>
+<input type="number" id="addAmount" placeholder="Amount to Add - e.g. 50">
+<select id="addMethod">
+<option>MTN Mobile Money - Uganda</option>
+<option>Airtel Money</option>
+<option>M-Pesa - Kenya</option>
+<option>Bank Card / Visa</option>
+<option>PayPal - International</option>
+<option>Cash - Pay Caregiver</option>
+</select>
+<button class="wallet-btn" style="background:#ff7a00;color:#fff" onclick="addMoney()">➕ Add Money to Wallet</button>
+<button class="wallet-btn" style="background:#0a7a5a;color:#fff" onclick="payCaregiverAuto()">💸 Pay Caregiver - Automatic $25 / Visit</button>
+<h4 style="margin:15px 0 5px">📜 Automatic Transactions</h4>
+<div id="txList"></div>
+<p style="font-size:12px;color:#888;text-align:center;margin-top:12px">All payments are automatic through the app.<br>Receipt sent to WhatsApp +256 771 218 437</p>
+<button class="wallet-btn" style="background:#eee" onclick="closeWallet()">Close</button>
+</div>
+</div>
+
 <script defer src="/_vercel/insights/script.js"></script>
 <script>
-// VISITOR COUNTER - Real count, not demo
-fetch('https://api.countapi.xyz/hit/home-care-hero-kampala/visits')
-.then(r=>r.json())
-.then(d=>{document.getElementById('visitorCount').innerText=d.value})
-.catch(()=>{document.getElementById('visitorCount').innerText='1,000+'});
-
-// BOOKING COUNTER - stored in browser
+// VISITOR + BOOKING COUNTERS
+fetch('https://api.countapi.xyz/hit/home-care-hero-global/visits').then(r=>r.json()).then(d=>{document.getElementById('visitorCount').innerText=d.value}).catch(()=>{document.getElementById('visitorCount').innerText='1,000+'});
 let bookings = localStorage.getItem('heroBookings') || 128;
 document.getElementById('bookingCount').innerText = bookings;
 
@@ -94,14 +195,33 @@ function bookNow(e){
 e.preventDefault();
 let name=document.getElementById('name').value;
 let phone=document.getElementById('phone').value;
+let country=document.getElementById('country').value;
 let service=document.getElementById('service').value;
 let msg=document.getElementById('msg').value;
 bookings = parseInt(bookings)+1;
 localStorage.setItem('heroBookings', bookings);
 document.getElementById('bookingCount').innerText = bookings;
-let text = "Hello Home Care Hero, I am "+name+". I need "+service+". Phone: "+phone+". Details: "+msg;
-window.open("https://wa.me/256700000000?text="+encodeURIComponent(text), "_blank");
+// AUTOMATIC WALLET PAY ON BOOKING
+if(walletBal >= 25){
+  walletBal -= 25;
+  txs.push({type:'out', desc:'Auto Pay - Booking - '+service, amt:25, date:new Date().toISOString().slice(0,10)});
+  localStorage.setItem('heroWalletBal', walletBal);
+  localStorage.setItem('heroWalletTx', JSON.stringify(txs));
+  updateWalletUI();
+  alert('✅ Booking done! $25 automatically paid from Wallet to Caregiver.');
 }
-</script>
-</body>
-</html>
+let text = "Hello Home Care Hero, I am "+name+". Country: "+country+". I need "+service+". My Phone: "+phone+". Details: "+msg;
+window.open("https://wa.me/256771218437?text="+encodeURIComponent(text), "_blank");
+}
+
+// LOGINS
+let currentRole = 'Client';
+function openLogin(role){
+currentRole = role;
+document.getElementById('loginTitle').innerText = (role=='Sign Up' ? '✨ Create Account - Global' : role=='Admin' ? '🔐 Admin Login' : role=='Caregiver' ? '🧑‍⚕️ Caregiver Login' : '👤 Client Login');
+document.getElementById('loginModal').style.display='flex';
+}
+function closeLogin(){document.getElementById('loginModal').style.display='none';}
+function doLogin(){
+let name=document.getElementById('loginName').value;
+let phone=document.getElementById
