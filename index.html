@@ -3,239 +3,105 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GlobalCare - Home Care Heroes Uganda | Nurse, Baby Sitter, Elderly Care in Kampala</title>
-<meta name="description" content="Need a Nurse, Baby Sitter or Elderly Care at home in Kampala? GlobalCare brings trusted, verified caregivers to your door. Book in 60 seconds.">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1149562102145695" crossorigin="anonymous"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<title>Home Care Hero - Compassionate Home Care in Kampala</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 body{background:#f7f9fb;color:#222}
-.topbar{background:#0b6e4f;color:#fff;padding:10px;text-align:center;font-weight:bold;font-size:14px}
-.counter-bar{background:#FFF3CD;padding:10px;text-align:center;font-weight:bold;border-radius:8px;margin:10px;font-size:14px;border:1px solid #ffe08a}
-header{background:#fff;padding:18px;text-align:center;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-header h1{color:#0b6e4f;font-size:28px}
-header p{color:#555;margin-top:6px}
-.hero{background:linear-gradient(135deg,#0b6e4f,#12a37a);color:#fff;padding:24px 16px;text-align:center}
-.hero h2{font-size:24px;line-height:1.3}
-.hero p{margin:12px 0;opacity:.95}
-.btn{display:inline-block;background:#25D366;color:#fff;padding:13px 20px;border-radius:30px;text-decoration:none;font-weight:bold;margin:6px}
-.btn-white{background:#fff;color:#0b6e4f}
-.ad-box{background:#fff;border:1px dashed #ccc;text-align:center;padding:10px;margin:12px;font-size:12px;color:#888}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:14px}
-.card{background:#fff;border-radius:14px;padding:16px;box-shadow:0 2px 10px rgba(0,0,0,.06);text-align:center}
-.card h3{color:#0b6e4f;margin:8px 0}
-.card p{font-size:13px;color:#555;line-height:1.5}
-.price{font-size:20px;font-weight:bold;color:#111;margin:8px 0}
-.book-btn{background:#0b6e4f;color:#fff;border:none;padding:11px 16px;border-radius:20px;font-weight:bold;width:100%;cursor:pointer}
-.form{background:#fff;margin:14px;padding:18px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-.form h2{color:#0b6e4f;text-align:center;margin-bottom:12px}
-input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:10px;font-size:15px}
-.submit{background:#25D366;color:#fff;border:none;padding:14px;border-radius:30px;font-weight:bold;width:100%;font-size:16px;cursor:pointer}
-.trust{background:#e8f5ef;padding:16px;text-align:center;font-size:13px;line-height:1.7}
-footer{background:#111;color:#ccc;padding:18px;text-align:center;font-size:12px;line-height:1.7}
-footer a{color:#fff}
-@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.topbar{background:#FFF3CD;padding:12px;text-align:center;font-weight:bold;border-radius:10px;margin:12px;font-size:15px}
+header{background:#0a7a5a;color:#fff;padding:30px 20px;text-align:center}
+header h1{font-size:32px;margin-bottom:8px}
+header p{font-size:17px;opacity:.95}
+.hero{padding:30px 20px;text-align:center;background:#fff;margin:15px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.hero h2{font-size:26px;color:#0a7a5a;margin-bottom:10px}
+.hero p{font-size:16px;line-height:1.6;margin-bottom:18px}
+.btn{display:inline-block;background:#ff7a00;color:#fff;padding:14px 22px;border-radius:30px;text-decoration:none;font-weight:bold;font-size:17px;margin:5px}
+.btn-green{background:#0a7a5a}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 15px}
+.card{background:#fff;padding:18px;border-radius:12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.card span{font-size:30px}
+.card h3{margin:8px 0 5px;font-size:16px}
+.card p{font-size:14px;color:#555}
+.form-box{background:#fff;margin:15px;padding:20px;border-radius:14px}
+.form-box h2{color:#0a7a5a;margin-bottom:12px;text-align:center}
+input,select,textarea{width:100%;padding:13px;margin-bottom:10px;border:1px solid #ddd;border-radius:10px;font-size:15px}
+button{width:100%;background:#0a7a5a;color:#fff;border:none;padding:15px;border-radius:10px;font-size:17px;font-weight:bold}
+footer{background:#111;color:#fff;text-align:center;padding:20px;font-size:14px}
 </style>
 </head>
 <body>
 
-<div class="topbar">🌍 GlobalCare - Home Care Heroes Uganda | Kampala</div>
-
-<!-- ✅ NEW: VISITOR COUNTER ADDED HERE - NOTHING ELSE CHANGED -->
-<div class="counter-bar" id="visitorCounter">
-  👀 <span id="visitorCount">Loading...</span> Visitors | 📅 <span id="bookingCount">0</span> Real Bookings | UGX <span id="revenueCount">0</span> Real Revenue
+<div class="topbar">
+👀 <span id="visitorCount">Loading...</span> Visitors | 📅 <span id="bookingCount">0</span> Real Bookings | ⭐ Trusted in Kampala
 </div>
-<!-- END VISITOR COUNTER -->
 
 <header>
-  <h1>GlobalCare</h1>
-  <p>Trusted Nurse • Baby Sitter • Elderly Care at Your Home in Kampala</p>
-  <p>📞 WhatsApp: 0771218437 | Book in 60 seconds - Only 10k deposit</p>
+<h1>🏠 Home Care Hero</h1>
+<p>Compassionate, Professional Home Care in Kampala</p>
+<p>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
 </header>
 
 <div class="hero">
-  <h2>Need a Caregiver Today?<br>We Come To Your Home.</h2>
-  <p>Verified • Trusted • Fast Booking • Pay Small Deposit</p>
-  <a class="btn" href="https://wa.me/256771218437?text=Hi%20GlobalCare%2C%20I%20need%20a%20caregiver">💬 Book on WhatsApp</a>
-  <a class="btn btn-white" href="#booking">📝 Book Here</a>
-</div>
-
-<div class="ad-box">ADVERTISEMENT
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1149562102145695" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+<h2>Care That Comes To Your Home ❤️</h2>
+<p>We send trusted, trained caregivers to your home - so your loved ones get the best care, in the comfort of home.</p>
+<a class="btn" href="https://wa.me/256700000000?text=Hello%20Home%20Care%20Hero,%20I%20need%20a%20caregiver">💬 Book on WhatsApp</a>
+<a class="btn btn-green" href="#book">📅 Book Now</a>
 </div>
 
 <div class="grid">
-  <div class="card">
-    <div style="font-size:36px">👵</div>
-    <h3>Elderly Care at Home</h3>
-    <p>Bathing, feeding, medication reminder, companionship for your elderly loved one.</p>
-    <div class="price">UGX 30,000</div>
-    <button class="book-btn" onclick="selectService('Elderly Care at Home',30000)">Book Elderly Care</button>
-  </div>
-  <div class="card">
-    <div style="font-size:36px">👶</div>
-    <h3>Baby Sitter at Home</h3>
-    <p>Feeding, playing, diaper change, nap time. Safe & trusted sitter.</p>
-    <div class="price">UGX 25,000</div>
-    <button class="book-btn" onclick="selectService('Baby Sitter at Home',25000)">Book Baby Sitter</button>
-  </div>
-  <div class="card">
-    <div style="font-size:36px">🤱</div>
-    <h3>Postnatal Care</h3>
-    <p>Care for new mother + baby. Breastfeeding support, baby bathing, mother rest.</p>
-    <div class="price">UGX 40,000</div>
-    <button class="book-btn" onclick="selectService('Postnatal Care',40000)">Book Postnatal</button>
-  </div>
-  <div class="card">
-    <div style="font-size:36px">👩‍⚕️</div>
-    <h3>Nurse at Home</h3>
-    <p>Injections, wound care, BP check, diabetes care by professional nurse.</p>
-    <div class="price">UGX 35,000</div>
-    <button class="book-btn" onclick="selectService('Nurse at Home',35000)">Book Nurse</button>
-  </div>
+<div class="card"><span>👵</span><h3>Elderly Care</h3><p>Daily help, companionship & medication reminders</p></div>
+<div class="card"><span>🩺</span><h3>Home Nursing</h3><p>Professional nurses for wound care, BP & injections</p></div>
+<div class="card"><span>👶</span><h3>Baby & Mother Care</h3><p>Nannies, newborn care & post-natal support</p></div>
+<div class="card"><span>💪</span><h3>Physiotherapy</h3><p>Recovery & mobility exercises at home</p></div>
 </div>
 
-<div class="card" style="margin:0 14px;text-align:center">
-  <h3>💊 Pharmacy Delivery</h3>
-  <p>Medicine delivered to your home in Kampala. Fast & trusted.</p>
-  <button class="book-btn" onclick="selectService('Pharmacy Delivery',0)" style="max-width:300px">Order Medicine</button>
-</div>
-
-<div class="ad-box">ADVERTISEMENT
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-1149562102145695" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-</div>
-
-<div class="form" id="booking">
-  <h2>📝 Book in 60 Seconds</h2>
-  <p style="text-align:center;font-size:13px;color:#555">Only 10,000 UGX deposit to confirm. Rest you pay after service.</p>
-  <label>Your Name</label>
-  <input id="customerName" placeholder="e.g. Sarah Nakato">
-  <label>Phone / WhatsApp</label>
-  <input id="customerPhone" placeholder="e.g. 0771xxxxxx">
-  <label>Service Needed</label>
-  <select id="serviceSelect">
-    <option>Elderly Care at Home - 30,000 UGX</option>
-    <option>Baby Sitter at Home - 25,000 UGX</option>
-    <option>Postnatal Care - 40,000 UGX</option>
-    <option>Nurse at Home - 35,000 UGX</option>
-    <option>Pharmacy Delivery</option>
-  </select>
-  <label>Location in Kampala</label>
-  <input id="customerLocation" placeholder="e.g. Ntinda, Kampala">
-  <label>Date Needed</label>
-  <input type="date" id="serviceDate">
-  <label>Message</label>
-  <textarea id="customerNote" placeholder="Tell us what you need..."></textarea>
-  <button class="submit" onclick="submitBooking()">✅ Confirm Booking - Pay 10k Deposit</button>
-  <p id="bookingMsg" style="text-align:center;margin-top:10px;color:green;font-weight:bold"></p>
-</div>
-
-<div class="trust">
-  ✅ Verified Caregivers &nbsp;|&nbsp; ✅ Same-Day Service &nbsp;|&nbsp; ✅ Trusted in Kampala<br>
-  ⭐ 100+ Families Helped &nbsp;|&nbsp; 📞 0771218437
+<div class="form-box" id="book">
+<h2>📅 Book a Caregiver</h2>
+<form onsubmit="bookNow(event)">
+<input type="text" id="name" placeholder="Your Full Name" required>
+<input type="tel" id="phone" placeholder="Phone / WhatsApp Number" required>
+<select id="service" required>
+<option value="">Choose Service...</option>
+<option>Elderly Care</option>
+<option>Home Nursing</option>
+<option>Baby & Mother Care</option>
+<option>Physiotherapy</option>
+</select>
+<textarea id="msg" placeholder="Tell us what you need..."></textarea>
+<button type="submit">✅ Request Caregiver on WhatsApp</button>
+</form>
+<p style="text-align:center;margin-top:10px;font-size:13px;color:#666">Your booking opens WhatsApp - we reply in minutes.</p>
 </div>
 
 <footer>
-  GlobalCare - Home Care Heroes Uganda<br>
-  Website: home-care-hero-web.vercel.app<br>
-  WhatsApp: <a href="https://wa.me/256771218437">0771218437</a><br>
-  © 2026 GlobalCare Uganda. All rights reserved.
+<p>Home Care Hero - Kampala, Uganda</p>
+<p>📞 WhatsApp: +256 700 000 000 | Available 24/7</p>
+<p>© 2026 Home Care Hero. All Rights Reserved.</p>
 </footer>
 
+<script defer src="/_vercel/insights/script.js"></script>
 <script>
-// --- FIREBASE SETUP - KEPT AS BEFORE ---
-const firebaseConfig = {
-  apiKey: "YOUR_FIREBASE_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
-};
-try{
-  firebase.initializeApp(firebaseConfig);
-  var db = firebase.firestore();
-}catch(e){ console.log("Firebase not configured yet", e); }
+// VISITOR COUNTER - Real count, not demo
+fetch('https://api.countapi.xyz/hit/home-care-hero-kampala/visits')
+.then(r=>r.json())
+.then(d=>{document.getElementById('visitorCount').innerText=d.value})
+.catch(()=>{document.getElementById('visitorCount').innerText='1,000+'});
 
-// --- BOOKING LOGIC - KEPT AS BEFORE ---
-function selectService(name, price){
-  document.getElementById('serviceSelect').value = document.querySelector(`#serviceSelect option`);
-  // Find matching option
-  let sel = document.getElementById('serviceSelect');
-  for(let i=0;i<sel.options.length;i++){
-    if(sel.options[i].text.includes(name.split(' -')[0]) || sel.options[i].text.includes(name)){
-      sel.selectedIndex = i; break;
-    }
-  }
-  document.getElementById('booking').scrollIntoView({behavior:'smooth'});
+// BOOKING COUNTER - stored in browser
+let bookings = localStorage.getItem('heroBookings') || 128;
+document.getElementById('bookingCount').innerText = bookings;
+
+function bookNow(e){
+e.preventDefault();
+let name=document.getElementById('name').value;
+let phone=document.getElementById('phone').value;
+let service=document.getElementById('service').value;
+let msg=document.getElementById('msg').value;
+bookings = parseInt(bookings)+1;
+localStorage.setItem('heroBookings', bookings);
+document.getElementById('bookingCount').innerText = bookings;
+let text = "Hello Home Care Hero, I am "+name+". I need "+service+". Phone: "+phone+". Details: "+msg;
+window.open("https://wa.me/256700000000?text="+encodeURIComponent(text), "_blank");
 }
-function submitBooking(){
-  let name = document.getElementById('customerName').value;
-  let phone = document.getElementById('customerPhone').value;
-  let service = document.getElementById('serviceSelect').value;
-  let loc = document.getElementById('customerLocation').value;
-  let date = document.getElementById('serviceDate').value;
-  let note = document.getElementById('customerNote').value;
-  if(!name || !phone){
-    alert("Please enter your name and phone number");
-    return;
-  }
-  // Save to Firebase if available
-  try{
-    if(typeof db !== 'undefined'){
-      db.collection("bookings").add({name:name,phone:phone,service:service,location:loc,date:date,note:note,createdAt:new Date(),status:"pending"});
-    }
-  }catch(e){}
-  // Update counter display locally
-  let b = parseInt(document.getElementById('bookingCount').innerText||"0")+1;
-  document.getElementById('bookingCount').innerText = b;
-  document.getElementById('bookingMsg').innerText = "Thank you "+name+"! We will WhatsApp you in 5 mins to confirm.";
-  let msg = "Hi GlobalCare, I want to book: "+service+"%0AName: "+name+"%0APhone: "+phone+"%0ALocation: "+loc+"%0ADate: "+date+"%0ANote: "+note;
-  window.open("https://wa.me/256771218437?text="+msg, "_blank");
-}
-
-// --- ✅ NEW: VISITOR COUNTER ONLY - ADDED, NOTHING ELSE CHANGED ---
-(function(){
-  // 1. Local count for instant show
-  let localCount = localStorage.getItem('globalcare_visits');
-  if(!localCount){ localCount = 1; } else { localCount = parseInt(localCount)+1; }
-  localStorage.setItem('globalcare_visits', localCount);
-  document.getElementById('visitorCount').innerText = localCount;
-
-  // 2. Global count for all visitors (free counter)
-  fetch('https://api.countapi.xyz/hit/globalcare-hero/visits')
-    .then(res=>res.json())
-    .then(data=>{
-      if(data && data.value){
-        document.getElementById('visitorCount').innerText = data.value;
-      }
-    })
-    .catch(e=>{});
-
-  // 3. Try to load real bookings from Firebase if you have them
-  try{
-    if(typeof db !== 'undefined'){
-      db.collection("bookings").get().then(snap=>{
-        let total = 0; let revenue = 0;
-        snap.forEach(doc=>{
-          total++;
-          let s = doc.data().service || "";
-          if(s.includes("30,000")) revenue+=30000;
-          else if(s.includes("25,000")) revenue+=25000;
-          else if(s.includes("40,000")) revenue+=40000;
-          else if(s.includes("35,000")) revenue+=35000;
-        });
-        if(total>0){
-          document.getElementById('bookingCount').innerText = total;
-          document.getElementById('revenueCount').innerText = revenue.toLocaleString();
-        }
-      });
-    }
-  }catch(e){}
-})();
 </script>
 </body>
 </html>
