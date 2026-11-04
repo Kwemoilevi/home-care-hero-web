@@ -1,155 +1,140 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Care Hero</title><style>*{box-sizing:border-box;margin:0;padding:0;font-family:Arial}body{background:#f0f7f4}header{background:#0a7a5a;color:#fff;text-align:center;padding:20px 12px}.card{background:#fff;padding:15px;border-radius:12px;margin:12px;box-shadow:0 2px 8px rgba(0,0,0,.07)}input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px}button{width:100%;padding:12px;border:none;border-radius:8px;font-weight:700;margin:5px 0;cursor:pointer}button:disabled{opacity:.5}.g{background:#0a7a5a;color:#fff}.o{background:#ff8c00;color:#fff}.r{background:#dc3545;color:#fff}.y{background:#ffcc00}.w{background:#0a7a5a;color:#fff;text-align:center;padding:12px;border-radius:10px}.w.locked{background:#555}.top{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px}.top button{width:auto;padding:8px 13px;border-radius:20px;background:#fff;color:#111}.top .b{background:#111;color:#fff}.notif{border:2px solid #ff8c00;border-radius:10px;padding:10px;margin-top:8px;background:#fff7e6}.small{font-size:12px;color:#666}.popup{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);display:none;z-index:999;align-items:flex-start;justify-content:center;padding-top:70px}.popupBox{background:#fff;width:92%;max-width:380px;border-radius:14px;padding:18px}.txid{font-size:11px;color:#888}.stat{display:grid;grid-template-columns:1fr 1fr;gap:8px}.stat div{background:#f0f7f4;border-radius:10px;padding:12px;text-align:center}.ad{background:linear-gradient(135deg,#fff3cd,#ffe6a3);border:2px dashed #ff8c00;border-radius:12px;margin:12px;padding:14px;text-align:center}.ad img{width:100%;max-height:180px;object-fit:cover;border-radius:10px}.adSmall{background:#eef2ff;border:2px dashed #667eea;border-radius:12px;margin:12px;padding:12px;text-align:center}.live{width:10px;height:10px;background:#22c55e;border-radius:50%;display:inline-block;animation:blink 1s infinite}.offline{width:10px;height:10px;background:#999;border-radius:50%;display:inline-block}@keyframes blink{0%{opacity:1}50%{opacity:.3}100%{opacity:1}}</style></head><body>
-<div id="statusBar" style="text-align:center;padding:12px;font-weight:700;font-size:14px;background:#dc3545;color:#fff">🔴 LOGGED OUT - Please Login</div>
-
-<!-- ============ HOMEPAGE ============ -->
-<div id="homeView">
-<div style="background:#fff3cd;text-align:center;padding:9px;font-size:13px;font-weight:700">🏠 Home Care Hero | 📅 <span id="bk">0</span> Bookings | 🌍 Trusted</div>
-<div style="text-align:center;padding:10px;background:#fff">🌍 <select id="cc" onchange="chg()" style="width:auto;padding:7px;border-radius:20px;font-weight:700"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya</option><option value="TZ">🇹🇿 Tanzania</option><option value="RW">🇷🇼 Rwanda</option><option value="US">🇺🇸 USA</option><option value="UK">🇬🇧 UK</option><option value="AE">🇦🇪 UAE</option></select></div>
-<header><h1>🏠 Home Care Hero</h1><p>Elderly • Nursing • Baby • Physio - Worldwide 🌍</p>
-<div id="loggedOutBtns" class="top"><button onclick="openPop('loginPop')">👤 Client Login</button><button onclick="openPop('loginPop')">👩‍⚕️ Caregiver Login</button><button class="b" onclick="openPop('adminPop')">🔒 Admin</button><button onclick="openPop('signupPop')">✨ Sign Up</button></div>
-<div id="loggedInBtns" class="top" style="display:none"><span id="welcomeText" style="font-weight:700"></span><button onclick="doLogout()" style="background:#fff;color:#dc3545">🚪 Logout</button></div>
-<div class="top"><button onclick="go('cg')" style="background:#ff8c00;color:#fff">✅ Become Caregiver</button><button onclick="go('ver')">🏆 Verified Caregivers</button><button onclick="go('atWorkSec')" style="background:#22c55e;color:#fff">👩‍⚕️ Caregiver At Work</button></div></header>
-
-<!-- AD 1 - TOP BANNER -->
-<div class="ad" id="adTop"><span style="font-size:11px;background:#ff8c00;color:#fff;padding:3px 8px;border-radius:10px">ADVERTISEMENT</span><div id="adTopContent"></div><p style="font-size:11px;color:#888;margin-top:6px">Advertise here - Contact Admin • UGX 50,000 / week</p></div>
-
-<div id="loginPop" class="popup"><div class="popupBox"><h3 style="text-align:center">👤 Login - At Top</h3><p id="lockMsg" style="text-align:center;color:red;font-weight:700"></p><input id="lu" placeholder="Username"><input id="lp" type="password" placeholder="Password - hidden ••••••••"><button class="g" id="loginBtn" onclick="login()">Login</button><p id="lm" style="text-align:center"></p><button onclick="closePop('loginPop')" style="background:#eee">Close ✕</button></div></div>
-<div id="signupPop" class="popup"><div class="popupBox"><h3 style="text-align:center">✨ Sign Up</h3><input id="sn" placeholder="Full Name"><input id="se" placeholder="Email"><input id="sp" type="password" placeholder="Create Password - hidden ••••••••"><button class="g" onclick="signup()">Create Account</button><p id="sm" style="text-align:center"></p><button onclick="closePop('signupPop')" style="background:#eee">Close ✕</button></div></div>
-<div id="adminPop" class="popup"><div class="popupBox"><h3 style="text-align:center">🔒 Admin Login</h3><p id="adminLockMsg" style="text-align:center;color:red;font-weight:700"></p><input id="ae" placeholder="Admin Email"><input id="ap" type="password" placeholder="Admin Password - hidden ••••••••"><button class="g" id="adminBtn" onclick="admin()">Unlock Admin Dashboard</button><p id="am" style="text-align:center"></p><button onclick="closePop('adminPop')" style="background:#eee">Close ✕</button></div></div>
-
-<div class="card" id="ver"><h3 style="color:#0a7a5a;text-align:center">🛡️ Verified Caregivers</h3><p style="text-align:center" class="small">Only VERIFIED caregivers show here.</p><div id="cgList"></div><p id="noCg" style="text-align:center;color:#999">No verified caregivers yet.</p></div>
-
-<!-- NEW: CAREGIVER AT WORK - REPLACES WALLET LOCKED -->
-<div class="card" id="atWorkSec"><h3 style="color:#0a7a5a;text-align:center">👩‍⚕️ Caregiver At Work - LIVE</h3><p style="text-align:center" class="small">See who is working right now. Green = At Work, Grey = Off Duty.</p>
-<div style="display:flex;gap:6px;margin-top:10px"><button class="g" onclick="setWork('At Work')" style="background:#22c55e">🟢 I Am At Work Now</button><button class="r" onclick="setWork('Off Duty')">⚫ I Finished - Off Duty</button></div>
-<input id="workName" placeholder="Caregiver Name - e.g. Sarah"><input id="workClient" placeholder="Working For Client - e.g. Mrs. Nakato, Kampala"><select id="workService"><option>Elderly Care</option><option>Nursing Care</option><option>Child Care</option><option>Home Help</option><option>Physio</option></select>
-<button class="o" onclick="startWork()">▶️ Start Work - Show Me As At Work</button>
-<div id="workList" style="margin-top:10px"><p style="text-align:center;color:#999">No caregiver at work yet</p></div></div>
-
-<!-- AD 2 - MIDDLE -->
-<div class="adSmall" id="adMid"><span style="font-size:11px;background:#667eea;color:#fff;padding:3px 8px;border-radius:10px">ADVERTISEMENT</span><div id="adMidContent"></div></div>
-
-<div class="card"><h3 style="text-align:center">📅 Book Care - In App</h3><input id="bn" placeholder="Your Name"><input id="bp" placeholder="Your Phone"><select id="bs"><option>Elderly Care</option><option>Nursing Care</option><option>Child Care</option><option>Home Help</option></select><select id="bcg"><option value="">Any Available Caregiver</option></select><input id="bd" type="date"><textarea id="bnote" placeholder="What do you need?"></textarea><button class="g" onclick="book()">📅 Book In App</button><p id="bookMsg" style="text-align:center"></p><h4 style="margin-top:10px">📋 My Bookings</h4><div id="bl"><p style="color:#999">No bookings yet</p></div></div>
-<div class="card" id="cg"><h3 style="text-align:center">💼 Become Caregiver</h3><input id="cn" placeholder="Full Name - Must match ID"><input id="cp" placeholder="Phone"><input id="ci" placeholder="National ID Number"><select id="cs"><option>Elderly Care</option><option>Nursing</option><option>Child Care</option><option>Home Help</option></select><input id="cl" placeholder="Location - e.g. Kampala"><input id="ce" placeholder="Experience"><input id="cr" placeholder="Reference"><input type="file" id="cph" accept="image/*"><button class="y" onclick="apply()">Apply As Caregiver</button><p id="cst"></p></div>
-<div class="card"><h3 style="text-align:center">✅ Verify Caregiver</h3><input id="vn" placeholder="Caregiver Name"><button class="g" onclick="verify()">Verify</button><p id="vr"></p></div>
-
-<!-- AD 3 - BOTTOM -->
-<div class="ad" id="adBot"><span style="font-size:11px;background:#ff8c00;color:#fff;padding:3px 8px;border-radius:10px">ADVERTISEMENT</span><div id="adBotContent"></div><button onclick="openPop('adPop')" style="background:#111;color:#fff;margin-top:8px">📢 Advertise Your Business Here</button></div>
-<div id="adPop" class="popup"><div class="popupBox"><h3 style="text-align:center">📢 Advertise Here</h3><p style="text-align:center;font-size:13px">Top Banner: UGX 50,000 / week<br>Middle: UGX 30,000 / week<br>Bottom: UGX 20,000 / week<br><br>Contact Admin.</p><input id="adName" placeholder="Your Business Name"><input id="adPhone" placeholder="Your Phone"><button class="g" onclick="requestAd()">Request Ad Space</button><p id="adMsg" style="text-align:center"></p><button onclick="closePop('adPop')" style="background:#eee">Close ✕</button></div></div>
-
-<footer style="text-align:center;padding:12px;color:#666">Home Care Hero © 2026 • Kampala, Uganda</footer>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home Care Hero</title>
+<style>
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,Arial;background:#f6f7fb;color:#111}
+header{background:#111827;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
+header b{font-size:18px} #status{font-size:12px;background:#f59e0b;color:#111;padding:6px 10px;border-radius:999px;font-weight:700}
+#status.live{background:#22c55e;color:#fff}
+.wrap{max-width:900px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
+h2{margin:0 0 10px} label{font-size:13px;font-weight:700;display:block;margin:12px 0 6px}
+input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:15px}
+button{border:0;border-radius:10px;padding:13px 16px;font-size:15px;font-weight:800;cursor:pointer;width:100%}
+.btn-dark{background:#111827;color:#fff} .btn-green{background:#16a34a;color:#fff} .btn-outline{background:#fff;border:1px solid #ddd;color:#111}
+.tabs{display:flex;gap:8px;margin-bottom:14px} .tabs button{flex:1;background:#e5e7eb;color:#111} .tabs button.active{background:#111827;color:#fff}
+.job{border:1px solid #eee;border-radius:12px;padding:14px;margin-top:12px}
+.job b{font-size:16px} .muted{color:#666;font-size:13px} .pill{display:inline-block;background:#dcfce7;color:#166534;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:600px){.row{grid-template-columns:1fr}}
+.hidden{display:none}
+</style>
+</head>
+<body>
+<header><b>🏠 Home Care Hero</b><span id="status">🟡 DEMO - Not Connected</span></header>
+<div class="wrap">
+<div class="tabs">
+<button id="tabClient" class="active" onclick="showTab('client')">I Need Care</button>
+<button id="tabCarer" onclick="showTab('carer')">I Am a Carer</button>
 </div>
 
-<!-- ============ ADMIN DASHBOARD ============ -->
-<div id="adminView" style="display:none">
-<div style="background:#111;color:#fff;text-align:center;padding:14px"><h2>🔒 ADMIN DASHBOARD</h2><p>Private - Only Levi</p><div style="display:flex;gap:8px;justify-content:center;margin-top:8px"><button onclick="showHome()" style="width:auto;padding:8px 14px;border-radius:20px;background:#fff;color:#111">← Back to Homepage</button><button onclick="doLogout()" style="width:auto;padding:8px 14px;border-radius:20px;background:#dc3545;color:#fff">🚪 Logout Admin</button></div></div>
-<div class="card"><h3 style="text-align:center">📊 Admin Stats</h3><div class="stat"><div><h3 id="aBal">UGX 0</h3><p>Total Wallet</p></div><div><h3 id="aBk">0</h3><p>Total Bookings</p></div><div><h3 id="aCg">0</h3><p>Total Caregivers</p></div><div><h3 id="aWork">0</h3><p>At Work Now</p></div></div></div>
-
-<div class="card"><h3 style="text-align:center">💰 Admin Wallet - Private</h3><p style="text-align:center" class="small">Wallet moved here. Only Admin sees it now. No more Wallet Locked on Homepage.</p><div class="w"><p>Real Wallet Balance</p><h2 id="bal">UGX 0</h2><p id="balSub">Home Care Hero Wallet</p></div>
-<input id="da" type="number" placeholder="Amount - e.g. 50000"><input id="de" placeholder="Your Email for Receipt"><select id="pm"><option>MTN Mobile Money</option><option>Airtel Money</option><option>M-Pesa</option><option>Bank Card</option><option>PayPal</option></select><button class="o" id="depBtn" onclick="deposit()">➕ Pay Real Money - Flutterwave</button><p id="ps" style="text-align:center;font-size:13px"></p>
-<input id="wa" type="number" placeholder="Withdraw Amount"><select id="wm"><option>MTN Mobile Money</option><option>Airtel Money</option><option>M-Pesa</option><option>Bank</option></select><input id="wn" placeholder="Your Wallet / Phone for Withdraw"><button class="r" id="wdBtn" onclick="wd()">💸 Withdraw From App</button><p id="ws" style="text-align:center;font-size:13px"></p>
-<button class="g" onclick="payCg()">💸 Pay Caregiver - UGX 93,750</button>
-<h4 style="margin-top:10px">🧾 All Transactions</h4><div id="tx"><p style="color:#999">No transactions yet</p></div></div>
-
-<div class="card"><h3 style="text-align:center">👩‍⚕️ Who Is At Work - Admin Control</h3><div id="adminWork"><p style="color:#999">No one at work</p></div></div>
-
-<div class="card"><h3 style="text-align:center">📢 Manage Advertisements - Admin Only</h3>
-<p style="font-weight:700;margin-top:10px">🔝 Top Banner Ad</p><input id="adTopTitle" placeholder="Top Ad Title"><input id="adTopDesc" placeholder="Top Ad Description"><input id="adTopLink" placeholder="Top Ad Link"><button class="o" onclick="saveAd('top')">Save Top Ad</button>
-<p style="font-weight:700;margin-top:10px">📱 Middle Ad</p><input id="adMidTitle" placeholder="Middle Ad Title"><input id="adMidDesc" placeholder="Middle Ad Description"><input id="adMidLink" placeholder="Middle Ad Link"><button class="g" onclick="saveAd('mid')">Save Middle Ad</button>
-<p style="font-weight:700;margin-top:10px">📱 Bottom Ad</p><input id="adBotTitle" placeholder="Bottom Ad Title"><input id="adBotDesc" placeholder="Bottom Ad Description"><input id="adBotLink" placeholder="Bottom Ad Link"><button class="g" onclick="saveAd('bot')">Save Bottom Ad</button>
-<button class="r" onclick="clearAds()">🗑️ Clear All Ads</button>
-<h4 style="margin-top:10px">📩 Ad Requests</h4><div id="adRequests"><p style="color:#999">No ad requests yet</p></div></div>
-
-<div class="card"><h3 style="text-align:center">📬 Pending Bookings - Admin Only</h3><div id="adminBookings"><p style="text-align:center;color:#999">No pending bookings</p></div></div>
-<div class="card"><h3 style="text-align:center">👩‍⚕️ Pending Caregivers - Approve Here</h3><div id="adminCg"><p style="text-align:center;color:#999">No pending caregivers</p></div></div>
+<!-- CLIENT -->
+<div id="clientView" class="card">
+<h2>Post a Care Job</h2>
+<label>Your Name</label><input id="cName" placeholder="e.g. Sarah">
+<div class="row"><div><label>Location / Area</label><input id="cArea" placeholder="e.g. Kampala - Ntinda"></div><div><label>Phone / WhatsApp</label><input id="cPhone" placeholder="e.g. 0770..."></div></div>
+<label>What help do you need?</label>
+<select id="cType"><option>Elderly Care</option><option>Child Care / Nanny</option><option>Postnatal Care</option><option>Companion / House Help</option><option>Nurse / Medical Care</option><option>Cleaning & Cooking</option></select>
+<div class="row"><div><label>Date Needed</label><input id="cDate" type="date"></div><div><label>Pay (UGX per day)</label><input id="cPay" type="number" placeholder="e.g. 30000"></div></div>
+<label>Details</label><textarea id="cDetails" rows="3" placeholder="Hours, duties, special needs..."></textarea>
+<button class="btn-dark" style="margin-top:14px" onclick="postJob()">Post Job - Go Live ✅</button>
+<p class="muted" id="postMsg"></p>
+<h2 style="margin-top:20px">My Posted Jobs</h2>
+<div id="myJobs"></div>
 </div>
 
-<script src="https://checkout.flutterwave.com/v3.js"></script>
+<!-- CARER -->
+<div id="carerView" class="card hidden">
+<h2>Available Jobs - Live</h2>
+<p class="muted">Jobs appear here instantly when a client posts. No refresh needed.</p>
+<label>Filter by Area</label><input id="filterArea" placeholder="Type area to filter..." oninput="renderJobs()">
+<div id="allJobs"></div>
+</div>
+
+<div class="card">
+<h2>How it works</h2>
+<p class="muted">1. Client posts a job → 2. It saves to Firebase → 3. Carer sees it instantly → 4. Carer calls / WhatsApps client.</p>
+</div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script>
-var PASS="kwaliver92";
-var FLW_PUBLIC_KEY="FLWPUBK-XXXXXXXXXXXXXXXX-X";
-var R={UG:3750,KE:130,TZ:2600,RW:1430,US:1,UK:0.79,AE:3.67};
-var S={UG:"UGX ",KE:"KSh ",TZ:"TSh ",RW:"RWF ",US:"$",UK:"£",AE:"AED "};
-var C=localStorage.getItem("heroCountry")||"UG";
-var B=parseFloat(localStorage.getItem("heroRealBal2")||0);
-var T=JSON.parse(localStorage.getItem("heroRealTx2")||"[]");
-var IDS=JSON.parse(localStorage.getItem("heroTxIds")||"[]");
-var G=JSON.parse(localStorage.getItem("heroCg")||"[]");
-var K=JSON.parse(localStorage.getItem("heroBk")||"[]");
-var ADS=JSON.parse(localStorage.getItem("heroAds")||'{"top":null,"mid":null,"bot":null}');
-var ADREQ=JSON.parse(localStorage.getItem("heroAdReq")||"[]");
-var WORK=JSON.parse(localStorage.getItem("heroWork")||"[]");
-var BUSY=false;
-var FAILS=parseInt(localStorage.getItem("heroFails")||0);
-var LOCKUNTIL=parseInt(localStorage.getItem("heroLockUntil")||0);
-var ISADMIN=localStorage.getItem("heroIsAdmin")=="1";
-function isLocked(){if(Date.now()<LOCKUNTIL){return true}if(LOCKUNTIL>0&&Date.now()>=LOCKUNTIL){FAILS=0;LOCKUNTIL=0;localStorage.setItem("heroFails",0);localStorage.setItem("heroLockUntil",0)}return false}
-function isLogged(){return !!localStorage.getItem("heroLogged")}
-function makeId(){return "HCH-"+Date.now()+"-"+Math.floor(Math.random()*9000+1000)}
-function hasId(id){return IDS.indexOf(id)!==-1}
-function addTx(id,desc,amtStr,amtNum){if(hasId(id)){return false}IDS.push(id);localStorage.setItem("heroTxIds",JSON.stringify(IDS));T.push({id:id,d:desc,a:amtStr});B=B+amtNum;localStorage.setItem("heroRealBal2",B);localStorage.setItem("heroRealTx2",JSON.stringify(T));show();return true}
-function fmt(u){var v=C=="UG"?u:u/3750*R[C];if(C=="US"||C=="UK")return S[C]+v.toFixed(2);return S[C]+Math.round(v).toLocaleString()}
-function go(id){document.getElementById(id).scrollIntoView({behavior:"smooth"})}
-function openPop(id){if(isLocked()){var sec=Math.ceil((LOCKUNTIL-Date.now())/1000);document.getElementById("lockMsg").innerText="⛔ ACCOUNT LOCKED - Wait "+sec+"s";document.getElementById("adminLockMsg").innerText="⛔ ACCOUNT LOCKED - Wait "+sec+"s";}document.getElementById(id).style.display="flex";window.scrollTo({top:0})}
-function closePop(id){document.getElementById(id).style.display="none"}
-function chg(){C=document.getElementById("cc").value;localStorage.setItem("heroCountry",C);show()}
-function saveBk(){localStorage.setItem("heroBk",JSON.stringify(K));show()}
-function showHome(){document.getElementById("adminView").style.display="none";document.getElementById("homeView").style.display="block";window.scrollTo({top:0})}
-function showAdmin(){document.getElementById("homeView").style.display="none";document.getElementById("adminView").style.display="block";window.scrollTo({top:0})}
-// WORK
-function saveWork(){localStorage.setItem("heroWork",JSON.stringify(WORK));show()}
-function startWork(){var n=document.getElementById("workName").value;var cl=document.getElementById("workClient").value;var s=document.getElementById("workService").value;if(!n){alert("Enter Caregiver Name");return}if(!cl){alert("Enter Client you are working for");return}var now=new Date();var time=now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})+" - "+now.toLocaleDateString();WORK.push({n:n,cl:cl,s:s,time:time,status:"At Work"});saveWork();alert("🟢 "+n+" is now AT WORK for "+cl)}
-function setWork(status){var n=document.getElementById("workName").value;if(!n){alert("Enter Caregiver Name first");return}var found=false;for(var i=0;i<WORK.length;i++){if(WORK[i].n.toLowerCase()==n.toLowerCase()){WORK[i].status=status;found=true}}if(!found){if(status=="At Work"){alert("Tap Start Work first");return}else{alert("Not found in At Work list");return}}saveWork();alert(n+" - "+status)}
-function finishWork(i){WORK[i].status="Off Duty";saveWork()}
-function delWork(i){WORK.splice(i,1);saveWork()}
-function renderWork(){
-var el=document.getElementById("workList");var aw=document.getElementById("adminWork");
-var atWork=WORK.filter(function(w){return w.status=="At Work"});
-if(WORK.length==0){el.innerHTML="<p style=text-align:center;color:#999>No caregiver at work yet</p>";aw.innerHTML="<p style=color:#999>No one at work</p>";return}
-var h="";for(var i=0;i<WORK.length;i++){var w=WORK[i];var dot=w.status=="At Work"?"<span class=live></span> <b style=color:green>AT WORK - LIVE</b>":"<span class=offline></span> <b style=color:#999>OFF DUTY</b>";var btn=w.status=="At Work"?"<button class=r onclick=finishWork("+i+")>⏹️ Finish Work</button>":"<button style=background:#eee onclick=delWork("+i+")>Delete</button>";h+="<div style=border:2px solid "+(w.status=="At Work"?"#22c55e":"#ddd")+" ;border-radius:10px;padding:10px;margin-top:8px><b>"+w.n+"</b> - "+dot+"<br>Working for: <b>"+w.cl+"</b><br>Service: "+w.s+"<br>Started: "+w.time+"<br>"+btn+"</div>"}el.innerHTML=h;aw.innerHTML=h;
-document.getElementById("aWork").innerText=atWork.length;
+// --- PASTE YOUR FIREBASE CONFIG HERE ---
+// Paste your block that starts with: var firebaseConfig = { ... };
+// Example (DO NOT USE THIS, use YOURS):
+// var firebaseConfig = { apiKey: "YOURS", authDomain: "...", databaseURL: "...", projectId: "...", ... };
+
+var db = null;
+try{
+  if(typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE")){
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    document.getElementById('status').textContent = "🟢 REAL LIVE - Connected to Firebase ✅";
+    document.getElementById('status').className = "live";
+  }
+}catch(e){ console.log(e); }
+
+var jobs = [];
+var currentTab = 'client';
+
+function showTab(t){
+  currentTab = t;
+  document.getElementById('clientView').classList.toggle('hidden', t!=='client');
+  document.getElementById('carerView').classList.toggle('hidden', t!=='carer');
+  document.getElementById('tabClient').classList.toggle('active', t==='client');
+  document.getElementById('tabCarer').classList.toggle('active', t==='carer');
 }
-// ADS
-function renderAds(){
-var top=document.getElementById("adTopContent");var mid=document.getElementById("adMidContent");var bot=document.getElementById("adBotContent");
-if(ADS.top){top.innerHTML="<h3>"+ADS.top.title+"</h3><p>"+ADS.top.desc+"</p><a href='"+ADS.top.link+"' target='_blank'><button class=g style='margin-top:8px'>Visit Advertiser →</button></a>"}else{top.innerHTML="<h3>📢 Your Ad Here - Top Banner</h3><p>Reach 1000s of families looking for home care in Kampala. UGX 50,000 / week</p>"}
-if(ADS.mid){mid.innerHTML="<h4>"+ADS.mid.title+"</h4><p style='font-size:13px'>"+ADS.mid.desc+"</p><a href='"+ADS.mid.link+"' target='_blank'><button style='background:#667eea;color:#fff;margin-top:6px'>Learn More →</button></a>"}else{mid.innerHTML="<h4>📢 Your Ad Here - Middle</h4><p style='font-size:13px'>UGX 30,000 / week - Shows between Caregiver At Work and Book Care</p>"}
-if(ADS.bot){bot.innerHTML="<h3>"+ADS.bot.title+"</h3><p>"+ADS.bot.desc+"</p><a href='"+ADS.bot.link+"' target='_blank'><button class=g style='margin-top:8px'>Visit →</button></a>"}else{bot.innerHTML="<h3>📢 Your Business Here</h3><p>UGX 20,000 / week - Bottom ad for small businesses</p>"}
-if(document.getElementById("adTopTitle")){document.getElementById("adTopTitle").value=ADS.top?ADS.top.title:"";document.getElementById("adTopDesc").value=ADS.top?ADS.top.desc:"";document.getElementById("adTopLink").value=ADS.top?ADS.top.link:"";document.getElementById("adMidTitle").value=ADS.mid?ADS.mid.title:"";document.getElementById("adMidDesc").value=ADS.mid?ADS.mid.desc:"";document.getElementById("adMidLink").value=ADS.mid?ADS.mid.link:"";document.getElementById("adBotTitle").value=ADS.bot?ADS.bot.title:"";document.getElementById("adBotDesc").value=ADS.bot?ADS.bot.desc:"";document.getElementById("adBotLink").value=ADS.bot?ADS.bot.link:"";}
-var ar=document.getElementById("adRequests");if(ADREQ.length==0){ar.innerHTML="<p style=color:#999>No ad requests yet</p>"}else{var h="";for(var i=0;i<ADREQ.length;i++){h+="<div style=border:1px solid #ddd;border-radius:8px;padding:8px;margin-top:6px><b>"+ADREQ[i].n+"</b> - "+ADREQ[i].p+"<br><button class=r onclick=delAdReq("+i+")>Delete Request</button></div>"}ar.innerHTML=h}
+
+function postJob(){
+  var name = document.getElementById('cName').value.trim();
+  var area = document.getElementById('cArea').value.trim();
+  var phone = document.getElementById('cPhone').value.trim();
+  var type = document.getElementById('cType').value;
+  var date = document.getElementById('cDate').value;
+  var pay = document.getElementById('cPay').value;
+  var details = document.getElementById('cDetails').value.trim();
+  if(!name || !area || !phone){ document.getElementById('postMsg').textContent = "Please fill Name, Area and Phone."; return; }
+  var job = { name:name, area:area, phone:phone, type:type, date:date, pay:pay, details:details, createdAt: Date.now(), status:"Open" };
+  if(db){
+    db.ref('jobs').push(job).then(function(){
+      document.getElementById('postMsg').textContent = "✅ Job posted LIVE! Carers can see it now.";
+    });
+  } else {
+    job.id = 'demo'+Date.now(); jobs.unshift(job); renderJobs();
+    document.getElementById('postMsg').textContent = "⚠️ Demo mode - connect Firebase to go live. Job saved locally only.";
+  }
+  document.getElementById('cDetails').value = "";
 }
-function saveAd(which){var t,d,l;if(which=="top"){t=document.getElementById("adTopTitle").value;d=document.getElementById("adTopDesc").value;l=document.getElementById("adTopLink").value}if(which=="mid"){t=document.getElementById("adMidTitle").value;d=document.getElementById("adMidDesc").value;l=document.getElementById("adMidLink").value}if(which=="bot"){t=document.getElementById("adBotTitle").value;d=document.getElementById("adBotDesc").value;l=document.getElementById("adBotLink").value}if(!t){alert("Enter Ad Title");return}ADS[which]={title:t,desc:d||"",link:l||"#"};localStorage.setItem("heroAds",JSON.stringify(ADS));renderAds();alert("Ad Saved! It now shows on Homepage - "+which.toUpperCase())}
-function clearAds(){ADS={top:null,mid:null,bot:null};localStorage.setItem("heroAds",JSON.stringify(ADS));renderAds();alert("All Ads Cleared")}
-function requestAd(){var n=document.getElementById("adName").value;var p=document.getElementById("adPhone").value;if(!n||!p){alert("Enter Business Name and Phone");return}ADREQ.push({n:n,p:p});localStorage.setItem("heroAdReq",JSON.stringify(ADREQ));document.getElementById("adMsg").innerText="Request Sent! Admin will contact you at "+p;renderAds();alert("Ad Request Sent to Admin!")}
-function delAdReq(i){ADREQ.splice(i,1);localStorage.setItem("heroAdReq",JSON.stringify(ADREQ));renderAds()}
-function updateStatus(){
-var bar=document.getElementById("statusBar");var outBtns=document.getElementById("loggedOutBtns");var inBtns=document.getElementById("loggedInBtns");
-if(isLocked()){var sec=Math.ceil((LOCKUNTIL-Date.now())/1000);bar.style.background="#111";bar.innerText="⛔ ACCOUNT LOCKED - Wait "+sec+"s";outBtns.style.display="flex";inBtns.style.display="none";document.getElementById("loginBtn").disabled=true;document.getElementById("adminBtn").disabled=true;return}
-document.getElementById("loginBtn").disabled=false;document.getElementById("adminBtn").disabled=false;
-if(isLogged()){var n=localStorage.getItem("heroLogged");bar.style.background="#0a7a5a";bar.innerText="🟢 LOGGED IN as "+n+" ✅";outBtns.style.display="none";inBtns.style.display="flex";document.getElementById("welcomeText").innerText="Welcome, "+n+" 👋";}
-else{bar.style.background="#dc3545";bar.innerText="🔴 LOGGED OUT - Please Login";outBtns.style.display="flex";inBtns.style.display="none";}
+
+function renderJobs(){
+  var filter = (document.getElementById('filterArea').value||"").toLowerCase();
+  var filtered = jobs.filter(function(j){ return !filter || (j.area||"").toLowerCase().includes(filter); });
+  var html = "";
+  if(filtered.length===0) html = "<p class='muted'>No jobs yet. Post one to test.</p>";
+  filtered.forEach(function(j){
+    html += "<div class='job'><div style='display:flex;justify-content:space-between'><b>"+escapeHtml(j.type)+"</b><span class='pill'>"+escapeHtml(j.status||"Open")+"</span></div>"
+    + "<p class='muted'>📍 "+escapeHtml(j.area)+" • 📅 "+escapeHtml(j.date||"ASAP")+" • 💰 UGX "+escapeHtml(j.pay||"Negotiable")+"</p>"
+    + "<p>"+escapeHtml(j.details||"")+"</p>"
+    + "<p><b>"+escapeHtml(j.name)+"</b> • <a href='tel:"+escapeHtml(j.phone)+"'>📞 "+escapeHtml(j.phone)+"</a> • <a target='_blank' href='https://wa.me/256"+escapeHtml(j.phone).replace(/\D/g,'').slice(-9)+"'>WhatsApp</a></p></div>";
+  });
+  document.getElementById('allJobs').innerHTML = html;
+  document.getElementById('myJobs').innerHTML = html;
 }
-function doLogout(){localStorage.removeItem("heroLogged");localStorage.removeItem("heroIsAdmin");ISADMIN=false;showHome();updateStatus();show();alert("🔴 LOGGED OUT.");window.scrollTo({top:0})}
-function wrongPass(){FAILS++;localStorage.setItem("heroFails",FAILS);if(FAILS>=3){LOCKUNTIL=Date.now()+60000;localStorage.setItem("heroLockUntil",LOCKUNTIL);alert("⛔ LOCKED! 3 wrong passwords. Wait 60 seconds.");}else{alert("Wrong password - Attempt "+FAILS+" of 3.");}updateStatus()}
-function show(){updateStatus();renderAds();renderWork();document.getElementById("bal").innerText=fmt(B);document.getElementById("balSub").innerText="Home Care Hero Wallet - "+C;var tx=document.getElementById("tx");if(T.length==0){tx.innerHTML="<p style=color:#999>No transactions yet</p>"}else{var h="";for(var i=T.length-1;i>=0;i--){h+="<div style=border-bottom:1px solid #eee;padding:8px 0>"+T[i].d+" - <b>"+T[i].a+"</b><br><span class=txid>ID: "+T[i].id+"</span></div>"}tx.innerHTML=h}renderCg();renderBookings();renderAdmin();document.getElementById("bk").innerText=K.length;}
-function renderBookings(){var bl=document.getElementById("bl");if(K.length==0){bl.innerHTML="<p style=color:#999>No bookings yet</p>";return}var bh="";for(var i=0;i<K.length;i++){var b=K[i];var color=b.status=="Accepted"?"green":b.status=="Declined"?"red":"orange";bh+="<div style=border:1px solid #ddd;border-radius:10px;padding:10px;margin-top:8px><b>"+b.n+"</b> - "+b.s+"<br>Date: "+b.d+" - Caregiver: "+(b.cg||"Any Available")+"<br>Status: <b style=color:"+color+">"+b.status+"</b></div>"}bl.innerHTML=bh;}
-function renderAdmin(){document.getElementById("aBal").innerText=fmt(B);document.getElementById("aBk").innerText=K.length;document.getElementById("aCg").innerText=G.length;var ab=document.getElementById("adminBookings");var pend=K.filter(function(b){return b.status=="Pending"});if(pend.length==0){ab.innerHTML="<p style=text-align:center;color:#999>No pending bookings</p>"}else{var h="";for(var i=0;i<K.length;i++){if(K[i].status!="Pending")continue;h+="<div class=notif><b>🔔 NEW BOOKING</b><br>Client: <b>"+K[i].n+"</b> - "+K[i].p+"<br>Service: "+K[i].s+"<br>Date: "+K[i].d+"<br>Caregiver: "+(K[i].cg||"Any")+"<br>Note: "+(K[i].note||"")+"<br><button class=g onclick=acceptBk("+i+")>Accept Booking</button><button class=r onclick=declineBk("+i+")>Decline</button></div>"}ab.innerHTML=h}var ac=document.getElementById("adminCg");var pendCg=G.filter(function(g){return !g.v});if(pendCg.length==0){ac.innerHTML="<p style=text-align:center;color:#999>No pending caregivers</p>"}else{var ch="";for(var j=0;j<G.length;j++){if(G[j].v)continue;var ph=G[j].ph?"<br><img src="+G[j].ph+" style=width:100%;max-height:160px;object-fit:cover;border-radius:8px>":"";ch+="<div style=border:2px solid #ff8c00;border-radius:10px;padding:10px;margin-top:8px><b>"+G[j].n+"</b> - PENDING<br>"+G[j].p+" - "+G[j].id+" - "+G[j].loc+"<br>"+G[j].sk+ph+"<br><button class=g onclick=vo("+j+")>Approve - Make VERIFIED</button></div>"}ac.innerHTML=ch}}
-function acceptBk(i){K[i].status="Accepted";saveBk();alert("Accepted booking for "+K[i].n)}
-function declineBk(i){K[i].status="Declined";saveBk();alert("Declined booking for "+K[i].n)}
-function login(){if(isLocked()){alert("Account LOCKED - wait");updateStatus();return}var u=document.getElementById("lu").value;var p=document.getElementById("lp").value;if(!u||!p){alert("Enter username and password");return}if(p!==PASS){document.getElementById("lm").innerText="Wrong password - Attempt "+(FAILS+1)+" of 3";wrongPass();return}FAILS=0;localStorage.setItem("heroFails",0);localStorage.setItem("heroLogged",u);localStorage.removeItem("heroIsAdmin");ISADMIN=false;closePop("loginPop");updateStatus();show();alert("🟢 LOGGED IN as "+u);window.scrollTo({top:0,behavior:"smooth"})}
-function signup(){var n=document.getElementById("sn").value;var e=document.getElementById("se").value;var p=document.getElementById("sp").value;if(!n||!e||!p){alert("Enter name, email and password");return}localStorage.setItem("heroLogged",n);localStorage.removeItem("heroIsAdmin");closePop("signupPop");updateStatus();show();alert("🟢 LOGGED IN as "+n)}
-function admin(){if(isLocked()){alert("Account LOCKED - wait");updateStatus();return}var e=document.getElementById("ae").value;var p=document.getElementById("ap").value;if(!e||!p){alert("Enter Admin email and password");return}if(p!==PASS){document.getElementById("am").innerText="Wrong Admin password - Attempt "+(FAILS+1)+" of 3";wrongPass();return}FAILS=0;localStorage.setItem("heroFails",0);localStorage.setItem("heroLogged","Admin Levi");localStorage.setItem("heroIsAdmin","1");ISADMIN=true;closePop("adminPop");updateStatus();show();showAdmin();alert("🔒 Welcome Admin Levi - Dashboard Unlocked")}
-function needLogin(){if(!ISADMIN){alert("Wallet is in Admin Dashboard only. Login as Admin.");openPop('adminPop');return true}return false}
-function deposit(){if(needLogin())return;if(BUSY){alert("Payment already processing - wait");return}var a=Number(document.getElementById("da").value);var em=document.getElementById("de").value;var m=document.getElementById("pm").value;if(!a||a<=0){alert("Enter amount");return}if(!em){alert("Enter your email for receipt");return}if(FLW_PUBLIC_KEY.indexOf("XXXX")!==-1){var pid=makeId();if(!addTx(pid,"PENDING Deposit via "+m,"PENDING UGX "+a.toLocaleString(),0)){alert("Already exists - not added again");return}document.getElementById("ps").innerText="Saved PENDING ID "+pid;return}BUSY=true;document.getElementById("depBtn").disabled=true;var txRef=makeId();FlutterwaveCheckout({public_key:FLW_PUBLIC_KEY,tx_ref:txRef,amount:a,currency:C=="UG"?"UGX":C=="KE"?"KES":C=="TZ"?"TZS":C=="RW"?"RWF":C=="US"?"USD":C=="UK"?"GBP":"AED",payment_options:"mobilemoney,card,banktransfer",customer:{email:em},customizations:{title:"Home Care Hero",description:"Wallet Deposit - "+m},callback:function(d){BUSY=false;document.getElementById("depBtn").disabled=false;if(d.status=="successful"){if(!addTx(txRef,"Real Deposit via "+m,"+UGX "+a.toLocaleString(),a)){alert("Already added - duplicate blocked")}else{alert("REAL Payment Success! UGX "+a.toLocaleString())}}else{alert("Payment not successful")}},onclose:function(){BUSY=false;document.getElementById("depBtn").disabled=false}})}
-function wd(){if(needLogin())return;if(BUSY){alert("Withdraw already processing - wait");return}var a=Number(document.getElementById("wa").value);var m=document.getElementById("wm").value;var n=document.getElementById("wn").value;if(!a||a<=0){alert("Enter withdraw amount");return}if(!n){alert("Enter your wallet / phone for withdraw");return}if(a>B){alert("You only have UGX "+B.toLocaleString());return}BUSY=true;document.getElementById("wdBtn").disabled=true;var wid=makeId();setTimeout(function(){BUSY=false;document.getElementById("wdBtn").disabled=false;if(!addTx(wid,"Real Withdraw to "+m+" - "+n,"-UGX "+a.toLocaleString(),-a)){alert("Already withdrawn - duplicate blocked");return}alert("Withdraw UGX "+a.toLocaleString()+" - ID "+wid+" - Sent to "+n)},800)}
-function payCg(){if(!ISADMIN){alert("Only Admin can pay caregiver. Login as Admin.");return}if(B<93750){alert("Not enough. You have UGX "+B.toLocaleString());return}var pid=makeId();if(!addTx(pid,"Pay Caregiver","-UGX 93,750",-93750)){alert("Already paid - duplicate blocked");return}alert("Paid caregiver UGX 93,750 - ID "+pid)}
-function book(){var n=document.getElementById("bn").value;var p=document.getElementById("bp").value;var s=document.getElementById("bs").value;var cg=document.getElementById("bcg").value;var d=document.getElementById("bd").value;var note=document.getElementById("bnote").value;if(!n||!p){alert("Enter name and phone");return}if(!d){alert("Pick a date");return}K.push({n:n,p:p,s:s,cg:cg,d:d,note:note,status:"Pending"});saveBk();alert("Booked In App! Admin will accept in Dashboard.");go("bl")}
-function apply(){var n=document.getElementById("cn").value;var p=document.getElementById("cp").value;var id=document.getElementById("ci").value;var sk=document.getElementById("cs").value;var loc=document.getElementById("cl").value;var ex=document.getElementById("ce").value;var rf=document.getElementById("cr").value;if(!n||!p||!id){alert("Name, Phone, ID required");return}var f=document.getElementById("cph").files[0];if(f){var r=new FileReader();r.onload=function(e){saveCg(n,p,id,sk,loc,ex,rf,e.target.result)};r.readAsDataURL(f)}else{saveCg(n,p,id,sk,loc,ex,rf,"")}}
-function saveCg(n,p,id,sk,loc,ex,rf,ph){G.push({n:n,p:p,id:id,sk:sk,loc:loc,ex:ex,rf:rf,ph:ph,v:false});localStorage.setItem("heroCg",JSON.stringify(G));show();alert("Application sent to Admin Dashboard!")}
-function renderCg(){var el=document.getElementById("cgList");var no=document.getElementById("noCg");var sel=document.getElementById("bcg");var opts="<option value=>Any Available Caregiver</option>";for(var x=0;x<G.length;x++){if(G[x].v){opts+="<option>"+G[x].n+"</option>"}}sel.innerHTML=opts;var ver=G.filter(function(g){return g.v});if(ver.length==0){el.innerHTML="";no.style.display="block";return}no.style.display="none";var h="";for(var i=0;i<ver.length;i++){var ph=ver[i].ph?"<br><img src="+ver[i].ph+" style=width:100%;max-height:160px;object-fit:cover;border-radius:8px>":"";h+="<div style=border:2px solid #0a7a5a;border-radius:10px;padding:10px;margin-top:8px><b>"+ver[i].n+" ✅ VERIFIED</b><br>"+ver[i].p+" - "+ver[i].loc+"<br>"+ver[i].sk+ph+"</div>"}el.innerHTML=h}
-function vo(i){G[i].v=true;localStorage.setItem("heroCg",JSON.stringify(G));show();alert("Verified! "+G[i].n+" now shows on Homepage.")}
-function verify(){var n=document.getElementById("vn").value;if(!n){alert("Enter caregiver name");return}var f=null;for(var i=0;i<G.length;i++){if(G[i].n.toLowerCase()==n.toLowerCase()){f=G[i]}}if(!f){document.getElementById("vr").innerText="Not found. Apply first.";return}document.getElementById("vr").innerText=f.v?"Verified - "+f.n:"Pending - "+f.n+" - Waiting for Admin"}
-setInterval(updateStatus,1000);
-document.getElementById("cc").value=C;show();
-if(ISADMIN&&isLogged()){showAdmin()}
-</script></body></html>
+
+function escapeHtml(s){ return String(s||"").replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+if(db){
+  db.ref('jobs').orderByChild('createdAt').on('value', function(snap){
+    jobs = [];
+    snap.forEach(function(child){ var v=child.val(); v.id=child.key; jobs.unshift(v); });
+    renderJobs();
+  });
+}
+renderJobs();
+</script>
+</body>
+</html>
