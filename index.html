@@ -1,59 +1,100 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GlobalCare - Home Care Hero</title>
-<style>body{font-family:Arial;margin:0;background:#f5f7fb}.banner{background:#0a7a07;color:white;padding:10px;text-align:center;font-size:13px}.hero{padding:30px 20px;text-align:center}.btn{background:#0a7a07;color:white;padding:12px 25px;border:none;border-radius:8px;cursor:pointer;margin:5px}.card{max-width:500px;margin:20px auto;background:white;padding:20px;border-radius:10px}input{width:100%;padding:10px;margin:5px 0;border:1px solid #ccc;border-radius:6px}</style>
+<title>Home Care Hero - Book Caregiver Now</title>
+<script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<div class="banner">💊 AD: City Pharmacy - Paracetamol 5,000 UGX | REAL Views = REAL UGX</div>
-<div class="hero">
-<h1>GlobalCare Home Care Hero</h1>
-<div id="authBox" class="card">
-<h3>Login / Sign Up</h3>
-<input id="email" placeholder="Email">
-<input id="password" type="password" placeholder="Password">
-<button class="btn" id="loginBtn">Login</button>
-<button class="btn" id="signupBtn">Sign Up</button>
-<p id="authMsg"></p>
+<body class="bg-[#fbf8f5]">
+
+<div class="bg-black text-white text-center py-2 text-xs">🔥 Sponsored: Guardian Pharmacy Ntinda - <a href="https://wa.me/256772101875" class="underline text-yellow-300">Order Drugs on WhatsApp [AD: 100k/week]</a></div>
+
+<nav class="bg-white border-b sticky top-0 z-30 px-6 py-4 flex justify-between items-center">
+<div class="font-black text-xl">Home Care Hero <span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-1 rounded-full">LIVE: Kampala</span></div>
+<div class="flex gap-2"><a href="client.html" class="text-xs border px-3 py-2 rounded-full">Track</a><a href="admin.html" class="text-xs border px-3 py-2 rounded-full">Admin</a></div>
+</nav>
+
+<div class="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-8">
+<div>
+<h1 class="text-4xl font-black">Book Trusted Caregiver in <span class="text-emerald-600">60 Min</span></h1>
+<p class="text-gray-500 mt-3 text-sm">Nurses, babysitters, elderly care. Track live like Uber. Pay via MTN MoMo to <b>0772101875</b></p>
+<div class="mt-4 flex items-center gap-2 text-xs text-gray-500"><div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div><span id="viewCount">1,247</span> views today • Live caregivers: 12</div>
+<div class="mt-6 bg-white p-4 rounded-2xl border-2 border-yellow-400">
+<p class="text-xs font-black">💰 YOUR MTN MoMo PAYMENT NUMBER:</p>
+<div class="flex items-center justify-between mt-2 bg-black text-white p-3 rounded-xl">
+<span class="font-mono font-black text-lg">0772101875</span>
+<button onclick="navigator.clipboard.writeText('0772101875');alert('Number copied!')" class="text-xs bg-white text-black px-3 py-1 rounded-full">COPY</button>
+</div>
+<p class="text-[11px] text-gray-500 mt-2">Kwemo Levi - Home Care Hero. Every booking = 15k profit for you.</p>
+</div>
 </div>
 
-<div id="mainBox" class="card" style="display:none">
-<p>Welcome <span id="userEmail"></span></p>
-<button class="btn" onclick="location.href='pharmacy.html'">Shop Pharmacy</button>
-<button class="btn" onclick="location.href='admin.html'">Admin Dashboard</button>
-<button class="btn" style="background:gray" id="logoutBtn">Logout</button>
-<div style="margin-top:15px;border-top:1px solid #eee;padding-top:10px">
-<b>REAL Earnings:</b> Views <span id="v">0</span> | Clicks <span id="c">0</span> | <span style="color:green;font-weight:bold">UGX <span id="t">0</span></span>
+<div class="bg-white p-6 rounded-[2rem] shadow-xl border">
+<h2 class="font-bold text-xl">Book Now - Pay via MoMo</h2>
+<input id="name" placeholder="Your full name" class="w-full mt-4 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<input id="phone" placeholder="Your MTN number 07..." class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<select id="service" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<option value="50000">Elderly Care - 50,000 UGX</option>
+<option value="40000">Baby Sitter - 40,000 UGX</option>
+<option value="70000">Nurse Visit - 70,000 UGX</option>
+<option value="60000">Postnatal Care - 60,000 UGX</option>
+</select>
+<div class="bg-emerald-50 border p-3 rounded-xl mt-3 text-xs">
+<p>Total: <b id="total">55,000 UGX</b> (50k service + 5k booking fee)</p>
+<p class="text-emerald-700">You earn: <b>15,000 UGX</b> per TAP</p>
+</div>
+<button onclick="payWithMoMo()" class="w-full mt-4 bg-[#ffcc00] text-black py-4 rounded-xl font-black text-lg border-2 border-black">📱 TAP TO PAY WITH MTN MoMo</button>
+<button onclick="confirmPayment()" id="confirmBtn" class="w-full mt-2 bg-black text-white py-3 rounded-xl font-bold text-sm">✅ I Have Paid 55k to 0772101875</button>
+<div id="result" class="hidden mt-4 bg-black text-white p-4 rounded-xl text-center">
+<p class="text-xs">✅ PAYMENT CONFIRMED! SAVED TO FIREBASE!</p><p id="rId" class="font-black text-xl mt-1"></p>
+<p class="text-[11px] mt-2">Client will track at client.html</p>
+<a id="waAdmin" href="#" target="_blank" class="mt-3 block bg-[#25D366] py-2 rounded-full font-bold text-sm">Notify Admin on WhatsApp</a>
 </div>
 </div>
 </div>
 
 <script type="module">
-import { auth, trackView, getRevenue, onAuthStateChanged, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from "./firebase.js";
-await trackView("index","city-pharma");
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const authBox=document.getElementById('authBox'), mainBox=document.getElementById('mainBox');
-onAuthStateChanged(auth, (user)=>{
-  if(user){ authBox.style.display='none'; mainBox.style.display='block'; document.getElementById('userEmail').textContent=user.email; loadRev(); }
-  else{ authBox.style.display='block'; mainBox.style.display='none'; }
-});
-
-document.getElementById('loginBtn').onclick=async()=>{
-  try{ await signInWithEmailAndPassword(auth, email.value, password.value); }catch(e){ authMsg.textContent=e.message; }
+const firebaseConfig = {
+  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
+  authDomain: "home-care-hero.firebaseapp.com",
+  projectId: "home-care-hero",
+  storageBucket: "home-care-hero.firebasestorage.app",
+  messagingSenderId: "38632827016",
+  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
+  measurementId: "G-ZV09KN6R90"
 };
-document.getElementById('signupBtn').onclick=async()=>{
-  try{ await createUserWithEmailAndPassword(auth, email.value, password.value); }catch(e){ authMsg.textContent=e.message; }
-};
-document.getElementById('logoutBtn').onclick=()=>signOut(auth);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
-async function loadRev(){
-  try{
-    const r=await getRevenue();
-    document.getElementById('v').textContent=r.views;
-    document.getElementById('c').textContent=r.clicks;
-    document.getElementById('t').textContent=r.total.toLocaleString();
-  }catch(e){ console.log("Need Firebase keys + Firestore Rules"); }
+let views=parseInt(localStorage.getItem('hch_views')||'1247');views++;localStorage.setItem('hch_views',views);document.getElementById('viewCount').textContent=views.toLocaleString();
+document.getElementById('service').addEventListener('change',e=>{document.getElementById('total').textContent=(parseInt(e.target.value)+5000).toLocaleString()+' UGX'});
+
+window.payWithMoMo = function(){
+ let name=document.getElementById('name').value; if(!name){alert('Enter name first');return;}
+ let ussd="*165*3*0772101875*55000%23";
+ if(confirm('PAY 55,000 UGX to 0772101875 (Kwemo Levi)?\n\nTap OK to open MTN MoMo dialer.')){
+   window.location.href="tel:"+ussd;
+   alert('Dialer opened! Enter PIN to pay 55k.\n\nAfter paying, tap "I Have Paid" button.');
+ }
+}
+
+window.confirmPayment = async function(){
+ let name=document.getElementById('name').value.trim(); let phone=document.getElementById('phone').value.trim(); let service=document.getElementById('service').options[document.getElementById('service').selectedIndex].text;
+ if(!name||!phone){alert('Enter name + number');return;}
+ document.getElementById('confirmBtn').textContent='Saving to Firebase... Please wait';
+ let id='HCH-'+Math.floor(1000+Math.random()*9000);
+ let price=parseInt(document.getElementById('service').value); let commission=Math.floor(price*0.2);
+ try{
+   await addDoc(collection(db, "bookings"), {id, name, phone, service, price, commission, yourEarn: commission+5000, status:'PAID - 0772101875', caregiver:'Not assigned', eta:'30 min', createdAt: serverTimestamp(), created: Date.now()});
+   document.getElementById('rId').textContent=id+' | Paid to 0772101875 | Profit '+(commission+5000).toLocaleString()+' UGX';
+   document.getElementById('result').classList.remove('hidden');
+   document.getElementById('waAdmin').href='https://wa.me/256772101875?text=NEW%20PAID%20BOOKING%20'+id+'%20'+name+'%20PAID%2055k%20to%200772101875%20Profit%20'+(commission+5000);
+   document.getElementById('confirmBtn').textContent='✅ Saved to Firebase!';
+   alert('✅ BOOKING SAVED TO FIREBASE! Check Firebase > Firestore > bookings to see it!');
+ }catch(e){ alert('Error saving: '+e.message); document.getElementById('confirmBtn').textContent='✅ I Have Paid 55k to 0772101875'; }
 }
 </script>
 </body>
