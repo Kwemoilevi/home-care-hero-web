@@ -3,137 +3,95 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero</title>
+<title>Home Care Hero - Find Trusted Carers</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:system-ui,Arial;background:#f6f7fb;color:#111}
-header{background:#111827;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-header b{font-size:18px} #status{font-size:12px;background:#f59e0b;color:#111;padding:6px 10px;border-radius:999px;font-weight:700}
-#status.live{background:#22c55e;color:#fff}
-.wrap{max-width:900px;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-h2{margin:0 0 10px} label{font-size:13px;font-weight:700;display:block;margin:12px 0 6px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;font-size:15px}
-button{border:0;border-radius:10px;padding:13px 16px;font-size:15px;font-weight:800;cursor:pointer;width:100%}
-.btn-dark{background:#111827;color:#fff} .btn-green{background:#16a34a;color:#fff} .btn-outline{background:#fff;border:1px solid #ddd;color:#111}
-.tabs{display:flex;gap:8px;margin-bottom:14px} .tabs button{flex:1;background:#e5e7eb;color:#111} .tabs button.active{background:#111827;color:#fff}
-.job{border:1px solid #eee;border-radius:12px;padding:14px;margin-top:12px}
-.job b{font-size:16px} .muted{color:#666;font-size:13px} .pill{display:inline-block;background:#dcfce7;color:#166534;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:700}
+*{box-sizing:border-box} body{margin:0;font-family:'Plus Jakarta Sans',system-ui;background:#FFF7ED;color:#1C1917}
+.top{background:#111827;color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;font-size:13px}
+.top b{font-size:16px} #status{background:#F59E0B;color:#111;padding:6px 12px;border-radius:999px;font-weight:800;font-size:12px}
+#status.live{background:#22C55E;color:#fff;box-shadow:0 0 0 3px #DCFCE7}
+.hero{background:linear-gradient(135deg,#7C3AED 0%,#DB2777 55%,#F97316 100%);color:#fff;padding:28px 18px 34px;border-radius:0 0 28px 28px}
+.hero h1{margin:0;font-size:32px;line-height:1.05;letter-spacing:-1px}
+.hero p{opacity:.92;font-size:15px;line-height:1.5;max-width:520px}
+.hero-stats{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.hero-stats div{background:rgba(255,255,255,.18);backdrop-filter:blur(6px);padding:10px 14px;border-radius:14px;font-weight:800;font-size:13px}
+.wrap{max-width:920px;margin:-14px auto 0;padding:0 14px 30px}
+.card{background:#fff;border-radius:20px;padding:18px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:14px;border:1px solid #FFE7D6}
+.tabs{display:flex;gap:8px;background:#fff;padding:6px;border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.07);margin-bottom:14px}
+.tabs button{flex:1;border:0;padding:13px;border-radius:999px;font-weight:800;font-size:15px;cursor:pointer;background:transparent}
+.tabs button.active{background:#111827;color:#fff}
+label{font-size:13px;font-weight:800;display:block;margin:14px 0 6px}
+input,select,textarea{width:100%;padding:14px;border:2px solid #F1F5F9;border-radius:14px;font-size:15px;background:#F8FAFC;outline:none}
+input:focus,select:focus,textarea:focus{border-color:#7C3AED;background:#fff}
+button{border:0;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;width:100%}
+.btn-main{background:linear-gradient(90deg,#7C3AED,#DB2777);color:#fff;box-shadow:0 8px 20px rgba(219,39,119,.3)}
+.btn-green{background:#16A34A;color:#fff}
+.job{border:1px solid #FFE7D6;background:linear-gradient(180deg,#fff,#FFFBEB);border-radius:18px;padding:16px;margin-top:12px}
+.job-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.pill{background:#DCFCE7;color:#166534;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:800;white-space:nowrap}
+.price{font-size:22px;font-weight:800;color:#7C3AED}
+.muted{color:#78716C;font-size:13px;line-height:1.5}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
-.hidden{display:none}
+.actions{display:flex;gap:8px;margin-top:12px}
+.actions a{flex:1;text-align:center;text-decoration:none;padding:12px;border-radius:12px;font-weight:800;font-size:14px}
+.call{background:#111827;color:#fff} .wa{background:#22C55E;color:#fff}
+.cat{display:inline-block;background:#F3E8FF;color:#6B21A8;padding:5px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.hidden{display:none} .live-dot{width:10px;height:10px;background:#22C55E;border-radius:50%;display:inline-block;animation:pulse 1.5s infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.5)}100%{box-shadow:0 0 0 8px rgba(34,197,94,0)}}
+@media(max-width:600px){.row{grid-template-columns:1fr}.hero h1{font-size:28px}}
 </style>
 </head>
 <body>
-<header><b>🏠 Home Care Hero</b><span id="status">🟡 DEMO - Not Connected</span></header>
+<div class="top"><b>🏠 Home Care Hero</b><span id="status">🟡 DEMO MODE</span></div>
+<div class="hero">
+<h1>Trusted care,<br>right at your home.</h1>
+<p>Post a job in 30 seconds. Verified carers in Kampala see it instantly and contact you directly.</p>
+<div class="hero-stats"><div>⭐ 4.9 Rated Carers</div><div><span class="live-dot"></span> Live Jobs</div><div>📍 Kampala • Entebbe • Wakiso</div></div>
+</div>
+
 <div class="wrap">
-<div class="tabs">
-<button id="tabClient" class="active" onclick="showTab('client')">I Need Care</button>
-<button id="tabCarer" onclick="showTab('carer')">I Am a Carer</button>
-</div>
+<div class="tabs"><button id="tabClient" class="active" onclick="showTab('client')">🙋 I Need Care</button><button id="tabCarer" onclick="showTab('carer')">💜 I Am a Carer</button></div>
 
-<!-- CLIENT -->
 <div id="clientView" class="card">
-<h2>Post a Care Job</h2>
-<label>Your Name</label><input id="cName" placeholder="e.g. Sarah">
-<div class="row"><div><label>Location / Area</label><input id="cArea" placeholder="e.g. Kampala - Ntinda"></div><div><label>Phone / WhatsApp</label><input id="cPhone" placeholder="e.g. 0770..."></div></div>
+<h2 style="margin:0">Post a Care Job → Go Live</h2><p class="muted">Fill this, tap Post. It will appear for carers in real-time.</p>
+<label>Your Name</label><input id="cName" placeholder="e.g. Sarah Nakato">
+<div class="row"><div><label>Location / Area</label><input id="cArea" placeholder="e.g. Ntinda, Kampala"></div><div><label>Phone / WhatsApp</label><input id="cPhone" placeholder="e.g. 0770123456"></div></div>
 <label>What help do you need?</label>
-<select id="cType"><option>Elderly Care</option><option>Child Care / Nanny</option><option>Postnatal Care</option><option>Companion / House Help</option><option>Nurse / Medical Care</option><option>Cleaning & Cooking</option></select>
-<div class="row"><div><label>Date Needed</label><input id="cDate" type="date"></div><div><label>Pay (UGX per day)</label><input id="cPay" type="number" placeholder="e.g. 30000"></div></div>
-<label>Details</label><textarea id="cDetails" rows="3" placeholder="Hours, duties, special needs..."></textarea>
-<button class="btn-dark" style="margin-top:14px" onclick="postJob()">Post Job - Go Live ✅</button>
+<select id="cType"><option>👵 Elderly Care</option><option>👶 Child Care / Nanny</option><option>🤱 Postnatal Care</option><option>🏠 Companion / House Help</option><option>🩺 Nurse / Medical Care</option><option>🍲 Cleaning & Cooking</option></select>
+<div class="row"><div><label>Date Needed</label><input id="cDate" type="date"></div><div><label>Pay (UGX / day)</label><input id="cPay" type="number" placeholder="30000"></div></div>
+<label>Details - Hours, Duties</label><textarea id="cDetails" rows="3" placeholder="e.g. 8am-5pm, Mon-Sat, help mum with bathing, cooking..."></textarea>
+<button class="btn-main" style="margin-top:16px" onclick="postJob()">✨ Post Job - Go Live Now</button>
 <p class="muted" id="postMsg"></p>
-<h2 style="margin-top:20px">My Posted Jobs</h2>
-<div id="myJobs"></div>
 </div>
 
-<!-- CARER -->
 <div id="carerView" class="card hidden">
-<h2>Available Jobs - Live</h2>
-<p class="muted">Jobs appear here instantly when a client posts. No refresh needed.</p>
-<label>Filter by Area</label><input id="filterArea" placeholder="Type area to filter..." oninput="renderJobs()">
+<h2 style="margin:0">🔴 Live Jobs Near You</h2><p class="muted">New jobs appear here automatically. No refresh needed.</p>
+<label>Search by Area</label><input id="filterArea" placeholder="e.g. Ntinda..." oninput="renderJobs()">
 <div id="allJobs"></div>
 </div>
 
-<div class="card">
-<h2>How it works</h2>
-<p class="muted">1. Client posts a job → 2. It saves to Firebase → 3. Carer sees it instantly → 4. Carer calls / WhatsApps client.</p>
-</div>
+<div class="card"><h3 style="margin:0">My Posted Jobs</h3><div id="myJobs"></div></div>
+<div class="card" style="text-align:center"><b>How it works</b><p class="muted">Client posts → Saved to Firebase → Carer sees instantly → Carer calls / WhatsApps you</p></div>
 </div>
 
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <script>
 // --- PASTE YOUR FIREBASE CONFIG HERE ---
-// Paste your block that starts with: var firebaseConfig = { ... };
-// Example (DO NOT USE THIS, use YOURS):
-// var firebaseConfig = { apiKey: "YOURS", authDomain: "...", databaseURL: "...", projectId: "...", ... };
+// Paste your block starting with: var firebaseConfig = { ... };
 
-var db = null;
+var db=null;
 try{
-  if(typeof firebaseConfig !== 'undefined' && firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE")){
-    firebase.initializeApp(firebaseConfig);
-    db = firebase.database();
-    document.getElementById('status').textContent = "🟢 REAL LIVE - Connected to Firebase ✅";
-    document.getElementById('status').className = "live";
-  }
-}catch(e){ console.log(e); }
-
-var jobs = [];
-var currentTab = 'client';
-
-function showTab(t){
-  currentTab = t;
-  document.getElementById('clientView').classList.toggle('hidden', t!=='client');
-  document.getElementById('carerView').classList.toggle('hidden', t!=='carer');
-  document.getElementById('tabClient').classList.toggle('active', t==='client');
-  document.getElementById('tabCarer').classList.toggle('active', t==='carer');
-}
-
-function postJob(){
-  var name = document.getElementById('cName').value.trim();
-  var area = document.getElementById('cArea').value.trim();
-  var phone = document.getElementById('cPhone').value.trim();
-  var type = document.getElementById('cType').value;
-  var date = document.getElementById('cDate').value;
-  var pay = document.getElementById('cPay').value;
-  var details = document.getElementById('cDetails').value.trim();
-  if(!name || !area || !phone){ document.getElementById('postMsg').textContent = "Please fill Name, Area and Phone."; return; }
-  var job = { name:name, area:area, phone:phone, type:type, date:date, pay:pay, details:details, createdAt: Date.now(), status:"Open" };
-  if(db){
-    db.ref('jobs').push(job).then(function(){
-      document.getElementById('postMsg').textContent = "✅ Job posted LIVE! Carers can see it now.";
-    });
-  } else {
-    job.id = 'demo'+Date.now(); jobs.unshift(job); renderJobs();
-    document.getElementById('postMsg').textContent = "⚠️ Demo mode - connect Firebase to go live. Job saved locally only.";
-  }
-  document.getElementById('cDetails').value = "";
-}
-
-function renderJobs(){
-  var filter = (document.getElementById('filterArea').value||"").toLowerCase();
-  var filtered = jobs.filter(function(j){ return !filter || (j.area||"").toLowerCase().includes(filter); });
-  var html = "";
-  if(filtered.length===0) html = "<p class='muted'>No jobs yet. Post one to test.</p>";
-  filtered.forEach(function(j){
-    html += "<div class='job'><div style='display:flex;justify-content:space-between'><b>"+escapeHtml(j.type)+"</b><span class='pill'>"+escapeHtml(j.status||"Open")+"</span></div>"
-    + "<p class='muted'>📍 "+escapeHtml(j.area)+" • 📅 "+escapeHtml(j.date||"ASAP")+" • 💰 UGX "+escapeHtml(j.pay||"Negotiable")+"</p>"
-    + "<p>"+escapeHtml(j.details||"")+"</p>"
-    + "<p><b>"+escapeHtml(j.name)+"</b> • <a href='tel:"+escapeHtml(j.phone)+"'>📞 "+escapeHtml(j.phone)+"</a> • <a target='_blank' href='https://wa.me/256"+escapeHtml(j.phone).replace(/\D/g,'').slice(-9)+"'>WhatsApp</a></p></div>";
-  });
-  document.getElementById('allJobs').innerHTML = html;
-  document.getElementById('myJobs').innerHTML = html;
-}
-
-function escapeHtml(s){ return String(s||"").replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
-
-if(db){
-  db.ref('jobs').orderByChild('createdAt').on('value', function(snap){
-    jobs = [];
-    snap.forEach(function(child){ var v=child.val(); v.id=child.key; jobs.unshift(v); });
-    renderJobs();
-  });
-}
+ if(typeof firebaseConfig!=='undefined' && firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE")){
+  firebase.initializeApp(firebaseConfig); db=firebase.database();
+  var s=document.getElementById('status'); s.textContent="🟢 REAL LIVE • Firebase Connected"; s.className="live"; s.id="status"; s.style.background="#22C55E"; s.style.color="#fff";
+ }
+}catch(e){console.log(e)}
+var jobs=[]; function showTab(t){document.getElementById('clientView').classList.toggle('hidden',t!=='client');document.getElementById('carerView').classList.toggle('hidden',t!=='carer');document.getElementById('tabClient').classList.toggle('active',t==='client');document.getElementById('tabCarer').classList.toggle('active',t==='carer');}
+function postJob(){var n=document.getElementById('cName').value.trim(),a=document.getElementById('cArea').value.trim(),p=document.getElementById('cPhone').value.trim(),ty=document.getElementById('cType').value,d=document.getElementById('cDate').value,pay=document.getElementById('cPay').value,det=document.getElementById('cDetails').value.trim();if(!n||!a||!p){document.getElementById('postMsg').textContent="Please fill Name, Area and Phone.";return;}var job={name:n,area:a,phone:p,type:ty,date:d,pay:pay,details:det,createdAt:Date.now(),status:"Open"};if(db){db.ref('jobs').push(job).then(function(){document.getElementById('postMsg').textContent="✅ Posted LIVE! Carers can see it now.";});}else{job.id='demo'+Date.now();jobs.unshift(job);renderJobs();document.getElementById('postMsg').textContent="⚠️ Demo mode - paste Firebase config to go live.";}}
+function esc(s){return String(s||"").replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function renderJobs(){var f=(document.getElementById('filterArea').value||"").toLowerCase();var list=jobs.filter(function(j){return !f||(j.area||"").toLowerCase().includes(f);});var h="";if(list.length===0)h="<p class='muted' style='text-align:center;padding:20px'>No live jobs yet.<br>Be the first to post one above 👆</p>";list.forEach(function(j){var wa=j.phone.replace(/\D/g,'');if(wa.length===10&&wa[0]==='0')wa='256'+wa.slice(1);h+="<div class='job'><div class='job-top'><div><span class='cat'>"+esc(j.type)+"</span><h3 style='margin:8px 0 4px'>"+esc(j.area)+"</h3><p class='muted' style='margin:0'>📅 "+esc(j.date||"ASAP")+" • Posted by "+esc(j.name)+"</p></div><div style='text-align:right'><div class='price'>UGX "+esc(j.pay||"Negotiable")+"</div><div class='muted'>/ day</div><span class='pill'>● "+esc(j.status||"Open")+"</span></div></div><p>"+esc(j.details||"")+"</p><div class='actions'><a class='call' href='tel:"+esc(j.phone)+"'>📞 Call "+esc(j.phone)+"</a><a class='wa' target='_blank' href='https://wa.me/"+wa+"'>💬 WhatsApp</a></div></div>";});document.getElementById('allJobs').innerHTML=h;document.getElementById('myJobs').innerHTML=h;}
+if(db){db.ref('jobs').orderByChild('createdAt').on('value',function(s){jobs=[];s.forEach(function(c){var v=c.val();v.id=c.key;jobs.unshift(v);});renderJobs();});}
 renderJobs();
 </script>
 </body>
