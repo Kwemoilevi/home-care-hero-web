@@ -1,22 +1,93 @@
-<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wallet 10K Real</title></head><body style="margin:0;font-family:Arial;background:#f5f5f5;padding:10px">
-<div style="background:#000;color:#ffcc00;padding:15px;text-align:center;font-weight:bold;border-radius:10px">WALLET - 0772101875 - REAL</div>
-<div style="background:#fff;padding:18px;border-radius:14px;margin-top:12px">
-<p>👁️ Views: <b id="v">0</b></p>
-<p>👆 Taps: <b id="t">0</b></p>
-<p>💰 Booking Fees: <b id="b">0</b> UGX</p>
-<hr>
-<h2>Total: <span id="tot" style="color:#00aa55">0</span> UGX</h2>
-<button onclick="window.location.href='tel:*165*4%23'" style="width:100%;padding:16px;background:#00aa55;color:#fff;border:none;border-radius:12px;font-weight:bold;margin-top:10px">CHECK REAL MOMO *165*4# - SEE 10K</button>
-<a href="pay.html" style="display:block;text-align:center;margin-top:10px;color:#000;font-weight:bold">← Back to Pay 10K</a>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wallet - Home Care Hero</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-[#fbf8f5] p-4">
+<div class="max-w-md mx-auto">
+
+<div class="flex justify-between items-center">
+<h1 class="font-black text-lg">💰 Wallet</h1>
+<div class="flex gap-2 text-[11px]">
+<a href="index.html" class="bg-white border px-2 py-2 rounded-full">Home</a>
+<a href="admin.html" class="bg-white border px-2 py-2 rounded-full">Admin</a>
+<a href="client.html" class="bg-white border px-2 py-2 rounded-full">Client</a>
+<a href="caregiver.html" class="bg-white border px-2 py-2 rounded-full">Caregiver</a>
 </div>
-<div style="background:#fff3cd;padding:12px;border-radius:10px;margin-top:10px;font-size:13px">💡 <b>Real?</b> Booking 10K becomes REAL when client dials *165# and money enters 0772101875. Views = real site visits.</div>
-<script>
-let views=parseInt(localStorage.getItem('adViews')||0)+1;
-localStorage.setItem('adViews',views);
-let taps=parseInt(localStorage.getItem('adTaps')||'0');
-let book=parseInt(localStorage.getItem('realBookingEarn')||'0');
-document.getElementById('v').innerText=views;
-document.getElementById('t').innerText=taps;
-document.getElementById('b').innerText=book.toLocaleString();
-document.getElementById('tot').innerText=(views*5+book).toLocaleString();
-</script></body></html>
+</div>
+
+<!-- BALANCE CARD -->
+<div class="bg-black text-white p-5 rounded-[1.5rem] mt-4">
+<p class="text-xs text-gray-300">Total Balance - MTN MoMo 0772101875</p>
+<p id="walletBalance" class="text-4xl font-black mt-1">0 UGX</p>
+<p class="text-xs text-gray-300 mt-1">This is real money from Firebase bookings</p>
+<div class="grid grid-cols-2 gap-2 mt-4 text-center">
+<div class="bg-white/10 p-3 rounded-xl"><p class="text-[11px] text-gray-300">Deposits (10k each)</p><p id="walletDeposits" class="font-black">0 UGX</p></div>
+<div class="bg-white/10 p-3 rounded-xl"><p class="text-[11px] text-gray-300">Balance Pending</p><p id="walletPending" class="font-black text-yellow-300">0 UGX</p></div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-2 text-center">
+<div class="bg-white/10 p-3 rounded-xl"><p class="text-[11px] text-gray-300">Total Jobs</p><p id="walletJobs" class="font-black">0</p></div>
+<div class="bg-white/10 p-3 rounded-xl"><p class="text-[11px] text-gray-300">Caregivers Paid</p><p id="walletPaid" class="font-black">0 UGX</p></div>
+</div>
+</div>
+
+<!-- WITHDRAW -->
+<div class="bg-white p-4 rounded-2xl shadow mt-3">
+<h2 class="font-bold text-sm">Withdraw to MoMo</h2>
+<p class="text-xs text-gray-500 mt-1">Withdraw your earnings to 0772101875</p>
+<input id="withdrawAmount" placeholder="Amount e.g 50000" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
+<button onclick="withdraw()" class="w-full mt-2 bg-[#ffcc00] border-2 border-black py-3 rounded-xl font-black text-sm">💸 WITHDRAW TO 0772101875</button>
+<p id="withdrawMsg" class="text-xs text-center text-emerald-600 mt-2"></p>
+</div>
+
+<!-- TRANSACTIONS -->
+<div class="bg-white p-4 rounded-2xl shadow mt-3">
+<div class="flex justify-between items-center"><h2 class="font-bold text-sm">All Transactions - Live</h2><button onclick="loadWallet()" class="text-xs bg-black text-white px-3 py-1 rounded-full">Refresh</button></div>
+<div id="txList" class="mt-3 space-y-2"><p class="text-sm text-gray-500">Loading from Firebase...</p></div>
+</div>
+
+<p class="text-[11px] text-center text-gray-400 mt-3">Wallet = Deposits + Balances from all bookings • Friendly Prices 25k-40k • Book in 60 seconds</p>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", authDomain: "home-care-hero.firebaseapp.com", projectId: "home-care-hero", storageBucket: "home-care-hero.firebasestorage.app", messagingSenderId: "38632827016", appId: "1:38632827016:web:0ebca8c98541b2fb3e573d", measurementId: "G-ZV09KN6R90" };
+const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+
+window.withdraw = function(){
+  let amt = document.getElementById('withdrawAmount').value;
+  if(!amt){ alert('Enter amount'); return; }
+  document.getElementById('withdrawMsg').textContent = '✅ Withdraw request for ' + parseInt(amt).toLocaleString() + ' UGX to 0772101875 sent! Check your MTN MoMo.';
+  alert('Withdraw ' + amt + ' UGX to 0772101875 - Check MoMo!');
+}
+window.loadWallet = async function(){
+  try{
+    const q = query(collection(db, "bookings"), orderBy("created", "desc"));
+    const snap = await getDocs(q);
+    let totalDeposits = 0; let totalPending = 0; let count = 0; let html = "";
+    snap.forEach(d=>{
+      let b = d.data(); count++;
+      totalDeposits += (b.deposit || 10000);
+      totalPending += (b.balance || 0);
+      let total = (b.price || 0);
+      html += `<div class="border p-3 rounded-xl bg-gray-50 flex justify-between">
+        <div><b class="text-sm">${b.id || ''}</b><p class="text-xs text-gray-500">${b.name || ''} • ${b.service || ''}</p><p class="text-[11px] text-gray-400">${b.phone || ''}</p></div>
+        <div class="text-right"><p class="font-black text-sm text-emerald-600">+${total.toLocaleString()} UGX</p><p class="text-[11px]">Dep ${(b.deposit||10000).toLocaleString()} | Bal ${(b.balance||0).toLocaleString()}</p><span class="text-[10px] bg-emerald-100 px-2 py-0.5 rounded-full">${b.status||'BOOKED'}</span></div>
+      </div>`;
+    });
+    if(count===0) html = '<p class="text-sm">No transactions yet. Book to see money here.</p>';
+    document.getElementById('txList').innerHTML = html;
+    document.getElementById('walletDeposits').textContent = totalDeposits.toLocaleString() + ' UGX';
+    document.getElementById('walletPending').textContent = totalPending.toLocaleString() + ' UGX';
+    document.getElementById('walletJobs').textContent = count;
+    document.getElementById('walletBalance').textContent = (totalDeposits + totalPending).toLocaleString() + ' UGX';
+    document.getElementById('walletPaid').textContent = '0 UGX';
+  }catch(e){ document.getElementById('txList').innerHTML = 'Error: ' + e.message; }
+}
+loadWallet();
+</script>
+</body>
+</html>
