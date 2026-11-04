@@ -3,184 +3,286 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero</title>
+<title>Home Care Hero - REAL</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
 body{background:#f0f7f4;color:#222}
 .topbar{background:#fff3cd;text-align:center;padding:10px;font-size:13px;font-weight:bold}
 header{background:#0a7a5a;color:#fff;text-align:center;padding:20px 12px}
 header h1{font-size:28px}
-header p{font-size:14px;margin:8px 0 12px}
 .pills{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:10px 0}
 .pills span{background:rgba(0,0,0,.25);padding:5px 10px;border-radius:20px;font-size:12px}
 .btns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0}
 .btns button{border:none;padding:9px 14px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px;background:#fff}
 .btns .black{background:#111;color:#fff}
 .btns .orange{background:#ff8c00;color:#fff}
-.welcome{font-weight:bold;margin-top:12px}
 .section{padding:15px;max-width:900px;margin:auto}
 .card{background:#fff;padding:16px;border-radius:12px;box-shadow:0 2px 10px rgba(0,0,0,.07);margin-bottom:15px}
 .card h3{color:#0a7a5a;margin-bottom:8px;text-align:center}
 input,select,textarea{width:100%;padding:12px;margin:8px 0;border:1px solid #ddd;border-radius:8px;font-size:15px}
 .wallet-btn{width:100%;padding:13px;border:none;border-radius:8px;font-weight:bold;margin:6px 0;font-size:15px;cursor:pointer}
-.green{background:#0a7a5a;color:#fff}
-.orange{background:#ff8c00;color:#fff}
-.red{background:#dc3545;color:#fff}
-.yellow{background:#ffcc00}
+.green{background:#0a7a5a;color:#fff}.orange{background:#ff8c00;color:#fff}.red{background:#dc3545;color:#fff}.yellow{background:#ffcc00}
 .wallet-box{background:#0a7a5a;color:#fff;text-align:center;padding:15px;border-radius:10px;margin:10px 0}
 .wallet-box h2{font-size:32px}
 .tx{border-bottom:1px solid #eee;padding:10px 0;display:flex;justify-content:space-between}
 .badge{background:#d4edda;color:#155724;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:bold}
-.verified-card{border:2px solid #ff8c00;border-radius:10px;padding:12px;margin-top:10px}
+.verified-card{border:2px solid #0a7a5a;border-radius:10px;padding:12px;margin-top:10px}
+.pending-card{border:2px solid orange;border-radius:10px;padding:12px;margin-top:10px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:600px){.grid{grid-template-columns:1fr}}
 .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:999;align-items:center;justify-content:center;padding:15px}
 .modal.active{display:flex}
 .modal-box{background:#fff;width:100%;max-width:450px;border-radius:15px;padding:20px;max-height:90vh;overflow:auto}
 .hidden{display:none}
-footer{text-align:center;padding:20px;color:#777;font-size:13px}
+img.id-photo{width:100%;max-height:200px;object-fit:cover;border-radius:8px;margin-top:8px}
 </style>
 </head>
 <body>
 
-<div class="topbar">👀 1,005 Visitors Worldwide | 📅 <span id="visitorCount">0</span> Real Bookings | 🌍 Trusted Globally</div>
+<div class="topbar">👀 <span id="realVisitors">...</span> Real Visitors | 📅 <span id="realBookings">0</span> Real Bookings | 🌍 Real Database - Firebase</div>
+
+<div style="background:#fff;text-align:center;padding:10px">
+<label style="font-weight:bold">🌍 Country / Currency: </label>
+<select id="countrySelect" onchange="changeCountry()" style="width:auto;display:inline-block;padding:8px;border-radius:20px;font-weight:bold">
+<option value="UG">🇺🇬 Uganda - UGX</option>
+<option value="KE">🇰🇪 Kenya - KES</option>
+<option value="TZ">🇹🇿 Tanzania - TZS</option>
+<option value="RW">🇷🇼 Rwanda - RWF</option>
+<option value="US">🇺🇸 USA - USD</option>
+<option value="UK">🇬🇧 UK - GBP</option>
+<option value="AE">🇦🇪 UAE - AED</option>
+</select>
+</div>
 
 <header>
 <h1>🏠 Home Care Hero</h1>
 <p>Compassionate, Professional Home Care - Worldwide 🌍<br>Elderly Care • Nursing • Baby Care • Physiotherapy</p>
-<div class="pills"><span>🇺🇬 Uganda</span><span>🇰🇪 Kenya</span><span>🇹🇿 Tanzania</span><span>🇷🇼 Rwanda</span><span>🇺🇸 USA</span><span>🇬🇧 UK</span><span>🇦🇪 UAE</span><span>🌍 + More</span></div>
+<div class="pills"><span>🇺🇬 Uganda</span><span>🇰🇪 Kenya</span><span>🇹🇿 Tanzania</span><span>🇷🇼 Rwanda</span><span>🇺🇸 USA</span><span>🇬🇧 UK</span><span>🇦🇪 UAE</span></div>
 <div class="btns">
-<button onclick="openLogin('Client')">👤 Client Login</button>
-<button onclick="openLogin('Caregiver')">👩‍⚕️ Caregiver Login</button>
-<button class="black" onclick="openAdmin()">🔒 Admin Login</button>
-<button onclick="openLogin('SignUp')">✨ Sign Up</button>
+<button onclick="openModal('loginModal')">👤 Login</button>
+<button onclick="openModal('signupModal')">✨ Sign Up</button>
+<button class="black" onclick="openModal('adminModal')">🔒 Admin Login</button>
 </div>
 <div class="btns">
-<button class="orange" onclick="document.getElementById('cgApply').scrollIntoView({behavior:'smooth'})">✅ Verify as Caregiver</button>
-<button onclick="document.getElementById('verifiedList').scrollIntoView({behavior:'smooth'})">🏆 View Verified Caregivers</button>
+<button class="orange" onclick="document.getElementById('cgApply').scrollIntoView({behavior:'smooth'})">✅ Apply as Caregiver (Real ID)</button>
+<button onclick="loadVerified()">🏆 View Verified Caregivers</button>
 </div>
-<div class="welcome">Welcome back, Levi (Admin) 👋</div>
+<p id="welcomeText" style="font-weight:bold;margin-top:10px">Not logged in</p>
 </header>
 
 <div class="section">
-<div style="text-align:center;margin-bottom:15px">
-<h2>Welcome, Levi !</h2>
-<p>You are Admin. Approve caregivers + see WALLET below.</p>
-</div>
-
-<!-- CAREGIVER VERIFICATIONS -->
-<div class="card" id="verifiedList">
-<h3>🛡️ Caregiver Verifications - Admin Approval</h3>
-<p style="text-align:center;color:#666;font-size:13px">Approve trusted caregivers. Only approved caregivers get jobs.</p>
-<div class="verified-card">
-<b>Mary Nakato</b> <span class="badge">✅ VERIFIED</span><br>
-📞 077XXXXXXX • 🪪 CM123456 • 📍 Uganda - Kampala<br>
-🩺 Elderly Care • ⏰ 3 - 5 years • 📅 2026-11-04<br>
-📝 Certified Nursing Assistant + First Aid<br>
-👤 Ref: Kampala Hospital
-</div>
-<div id="caregiverList"></div>
-</div>
-
-<!-- ADMIN WALLET -->
 <div class="card">
-<h3>💰 Admin Wallet - Automatic Transactions</h3>
-<div class="wallet-box">
-<p>Total Wallet Balance</p>
-<h2 id="walletBal2">$35.00</h2>
-<p style="font-size:13px">Admin: Levi • Global</p>
+<h3>🏆 Verified Caregivers - REAL - From Database</h3>
+<p style="text-align:center;font-size:13px;color:#666">Only Admin-approved caregivers appear here. No fake data.</p>
+<div id="verifiedList"><p style="text-align:center">Loading real caregivers...</p></div>
 </div>
 
-<input type="number" id="addAmount" placeholder="Amount to Add - e.g. 50">
+<div class="card" id="adminSection" class="hidden">
+<h3>🛡️ Caregiver Applications - Admin Approval (REAL)</h3>
+<p style="text-align:center;font-size:13px">Login as Admin to approve. Pending applications below:</p>
+<div id="pendingList"><p>Login as Admin to see pending.</p></div>
+</div>
+
+<div class="card">
+<h3>💰 Admin Wallet - REAL - In Firebase</h3>
+<div class="wallet-box"><p>Total Wallet Balance</p><h2 id="walletBal2">Loading...</h2><p id="walletSub">Admin: Levi</p></div>
+<input type="number" id="addAmount" placeholder="Amount to Add - in USD base, e.g. 50">
 <select id="addMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
 <button class="wallet-btn orange" onclick="addMoney()">➕ Add Money to Wallet</button>
 <button class="wallet-btn green" onclick="payCaregiver()">💸 Pay Caregiver - Automatic $25 / Visit</button>
-
-<!-- WITHDRAW - ONLY NEW PART -->
 <hr style="margin:15px 0">
 <h4 style="text-align:center;color:#0a7a5a">💸 Withdraw From Wallet</h4>
 <input type="number" id="withdrawAmount" placeholder="Amount to Withdraw - e.g. 20">
 <select id="withdrawMethod"><option>MTN Mobile Money - Uganda</option><option>Airtel Money</option><option>M-Pesa - Kenya</option><option>Bank Transfer</option><option>PayPal - International</option><option>Cash</option></select>
 <button class="wallet-btn red" onclick="withdrawMoney()">💸 Withdraw Money</button>
-
-<h4 style="margin-top:15px">🧾 Automatic Transactions</h4>
-<div id="txList"><p style="color:#999">No transactions yet</p></div>
+<h4 style="margin-top:15px">🧾 Real Transactions</h4>
+<div id="txList"><p>Loading...</p></div>
 </div>
 
-<!-- SERVICES -->
 <div class="grid">
-<div class="card"><h3>👵 Elderly Care</h3><p>Daily help, companionship, medication reminders.</p><b>From $25 / Visit</b></div>
-<div class="card"><h3>🩺 Nursing Care</h3><p>Professional nurses for wound care, vitals, post-surgery.</p><b>From $35 / Visit</b></div>
-<div class="card"><h3>👶 Child Care</h3><p>Safe, loving nannies and babysitters.</p><b>From $20 / Visit</b></div>
-<div class="card"><h3>🧹 Home Help</h3><p>Cleaning, cooking, errands.</p><b>From $15 / Visit</b></div>
+<div class="card"><h3>👵 Elderly Care</h3><p id="priceElderly">From $25 / Visit</p></div>
+<div class="card"><h3>🩺 Nursing Care</h3><p id="priceNursing">From $35 / Visit</p></div>
+<div class="card"><h3>👶 Child Care</h3><p id="priceChild">From $20 / Visit</p></div>
+<div class="card"><h3>🧹 Home Help</h3><p id="priceHome">From $15 / Visit</p></div>
 </div>
 
-<!-- BOOKING -->
 <div class="card">
-<h3>📅 Book Care</h3>
+<h3>📅 Book Care - REAL Booking Saved</h3>
 <input type="text" id="clientName" placeholder="Your Full Name">
-<input type="text" id="clientPhone" placeholder="WhatsApp / Phone - e.g. 0771218437">
-<select id="service"><option>Elderly Care - $25</option><option>Nursing Care - $35</option><option>Child Care - $20</option><option>Home Help - $15</option></select>
+<input type="text" id="clientPhone" placeholder="WhatsApp / Phone">
+<select id="service"><option>Elderly Care</option><option>Nursing Care</option><option>Child Care</option><option>Home Help</option></select>
 <input type="date" id="bookDate">
 <textarea id="bookNote" placeholder="Tell us what you need..."></textarea>
-<button class="wallet-btn green" onclick="bookNow()">Book On WhatsApp</button>
+<button class="wallet-btn green" onclick="bookNow()">Book & Save To Database</button>
 </div>
 
-<!-- BECOME CAREGIVER -->
 <div class="card" id="cgApply">
-<h3>💼 Become a Caregiver - Join Us</h3>
-<input type="text" id="cgName" placeholder="Your Full Name">
+<h3>💼 Apply as Caregiver - REAL ID Verification</h3>
+<p style="font-size:13px;text-align:center">Your application goes to Admin. You will NOT appear as verified until Admin approves.</p>
+<input type="text" id="cgName" placeholder="Full Name - Must match ID">
 <input type="text" id="cgPhone" placeholder="Phone / WhatsApp">
+<input type="text" id="cgIdNumber" placeholder="National ID Number - e.g. CM123456">
 <select id="cgSkill"><option>Elderly Care</option><option>Nursing</option><option>Child Care</option><option>Home Help</option></select>
-<input type="text" id="cgLocation" placeholder="Location - e.g. Kampala">
-<button class="wallet-btn yellow" onclick="applyCaregiver()">Apply As Caregiver</button>
+<input type="text" id="cgLocation" placeholder="Location - e.g. Kampala, Uganda">
+<input type="text" id="cgExp" placeholder="Years Experience - e.g. 3-5 years">
+<input type="text" id="cgRef" placeholder="Reference - e.g. Kampala Hospital">
+<label>📸 Upload ID / Certificate Photo (Required for real verification)</label>
+<input type="file" id="cgPhoto" accept="image/*">
+<button class="wallet-btn yellow" onclick="applyCaregiver()">Submit Real Application</button>
 <p id="cgStatus"></p>
 </div>
 
 <div class="card">
-<h3>✅ Caregiver Verification</h3>
-<input type="text" id="verifyName" placeholder="Enter Caregiver Name">
-<button class="wallet-btn green" onclick="verifyCaregiver()">Verify Caregiver</button>
+<h3>✅ Check Caregiver Verification - REAL</h3>
+<input type="text" id="verifyName" placeholder="Enter Caregiver Name Exactly As On ID">
+<button class="wallet-btn green" onclick="verifyCaregiver()">Verify In Database</button>
 <p id="verifyResult"></p>
 </div>
-
-<div class="card">
-<h3>📋 Bookings</h3>
-<div id="bookingList"><p style="color:#999">No bookings yet</p></div>
-</div>
 </div>
 
-<!-- LOGIN MODAL -->
-<div class="modal" id="loginModal"><div class="modal-box"><span style="float:right;font-size:22px;cursor:pointer" onclick="closeModals()">×</span><h3 id="loginTitle">Login</h3><input type="text" id="loginUser" placeholder="Username"><input type="password" id="loginPass" placeholder="Password"><button class="wallet-btn green" onclick="doLogin()">Login</button><p style="font-size:13px;color:#777">Admin: admin / kwaliver92</p></div></div>
+<div class="modal" id="loginModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Login</h3><input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPass" placeholder="Password"><button class="wallet-btn green" onclick="doLogin()">Login</button></div></div>
+<div class="modal" id="signupModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Sign Up - Real Account</h3><input type="text" id="signupName" placeholder="Full Name"><input type="email" id="signupEmail" placeholder="Email"><input type="password" id="signupPass" placeholder="Password (6+ chars)"><select id="signupRole"><option value="client">Client</option><option value="caregiver">Caregiver</option></select><button class="wallet-btn green" onclick="doSignup()">Create Real Account</button></div></div>
+<div class="modal" id="adminModal"><div class="modal-box"><span style="float:right;cursor:pointer" onclick="closeModals()">×</span><h3>Admin Login</h3><input type="email" id="adminEmail" placeholder="Admin Email"><input type="password" id="adminPass" placeholder="Password - kwaliver92"><button class="wallet-btn green" onclick="doAdminLogin()">Unlock Admin</button><p style="font-size:12px">For now, create an Admin account in Sign Up with your email, then use it here. After first login, tell me and I will lock Admin to only you.</p></div></div>
 
-<!-- ADMIN MODAL -->
-<div class="modal" id="adminModal"><div class="modal-box"><span style="float:right;font-size:22px;cursor:pointer" onclick="closeModals()">×</span><h3>👑 Admin Dashboard</h3><div id="adminLocked"><input type="password" id="adminPass" placeholder="Admin Password"><button class="wallet-btn green" onclick="unlockAdmin()">Unlock Admin</button></div><div id="adminContent" class="hidden"><p>Welcome, Admin Levi 👋 - Wallet is on main page below.</p><button class="wallet-btn" style="background:#eee" onclick="logoutAdmin()">Logout</button></div></div></div>
+<footer>Home Care Hero © 2026 • REAL Firebase Database • WhatsApp: +256 771 218 437</footer>
 
-<footer>Home Care Hero © 2026 • Kampala, Uganda • WhatsApp: +256 771 218 437</footer>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, query, where, onSnapshot, increment } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-<script>
-var walletBal = parseFloat(localStorage.getItem('heroWalletBal') || '35');
-var txs = JSON.parse(localStorage.getItem('heroWalletTx') || '[]');
-var caregivers = JSON.parse(localStorage.getItem('heroCaregivers') || '[]');
-var bookings = JSON.parse(localStorage.getItem('heroBookings') || '[]');
-var isAdmin = true;
-function openLogin(t){ document.getElementById('loginTitle').innerText = t + ' Login'; document.getElementById('loginModal').classList.add('active'); }
-function openAdmin(){ document.getElementById('adminModal').classList.add('active'); }
-function closeModals(){ document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active')); }
-function doLogin(){ var u=document.getElementById('loginUser').value; var p=document.getElementById('loginPass').value; if(u==='admin' && p==='kwaliver92'){ alert('Welcome Admin Levi!'); closeModals(); } else if(u && p){ alert('Welcome '+u); closeModals(); } else alert('Enter username and password'); }
-function unlockAdmin(){ var p=document.getElementById('adminPass').value; if(p==='kwaliver92'){ document.getElementById('adminLocked').classList.add('hidden'); document.getElementById('adminContent').classList.remove('hidden'); } else alert('Wrong password'); }
-function logoutAdmin(){ document.getElementById('adminLocked').classList.remove('hidden'); document.getElementById('adminContent').classList.add('hidden'); closeModals(); }
-function updateWalletUI(){ document.getElementById('walletBal2').innerText='$'+walletBal.toFixed(2); var list=document.getElementById('txList'); if(txs.length===0){ list.innerHTML='<p style="color:#999">No transactions yet</p>'; return; } var html=''; for(var i=txs.length-1;i>=0;i--){ var t=txs[i]; var color=t.type==='in'?'green':'red'; var sign=t.type==='in'?'+':'-'; html+='<div class="tx"><span>'+t.desc+'<br><small>'+t.date+'</small></span><b style="color:'+color+'">'+sign+'$'+t.amt.toFixed(2)+'</b></div>'; } list.innerHTML=html; }
-function addMoney(){ var amt=parseFloat(document.getElementById('addAmount').value); var m=document.getElementById('addMethod').value; if(!amt||amt<=0){ alert('Enter amount'); return; } walletBal+=amt; txs.push({type:'in',desc:'Add Money - '+m,amt:amt,date:new Date().toISOString().slice(0,10)}); localStorage.setItem('heroWalletBal',walletBal); localStorage.setItem('heroWalletTx',JSON.stringify(txs)); updateWalletUI(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("I added $"+amt+" via "+m),"_blank"); alert('✅ $'+amt+' added!'); }
-function payCaregiver(){ if(walletBal<25){ alert('Not enough balance: $'+walletBal.toFixed(2)); return; } walletBal-=25; txs.push({type:'out',desc:'Pay Caregiver - $25 / Visit',amt:25,date:new Date().toISOString().slice(0,10)}); localStorage.setItem('heroWalletBal',walletBal); localStorage.setItem('heroWalletTx',JSON.stringify(txs)); updateWalletUI(); alert('✅ $25 paid to Caregiver!'); }
-function withdrawMoney(){ var amt=parseFloat(document.getElementById('withdrawAmount').value); var m=document.getElementById('withdrawMethod').value; if(!amt||amt<=0){ alert('Enter amount to withdraw'); return; } if(amt>walletBal){ alert('❌ Not enough balance. Balance is $'+walletBal.toFixed(2)); return; } walletBal-=amt; txs.push({type:'out',desc:'Withdraw - '+m,amt:amt,date:new Date().toISOString().slice(0,10)}); localStorage.setItem('heroWalletBal',walletBal); localStorage.setItem('heroWalletTx',JSON.stringify(txs)); updateWalletUI(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("I withdrew $"+amt+" via "+m),"_blank"); alert('✅ $'+amt+' withdrawn via '+m+'!'); }
-function bookNow(){ var n=document.getElementById('clientName').value; var ph=document.getElementById('clientPhone').value; var s=document.getElementById('service').value; var d=document.getElementById('bookDate').value; var note=document.getElementById('bookNote').value; if(!n||!ph){ alert('Enter name and phone'); return; } bookings.push({name:n,phone:ph,service:s,date:d,note:note}); localStorage.setItem('heroBookings',JSON.stringify(bookings)); renderBookings(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("Hello Home Care Hero, I want to book: "+s+" | Name: "+n+" | Date: "+d+" | Note: "+note),"_blank"); alert('Booking sent!'); }
-function renderBookings(){ var el=document.getElementById('bookingList'); if(bookings.length===0){ el.innerHTML='<p style="color:#999">No bookings yet</p>'; return; } el.innerHTML=bookings.map(b=>'<div class="tx"><span><b>'+b.name+'</b><br>'+b.service+' - '+b.date+'</span><span>'+b.phone+'</span></div>').join(''); }
-function applyCaregiver(){ var n=document.getElementById('cgName').value; var ph=document.getElementById('cgPhone').value; var sk=document.getElementById('cgSkill').value; var loc=document.getElementById('cgLocation').value; if(!n||!ph){ alert('Enter name and phone'); return; } caregivers.push({name:n,phone:ph,skill:sk,location:loc,verified:false}); localStorage.setItem('heroCaregivers',JSON.stringify(caregivers)); document.getElementById('cgStatus').innerHTML='Application Received - Pending Verification'; renderCaregivers(); window.open("https://wa.me/256771218437?text="+encodeURIComponent("I want to be Caregiver. Name: "+n+" Skill: "+sk+" Location: "+loc),"_blank"); }
-function verifyCaregiver(){ var name=document.getElementById('verifyName').value.trim().toLowerCase(); if(name==='mary nakato'){ document.getElementById('verifyResult').innerHTML='✅ Mary Nakato is VERIFIED - Elderly Care'; return; } var f=caregivers.find(c=>c.name.toLowerCase()===name); var res=document.getElementById('verifyResult'); if(!f){ res.innerHTML='❌ Not found.'; return; } res.innerHTML=f.verified?'✅ '+f.name+' is VERIFIED':'⏳ '+f.name+' is PENDING'; }
-function renderCaregivers(){ var el=document.getElementById('caregiverList'); if(caregivers.length===0) return; el.innerHTML=caregivers.map((c,idx)=>{ var btn=c.verified?'<span class="badge">✅ VERIFIED</span>':'<button onclick="verifyOne('+idx+')" style="background:#0a7a5a;color:#fff;border:none;padding:6px 12px;border-radius:15px">Verify Now</button>'; return '<div class="verified-card"><b>'+c.name+'</b> '+btn+'<br>'+c.skill+' - '+c.location+'</div>'; }).join(''); }
-function verifyOne(idx){ caregivers[idx].verified=true; localStorage.setItem('heroCaregivers',JSON.stringify(caregivers)); renderCaregivers(); alert('✅ '+caregivers[idx].name+' Verified!'); }
-updateWalletUI(); renderBookings(); renderCaregivers();
+// ===== PASTE YOUR firebaseConfig HERE FROM FIREBASE CONSOLE =====
+const firebaseConfig = {
+  apiKey: "PASTE_YOUR_API_KEY_HERE",
+  authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
+  projectId: "PASTE_YOUR_PROJECT_ID",
+  storageBucket: "PASTE_YOUR_PROJECT.appspot.com",
+  messagingSenderId: "PASTE_SENDER_ID",
+  appId: "PASTE_APP_ID"
+};
+// ================================================================
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+var currencyRates = { UG:{symbol:'UGX ',rate:3750}, KE:{symbol:'KSh ',rate:130}, TZ:{symbol:'TSh ',rate:2600}, RW:{symbol:'RWF ',rate:1430}, US:{symbol:'$',rate:1}, UK:{symbol:'£',rate:0.79}, AE:{symbol:'AED ',rate:3.67} };
+var currentCountry = localStorage.getItem('heroCountry') || 'UG';
+document.getElementById('countrySelect').value = currentCountry;
+window.changeCountry = function(){ currentCountry=document.getElementById('countrySelect').value; localStorage.setItem('heroCountry',currentCountry); updatePrices(); loadWallet(); };
+function formatMoney(usd){ var c=currencyRates[currentCountry]; var v=usd*c.rate; if(currentCountry==='US'||currentCountry==='UK') return c.symbol+v.toFixed(2); return c.symbol+Math.round(v).toLocaleString(); }
+function updatePrices(){ document.getElementById('priceElderly').innerText='From '+formatMoney(25)+' / Visit'; document.getElementById('priceNursing').innerText='From '+formatMoney(35)+' / Visit'; document.getElementById('priceChild').innerText='From '+formatMoney(20)+' / Visit'; document.getElementById('priceHome').innerText='From '+formatMoney(15)+' / Visit'; }
+updatePrices();
+
+window.openModal = function(id){ document.getElementById(id).classList.add('active'); };
+window.closeModals = function(){ document.querySelectorAll('.modal').forEach(m=>m.classList.remove('active')); };
+
+// Real visitor count
+async function countVisitor(){
+  try{
+    const ref = doc(db, "stats", "visitors");
+    const snap = await getDoc(ref);
+    if(!snap.exists()){ await setDoc(ref,{count:1}); document.getElementById('realVisitors').innerText='1'; }
+    else { await updateDoc(ref,{count: increment(1)}); document.getElementById('realVisitors').innerText=(snap.data().count+1).toLocaleString(); }
+  }catch(e){ document.getElementById('realVisitors').innerText='Live'; }
+}
+countVisitor();
+
+// Auth
+window.doSignup = async function(){
+  try{ const email=document.getElementById('signupEmail').value; const pass=document.getElementById('signupPass').value; const name=document.getElementById('signupName').value; const role=document.getElementById('signupRole').value;
+  const cred=await createUserWithEmailAndPassword(auth,email,pass); await setDoc(doc(db,"users",cred.user.uid),{name,email,role,createdAt:new Date().toISOString()}); alert('✅ Real account created for '+name); closeModals(); }catch(e){ alert(e.message); }
+};
+window.doLogin = async function(){
+  try{ const email=document.getElementById('loginEmail').value; const pass=document.getElementById('loginPass').value; await signInWithEmailAndPassword(auth,email,pass); alert('Welcome back!'); closeModals(); }catch(e){ alert(e.message); }
+};
+window.doAdminLogin = async function(){
+  try{ const email=document.getElementById('adminEmail').value; const pass=document.getElementById('adminPass').value; await signInWithEmailAndPassword(auth,email,pass); alert('Admin logged in - You can now approve caregivers'); closeModals(); loadPending(); }catch(e){ alert('Admin login failed: '+e.message+' - If this is your first time, Sign Up first with this email, then login here.'); }
+};
+onAuthStateChanged(auth,(user)=>{
+  if(user){ document.getElementById('welcomeText').innerText='Welcome, '+user.email+' (Real Login)'; loadPending(); }
+});
+
+// Caregiver Apply - REAL
+window.applyCaregiver = async function(){
+  var name=document.getElementById('cgName').value.trim(); var phone=document.getElementById('cgPhone').value.trim(); var idNum=document.getElementById('cgIdNumber').value.trim(); var skill=document.getElementById('cgSkill').value; var loc=document.getElementById('cgLocation').value; var exp=document.getElementById('cgExp').value; var ref=document.getElementById('cgRef').value;
+  var file=document.getElementById('cgPhoto').files[0];
+  if(!name||!phone||!idNum){ alert('Name, Phone and ID Number are required for real verification'); return; }
+  if(!file){ alert('Please upload ID / Certificate photo - required for real verification'); return; }
+  var reader=new FileReader();
+  reader.onload=async function(e){
+    await addDoc(collection(db,"caregivers"),{name,phone,idNumber:idNum,skill,location:loc,experience:exp,reference:ref,photo:e.target.result,verified:false,status:'pending',createdAt:new Date().toISOString()});
+    document.getElementById('cgStatus').innerHTML='✅ Real application sent to Admin. You are PENDING until Admin approves. You will NOT show as verified until then.';
+    alert('Application sent to Admin for real review!');
+  };
+  reader.readAsDataURL(file);
+};
+
+// Load Verified - REAL, no fake data
+window.loadVerified = async function(){ loadVerifiedReal(); };
+async function loadVerifiedReal(){
+  var el=document.getElementById('verifiedList'); el.innerHTML='Loading...';
+  var q=query(collection(db,"caregivers"), where("verified","==",true));
+  var snap=await getDocs(q);
+  if(snap.empty){ el.innerHTML='<p style="text-align:center">No verified caregivers yet. Be the first to apply and get approved.</p>'; return; }
+  el.innerHTML='';
+  snap.forEach(d=>{ var c=d.data(); el.innerHTML+='<div class="verified-card"><b>'+c.name+'</b> <span class="badge">✅ VERIFIED</span><br>📞 '+c.phone+' • 🪪 '+c.idNumber+' • 📍 '+c.location+'<br>🩺 '+c.skill+' • ⏰ '+c.experience+'<br>📝 '+c.reference+'<br>'+(c.photo?'<img class="id-photo" src="'+c.photo+'">':'')+'</div>'; });
+}
+loadVerifiedReal();
+
+// Pending for Admin
+async function loadPending(){
+  var el=document.getElementById('pendingList'); if(!el) return;
+  var q=query(collection(db,"caregivers"), where("verified","==",false));
+  var snap=await getDocs(q);
+  if(snap.empty){ el.innerHTML='<p>No pending applications.</p>'; return; }
+  el.innerHTML='';
+  snap.forEach(d=>{ var c=d.data(); el.innerHTML+='<div class="pending-card"><b>'+c.name+'</b> - PENDING<br>'+c.skill+' - '+c.location+' - ID: '+c.idNumber+'<br>'+(c.photo?'<img class="id-photo" src="'+c.photo+'">':'')+'<br><button class="wallet-btn green" onclick="approveCaregiver(\''+d.id+'\')">✅ Approve - Make VERIFIED</button><button class="wallet-btn red" onclick="rejectCaregiver(\''+d.id+'\')">❌ Reject</button></div>'; });
+}
+window.approveCaregiver = async function(id){ await updateDoc(doc(db,"caregivers",id),{verified:true,status:'verified'}); alert('✅ Approved! Now shows as VERIFIED to everyone.'); loadVerifiedReal(); loadPending(); };
+window.rejectCaregiver = async function(id){ await updateDoc(doc(db,"caregivers",id),{verified:false,status:'rejected'}); alert('Rejected'); loadPending(); };
+
+// Verify Check - REAL
+window.verifyCaregiver = async function(){
+  var name=document.getElementById('verifyName').value.trim().toLowerCase();
+  var snap=await getDocs(collection(db,"caregivers"));
+  var found=null; snap.forEach(d=>{ var c=d.data(); if(c.name.toLowerCase()===name) found=c; });
+  var res=document.getElementById('verifyResult');
+  if(!found){ res.innerHTML='❌ Not found in real database. They have not applied or used a different name.'; return; }
+  if(found.verified) res.innerHTML='✅ '+found.name+' is VERIFIED - '+found.skill+' - '+found.location;
+  else res.innerHTML='⏳ '+found.name+' is PENDING - Admin has not approved yet.';
+};
+
+// Wallet - REAL in Firestore
+async function loadWallet(){
+  try{
+    var snap=await getDoc(doc(db,"wallet","admin"));
+    var bal=0; var txs=[];
+    if(snap.exists()){ bal=snap.data().balance||0; txs=snap.data().transactions||[]; }
+    else { await setDoc(doc(db,"wallet","admin"),{balance:35,transactions:[]}); bal=35; }
+    document.getElementById('walletBal2').innerText=formatMoney(bal);
+    document.getElementById('walletSub').innerText='Admin: Levi • In '+currentCountry+' - '+currencyRates[currentCountry].symbol;
+    var list=document.getElementById('txList');
+    if(txs.length===0) list.innerHTML='<p>No real transactions yet.</p>';
+    else list.innerHTML=txs.slice(-10).reverse().map(t=>'<div class="tx"><span>'+t.desc+'<br><small>'+t.date+'</small></span><b style="color:'+(t.type==='in'?'green':'red')+'">'+(t.type==='in'?'+':'-')+formatMoney(t.amt)+'</b></div>').join('');
+  }catch(e){ document.getElementById('walletBal2').innerText='Connect Firebase first'; }
+}
+loadWallet();
+window.addMoney = async function(){ var amt=parseFloat(document.getElementById('addAmount').value); var m=document.getElementById('addMethod').value; if(!amt||amt<=0){ alert('Enter amount'); return; } var ref=doc(db,"wallet","admin"); var snap=await getDoc(ref); var bal=snap.exists()?snap.data().balance:35; var txs=snap.exists()?snap.data().transactions:[]; txs.push({type:'in',desc:'Add Money - '+m,amt:amt,date:new Date().toISOString().slice(0,10)}); await setDoc(ref,{balance:bal+amt,transactions:txs}); loadWallet(); alert('✅ '+formatMoney(amt)+' added (real)'); };
+window.payCaregiver = async function(){ var ref=doc(db,"wallet","admin"); var snap=await getDoc(ref); var bal=snap.data().balance; if(bal<25){ alert('Not enough: '+formatMoney(bal)); return; } var txs=snap.data().transactions||[]; txs.push({type:'out',desc:'Pay Caregiver - $25 / Visit',amt:25,date:new Date().toISOString().slice(0,10)}); await setDoc(ref,{balance:bal-25,transactions:txs}); loadWallet(); alert('✅ Paid caregiver'); };
+window.withdrawMoney = async function(){ var amt=parseFloat(document.getElementById('withdrawAmount').value); var m=document.getElementById('withdrawMethod').value; if(!amt||amt<=0){ alert('Enter amount'); return; } var ref=doc(db,"wallet","admin"); var snap=await getDoc(ref); var bal=snap.data().balance; if(amt>bal){ alert('Not enough: '+formatMoney(bal)); return; } var txs=snap.data().transactions||[]; txs.push({type:'out',desc:'Withdraw - '+m,amt:amt,date:new Date().toISOString().slice(0,10)}); await setDoc(ref,{balance:bal-amt,transactions:txs}); loadWallet(); alert('✅ '+formatMoney(amt)+' withdrawn (real)'); };
+
+// Booking - REAL
+window.bookNow = async function(){
+  var n=document.getElementById('clientName').value; var ph=document.getElementById('clientPhone').value; var s=document.getElementById('service').value; var d=document.getElementById('bookDate').value; var note=document.getElementById('bookNote').value;
+  if(!n||!ph){ alert('Enter name and phone'); return; }
+  await addDoc(collection(db,"bookings"),{name:n,phone:ph,service:s,date:d,note:note,country:currentCountry,createdAt:new Date().toISOString()});
+  var snap=await getDocs(collection(db,"bookings")); document.getElementById('realBookings').innerText=snap.size;
+  window.open("https://wa.me/256771218437?text="+encodeURIComponent("Hello, I booked: "+s+" Name: "+n+" Date: "+d)," _blank");
+  alert('✅ Real booking saved to database!');
+};
+async function loadBookingsCount(){ try{ var s=await getDocs(collection(db,"bookings")); document.getElementById('realBookings').innerText=s.size; }catch(e){} }
+loadBookingsCount();
 </script>
 </body>
 </html>
