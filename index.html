@@ -3,193 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Live + GPS</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<title>Home Care Hero - V1</title>
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:'Plus Jakarta Sans',system-ui;background:#FFF7ED;color:#1C1917}
-.top{background:#111827;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:13px;position:sticky;top:0;z-index:10}
-.top b{font-size:15px} #status{background:#22C55E;color:#fff;padding:6px 10px;border-radius:999px;font-weight:800;font-size:11px}
-.hero{background:linear-gradient(135deg,#7C3AED,#DB2777 55%,#F97316);color:#fff;padding:22px 16px 30px;border-radius:0 0 26px 26px}
-.hero h1{margin:0;font-size:29px;line-height:1.05}
-.hero p{opacity:.92;font-size:14px}
-.wrap{max-width:920px;margin:-14px auto 0;padding:0 12px 30px}
-.card{background:#fff;border-radius:20px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:12px;border:1px solid #FFE7D6}
-.tabs{display:flex;gap:6px;background:#fff;padding:5px;border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.07);margin-bottom:12px;flex-wrap:wrap}
-.tabs button{flex:1;border:0;padding:11px 6px;border-radius:999px;font-weight:800;font-size:13px;cursor:pointer;background:transparent;white-space:nowrap}
-.tabs button.active{background:#111827;color:#fff}
-label{font-size:13px;font-weight:800;display:block;margin:12px 0 5px}
-input,select,textarea{width:100%;padding:13px;border:2px solid #F1F5F9;border-radius:13px;font-size:15px;background:#F8FAFC;outline:none}
-button{border:0;border-radius:13px;padding:14px;font-weight:800;font-size:15px;cursor:pointer;width:100%}
-.btn-main{background:linear-gradient(90deg,#7C3AED,#DB2777);color:#fff}
-.btn-dark{background:#111827;color:#fff} .btn-green{background:#22C55E;color:#fff} .btn-red{background:#EF4444;color:#fff} .btn-ghost{background:#F3F4F6;color:#111}
-.job{border:1px solid #FFE7D6;background:linear-gradient(180deg,#fff,#FFFBEB);border-radius:16px;padding:14px;margin-top:10px}
-.pill{background:#DCFCE7;color:#166534;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
-.price{font-size:20px;font-weight:800;color:#7C3AED} .muted{color:#78716C;font-size:13px;line-height:1.5}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.actions{display:flex;gap:7px;margin-top:10px} .actions a,.actions button{flex:1;text-align:center;text-decoration:none;padding:11px;border-radius:11px;font-weight:800;font-size:13px}
-.call{background:#111827;color:#fff} .wa{background:#22C55E;color:#fff}
-.cat{display:inline-block;background:#F3E8FF;color:#6B21A8;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800}
-.hidden{display:none} .gps-box{background:#EFF6FF;border:2px dashed #3B82F6;border-radius:14px;padding:12px;margin-top:10px}
-.user-bar{background:#FEF3C7;border-radius:12px;padding:10px 12px;font-size:13px;font-weight:700;display:flex;justify-content:space-between;align-items:center}
-@media(max-width:600px){.row{grid-template-columns:1fr}}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f2f5f2;padding:12px}
+.header{background:#fff;padding:14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center}
+.tabs{display:flex;gap:8px;margin:14px 0}
+.tabs button{flex:1;padding:12px;border:0;border-radius:12px;font-weight:700;background:#e2e8e2}
+.tabs button.active{background:#16a34a;color:#fff}
+.card{background:#fff;padding:16px;border-radius:16px;margin-bottom:12px}
+.balance{display:flex;gap:10px}
+.balance div{flex:1;background:#f0fdf4;padding:14px;border-radius:14px}
+.btn{width:100%;padding:14px;border:0;border-radius:12px;font-weight:800;font-size:15px;margin-top:8px}
+.green{background:#16a34a;color:#fff}.blue{background:#2563eb;color:#fff}.orange{background:#f59e0b;color:#fff}
+input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0}
+.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee}
+.small{font-size:12px;color:#666}.hidden{display:none}
+.pill{padding:6px 10px;border-radius:20px;font-size:12px;font-weight:700}.ok{background:#dcfce7}.pend{background:#fef3c7}.hold{background:#dbeafe}
 </style>
 </head>
 <body>
-<div class="top"><b>🏠 Home Care Hero</b><span id="status">🟢 REAL LIVE</span></div>
-<div class="hero"><h1>Trusted care,<br>right at your home.</h1><p>Login → Post job → Track your carer live on GPS.</p><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><span style="background:rgba(255,255,255,.2);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">⭐ 4.9 Rated</span><span style="background:rgba(255,255,255,.2);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">📍 GPS Live Tracking</span></div></div>
-<div class="wrap">
-
-<!-- LOGIN / ACCOUNT -->
-<div class="card" id="loginCard">
-<h2 style="margin:0">🔐 Login / Create Account</h2>
-<p class="muted" id="loginMsg">One account for Client, Carer or Admin. Use Phone + PIN.</p>
-<div id="loggedOut">
-<label>I am a...</label><select id="role"><option value="client">🙋 Client - I Need Care</option><option value="carer">💜 Carer - I Want Jobs</option><option value="admin">🛡️ Admin</option></select>
-<label>Your Name</label><input id="uName" placeholder="e.g. Sarah Nakato">
-<div class="row"><div><label>Phone / WhatsApp</label><input id="uPhone" placeholder="0770123456"></div><div><label>4-Digit PIN</label><input id="uPin" type="password" maxlength="4" placeholder="1234"></div></div>
-<label id="carerExtraLabel" class="hidden">Your Area + Skills (Carers only)</label><input id="carerExtra" class="hidden" placeholder="e.g. Ntinda, Elderly Care, 3yrs exp">
-<div class="row" style="margin-top:12px"><button class="btn-main" onclick="doLogin('login')">Login</button><button class="btn-dark" onclick="doLogin('signup')">Create Account</button></div>
-<p class="muted" style="text-align:center">Admin demo: Phone <b>0770000000</b> PIN <b>1234</b> → Create Account as Admin once</p>
-</div>
-<div id="loggedIn" class="hidden"><div class="user-bar"><span id="userInfo"></span><button onclick="logout()" style="width:auto;padding:8px 14px;background:#EF4444;color:#fff;font-size:12px">Logout</button></div>
-<div id="carerGPS" class="hidden"><div class="gps-box"><b>📍 GPS Tracker - Carer</b><p class="muted" id="gpsStatus">GPS Off. Tap below to go live so clients can see you.</p><button class="btn-green" onclick="toggleGPS()">📍 Start GPS Tracking</button><p class="muted" id="gpsCoords"></p></div></div>
-</div>
+<div class="header"><div><b>🏠 Home Care Hero</b><div class="small">Trusted care, right at your home • Kampala</div></div><span>V1 LIVE</span></div>
+<div class="tabs">
+<button id="t-client" class="active" onclick="show('client')">Client</button>
+<button id="t-carer" onclick="show('carer')">Carer</button>
+<button id="t-admin" onclick="show('admin')">Admin Only</button>
 </div>
 
-<div class="tabs"><button id="tabClient" class="active" onclick="showTab('client')">🙋 I Need Care</button><button id="tabCarer" onclick="showTab('carer')">💜 Jobs + Carers</button><button id="tabAdmin" onclick="showTab('admin')">🛡️ Admin</button></div>
-
-<!-- CLIENT -->
-<div id="clientView" class="card">
-<h2 style="margin:0">Post a Care Job → Go Live</h2><p class="muted">You must be logged in as Client. Carers will see it instantly.</p>
-<label>Location / Area</label><input id="cArea" placeholder="e.g. Ntinda, Kampala">
-<label>What help do you need?</label><select id="cType"><option>👵 Elderly Care</option><option>👶 Child Care / Nanny</option><option>🤱 Postnatal Care</option><option>🏠 Companion / House Help</option><option>🩺 Nurse / Medical Care</option><option>🍲 Cleaning & Cooking</option></select>
-<div class="row"><div><label>Date Needed</label><input id="cDate" type="date"></div><div><label>Pay (UGX / day)</label><input id="cPay" type="number" placeholder="30000"></div></div>
-<label>Details</label><textarea id="cDetails" rows="3" placeholder="e.g. 8am-5pm, Mon-Sat..."></textarea>
-<button class="btn-main" style="margin-top:14px" onclick="postJob()">✨ Post Job - Go Live Now</button><p class="muted" id="postMsg"></p>
-<h3>📍 Live Carers Near You (GPS)</h3><div id="liveCarers"></div>
+<div id="client">
+<div class="card"><h3>Book Care & Pay In-App</h3>
+<select id="careType"><option>Day Care (8hrs) - UGX 60,000</option><option>Night Care - UGX 70,000</option><option>Full Day + Night - UGX 100,000</option><option>Elderly Care - UGX 65,000</option></select>
+<input id="loc" placeholder="Location e.g. Ntinda, Kampala">
+<input id="clientPhone" placeholder="Your MoMo Number 0770...">
+<select id="payMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Visa / Mastercard</option></select>
+<button class="btn green" onclick="clientPay()">PAY NOW - MONEY HELD IN APP 🔒</button>
+<p class="small">No cash outside app. If carer doesn't come, Admin refunds you.</p></div>
+<div class="card"><h3>My Bookings</h3><div id="bookings"><p class="small">No bookings yet.</p></div></div>
 </div>
 
-<!-- CARER / JOBS -->
-<div id="carerView" class="card hidden">
-<h2 style="margin:0">🔴 Live Jobs</h2><p class="muted">Login as Carer to apply. Tap Apply → Client gets your number.</p>
-<label>Search by Area</label><input id="filterArea" placeholder="e.g. Ntinda..." oninput="renderJobs()">
-<div id="allJobs"></div>
-<h3>💜 All Verified Carers</h3><div id="allCarers"></div>
-</div>
-
-<!-- ADMIN -->
-<div id="adminView" class="card hidden">
-<h2 style="margin:0">🛡️ Admin Dashboard</h2><p class="muted" id="adminMsg">Login as Admin to manage. Admin can delete any job & approve carers.</p>
-<div class="row"><div style="background:#F3E8FF;padding:14px;border-radius:14px;text-align:center"><b id="statJobs">0</b><br><span class="muted">Total Jobs</span></div><div style="background:#DCFCE7;padding:14px;border-radius:14px;text-align:center"><b id="statUsers">0</b><br><span class="muted">Total Users</span></div></div>
-<h3>All Users</h3><div id="adminUsers"></div>
-<h3>All Jobs - Admin Controls</h3><div id="adminJobs"></div>
-</div>
-
-<div class="card"><h3 style="margin:0">My Jobs</h3><div id="myJobs"></div></div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-<script>
-// --- PASTE YOUR CONFIG HERE ---
-// Paste your var firebaseConfig = { ... }; block here (the same one you already have)
-var db=null;
-try{ if(typeof firebaseConfig!=='undefined' && firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE")){ firebase.initializeApp(firebaseConfig); db=firebase.database(); } }catch(e){ console.log(e); }
-
-var currentUser = JSON.parse(localStorage.getItem('hch_user')||'null');
-var jobs=[], users=[], locations={};
-var gpsWatch=null, gpsOn=false;
-
-function esc(s){return String(s||"").replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function showTab(t){ ['client','carer','admin'].forEach(function(x){ document.getElementById(x+'View').classList.toggle('hidden', x!==t); document.getElementById('tab'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active', x===t); }); }
-document.getElementById('role').addEventListener('change', function(){ var isCarer=this.value==='carer'; document.getElementById('carerExtra').classList.toggle('hidden',!isCarer); document.getElementById('carerExtraLabel').classList.toggle('hidden',!isCarer); });
-
-function updateLoginUI(){
-  if(currentUser){
-    document.getElementById('loggedOut').classList.add('hidden'); document.getElementById('loggedIn').classList.remove('hidden');
-    document.getElementById('userInfo').textContent = (currentUser.role==='admin'?'🛡️ Admin • ': currentUser.role==='carer'?'💜 Carer • ':'🙋 Client • ') + currentUser.name + ' • ' + currentUser.phone;
-    document.getElementById('carerGPS').classList.toggle('hidden', currentUser.role!=='carer');
-    if(currentUser.role==='admin') showTab('admin');
-  } else {
-    document.getElementById('loggedOut').classList.remove('hidden'); document.getElementById('loggedIn').classList.add('hidden');
-  }
-}
-function doLogin(mode){
-  var role=document.getElementById('role').value, name=document.getElementById('uName').value.trim(), phone=document.getElementById('uPhone').value.trim(), pin=document.getElementById('uPin').value.trim(), extra=document.getElementById('carerExtra').value.trim();
-  if(!phone||pin.length<4){ document.getElementById('loginMsg').textContent="Enter Phone + 4-digit PIN"; return; }
-  if(mode==='signup' && !name){ document.getElementById('loginMsg').textContent="Enter your Name to create account"; return; }
-  var key=phone.replace(/\D/g,'');
-  if(mode==='signup'){
-    var u={name:name, phone:phone, pin:pin, role:role, extra:extra, createdAt:Date.now(), approved: role==='carer'?false:true};
-    if(db) db.ref('users/'+key).set(u);
-    currentUser=u; localStorage.setItem('hch_user', JSON.stringify(u));
-    document.getElementById('loginMsg').textContent="✅ Account created! Logged in as "+role;
-    updateLoginUI(); loadUsers();
-  } else {
-    if(db){ db.ref('users/'+key).once('value', function(s){ var u=s.val(); if(!u){ document.getElementById('loginMsg').textContent="No account found. Tap Create Account."; return; } if(u.pin!==pin){ document.getElementById('loginMsg').textContent="Wrong PIN."; return; } if(u.role!==role){ document.getElementById('loginMsg').textContent="This account is "+u.role+", change 'I am a' to "+u.role; return; } currentUser=u; localStorage.setItem('hch_user', JSON.stringify(u)); document.getElementById('loginMsg').textContent="✅ Welcome back, "+u.name; updateLoginUI(); }); }
-    else { document.getElementById('loginMsg').textContent="Firebase not connected - paste config."; }
-  }
-}
-function logout(){ localStorage.removeItem('hch_user'); currentUser=null; stopGPS(); updateLoginUI(); }
-function postJob(){
-  if(!currentUser){ document.getElementById('postMsg').textContent="Please Login as Client first."; return; }
-  if(currentUser.role!=='client'){ document.getElementById('postMsg').textContent="Only Clients can post. Login as Client."; return; }
-  var a=document.getElementById('cArea').value.trim(), ty=document.getElementById('cType').value, d=document.getElementById('cDate').value, pay=document.getElementById('cPay').value, det=document.getElementById('cDetails').value.trim();
-  if(!a){ document.getElementById('postMsg').textContent="Enter Area"; return; }
-  var job={name:currentUser.name, phone:currentUser.phone, area:a, type:ty, date:d, pay:pay, details:det, createdAt:Date.now(), status:"Open", owner:currentUser.phone};
-  if(db) db.ref('jobs').push(job).then(function(){ document.getElementById('postMsg').textContent="✅ Posted LIVE!"; });
-  else { job.id='demo'+Date.now(); jobs.unshift(job); renderJobs(); }
-}
-function deleteJob(id){ if(confirm("Admin: Delete this job?")){ if(db) db.ref('jobs/'+id).remove(); } }
-function approveCarer(phoneKey){ if(db) db.ref('users/'+phoneKey+'/approved').set(true); }
-function applyJob(j){
-  if(!currentUser||currentUser.role!=='carer'){ alert("Login as Carer to apply"); return; }
-  var msg="Hi "+j.name+", I am "+currentUser.name+" (Carer from "+(currentUser.extra||"Kampala")+"). I want your job: "+j.type+" in "+j.area+" for UGX "+j.pay+". My number: "+currentUser.phone;
-  window.open("https://wa.me/"+j.phone.replace(/\D/g,'').replace(/^0/,'256')+"?text="+encodeURIComponent(msg),"_blank");
-}
-function toggleGPS(){
-  if(!currentUser||currentUser.role!=='carer'){ alert("Login as Carer"); return; }
-  if(gpsOn){ stopGPS(); return; }
-  if(!navigator.geolocation){ alert("GPS not supported"); return; }
-  document.getElementById('gpsStatus').textContent="📡 Getting GPS... Allow location permission.";
-  gpsWatch=navigator.geolocation.watchPosition(function(pos){
-    var lat=pos.coords.latitude, lng=pos.coords.longitude;
-    gpsOn=true; document.getElementById('gpsStatus').textContent="🟢 LIVE - Sharing location";
-    document.getElementById('gpsCoords').textContent="Lat: "+lat.toFixed(5)+" Lng: "+lng.toFixed(5);
-    document.querySelector('#carerGPS button').textContent="⏹️ Stop GPS Tracking";
-    if(db) db.ref('locations/'+currentUser.phone.replace(/\D/g,'')).set({name:currentUser.name, phone:currentUser.phone, extra:currentUser.extra||"", lat:lat, lng:lng, updatedAt:Date.now()});
-  }, function(e){ document.getElementById('gpsStatus').textContent="GPS Error: "+e.message+" - Please allow Location."; }, {enableHighAccuracy:true});
-}
-function stopGPS(){ if(gpsWatch) navigator.geolocation.clearWatch(gpsWatch); gpsOn=false; var b=document.querySelector('#carerGPS button'); if(b) b.textContent="📍 Start GPS Tracking"; var s=document.getElementById('gpsStatus'); if(s) s.textContent="GPS Off"; }
-function renderJobs(){
-  var f=(document.getElementById('filterArea').value||"").toLowerCase();
-  var list=jobs.filter(function(j){ return !f||(j.area||"").toLowerCase().includes(f); });
-  var h=""; if(list.length===0) h="<p class='muted' style='text-align:center;padding:16px'>No jobs yet. Post one above 👆</p>";
-  list.forEach(function(j){
-    var wa=j.phone.replace(/\D/g,''); if(wa.length===10&&wa[0]==='0') wa='256'+wa.slice(1);
-    var isAdmin = currentUser && currentUser.role==='admin';
-    h+="<div class='job'><div style='display:flex;justify-content:space-between'><div><span class='cat'>"+esc(j.type)+"</span><h3 style='margin:8px 0 4px'>"+esc(j.area)+"</h3><p class='muted' style='margin:0'>📅 "+esc(j.date||"ASAP")+" • "+esc(j.name)+"</p></div><div style='text-align:right'><div class='price'>UGX "+esc(j.pay||"Negotiable")+"</div><span class='pill'>● "+esc(j.status||"Open")+"</span></div></div><p>"+esc(j.details||"")+"</p><div class='actions'><a class='call' href='tel:"+esc(j.phone)+"'>📞 Call</a><a class='wa' target='_blank' href='https://wa.me/"+wa+"'>💬 WhatsApp</a><button class='btn-green' style='flex:1' onclick='applyJob("+JSON.stringify(j).replace(/'/g,"\\'")+ ")'>Apply</button></div>"+(isAdmin?"<button class='btn-red' style='margin-top:8px' onclick=\"deleteJob('"+j.id+"')\">🗑️ Admin Delete Job</button>":"")+"</div>";
-  });
-  document.getElementById('allJobs').innerHTML=h; document.getElementById('myJobs').innerHTML=h;
-  document.getElementById('statJobs').textContent=jobs.length;
-  var ah=""; jobs.forEach(function(j){ ah+="<div class='job'><b>"+esc(j.area)+" - "+esc(j.type)+"</b> <span class='muted'>by "+esc(j.name)+"</span><br><button class='btn-red' style='margin-top:8px' onclick=\"deleteJob('"+j.id+"')\">Delete</button></div>"; });
-  document.getElementById('adminJobs').innerHTML=ah||"<p class='muted'>No jobs</p>";
-}
-function renderUsers(){
-  var carers=users.filter(function(u){return u.role==='carer'});
-  var h=""; carers.forEach(function(u){ h+="<div class='job'><b>💜 "+esc(u.name)+"</b> • "+esc(u.phone)+"<br><span class='muted'>"+esc(u.extra||"")+"</span><br><span class='pill'>"+(u.approved?"✅ Approved":"⏳ Pending Approval")+"</span></div>"; });
-  document.getElementById('allCarers').innerHTML=h||"<p class='muted'>No carers yet</p>";
-  var au=""; users.forEach(function(u){ au+="<div class='job'><b>"+esc(u.role.toUpperCase())+" - "+esc(u.name)+"</b> • "+esc(u.phone)+"<br><span class='muted'>"+esc(u.extra||"")+"</span> "+(u.role==='carer' && !u.approved ? "<button class='btn-green' style='margin-top:8px' onclick=\"approveCarer('"+u.phone.replace(/\D/g,'')+"')\">✅ Approve Carer</button>":"")+"</div>"; });
-  document.getElementById('adminUsers').innerHTML=au||"<p class='muted'>No users yet</p>";
-  document.getElementById('statUsers').textContent=users.length;
-}
-function renderLocations(){
-  var h=""; Object.keys(locations).forEach(function(k){ var l=locations[k]; var ago=Math.floor((Date.now()-l.updatedAt)/60000); h+="<div class='job'><b>📍 "+esc(l.name)+"</b> • "+esc(l.phone)+"<br><span class='muted'>"+esc(l.extra||"")+" • Updated "+ago+" min ago</span><br><a target='_blank' href='https://www.google.com/maps?q="+l.lat+","+l.lng+"' style='display:block;text-align:center;background:#3B82F6;color:#fff;padding:11px;border-radius:11px;text-decoration:none;font-weight:800;margin-top:8px'>🗺️ View Live Location on Map</a><p class='muted'>Lat "+l.lat.toFixed(4)+", Lng "+l.lng.toFixed(4)+"</p></div>"; });
-  document.getElementById('liveCarers').innerHTML=h||"<p class='muted'>No carers sharing GPS right now. Carers: Login → Start GPS Tracking.</p>";
-}
-function loadUsers(){ if(!db) return; db.ref('users').on('value', function(s){ users=[]; s.forEach(function(c){ var v=c.val(); v._key=c.key; users.push(v); }); renderUsers(); }); }
-if(db){ db.ref('jobs').orderByChild('createdAt').on('value', function(s){ jobs=[]; s.forEach(function(c){ var v=c.val(); v.id=c.key; jobs.unshift(v); }); renderJobs(); }); db.ref('locations').on('value', function(s){ locations=s.val()||{}; renderLocations(); }); loadUsers(); }
-updateLoginUI(); renderJobs(); renderUsers(); renderLocations();
-</script>
-</body>
-</html>
+<div id="carer" class="hidden">
+<div class="card"><h3>Carer Wallet - Mary A.</h3>
+<div class="balance"><div><small>Available</small><b id="carerBal">UGX 0</b></div><div><small>Pending</small><b id="carerPend">UGX 0</b></div></div>
+<button class="btn orange" onclick="requestPayout()">REQUEST PAYOUT TO ADMIN</button>
+<p class="small">You cannot withdraw yourself. Admin approves, then money goes to your MoMo.</p></div>
+<div class="card"><h3>Available Jobs</h3>
