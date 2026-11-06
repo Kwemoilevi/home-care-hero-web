@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - V1</title>
+<title>Home Care Hero - V1.1</title>
 <style>
 *{box-sizing:border-box;font-family:Arial,sans-serif}
 body{margin:0;background:#f2f5f2;padding:12px}
-.header{background:#fff;padding:14px;border-radius:16px;display:flex;justify-content:space-between;align-items:center}
+.header{background:#fff;padding:14px;border-radius:16px}
 .tabs{display:flex;gap:8px;margin:14px 0}
 .tabs button{flex:1;padding:12px;border:0;border-radius:12px;font-weight:700;background:#e2e8e2}
 .tabs button.active{background:#16a34a;color:#fff}
@@ -19,31 +19,106 @@ body{margin:0;background:#f2f5f2;padding:12px}
 input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0}
 .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee}
 .small{font-size:12px;color:#666}.hidden{display:none}
-.pill{padding:6px 10px;border-radius:20px;font-size:12px;font-weight:700}.ok{background:#dcfce7}.pend{background:#fef3c7}.hold{background:#dbeafe}
 </style>
 </head>
 <body>
-<div class="header"><div><b>🏠 Home Care Hero</b><div class="small">Trusted care, right at your home • Kampala</div></div><span>V1 LIVE</span></div>
+<div class="header"><b>🏠 Home Care Hero</b><div class="small">Kampala • V1.1 Fixed</div></div>
 <div class="tabs">
-<button id="t-client" class="active" onclick="show('client')">Client</button>
-<button id="t-carer" onclick="show('carer')">Carer</button>
-<button id="t-admin" onclick="show('admin')">Admin Only</button>
+<button id="t-client" class="active">Client</button>
+<button id="t-carer">Carer</button>
+<button id="t-admin">Admin Only</button>
 </div>
 
 <div id="client">
 <div class="card"><h3>Book Care & Pay In-App</h3>
-<select id="careType"><option>Day Care (8hrs) - UGX 60,000</option><option>Night Care - UGX 70,000</option><option>Full Day + Night - UGX 100,000</option><option>Elderly Care - UGX 65,000</option></select>
-<input id="loc" placeholder="Location e.g. Ntinda, Kampala">
-<input id="clientPhone" placeholder="Your MoMo Number 0770...">
-<select id="payMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Visa / Mastercard</option></select>
-<button class="btn green" onclick="clientPay()">PAY NOW - MONEY HELD IN APP 🔒</button>
-<p class="small">No cash outside app. If carer doesn't come, Admin refunds you.</p></div>
-<div class="card"><h3>My Bookings</h3><div id="bookings"><p class="small">No bookings yet.</p></div></div>
+<select id="careType"><option value="60000">Day Care (8hrs) - UGX 60,000</option><option value="70000">Night Care - UGX 70,000</option><option value="100000">Full Day + Night - UGX 100,000</option><option value="65000">Elderly Care - UGX 65,000</option></select>
+<input id="loc" placeholder="Location e.g. Ntinda">
+<input id="clientPhone" placeholder="Your MoMo 0770...">
+<button class="btn green" id="payBtn">PAY NOW - MONEY HELD IN APP</button>
+<p class="small" id="bookings">No bookings yet.</p></div>
 </div>
 
 <div id="carer" class="hidden">
 <div class="card"><h3>Carer Wallet - Mary A.</h3>
 <div class="balance"><div><small>Available</small><b id="carerBal">UGX 0</b></div><div><small>Pending</small><b id="carerPend">UGX 0</b></div></div>
-<button class="btn orange" onclick="requestPayout()">REQUEST PAYOUT TO ADMIN</button>
-<p class="small">You cannot withdraw yourself. Admin approves, then money goes to your MoMo.</p></div>
-<div class="card"><h3>Available Jobs</h3>
+<button class="btn orange" id="payoutBtn">REQUEST PAYOUT TO ADMIN</button>
+<p class="small" id="jobs">No paid jobs yet.</p></div>
+</div>
+
+<div id="admin" class="hidden">
+<div class="card"><h3>Admin Wallet - Only You</h3><p class="small">Demo PIN: 1234</p>
+<div class="balance"><div><small>Admin Balance</small><b id="adminBal">UGX 500,000</b></div><div><small>Commission</small><b id="commBal">UGX 0</b></div></div>
+<input id="adminAmt" type="number" placeholder="Amount e.g. 50000">
+<input id="adminPhone" placeholder="Your MoMo">
+<input id="adminPin" type="password" placeholder="Admin PIN">
+<button class="btn green" id="depositBtn">+ DEPOSIT FLOAT</button>
+<button class="btn blue" id="withdrawBtn">WITHDRAW MY COMMISSION</button>
+</div>
+<div class="card"><h3>Approve Payouts</h3><div id="payouts"><p class="small">No requests yet.</p></div></div>
+<div class="card"><h3>Transactions</h3><div id="txns"><p class="small">No transactions yet.</p></div></div>
+</div>
+
+<script>
+var adminBal=500000, commBal=0, carerBal=0, carerPend=0;
+function fmt(n){return "UGX "+n.toLocaleString();}
+function showTab(t){
+  document.getElementById("client").classList.toggle("hidden",t!=="client");
+  document.getElementById("carer").classList.toggle("hidden",t!=="carer");
+  document.getElementById("admin").classList.toggle("hidden",t!=="admin");
+  document.getElementById("t-client").classList.toggle("active",t==="client");
+  document.getElementById("t-carer").classList.toggle("active",t==="carer");
+  document.getElementById("t-admin").classList.toggle("active",t==="admin");
+}
+document.getElementById("t-client").onclick=function(){showTab("client");};
+document.getElementById("t-carer").onclick=function(){showTab("carer");};
+document.getElementById("t-admin").onclick=function(){showTab("admin");};
+function update(){
+  document.getElementById("adminBal").innerText=fmt(adminBal);
+  document.getElementById("commBal").innerText=fmt(commBal);
+  document.getElementById("carerBal").innerText=fmt(carerBal);
+  document.getElementById("carerPend").innerText=fmt(carerPend);
+}
+document.getElementById("payBtn").onclick=function(){
+  var price=parseInt(document.getElementById("careType").value);
+  var phone=document.getElementById("clientPhone").value;
+  if(!phone){alert("Enter your MoMo number");return;}
+  var commission=Math.round(price*0.15);
+  var carerPay=price-commission;
+  commBal+=commission; carerPend+=carerPay;
+  document.getElementById("bookings").innerHTML="✅ PAID - HELD: "+fmt(price)+" | Location: "+(document.getElementById("loc").value||"Kampala");
+  document.getElementById("jobs").innerHTML="✅ New Job: "+fmt(carerPay)+" for carer. Request payout.";
+  document.getElementById("txns").innerHTML="<div class='row'><b>Client Payment</b><b>+ "+fmt(price)+"</b></div>"+document.getElementById("txns").innerHTML;
+  update();
+  alert("Payment SUCCESS! "+fmt(price)+" held. Commission "+fmt(commission)+" added to you.");
+};
+document.getElementById("payoutBtn").onclick=function(){
+  if(carerPend<=0){alert("No pending money");return;}
+  var amt=carerPend;
+  document.getElementById("payouts").innerHTML="<div class='row'><b>Mary - "+fmt(amt)+"</b><button id='approveBtn' style='background:#16a34a;color:#fff;border:0;padding:8px 14px;border-radius:8px'>Approve</button></div>";
+  document.getElementById("approveBtn").onclick=function(){
+    if(adminBal<amt){alert("Admin float low! Deposit first.");return;}
+    adminBal-=amt; carerPend-=amt; carerBal+=amt;
+    document.getElementById("payouts").innerHTML="No requests yet.";
+    update(); alert("Approved! "+fmt(amt)+" sent to Mary");
+  };
+  alert("Payout request sent to Admin: "+fmt(amt));
+};
+document.getElementById("depositBtn").onclick=function(){
+  var amt=parseInt(document.getElementById("adminAmt").value||"0");
+  var pin=document.getElementById("adminPin").value;
+  if(pin!=="1234"){alert("Wrong PIN");return;}
+  if(!amt){alert("Enter amount");return;}
+  adminBal+=amt; update(); alert("Deposited "+fmt(amt));
+};
+document.getElementById("withdrawBtn").onclick=function(){
+  var amt=parseInt(document.getElementById("adminAmt").value||"0");
+  var pin=document.getElementById("adminPin").value;
+  if(pin!=="1234"){alert("Wrong PIN");return;}
+  if(!amt){alert("Enter amount");return;}
+  if(amt>commBal){alert("Cannot withdraw more than commission! Commission is "+fmt(commBal));return;}
+  commBal-=amt; update(); alert("Withdrawal "+fmt(amt)+" sent to "+document.getElementById("adminPhone").value);
+};
+update();
+</script>
+</body>
+</html>
