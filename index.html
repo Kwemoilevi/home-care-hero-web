@@ -1,97 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Trusted Care in Kampala</title>
-<style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f2f5f2;padding:0}
-.top{background:#fff;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:10}
-.top b{font-size:18px}.top span{color:#16a34a;font-weight:800}
-.hero{background:linear-gradient(135deg,#16a34a,#0f766e);color:#fff;padding:28px 16px;text-align:center}
-.hero h1{font-size:28px;margin:8px 0;line-height:1.2}.hero p{opacity:.9;font-size:15px}
-.heroBtn{display:block;width:100%;padding:15px;border:0;border-radius:14px;font-weight:800;font-size:16px;margin-top:12px}
-.white{background:#fff;color:#16a34a}.dark{background:#111827;color:#fff}
-.tabs{display:flex;gap:8px;margin:14px 16px}
-.tabs button{flex:1;padding:11px;border:0;border-radius:12px;font-weight:700;background:#e2e8e2}
-.tabs button.active{background:#16a34a;color:#fff}
-.card{background:#fff;padding:16px;border-radius:16px;margin:0 16px 12px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.grid div{background:#f0fdf4;padding:14px;border-radius:14px;text-align:center}
-.grid b{display:block;margin-top:6px}
-.balance{display:flex;gap:10px}.balance div{flex:1;background:#f0fdf4;padding:14px;border-radius:14px}
-.btn{width:100%;padding:14px;border:0;border-radius:12px;font-weight:800;font-size:15px;margin-top:8px}
-.green{background:#16a34a;color:#fff}.blue{background:#2563eb;color:#fff}.orange{background:#f59e0b;color:#fff}
-input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0}
-.row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #eee}
-.small{font-size:12px;color:#666}.hidden{display:none}
-.step{display:flex;gap:12px;margin:10px 0}.num{background:#16a34a;color:#fff;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}
-.footer{text-align:center;padding:16px;color:#666;font-size:12px}
-.badge{background:#fef3c7;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block}
-</style>
-</head>
-<body>
-<div class="top"><b>🏠 Home Care <span>Hero</span></b><span>● Kampala</span></div>
-
-<div id="home">
-<div class="hero">
-<div>⭐ 4.9 • Verified Carers • No Cash Needed</div>
-<h1>Trusted Care,<br>Right At Your Home.</h1>
-<p>From only <b>UGX 25,000</b>. Pay safely in-app. Admin protects your money.</p>
-<span class="badge">🔥 FRIENDLY PRICES - MAX 35K</span>
-<button class="heroBtn white" onclick="go('client')">📅 BOOK CARE NOW →</button>
-<button class="heroBtn dark" onclick="go('carer')">💼 BECOME A CARER - EARN MONEY</button>
-</div>
-
-<div class="tabs">
-<button onclick="go('client')">Client</button>
-<button onclick="go('carer')">Carer</button>
-<button onclick="go('admin')">Admin Only</button>
-</div>
-
-<div class="card"><h3>Our Services - Friendly Prices</h3>
-<div class="grid">
-<div>👶<b>Baby & Child</b><small>UGX 25,000 / day</small><br><small style="color:#16a34a">Most Popular</small></div>
-<div>👵<b>Elderly Care</b><small>UGX 28,000 / day</small></div>
-<div>🌙<b>Night Care</b><small>UGX 30,000 / night</small></div>
-<div>🏠<b>Full Day + Night</b><small>UGX 35,000</small><br><small style="color:#ea580c">Best Value</small></div>
-</div>
-<button class="btn green" onclick="go('client')">Book Any Service →</button>
-</div>
-
-<div class="card"><h3>How It Works - Safe For Everyone</h3>
-<div class="step"><div class="num">1</div><div><b>Book & Pay In-App</b><br><span class="small">Pay with MTN / Airtel. Money is HELD, not sent to carer yet.</span></div></div>
-<div class="step"><div class="num">2</div><div><b>Verified Carer Comes</b><br><span class="small">Only vetted carers. You see name before they come.</span></div></div>
-<div class="step"><div class="num">3</div><div><b>Job Done → Admin Releases</b><br><span class="small">Carer requests payout, Admin approves, money goes to carer.</span></div></div>
-</div>
-
-<div class="card"><h3>Why Families Trust Us</h3>
-<p>✅ No cash outside app &nbsp; ✅ Prices from 25k<br>✅ Refund if carer doesn't show &nbsp; ✅ Admin controls all money</p>
-<button class="btn green" onclick="go('client')">Start Booking - From 25k →</button>
-</div>
-<div class="footer">Home Care Hero • Kampala, Uganda • V1.3 Friendly Prices • Admin PIN: 1234</div>
-</div>
-
-<div id="client" class="hidden">
-<div class="tabs"><button onclick="go('home')">← Home</button><button class="active">Client</button><button onclick="go('carer')">Carer</button><button onclick="go('admin')">Admin</button></div>
-<div class="card"><h3>Book Care & Pay In-App</h3>
-<p class="small">Friendly prices - Highest is 35k only!</p>
-<select id="careType"><option value="25000">Baby & Child Care - UGX 25,000</option><option value="28000">Elderly Care - UGX 28,000</option><option value="30000">Night Care - UGX 30,000</option><option value="35000">Full Day + Night - UGX 35,000 (Best Value)</option></select>
-<input id="loc" placeholder="Location e.g. Ntinda">
-<input id="clientPhone" placeholder="Your MoMo 0770...">
-<button class="btn green" id="payBtn">PAY NOW - MONEY HELD IN APP</button>
-<p class="small" id="bookings">No bookings yet.</p></div>
-</div>
-
-<div id="carer" class="hidden">
-<div class="tabs"><button onclick="go('home')">← Home</button><button onclick="go('client')">Client</button><button class="active">Carer</button><button onclick="go('admin')">Admin</button></div>
-<div class="card"><h3>Carer Wallet - Mary A.</h3>
-<div class="balance"><div><small>Available</small><b id="carerBal">UGX 0</b></div><div><small>Pending</small><b id="carerPend">UGX 0</b></div></div>
-<button class="btn orange" id="payoutBtn">REQUEST PAYOUT TO ADMIN</button>
-<p class="small" id="jobs">No paid jobs yet.</p></div>
-</div>
-
-<div id="admin" class="hidden">
-<div class="tabs"><button onclick="go('home')">← Home</button><button onclick="go('client')">Client</button><button onclick="go('carer')">Carer</button><button class="active">Admin</button></div>
-<div class="
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Care Hero</title><style>*{box-sizing:border-box;font-family:Arial}body{margin:0;background:#f2f5f2;padding:0}.top{background:#fff;padding:12px 16px;display:flex;justify-content:space-between}.hero{background:#16a34a;color:#fff;padding:26px 16px;text-align:center}.hero h1{font-size:27px;margin:8px 0}.btn{width:100%;padding:14px;border:0;border-radius:12px;font-weight:800;margin-top:8px}.green{background:#16a34a;color:#fff}.blue{background:#2563eb;color:#fff}.orange{background:#f59e0b;color:#fff}.white{background:#fff;color:#16a34a}.dark{background:#111827;color:#fff}.tabs{display:flex;gap:8px;margin:12px 16px}.tabs button{flex:1;padding:11px;border:0;border-radius:10px;font-weight:700;background:#e2e8e2}.tabs button.active{background:#16a34a;color:#fff}.card{background:#fff;padding:16px;border-radius:16px;margin:0 16px 12px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid div{background:#f0fdf4;padding:12px;border-radius:12px;text-align:center}.bal{display:flex;gap:10px}.bal div{flex:1;background:#f0fdf4;padding:12px;border-radius:12px}input,select{width:100%;padding:12px;border:1px solid #ddd;border-radius:10px;margin:6px 0}.row{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eee}.small{font-size:12px;color:#666}.hidden{display:none}.step{display:flex;gap:10px;margin:8px 0}.num{background:#16a34a;color:#fff;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;flex-shrink:0}</style></head><body>
+<div class="top"><b>🏠 Home Care Hero</b><span style="color:#16a34a;font-weight:800">● Kampala</span></div>
+<div id="home"><div class="hero"><div>⭐ 4.9 • Verified • No Cash</div><h1>Trusted Care,<br>Right At Your Home.</h1><p>From only <b>UGX 25,000</b>. Max 35k. Pay safely in-app.</p><button class="btn white" onclick="go('client')">📅 BOOK CARE NOW →</button><button class="btn dark" onclick="go('carer')">💼 BECOME A CARER</button></div><div class="tabs"><button onclick="go('client')">Client</button><button onclick="go('carer')">Carer</button><button onclick="go('admin')">Admin Only</button></div><div class="card"><h3>Services - Friendly Prices</h3><div class="grid"><div>👶<br><b>Baby & Child</b><br><small>25,000 / day</small></div><div>👵<br><b>Elderly</b><br><small>28,000 / day</small></div><div>🌙<br><b>Night Care</b><br><small>30,000 / night</small></div><div>🏠<br><b>Full Day+Night</b><br><small>35,000</small></div></div><button class="btn green" onclick="go('client')">Book Any Service →</button></div><div class="card"><h3>How It Works</h3><div class="step"><div class="num">1</div><div><b>Book & Pay In-App</b><br><span class="small">MTN / Airtel. Money HELD, not sent yet.</span></div></div><div class="step"><div class="num">2</div><div><b>Verified Carer Comes</b><br><span class="small">Only vetted carers.</span></div></div><div class="step"><div class="num">3</div><div><b>Job Done → Admin Releases</b><br><span class="small">Carer requests, Admin approves.</span></div></div></div><div class="card"><h3>Why Trust Us</h3><p>✅ No cash outside app ✅ Refund if carer no-show ✅ Admin controls money</p><button class="btn green" onclick="go('client')">Start Booking - From 25k →</button></div></div>
+<div id="client" class="hidden"><div class="tabs"><button onclick="go('home')">← Home</button><button class="active">Client</button><button onclick="go('carer')">Carer</button><button onclick="go('admin')">Admin</button></div><div class="card"><h3>Book Care & Pay</h3><p class="small">Friendly prices - Max 35k!</p><select id="careType"><option value="25000">Baby & Child - 25,000</option><option value="28000">Elderly Care - 28,000</option><option value="30000">Night Care - 30,000</option><option value="35000">Full Day + Night - 35,000</option></select><input id="loc" placeholder="Location e.g. Ntinda"><input id="clientPhone" placeholder="Your MoMo 0770..."><button class="btn green" id="payBtn">PAY NOW - HELD IN APP</button><p class="small" id="bookings">No bookings yet.</p></div></div>
+<div id="carer" class="hidden"><div class="tabs"><button onclick="go('home')">← Home</button><button onclick="go('client')">Client</button><button class="active">Carer</button><button onclick="go('admin')">Admin</button></div><div class="card"><h3>Carer Wallet - Mary A.</h3><div class="bal"><div><small>Available</small><b id="carerBal">UGX 0</b></div><div><small>Pending</small><b id="carerPend">UGX 0</b></div></div><button class="btn orange" id="payoutBtn">REQUEST PAYOUT</button><p class="small" id="jobs">No jobs yet.</p></div></div>
+<div id="admin" class="hidden"><div class="tabs"><button onclick="go('home')">← Home</button><button onclick="go('client')">Client</button><button onclick="go('carer')">Carer</button><button class="active">Admin</button></div><div class="card"><h3>Admin Wallet - Only You</h3><p class="small">PIN: 1234</p><div class="bal"><div><small>Admin Balance</small><b id="adminBal">UGX 500,000</b></div><div><small>Commission</small><b id="commBal">UGX 0</b></div></div><input id="adminAmt" type="number" placeholder="Amount e.g. 25000"><input id="adminPhone" placeholder="Your MoMo"><input id="adminPin" type="password" placeholder="PIN"><button class="btn green" id="depositBtn">+ DEPOSIT FLOAT</button><button class="btn blue" id="withdrawBtn">WITHDRAW COMMISSION</button></div><div class="card"><h3>Approve Payouts</h3><div id="payouts"><p class="small">No requests yet.</p></div></div><div class="card"><h3>Transactions</h3><div id="txns"><p class="small">No transactions yet.</p></div></div></div>
+<script>
+var adminBal=500000,commBal=0,carerBal=0,carerPend=0;
+function fmt(n){return "UGX "+n.toLocaleString()}
+function go(t){["home","client","carer","admin"].forEach(function(x){document.getElementById(x).classList.toggle("hidden",x!==t)});window.scrollTo(0,0)}
+function update(){document.getElementById("adminBal").innerText=fmt(adminBal);document.getElementById("commBal").innerText=fmt(commBal);document.getElementById("carerBal").innerText=fmt(carerBal);document.getElementById("carerPend").innerText=fmt(carerPend)}
+document.getElementById("payBtn").onclick=function(){var p=parseInt(document.getElementById("careType").value);var ph=document.getElementById("clientPhone").value;if(!ph){alert("Enter MoMo number");return}var c=Math.round(p*0.15);var cp=p-c;commBal+=c;carerPend+=cp;document.getElementById("bookings").innerHTML="✅ PAID - HELD: "+fmt(p)+" | "+(document.getElementById("loc").value||"Kampala");document.getElementById("jobs").innerHTML="✅ New Job: "+fmt(cp)+" for carer.";document.getElementById("txns").innerHTML="<div class='row'><b>Client Payment</b><b>+ "+fmt(p)+"</b></div>"+document.getElementById("txns").innerHTML;update();alert("SUCCESS! "+fmt(p)+" held. Commission "+fmt(c)+" added.")};
+document.getElementById("payoutBtn").onclick=function(){if(carerPend<=0){alert("No pending money");return}var a=carerPend;document.getElementById("payouts").innerHTML="<div class='row'><b>Mary - "+fmt(a)+"</b><button id='approveBtn' style='background:#16a34a;color:#fff;border:0;padding:8px 14px;border-radius:8px'>Approve</button></div>";document.getElementById("approveBtn").onclick=function(){if(adminBal<a){alert("Float low! Deposit first.");return}adminBal-=a;carerPend-=a;carerBal+=a;document.getElementById("payouts").innerHTML="No requests yet.";update();alert("Approved! "+fmt(a)+" sent to Mary")};alert("Request sent to Admin: "+fmt(a))};
+document.getElementById("depositBtn").onclick=function(){var a=parseInt(document.getElementById("adminAmt").value||"0");var pin=document.getElementById("adminPin").value;if(pin!=="1234"){alert("Wrong PIN");return}if(!a){alert("Enter amount");return}adminBal+=a;update();alert("Deposited "+fmt(a))};
+document.getElementById("withdrawBtn").onclick=function(){var a=parseInt(document.getElementById("adminAmt").value||"0");var pin=document.getElementById("adminPin").value;if(pin!=="1234"){alert("Wrong PIN");return}if(!a){alert("Enter amount");return}if(a>commBal){alert("Cannot withdraw more than commission! Commission is "+fmt(commBal));return}commBal-=a;update();alert("Withdrawal "+fmt(a)+" sent to "+document.getElementById("adminPhone").value)};
+update();
+</script></body></html>
