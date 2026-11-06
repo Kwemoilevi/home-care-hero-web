@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Nursing First + Wallet + GPS</title>
+<title>Home Care Hero - Nursing First - Friendly Prices Max 35000</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box} body{margin:0;font-family:'Plus Jakarta Sans',system-ui;background:#FFF7ED;color:#1C1917}
@@ -40,11 +40,11 @@ button{border:0;border-radius:13px;padding:14px;font-weight:800;font-size:15px;c
 </head>
 <body>
 <div class="top"><b>🏠 Home Care Hero</b><span id="status">🟢 REAL LIVE</span></div>
-<div class="hero"><h1>🩺 Home Nursing<br>+ Home Care.</h1><p>Registered Nurses at your home • Wallet • GPS Live Tracking</p><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><span style="background:rgba(255,255,255,.25);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">🩺 NURSING = MAIN SERVICE</span><span style="background:rgba(255,255,255,.25);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">📍 GPS Live</span></div></div>
+<div class="hero"><h1>🩺 Home Nursing<br>+ Home Care.</h1><p>Registered Nurses at your home • Friendly Prices Max 35,000 • Wallet • GPS Live</p><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><span style="background:rgba(255,255,255,.25);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">🩺 NURSING = MAIN SERVICE</span><span style="background:rgba(255,255,255,.25);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">💰 Max 35,000 - Friendly</span></div></div>
 <div class="wrap">
 
 <div class="card">
-<h2 style="margin:0">🔐 Login / Create Account</h2><p class="muted" id="loginMsg">Phone + 4-digit PIN. Client / Carer / Nurse / Admin.</p>
+<h2 style="margin:0">🔐 Login / Create Account</h2><p class="muted" id="loginMsg">Phone + 4-digit PIN. Client / Nurse / Carer / Admin.</p>
 <div id="loggedOut">
 <label>I am a...</label><select id="role"><option value="client">🙋 Client - I Need Care</option><option value="carer">🩺 Nurse / Carer - I Want Work</option><option value="admin">🛡️ Admin - Owner Only</option></select>
 <label>Your Name</label><input id="uName" placeholder="e.g. Sarah Nakato">
@@ -58,16 +58,16 @@ button{border:0;border-radius:13px;padding:14px;font-weight:800;font-size:15px;c
 </div>
 </div>
 
-<!-- NURSING - MAIN KEY SECTION -->
+<!-- NURSING - FRIENDLY PRICES MAX 35000 -->
 <div class="nurse-card">
-<h2 style="margin:0">🩺 NURSING SERVICES - Tap to Book</h2><p class="muted" style="margin:6px 0">This is our MAIN service. Tap a service → It fills the job form below automatically.</p>
+<h2 style="margin:0">🩺 NURSING SERVICES - Friendly Prices - Tap to Book</h2><p class="muted" style="margin:6px 0">Highest price is 35,000. Tap a service → It fills the job form below automatically.</p>
 <div class="nurse-grid">
-<div class="nurse-item" onclick="pickNurse(this,'🩺 HOME NURSING - Registered Nurse','50000')">🩺<br>Home Nursing<br><span style="font-weight:500">UGX 50,000/day</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'🩹 WOUND CARE / DRESSING','40000')">🩹<br>Wound Care<br><span style="font-weight:500">UGX 40,000/visit</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'💉 INJECTIONS / IV / DRIP','30000')">💉<br>Injections / IV<br><span style="font-weight:500">UGX 30,000/visit</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'🩸 BP / DIABETES / VITALS CHECK','25000')">🩸<br>BP / Diabetes<br><span style="font-weight:500">UGX 25,000/visit</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'🏥 POST-SURGERY NURSING','60000')">🏥<br>Post-Surgery<br><span style="font-weight:500">UGX 60,000/day</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'👵 ELDERLY NURSING CARE','45000')">👵<br>Elderly Nursing<br><span style="font-weight:500">UGX 45,000/day</span></div>
+<div class="nurse-item" onclick="pickNurse(this,'🩺 HOME NURSING - Registered Nurse','35000')">🩺<br>Home Nursing<br><span style="font-weight:500">UGX 35,000/day</span></div>
+<div class="nurse-item" onclick="pickNurse(this,'🩹 WOUND CARE / DRESSING','25000')">🩹<br>Wound Care<br><span style="font-weight:500">UGX 25,000/visit</span></div>
+<div class="nurse-item" onclick="pickNurse(this,'💉 INJECTIONS / IV / DRIP','20000')">💉<br>Injections / IV<br><span style="font-weight:500">UGX 20,000/visit</span></div>
+<div class="nurse-item" onclick="pickNurse(this,'🩸 BP / DIABETES / VITALS CHECK','10000')">🩸<br>BP / Diabetes<br><span style="font-weight:500">UGX 10,000/visit</span></div>
+<div class="nurse-item" onclick="pickNurse(this,'🏥 POST-SURGERY NURSING','35000')">🏥<br>Post-Surgery<br><span style="font-weight:500">UGX 35,000/day</span></div>
+<div class="nurse-item" onclick="pickNurse(this,'👵 ELDERLY NURSING CARE','30000')">👵<br>Elderly Nursing<br><span style="font-weight:500">UGX 30,000/day</span></div>
 </div>
 <p class="muted" id="nursePicked" style="font-weight:800;color:#0F766E">Selected: None - Tap one above</p>
 </div>
@@ -75,7 +75,7 @@ button{border:0;border-radius:13px;padding:14px;font-weight:800;font-size:15px;c
 <!-- WALLET -->
 <div class="wallet">
 <h2>💰 MY WALLET - DEPOSIT & WITHDRAW</h2><div class="bal" id="walletBal">UGX 0</div><p style="opacity:.85;font-size:13px;margin:0" id="walletRole">Login to see wallet</p>
-<label style="color:#fff">💵 Deposit / Top Up Amount (UGX)</label><input id="topupAmt" type="number" placeholder="50000" style="background:#fff">
+<label style="color:#fff">💵 Deposit / Top Up Amount (UGX)</label><input id="topupAmt" type="number" placeholder="35000" style="background:#fff">
 <label style="color:#fff">📱 MoMo Number</label><input id="topupPhone" placeholder="077..." style="background:#fff">
 <div class="row" style="margin-top:10px"><button class="btn-gold" onclick="topUp()">⬆️ DEPOSIT / TOP UP</button><button class="btn-green" onclick="withdraw()">⬇️ WITHDRAW</button></div>
 <h3 style="margin:14px 0 6px;font-size:14px">📜 Transaction History</h3><div id="txList" style="background:#fff;color:#111;border-radius:12px;padding:0 12px;max-height:220px;overflow:auto"><p class="muted">No transactions yet</p></div>
@@ -84,26 +84,26 @@ button{border:0;border-radius:13px;padding:14px;font-weight:800;font-size:15px;c
 <div class="tabs"><button id="tabNurse" class="active" onclick="showTab('nurse')">🩺 Nursing</button><button id="tabClient" onclick="showTab('client')">🙋 I Need Care</button><button id="tabCarer" onclick="showTab('carer')">💜 Jobs + Nurses</button><button id="tabAdmin" onclick="showTab('admin')">🛡️ Admin</button></div>
 
 <div id="nurseView" class="card">
-<h2 style="margin:0">🩺 Book a Nurse Now</h2><p class="muted">Nursing is our main service. Choose service above or below, then Post.</p>
+<h2 style="margin:0">🩺 Book a Nurse Now - Max 35,000</h2><p class="muted">Nursing is our main service. Friendly prices for everyone.</p>
 <label>Location / Area</label><input id="nArea" placeholder="e.g. Ntinda, Kampala">
 <label>Nursing Service Needed</label><select id="nType"><option>🩺 HOME NURSING - Registered Nurse</option><option>🩹 WOUND CARE / DRESSING</option><option>💉 INJECTIONS / IV / DRIP</option><option>🩸 BP / DIABETES / VITALS CHECK</option><option>🏥 POST-SURGERY NURSING</option><option>👵 ELDERLY NURSING CARE</option><option>🤱 POSTNATAL NURSING</option><option>👶 BABY / CHILD NURSING</option></select>
-<div class="row"><div><label>Date Needed</label><input id="nDate" type="date"></div><div><label>Pay (UGX)</label><input id="nPay" type="number" placeholder="50000"></div></div>
+<div class="row"><div><label>Date Needed</label><input id="nDate" type="date"></div><div><label>Pay (UGX) - Max 35,000</label><input id="nPay" type="number" placeholder="35000" max="35000"></div></div>
 <label>Patient Details - What does patient need?</label><textarea id="nDetails" rows="3" placeholder="e.g. 70yr old, diabetic, needs wound dressing daily, 9am..."></textarea>
 <button class="btn-main" style="margin-top:14px" onclick="postNurseJob()">🩺 Book Nurse - Go Live Now</button><p class="muted" id="nurseMsg"></p>
 <h3>🩺 Available Nurses Near You (GPS Live)</h3><div id="liveNurses"></div>
 </div>
 
 <div id="clientView" class="card hidden">
-<h2 style="margin:0">Post a Care Job</h2><p class="muted">For non-nursing: Nanny, House Help, Companion.</p>
+<h2 style="margin:0">Post a Care Job - Friendly Prices</h2><p class="muted">For non-nursing: Nanny, House Help, Companion. Max 35,000.</p>
 <label>Location / Area</label><input id="cArea" placeholder="e.g. Ntinda, Kampala">
 <label>What help?</label><select id="cType"><option>👶 Child Care / Nanny</option><option>🏠 Companion / House Help</option><option>🍲 Cleaning & Cooking</option><option>🤱 Postnatal Care</option><option>👵 Elderly Companion (Non-Medical)</option></select>
-<div class="row"><div><label>Date</label><input id="cDate" type="date"></div><div><label>Pay (UGX / day)</label><input id="cPay" type="number" placeholder="30000"></div></div>
+<div class="row"><div><label>Date</label><input id="cDate" type="date"></div><div><label>Pay (UGX / day) - Max 35,000</label><input id="cPay" type="number" placeholder="25000" max="35000"></div></div>
 <label>Details</label><textarea id="cDetails" rows="3" placeholder="8am-5pm..."></textarea>
 <button class="btn-main" style="margin-top:14px" onclick="postJob()">✨ Post Care Job</button><p class="muted" id="postMsg"></p>
 </div>
 
 <div id="carerView" class="card hidden">
-<h2 style="margin:0">🔴 Live Jobs - Nursing First</h2><p class="muted">Nursing jobs show first. Apply → Do job → Get paid from wallet.</p>
+<h2 style="margin:0">🔴 Live Jobs - Nursing First - Max 35,000</h2><p class="muted">Nursing jobs show first. Apply → Do job → Get paid from wallet.</p>
 <label>Filter: Show Only</label><select id="filterType" onchange="renderJobs()"><option value="">All Jobs</option><option value="NURSING">🩺 Nursing Only</option><option value="WOUND">🩹 Wound Care Only</option><option value="Elderly">👵 Elderly Only</option></select>
 <label>Search Area</label><input id="filterArea" placeholder="Ntinda..." oninput="renderJobs()">
 <div id="allJobs"></div><h3>🩺 All Nurses & Carers</h3><div id="allCarers"></div>
@@ -177,6 +177,7 @@ function topUp(){
   if(!currentUser){ alert("Login first"); return; }
   var amt=Number(document.getElementById('topupAmt').value||0), moMo=document.getElementById('topupPhone').value||currentUser.phone;
   if(amt<1000){ alert("Min Deposit UGX 1,000"); return; }
+  if(amt>35000 && confirm("Deposit is over 35,000 - Continue? Max job price is 35,000.")){}
   var newBal=(currentUser.balance||0)+amt;
   db.ref('users/'+key(currentUser.phone)+'/balance').set(newBal);
   addTx(currentUser.phone, 'topup', amt, "Deposit via MoMo "+moMo);
@@ -194,6 +195,7 @@ function payForJob(job){
   if(!currentUser||currentUser.role!=='client'){ alert("Login as Client to pay"); return; }
   var amt=Number(job.pay||0);
   if(amt<=0){ alert("Job has no pay set"); return; }
+  if(amt>35000){ alert("Price is over friendly max 35,000. Please lower to 35,000 or less."); return; }
   if((currentUser.balance||0)<amt){ alert("Not enough wallet. Deposit UGX "+amt.toLocaleString()+" first."); return; }
   if(!confirm("Pay UGX "+amt.toLocaleString()+"? Nurse/Carer gets 90%, You (Admin) get 10%.")) return;
   var carerPay=Math.round(amt*0.9), commission=amt-carerPay;
@@ -212,15 +214,17 @@ function renderTxs(){
 }
 function postNurseJob(){
   if(!currentUser||currentUser.role!=='client'){ document.getElementById('nurseMsg').textContent="Login as Client first."; return; }
-  var a=document.getElementById('nArea').value.trim(), ty=document.getElementById('nType').value, d=document.getElementById('nDate').value, pay=document.getElementById('nPay').value, det=document.getElementById('nDetails').value.trim();
+  var a=document.getElementById('nArea').value.trim(), ty=document.getElementById('nType').value, d=document.getElementById('nDate').value, pay=Number(document.getElementById('nPay').value||0), det=document.getElementById('nDetails').value.trim();
   if(!a){ document.getElementById('nurseMsg').textContent="Enter Area"; return; }
+  if(pay>35000){ document.getElementById('nurseMsg').textContent="Friendly max is 35,000. Please lower price to 35,000 or less."; return; }
   var job={name:currentUser.name, phone:currentUser.phone, area:a, type:ty, date:d, pay:pay, details:det, createdAt:Date.now(), status:"Open", owner:currentUser.phone, category:"NURSING"};
   if(db) db.ref('jobs').push(job).then(function(){ document.getElementById('nurseMsg').textContent="✅ Nursing Job Posted LIVE! Nurses will see it now."; });
 }
 function postJob(){
   if(!currentUser||currentUser.role!=='client'){ document.getElementById('postMsg').textContent="Login as Client first."; return; }
-  var a=document.getElementById('cArea').value.trim(), ty=document.getElementById('cType').value, d=document.getElementById('cDate').value, pay=document.getElementById('cPay').value, det=document.getElementById('cDetails').value.trim();
+  var a=document.getElementById('cArea').value.trim(), ty=document.getElementById('cType').value, d=document.getElementById('cDate').value, pay=Number(document.getElementById('cPay').value||0), det=document.getElementById('cDetails').value.trim();
   if(!a){ document.getElementById('postMsg').textContent="Enter Area"; return; }
+  if(pay>35000){ document.getElementById('postMsg').textContent="Friendly max is 35,000."; return; }
   var job={name:currentUser.name, phone:currentUser.phone, area:a, type:ty, date:d, pay:pay, details:det, createdAt:Date.now(), status:"Open", owner:currentUser.phone, category:"CARE"};
   if(db) db.ref('jobs').push(job).then(function(){ document.getElementById('postMsg').textContent="✅ Posted LIVE!"; });
 }
@@ -243,7 +247,6 @@ function stopGPS(){ if(gpsWatch) navigator.geolocation.clearWatch(gpsWatch); gps
 function renderJobs(){
   var f=(document.getElementById('filterArea').value||"").toLowerCase();
   var ft=document.getElementById('filterType').value||"";
-  // Nursing jobs first
   var sorted=[].concat(jobs).sort(function(a,b){ var an=(a.category==="NURSING"|| (a.type||"").includes("NURSING")|| (a.type||"").includes("WOUND"))?0:1; var bn=(b.category==="NURSING"|| (b.type||"").includes("NURSING")|| (b.type||"").includes("WOUND"))?0:1; return an-bn; });
   var list=sorted.filter(function(j){ var okArea=!f||(j.area||"").toLowerCase().includes(f); var okType=!ft|| (ft==="NURSING" && (j.category==="NURSING"||j.type.includes("NURSING")||j.type.includes("WOUND")||j.type.includes("INJECTIONS")||j.type.includes("BP"))) || (ft==="WOUND" && j.type.includes("WOUND")) || (ft==="Elderly" && j.type.includes("ELDERLY")); return okArea && okType; });
   var h=""; if(list.length===0) h="<p class='muted' style='text-align:center;padding:16px'>No jobs yet. Post a Nursing job above 👆</p>";
@@ -271,7 +274,6 @@ function renderUsers(){
 function renderLocations(){
   var h=""; Object.keys(locations).forEach(function(k){ var l=locations[k]; var ago=Math.floor((Date.now()-l.updatedAt)/60000); h+="<div class='job'><b>🩺 "+esc(l.name)+"</b> • "+esc(l.phone)+"<br><span class='muted'>"+esc(l.extra||"")+" • Updated "+ago+" min ago</span><br><a target='_blank' href='https://www.google.com/maps?q="+l.lat+","+l.lng+"' style='display:block;text-align:center;background:#0F766E;color:#fff;padding:11px;border-radius:11px;text-decoration:none;font-weight:800;margin-top:8px'>🗺️ View Nurse Live Location</a></div>"; });
   document.getElementById('liveNurses').innerHTML=h||"<p class='muted'>No nurses sharing GPS. Nurses: Login → Start GPS.</p>";
-  document.getElementById('liveCarers') && (document.getElementById('liveCarers').innerHTML=h);
 }
 function loadUsers(){ if(!db) return; db.ref('users').on('value', function(s){ users=[]; s.forEach(function(c){ var v=c.val(); v._key=c.key; users.push(v); }); renderUsers(); }); }
 if(db){ db.ref('jobs').orderByChild('createdAt').on('value', function(s){ jobs=[]; s.forEach(function(c){ var v=c.val(); v.id=c.key; jobs.unshift(v); }); renderJobs(); }); db.ref('locations').on('value', function(s){ locations=s.val()||{}; renderLocations(); }); loadUsers(); }
