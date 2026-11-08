@@ -5,37 +5,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HomeCare Hero - Home Nursing Worldwide</title>
 <style>
-*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif;-webkit-tap-highlight-color:transparent}
 body{margin:0;background:#f0f4f8;color:#222}
 header{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;padding:16px;position:sticky;top:0;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:0 0 20px 20px}
 .top{display:flex;justify-content:space-between;align-items:center}
 .logins{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
-.loginBtn{background:#fff;color:#0b6e4f;border:none;padding:9px 13px;border-radius:25px;font-weight:700;cursor:pointer;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.walletBtn{background:#FFD700;color:#111;border:none;padding:9px 15px;border-radius:25px;font-weight:800;cursor:pointer;font-size:13px}
+.loginBtn{background:#fff;color:#0b6e4f;border:none;padding:11px 14px;border-radius:25px;font-weight:800;cursor:pointer;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.2);touch-action:manipulation}
+.loginBtn:active{transform:scale(.95);background:#eafff3}
+.walletBtn{background:#FFD700;color:#111;border:none;padding:11px 15px;border-radius:25px;font-weight:800;cursor:pointer;font-size:14px;touch-action:manipulation}
 nav{display:flex;gap:6px;margin-top:12px;overflow:auto;padding-bottom:2px}
-.navBtn{background:rgba(255,255,255,.25);color:#fff;border:none;padding:10px 15px;border-radius:25px;white-space:nowrap;cursor:pointer;font-weight:600}
-.navBtn.active{background:#fff;color:#0b6e4f;font-weight:800;box-shadow:0 2px 10px rgba(0,0,0,.2)}
-.page{display:none}.page.active{display:block;animation:fade .3s}
-@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.navBtn{background:rgba(255,255,255,.25);color:#fff;border:none;padding:11px 15px;border-radius:25px;white-space:nowrap;cursor:pointer;font-weight:600;touch-action:manipulation}
+.navBtn.active{background:#fff;color:#0b6e4f;font-weight:800}
+.page{display:none}.page.active{display:block}
 .hero{padding:22px 18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
-.card{background:#fff;border-radius:20px;padding:16px;cursor:pointer;border:2px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,.07);transition:.2s}
-.card:hover{transform:translateY(-2px)}.card.selected{border-color:#0b6e4f;background:#eafff3}
+.card{background:#fff;border-radius:20px;padding:16px;cursor:pointer;border:2px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,.07)}
+.card.selected{border-color:#0b6e4f;background:#eafff3}
 .card.main{grid-column:span 2;background:linear-gradient(135deg,#eafff3,#d4f5e3);border:2px solid #0b6e4f}
 .tag{color:#0b6e4f;font-weight:800;font-size:13px}
-.btn{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;border:none;padding:14px;border-radius:14px;width:100%;font-size:16px;margin-top:10px;font-weight:700;box-shadow:0 4px 12px rgba(11,110,79,.3);cursor:pointer}
-.btn2{background:#111;color:#fff;border:none;padding:12px;border-radius:14px;width:100%;margin-top:8px;font-weight:600;cursor:pointer}
-.btnGold{background:linear-gradient(135deg,#FFD700,#ffb800);color:#111;border:none;padding:14px;border-radius:14px;width:100%;font-weight:800;margin-top:8px;font-size:16px;cursor:pointer}
+.btn{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;border:none;padding:14px;border-radius:14px;width:100%;font-size:16px;margin-top:10px;font-weight:700;cursor:pointer;touch-action:manipulation}
+.btn2{background:#111;color:#fff;border:none;padding:12px;border-radius:14px;width:100%;margin-top:8px;font-weight:600;cursor:pointer;touch-action:manipulation}
+.btnGold{background:#FFD700;color:#111;border:none;padding:14px;border-radius:14px;width:100%;font-weight:800;margin-top:8px;font-size:16px;cursor:pointer}
 .btnRed{background:#dc3545;color:#fff;border:none;padding:14px;border-radius:14px;width:100%;font-weight:700;margin-top:8px;font-size:16px;cursor:pointer}
 section{padding:16px}input,select,textarea{width:100%;padding:13px;margin:7px 0;border:1.5px solid #ddd;border-radius:12px;font-size:16px;background:#fff}
-input:focus,select:focus,textarea:focus{border-color:#0b6e4f;outline:none}
 .bar{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;padding:13px;border-radius:14px;margin:14px 16px;font-weight:700}
 .walletCard{background:linear-gradient(135deg,#0b6e4f,#0aa06a,#00c896);color:#fff;padding:20px;border-radius:22px;margin:14px 16px;box-shadow:0 8px 25px rgba(11,110,79,.3)}
 .statGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
 .stat{background:#fff;padding:16px;border-radius:18px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.07)}
 .stat b{font-size:24px;color:#0b6e4f}
 footer{background:#111;color:#fff;text-align:center;padding:22px;border-radius:20px 20px 0 0}
-.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:99;align-items:center;justify-content:center}
-.modalBox{background:#fff;padding:22px;border-radius:22px;width:92%;max-width:420px;max-height:88vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:999;align-items:center;justify-content:center;padding:16px}
+.modal.open{display:flex}
+.modalBox{background:#fff;padding:22px;border-radius:22px;width:100%;max-width:420px;max-height:88vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
 .tx{border-bottom:1px solid #eee;padding:10px 0;font-size:14px}
 .badge{padding:4px 9px;border-radius:12px;font-size:11px;font-weight:800}
 .pending{background:#fff3cd}.approved{background:#d4edda}.rejected{background:#f8d7da}
@@ -58,70 +58,27 @@ footer{background:#111;color:#fff;text-align:center;padding:22px;border-radius:2
 <header>
 <div class="top"><b style="font-size:19px">🏠 HomeCare Hero ✨</b><span id="loggedUser" style="font-size:12px">Not Logged In</span></div>
 <div class="logins">
-<button class="loginBtn" onclick="openLogin('Admin')">👑 Admin</button>
-<button class="loginBtn" onclick="openLogin('Client')">👤 Client</button>
-<button class="loginBtn" onclick="openLogin('Caregiver')">🩺 Caregiver</button>
-<button class="walletBtn" onclick="showPage('wallet')">💰 Wallet</button>
-<button class="loginBtn" id="logoutBtn" onclick="logout()" style="display:none;background:#dc3545;color:#fff">Logout</button>
+<button type="button" class="loginBtn" id="btnAdmin">👑 Admin</button>
+<button type="button" class="loginBtn" id="btnClient">👤 Client</button>
+<button type="button" class="loginBtn" id="btnCaregiver">🩺 Caregiver</button>
+<button type="button" class="walletBtn" id="btnWalletTop">💰 Wallet</button>
+<button type="button" class="loginBtn" id="logoutBtn" style="display:none;background:#dc3545;color:#fff">Logout</button>
 </div>
 <nav>
-<button class="navBtn active" id="nav-home" onclick="showPage('home')">🏠 Home</button>
-<button class="navBtn" id="nav-caregivers" onclick="showPage('caregivers')">👩‍⚕️ Nurses</button>
-<button class="navBtn" id="nav-services" onclick="showPage('services')">🩺 Services</button>
-<button class="navBtn" id="nav-wallet" onclick="showPage('wallet')">💰 Wallet</button>
-<button class="navBtn" id="nav-reviews" onclick="showPage('reviews')">⭐ Reviews</button>
-<button class="navBtn" id="nav-admin" onclick="checkAdminAccess()">👑 Admin 🔒</button>
-<button class="navBtn" id="nav-tracker" onclick="showPage('tracker')">📍 Tracker</button>
+<button type="button" class="navBtn active" data-page="home">🏠 Home</button>
+<button type="button" class="navBtn" data-page="caregivers">👩‍⚕️ Nurses</button>
+<button type="button" class="navBtn" data-page="services">🩺 Services</button>
+<button type="button" class="navBtn" data-page="wallet">💰 Wallet</button>
+<button type="button" class="navBtn" data-page="reviews">⭐ Reviews</button>
+<button type="button" class="navBtn" data-page="admin">👑 Admin 🔒</button>
+<button type="button" class="navBtn" data-page="tracker">📍 Tracker</button>
 </nav>
 </header>
 
-<!-- HOME - MAINLY NURSING -->
 <div id="page-home" class="page active">
-<div class="hero"><h1 style="font-size:26px;line-height:1.2">🩺 Home Nursing - Worldwide 🌍</h1><p style="color:#555;line-height:1.5">Professional Nurses at Your Home. Trusted, Verified, Rated & GPS Tracked. Also Nannies & Cooks.</p><button class="btn2" onclick="getGPS()">📍 Use My GPS Location</button><p id="gpsStatus">GPS: Not yet detected</p><p id="mapLink"></p></div>
-<div class="walletCard"><div style="display:flex;justify-content:space-between"><span>💰 My Wallet</span><button onclick="showPage('wallet')" style="background:#fff;border:none;padding:7px 13px;border-radius:20px;font-weight:800">Open →</button></div><h2 id="walletBalanceTop" style="margin:8px 0;font-size:28px">Balance: 0</h2><div class="row"><button onclick="requireLoginForWallet()" style="background:#FFD700;border:none;padding:11px;border-radius:12px;font-weight:800">⬆ DEPOSIT</button><button onclick="requireLoginForWallet()" style="background:#fff;border:none;padding:11px;border-radius:12px;font-weight:800">⬇ WITHDRAW</button></div><p style="font-size:12px">🔒 Login to use Wallet</p></div>
-<div class="ruleBox">🔒 <b>LOGIN RULES:</b> Admin: Only Owner 0771218437 + 2215 • Client: Create Account • Caregiver: Create + Admin Approval</div>
+<div class="hero"><h1 style="font-size:26px;line-height:1.2">🩺 Home Nursing - Worldwide 🌍</h1><p style="color:#555;line-height:1.5">Professional Nurses at Your Home. Trusted, Verified, Rated & GPS Tracked.</p><button type="button" class="btn2" id="gpsBtn">📍 Use My GPS Location</button><p id="gpsStatus">GPS: Not yet detected</p><p id="mapLink"></p></div>
+<div class="walletCard"><div style="display:flex;justify-content:space-between"><span>💰 My Wallet</span><button type="button" onclick="showPage('wallet')" style="background:#fff;border:none;padding:7px 13px;border-radius:20px;font-weight:800">Open →</button></div><h2 id="walletBalanceTop" style="margin:8px 0;font-size:28px">Balance: 0</h2><div class="row"><button type="button" onclick="openDeposit()" style="background:#FFD700;border:none;padding:11px;border-radius:12px;font-weight:800">⬆ DEPOSIT</button><button type="button" onclick="openWithdraw()" style="background:#fff;border:none;padding:11px;border-radius:12px;font-weight:800">⬇ WITHDRAW</button></div><p style="font-size:12px">🔒 Login to use Wallet</p></div>
+<div class="ruleBox">🔒 <b>LOGIN RULES:</b> Admin: Only Owner 0771218437 + 2215 • Client: Create Account • Caregiver: Create + Admin Approval<br><b>Test Login:</b> Tap 👑 Admin above - it MUST open popup now.</div>
 <h2 style="padding:0 16px">⭐ Top Rated Nurses</h2>
 <div id="homeCaregivers"></div>
-<div style="padding:0 16px"><button class="btn" onclick="showPage('caregivers')">See All Nurses →</button></div>
-<h2 style="padding:16px 16px 0">⭐ Our Services - Mainly Nursing</h2>
-<div class="grid">
-<div class="card main" onclick="selectService('Home Nursing',this);showPage('services')"><h3>🩺 Home Nursing - MAIN SERVICE ⭐</h3><p>Professional nurse at home - Elderly, Post-Surgery, Chronic Care, Injection, Wound Care</p><div class="tag">✅ Affordable • Chat for Quote • Most Popular</div></div>
-<div class="card" onclick="selectService('Nanny',this);showPage('services')"><h3>👶 Nanny</h3><p>Trusted nanny</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
-<div class="card" onclick="selectService('Cook',this);showPage('services')"><h3>👩‍🍳 Cook</h3><p>Daily meals</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
-</div>
-<div style="padding:16px"><button class="btn" onclick="showPage('services')">Book a Nurse Now →</button><a href="https://wa.me/256771218437?text=Hello%20HomeCare%20Hero!%20I%20need%20a%20Nurse" target="_blank"><button class="btn" style="background:#25D366">💬 Chat on WhatsApp - 0771 218 437</button></a></div>
-</div>
-
-<!-- CAREGIVERS - MAINLY NURSES -->
-<div id="page-caregivers" class="page">
-<h2 style="padding:16px 16px 0">👩‍⚕️ Meet Our Nurses</h2><p style="padding:0 16px;color:#666">Verified Nurses • Rated by real clients • GPS Tracked</p>
-<div class="filterBar"><button class="active" onclick="filterCaregiver('All',this)">All</button><button onclick="filterCaregiver('Nurse',this)">🩺 Nurses - Main</button><button onclick="filterCaregiver('Nanny',this)">👶 Nannies</button><button onclick="filterCaregiver('Cook',this)">👩‍🍳 Cooks</button></div>
-<div id="caregiverList"></div>
-<section><h3>🩺 Are you a Nurse? Join Us!</h3><p>Create Nurse / Caregiver Account - Admin will approve you, then clients can see your profile.</p><button class="btn" onclick="openLogin('Caregiver')">Join as Nurse →</button></section>
-</div>
-
-<!-- SERVICES - NO HOUSE HELP -->
-<div id="page-services" class="page">
-<h2 style="padding:16px 16px 0">Our Services - Mainly Nursing</h2>
-<div class="grid">
-<div class="card main" onclick="selectService('Home Nursing',this)"><h3>🩺 Home Nursing - MAIN ⭐</h3><p>Professional nurse - Elderly, Post-Surgery, Chronic Care</p><div class="tag">✅ Affordable • Chat for Quote • Most Popular</div></div>
-<div class="card" onclick="selectService('Nanny',this)"><h3>👶 Nanny</h3><p>Trusted nanny</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
-<div class="card" onclick="selectService('Cook',this)"><h3>👩‍🍳 Cook</h3><p>Daily meals</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
-</div>
-<div class="bar" id="selectedBar">Selected: Home Nursing</div>
-<section><h2>Book a Nurse Now</h2>
-<label>Service</label><select id="service"><option>Home Nursing</option><option>Nanny</option><option>Cook</option></select>
-<label>Choose Nurse (optional)</label><select id="chosenCaregiver"><option>Any Available Nurse</option></select>
-<label>Country</label><select id="country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>UK</option><option>USA</option><option>UAE</option><option>India</option><option>Other</option></select>
-<label>City</label><input id="location" placeholder="Kampala">
-<label>GPS Location</label><input id="gpsInput" readonly placeholder="Tap GPS button">
-<label>Your Name</label><input id="name" placeholder="Sarah">
-<label>Phone / WhatsApp</label><input id="phone" placeholder="0771 218 437">
-<label>Pay With</label><select id="payMethod"><option>💰 Wallet Balance</option><option>📱 MTN MoMo</option><option>📱 Airtel Money</option><option>💳 Card</option><option>💵 Cash</option></select>
-<label>Notes - What care do you need?</label><textarea id="notes" placeholder="e.g. My mother needs a nurse for elderly care..."></textarea>
-<button class="btn" onclick="book()">Confirm Booking on WhatsApp →</button><p id="msg" style="color:green;font-weight:bold"></p></section>
-</div>
-
-<!-- WALLET -->
-<div id="page-wallet" class="page">
-<div class="walletCard"><small>Available Balance</small><h1 id="walletBalance" style="margin:4px 0;font-size:32px">0</h1><small id="walletRole">Client Wallet - Login Required</small
+<div style="padding:0 16px"><button type="button" class="btn" onclick="show
