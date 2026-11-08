@@ -3,46 +3,60 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HomeCare Hero - Worldwide</title>
+<title>HomeCare Hero - Home Nursing Worldwide</title>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f6f9f7}
-header{background:#0b6e4f;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10}
+*{box-sizing:border-box;font-family:'Segoe UI',Arial,sans-serif}
+body{margin:0;background:#f0f4f8;color:#222}
+header{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;padding:16px;position:sticky;top:0;z-index:10;box-shadow:0 4px 20px rgba(0,0,0,.15);border-radius:0 0 20px 20px}
 .top{display:flex;justify-content:space-between;align-items:center}
-.logins{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.loginBtn{background:#fff;color:#0b6e4f;border:none;padding:8px 12px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px}
-.walletBtn{background:#FFD700;color:#111;border:none;padding:8px 14px;border-radius:20px;font-weight:bold;cursor:pointer;font-size:13px}
-nav{display:flex;gap:6px;margin-top:10px;overflow:auto}
-.navBtn{background:rgba(255,255,255,.2);color:#fff;border:none;padding:9px 14px;border-radius:20px;white-space:nowrap;cursor:pointer}
-.navBtn.active{background:#fff;color:#0b6e4f;font-weight:bold}
-.page{display:none}.page.active{display:block}
-.hero{padding:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
-.card{background:#fff;border-radius:16px;padding:14px;cursor:pointer;border:2px solid transparent}
-.card.selected{border-color:#0b6e4f;background:#eafff3}
-.tag{color:#0b6e4f;font-weight:bold;font-size:14px}
-.btn{background:#0b6e4f;color:#fff;border:none;padding:13px;border-radius:10px;width:100%;font-size:16px;margin-top:10px}
-.btn2{background:#111;color:#fff;border:none;padding:11px;border-radius:10px;width:100%;margin-top:8px}
-.btnGold{background:#FFD700;color:#111;border:none;padding:13px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;font-size:16px}
-.btnRed{background:#dc3545;color:#fff;border:none;padding:13px;border-radius:10px;width:100%;font-weight:bold;margin-top:8px;font-size:16px}
-section{padding:16px}input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:10px;font-size:16px}
-.bar{background:#0b6e4f;color:#fff;padding:12px;border-radius:12px;margin:14px 16px}
-.walletCard{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;padding:18px;border-radius:16px;margin:14px 16px}
+.logins{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.loginBtn{background:#fff;color:#0b6e4f;border:none;padding:9px 13px;border-radius:25px;font-weight:700;cursor:pointer;font-size:13px;box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.walletBtn{background:#FFD700;color:#111;border:none;padding:9px 15px;border-radius:25px;font-weight:800;cursor:pointer;font-size:13px}
+nav{display:flex;gap:6px;margin-top:12px;overflow:auto;padding-bottom:2px}
+.navBtn{background:rgba(255,255,255,.25);color:#fff;border:none;padding:10px 15px;border-radius:25px;white-space:nowrap;cursor:pointer;font-weight:600}
+.navBtn.active{background:#fff;color:#0b6e4f;font-weight:800;box-shadow:0 2px 10px rgba(0,0,0,.2)}
+.page{display:none}.page.active{display:block;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.hero{padding:22px 18px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
+.card{background:#fff;border-radius:20px;padding:16px;cursor:pointer;border:2px solid transparent;box-shadow:0 4px 15px rgba(0,0,0,.07);transition:.2s}
+.card:hover{transform:translateY(-2px)}.card.selected{border-color:#0b6e4f;background:#eafff3}
+.card.main{grid-column:span 2;background:linear-gradient(135deg,#eafff3,#d4f5e3);border:2px solid #0b6e4f}
+.tag{color:#0b6e4f;font-weight:800;font-size:13px}
+.btn{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;border:none;padding:14px;border-radius:14px;width:100%;font-size:16px;margin-top:10px;font-weight:700;box-shadow:0 4px 12px rgba(11,110,79,.3);cursor:pointer}
+.btn2{background:#111;color:#fff;border:none;padding:12px;border-radius:14px;width:100%;margin-top:8px;font-weight:600;cursor:pointer}
+.btnGold{background:linear-gradient(135deg,#FFD700,#ffb800);color:#111;border:none;padding:14px;border-radius:14px;width:100%;font-weight:800;margin-top:8px;font-size:16px;cursor:pointer}
+.btnRed{background:#dc3545;color:#fff;border:none;padding:14px;border-radius:14px;width:100%;font-weight:700;margin-top:8px;font-size:16px;cursor:pointer}
+section{padding:16px}input,select,textarea{width:100%;padding:13px;margin:7px 0;border:1.5px solid #ddd;border-radius:12px;font-size:16px;background:#fff}
+input:focus,select:focus,textarea:focus{border-color:#0b6e4f;outline:none}
+.bar{background:linear-gradient(135deg,#0b6e4f,#0aa06a);color:#fff;padding:13px;border-radius:14px;margin:14px 16px;font-weight:700}
+.walletCard{background:linear-gradient(135deg,#0b6e4f,#0aa06a,#00c896);color:#fff;padding:20px;border-radius:22px;margin:14px 16px;box-shadow:0 8px 25px rgba(11,110,79,.3)}
 .statGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px}
-.stat{background:#fff;padding:14px;border-radius:14px;text-align:center}
-.stat b{font-size:22px;color:#0b6e4f}
-footer{background:#111;color:#fff;text-align:center;padding:20px}
+.stat{background:#fff;padding:16px;border-radius:18px;text-align:center;box-shadow:0 4px 15px rgba(0,0,0,.07)}
+.stat b{font-size:24px;color:#0b6e4f}
+footer{background:#111;color:#fff;text-align:center;padding:22px;border-radius:20px 20px 0 0}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.6);z-index:99;align-items:center;justify-content:center}
-.modalBox{background:#fff;padding:20px;border-radius:16px;width:90%;max-width:400px;max-height:85vh;overflow:auto}
+.modalBox{background:#fff;padding:22px;border-radius:22px;width:92%;max-width:420px;max-height:88vh;overflow:auto;box-shadow:0 20px 50px rgba(0,0,0,.3)}
 .tx{border-bottom:1px solid #eee;padding:10px 0;font-size:14px}
-.badge{padding:3px 8px;border-radius:10px;font-size:11px;font-weight:bold}
+.badge{padding:4px 9px;border-radius:12px;font-size:11px;font-weight:800}
 .pending{background:#fff3cd}.approved{background:#d4edda}.rejected{background:#f8d7da}
 .row{display:flex;gap:8px}.row button{flex:1}
-.ruleBox{background:#fff3cd;padding:12px;border-radius:12px;font-size:13px;margin:10px 0}
+.ruleBox{background:#fff3cd;padding:13px;border-radius:14px;font-size:13px;margin:10px 0}
+.caregiverCard{background:#fff;border-radius:22px;overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,.08);margin:0 16px 14px}
+.caregiverCard img{width:100%;height:190px;object-fit:cover}
+.caregiverInfo{padding:14px}
+.stars{color:#FFB800;font-size:18px;letter-spacing:2px}
+.pill{display:inline-block;background:#eafff3;color:#0b6e4f;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;margin:2px}
+.avail{color:#0aa06a;font-weight:800;font-size:13px}.busy{color:#e67e22;font-weight:800;font-size:13px}
+.review{background:#fff;padding:14px;border-radius:16px;margin-bottom:10px;box-shadow:0 3px 12px rgba(0,0,0,.06)}
+.review img{width:42px;height:42px;border-radius:50%;object-fit:cover}
+.filterBar{display:flex;gap:8px;overflow:auto;padding:0 16px;margin-bottom:12px}
+.filterBar button{white-space:nowrap;border:1.5px solid #0b6e4f;background:#fff;color:#0b6e4f;padding:8px 14px;border-radius:20px;font-weight:700;cursor:pointer}
+.filterBar button.active{background:#0b6e4f;color:#fff}
 </style>
 </head>
 <body>
 <header>
-<div class="top"><b>🏠 HomeCare Hero</b><span id="loggedUser" style="font-size:12px">Not Logged In</span></div>
+<div class="top"><b style="font-size:19px">🏠 HomeCare Hero ✨</b><span id="loggedUser" style="font-size:12px">Not Logged In</span></div>
 <div class="logins">
 <button class="loginBtn" onclick="openLogin('Admin')">👑 Admin</button>
 <button class="loginBtn" onclick="openLogin('Client')">👤 Client</button>
@@ -52,100 +66,62 @@ footer{background:#111;color:#fff;text-align:center;padding:20px}
 </div>
 <nav>
 <button class="navBtn active" id="nav-home" onclick="showPage('home')">🏠 Home</button>
+<button class="navBtn" id="nav-caregivers" onclick="showPage('caregivers')">👩‍⚕️ Nurses</button>
 <button class="navBtn" id="nav-services" onclick="showPage('services')">🩺 Services</button>
 <button class="navBtn" id="nav-wallet" onclick="showPage('wallet')">💰 Wallet</button>
-<button class="navBtn" id="nav-admin" onclick="checkAdminAccess()">👑 Admin Dashboard 🔒</button>
+<button class="navBtn" id="nav-reviews" onclick="showPage('reviews')">⭐ Reviews</button>
+<button class="navBtn" id="nav-admin" onclick="checkAdminAccess()">👑 Admin 🔒</button>
 <button class="navBtn" id="nav-tracker" onclick="showPage('tracker')">📍 Tracker</button>
 </nav>
 </header>
+
+<!-- HOME - MAINLY NURSING -->
 <div id="page-home" class="page active">
-<div class="hero"><h1>Home Nursing + Home Care - Worldwide</h1><p>Trusted Nurses, Nannies, House Helps & Cooks - Worldwide. Book in 1 minute.</p><button class="btn2" onclick="getGPS()">📍 Use My GPS Location</button><p id="gpsStatus">GPS: Not yet detected</p><p id="mapLink"></p></div>
-<div class="walletCard"><div style="display:flex;justify-content:space-between"><span>💰 My Wallet</span><button onclick="showPage('wallet')" style="background:#fff;border:none;padding:6px 12px;border-radius:20px;font-weight:bold">Open →</button></div><h2 id="walletBalanceTop" style="margin:8px 0">Balance: 0</h2><div class="row"><button onclick="requireLoginForWallet()" style="background:#FFD700;border:none;padding:10px;border-radius:10px;font-weight:bold">⬆ DEPOSIT</button><button onclick="requireLoginForWallet()" style="background:#fff;border:none;padding:10px;border-radius:10px;font-weight:bold">⬇ WITHDRAW</button></div><p style="font-size:12px">🔒 You must login to use Wallet</p></div>
-<div class="ruleBox">🔒 <b>LOGIN RULES:</b><br>• Admin: Only Owner (0771218437) + Secret Password<br>• Client: Must Create Account first<br>• Caregiver: Must Create Account + Admin Approval</div>
-<h2 style="padding:0 16px">⭐ Popular Services</h2>
+<div class="hero"><h1 style="font-size:26px;line-height:1.2">🩺 Home Nursing - Worldwide 🌍</h1><p style="color:#555;line-height:1.5">Professional Nurses at Your Home. Trusted, Verified, Rated & GPS Tracked. Also Nannies & Cooks.</p><button class="btn2" onclick="getGPS()">📍 Use My GPS Location</button><p id="gpsStatus">GPS: Not yet detected</p><p id="mapLink"></p></div>
+<div class="walletCard"><div style="display:flex;justify-content:space-between"><span>💰 My Wallet</span><button onclick="showPage('wallet')" style="background:#fff;border:none;padding:7px 13px;border-radius:20px;font-weight:800">Open →</button></div><h2 id="walletBalanceTop" style="margin:8px 0;font-size:28px">Balance: 0</h2><div class="row"><button onclick="requireLoginForWallet()" style="background:#FFD700;border:none;padding:11px;border-radius:12px;font-weight:800">⬆ DEPOSIT</button><button onclick="requireLoginForWallet()" style="background:#fff;border:none;padding:11px;border-radius:12px;font-weight:800">⬇ WITHDRAW</button></div><p style="font-size:12px">🔒 Login to use Wallet</p></div>
+<div class="ruleBox">🔒 <b>LOGIN RULES:</b> Admin: Only Owner 0771218437 + 2215 • Client: Create Account • Caregiver: Create + Admin Approval</div>
+<h2 style="padding:0 16px">⭐ Top Rated Nurses</h2>
+<div id="homeCaregivers"></div>
+<div style="padding:0 16px"><button class="btn" onclick="showPage('caregivers')">See All Nurses →</button></div>
+<h2 style="padding:16px 16px 0">⭐ Our Services - Mainly Nursing</h2>
 <div class="grid">
-<div class="card" onclick="selectService('Home Nursing',this);showPage('services')"><h3>🩺 Home Nursing</h3><p>Professional nurse</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
+<div class="card main" onclick="selectService('Home Nursing',this);showPage('services')"><h3>🩺 Home Nursing - MAIN SERVICE ⭐</h3><p>Professional nurse at home - Elderly, Post-Surgery, Chronic Care, Injection, Wound Care</p><div class="tag">✅ Affordable • Chat for Quote • Most Popular</div></div>
 <div class="card" onclick="selectService('Nanny',this);showPage('services')"><h3>👶 Nanny</h3><p>Trusted nanny</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
+<div class="card" onclick="selectService('Cook',this);showPage('services')"><h3>👩‍🍳 Cook</h3><p>Daily meals</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
 </div>
-<div style="padding:16px"><button class="btn" onclick="showPage('services')">Book Now →</button><a href="https://wa.me/256771218437?text=Hello%20HomeCare%20Hero!" target="_blank"><button class="btn" style="background:#25D366">💬 Chat on WhatsApp - 0771 218 437</button></a></div>
+<div style="padding:16px"><button class="btn" onclick="showPage('services')">Book a Nurse Now →</button><a href="https://wa.me/256771218437?text=Hello%20HomeCare%20Hero!%20I%20need%20a%20Nurse" target="_blank"><button class="btn" style="background:#25D366">💬 Chat on WhatsApp - 0771 218 437</button></a></div>
 </div>
+
+<!-- CAREGIVERS - MAINLY NURSES -->
+<div id="page-caregivers" class="page">
+<h2 style="padding:16px 16px 0">👩‍⚕️ Meet Our Nurses</h2><p style="padding:0 16px;color:#666">Verified Nurses • Rated by real clients • GPS Tracked</p>
+<div class="filterBar"><button class="active" onclick="filterCaregiver('All',this)">All</button><button onclick="filterCaregiver('Nurse',this)">🩺 Nurses - Main</button><button onclick="filterCaregiver('Nanny',this)">👶 Nannies</button><button onclick="filterCaregiver('Cook',this)">👩‍🍳 Cooks</button></div>
+<div id="caregiverList"></div>
+<section><h3>🩺 Are you a Nurse? Join Us!</h3><p>Create Nurse / Caregiver Account - Admin will approve you, then clients can see your profile.</p><button class="btn" onclick="openLogin('Caregiver')">Join as Nurse →</button></section>
+</div>
+
+<!-- SERVICES - NO HOUSE HELP -->
 <div id="page-services" class="page">
-<h2 style="padding:16px 16px 0">Our Services</h2>
+<h2 style="padding:16px 16px 0">Our Services - Mainly Nursing</h2>
 <div class="grid">
-<div class="card" onclick="selectService('Home Nursing',this)"><h3>🩺 Home Nursing</h3><p>Professional nurse</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
+<div class="card main" onclick="selectService('Home Nursing',this)"><h3>🩺 Home Nursing - MAIN ⭐</h3><p>Professional nurse - Elderly, Post-Surgery, Chronic Care</p><div class="tag">✅ Affordable • Chat for Quote • Most Popular</div></div>
 <div class="card" onclick="selectService('Nanny',this)"><h3>👶 Nanny</h3><p>Trusted nanny</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
-<div class="card" onclick="selectService('House Help',this)"><h3>🧹 House Help</h3><p>Cleaning</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
 <div class="card" onclick="selectService('Cook',this)"><h3>👩‍🍳 Cook</h3><p>Daily meals</p><div class="tag">✅ Affordable • Chat for Quote</div></div>
 </div>
 <div class="bar" id="selectedBar">Selected: Home Nursing</div>
-<section><h2>Book Now</h2>
-<label>Service</label><select id="service"><option>Home Nursing</option><option>Nanny</option><option>House Help</option><option>Cook</option></select>
+<section><h2>Book a Nurse Now</h2>
+<label>Service</label><select id="service"><option>Home Nursing</option><option>Nanny</option><option>Cook</option></select>
+<label>Choose Nurse (optional)</label><select id="chosenCaregiver"><option>Any Available Nurse</option></select>
 <label>Country</label><select id="country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>UK</option><option>USA</option><option>UAE</option><option>India</option><option>Other</option></select>
 <label>City</label><input id="location" placeholder="Kampala">
 <label>GPS Location</label><input id="gpsInput" readonly placeholder="Tap GPS button">
 <label>Your Name</label><input id="name" placeholder="Sarah">
 <label>Phone / WhatsApp</label><input id="phone" placeholder="0771 218 437">
 <label>Pay With</label><select id="payMethod"><option>💰 Wallet Balance</option><option>📱 MTN MoMo</option><option>📱 Airtel Money</option><option>💳 Card</option><option>💵 Cash</option></select>
-<label>Notes</label><textarea id="notes"></textarea>
+<label>Notes - What care do you need?</label><textarea id="notes" placeholder="e.g. My mother needs a nurse for elderly care..."></textarea>
 <button class="btn" onclick="book()">Confirm Booking on WhatsApp →</button><p id="msg" style="color:green;font-weight:bold"></p></section>
 </div>
+
+<!-- WALLET -->
 <div id="page-wallet" class="page">
-<div class="walletCard"><small>Available Balance</small><h1 id="walletBalance" style="margin:4px 0">0</h1><small id="walletRole">Client Wallet - Login Required</small></div>
-<div style="padding:0 16px" class="row"><button class="btnGold" onclick="requireLoginForWallet()">⬆ DEPOSIT</button><button class="btnRed" onclick="requireLoginForWallet()">⬇ WITHDRAW</button></div>
-<section><h3>Recent Transactions</h3><div id="txList" style="background:#fff;padding:12px;border-radius:12px"></div><h3>Deposit / Withdraw Requests</h3><div id="walletRequests" style="background:#fff;padding:12px;border-radius:12px"></div></section>
-</div>
-<div id="page-admin" class="page">
-<section><h2>👑 Admin Dashboard 🔒</h2><p id="adminWelcome">🔒 Admin Only - Login Required</p>
-<div class="statGrid"><div class="stat"><b id="statBookings">0</b><br>Total Bookings</div><div class="stat"><b id="statUsers">0</b><br>Total Users</div><div class="stat"><b id="statWallet">0</b><br>Total Wallet Balance</div><div class="stat"><b id="statPending">0</b><br>Pending Requests</div></div>
-<section><h3>👥 Approve Caregivers</h3><div id="adminUsers" style="background:#fff;padding:12px;border-radius:12px">No users yet.</div></section>
-<section><h3>💰 Deposit & Withdraw Requests</h3><div id="adminRequests" style="background:#fff;padding:12px;border-radius:12px">No requests yet.</div></section>
-<section><h3>📋 All Bookings</h3><div id="adminBookings" style="background:#fff;padding:12px;border-radius:12px">No bookings yet.</div></section>
-</section>
-</div>
-<div id="page-tracker" class="page"><section><h3>📍 Live Caregiver Tracker</h3><div style="background:#fff;padding:14px;border-radius:12px"><b id="trackerStatus">Status: Waiting...</b><br><span id="trackerInfo">Caregiver appears after booking.</span><br><br><button class="btn2" onclick="simulateTracker()">▶ Demo: See Tracking</button><br><br><button class="btn2" onclick="shareGPS()">📍 Share My Live GPS</button></div></section></div>
-<div class="modal" id="loginModal"><div class="modalBox"><h2 id="loginTitle">Login</h2><div class="ruleBox" id="loginRules"></div><label>Phone</label><input id="loginPhone" placeholder="0771218437"><label>Password</label><input id="loginPass" type="password" placeholder="••••"><button class="btn" onclick="doLogin()">Login →</button><button class="btn2" onclick="openRegister()">Don't have account? Create Account →</button><button class="btn2" onclick="closeLogin()">Close</button><p id="loginMsg" style="color:green;font-weight:bold"></p><p id="loginError" style="color:red;font-weight:bold"></p></div></div>
-<div class="modal" id="registerModal"><div class="modalBox"><h2 id="registerTitle">Create Account</h2><label>Full Name</label><input id="regName" placeholder="Sarah Nakato"><label>Phone</label><input id="regPhone" placeholder="0771218437"><label>Password (min 4 chars)</label><input id="regPass" type="password" placeholder="Create password"><label>Confirm Password</label><input id="regPass2" type="password" placeholder="Repeat password"><button class="btn" onclick="doRegister()">Create Account →</button><button class="btn2" onclick="closeModal('registerModal')">Close</button><p id="regMsg" style="color:green;font-weight:bold"></p><p id="regError" style="color:red;font-weight:bold"></p></div></div>
-<div class="modal" id="depositModal"><div class="modalBox"><h2>⬆ Deposit to Wallet</h2><label>Amount</label><input id="depositAmount" type="number" placeholder="e.g. 50000"><label>Method</label><select id="depositMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Card</option><option>Bank Transfer</option></select><label>MoMo Number</label><input id="depositPhone" placeholder="0771 218 437"><button class="btnGold" onclick="submitDeposit()">Confirm Deposit →</button><button class="btn2" onclick="closeModal('depositModal')">Close</button><p id="depositMsg" style="color:green;font-weight:bold"></p></div></div>
-<div class="modal" id="withdrawModal"><div class="modalBox"><h2>⬇ Withdraw from Wallet</h2><p>Balance: <b id="withdrawBalance">0</b></p><label>Amount</label><input id="withdrawAmount" type="number" placeholder="e.g. 50000"><label>Withdraw To</label><select id="withdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Account</option></select><label>Receive Number</label><input id="withdrawPhone" placeholder="0771 218 437"><button class="btnRed" onclick="submitWithdraw()">Confirm Withdraw →</button><button class="btn2" onclick="closeModal('withdrawModal')">Close</button><p id="withdrawMsg" style="color:green;font-weight:bold"></p></div></div>
-<footer>HomeCare Hero • Worldwide • WhatsApp: 0771 218 437<br>© 2026 HomeCare Hero</footer>
-<script>
-const ADMIN_PHONE='0771218437'; const ADMIN_PASS='2215';
-let loggedInUser=null;
-let walletBalance=parseInt(localStorage.getItem('wallet')||'0');
-let txs=JSON.parse(localStorage.getItem('txs')||'[]');
-let bookings=JSON.parse(localStorage.getItem('bookings')||'[]');
-let users=JSON.parse(localStorage.getItem('users')||'[]');
-let requests=JSON.parse(localStorage.getItem('requests')||'[]');
-let currentRole='Client';
-function showPage(p){document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));document.getElementById('page-'+p).classList.add('active');document.querySelectorAll('.navBtn').forEach(b=>b.classList.remove('active'));let nb=document.getElementById('nav-'+p);if(nb)nb.classList.add('active');window.scrollTo(0,0);if(p==='admin')renderAdmin();}
-function checkAdminAccess(){if(loggedInUser && loggedInUser.role==='Admin'){showPage('admin');}else{alert('🔒 ADMIN ONLY! Only Owner can open Admin Dashboard. Please login as Admin.');openLogin('Admin');}}
-function requireLoginForWallet(){if(!loggedInUser){alert('🔒 Please LOGIN first to use Wallet');openLogin('Client');return;}if(loggedInUser.role==='Caregiver' && loggedInUser.status!=='Approved'){alert('⏳ Caregiver not approved yet by Admin. Wait for approval.');return;}showPage('wallet');}
-function openLogin(role){currentRole=role;document.getElementById('loginTitle').innerText=role+' Login 🔒';let rules='';if(role==='Admin')rules='🔒 Admin Rule: Only Owner Phone 0771218437 + Secret Password can login.';if(role==='Client')rules='Rule: You must have created an account. Use your phone + password.';if(role==='Caregiver')rules='Rule: You must have created account AND be Approved by Admin. Pending = Cannot login.';document.getElementById('loginRules').innerHTML=rules;document.getElementById('loginModal').style.display='flex';document.getElementById('walletRole').innerText=role+' Wallet';}
-function closeLogin(){document.getElementById('loginModal').style.display='none';}
-function openRegister(){closeLogin();document.getElementById('registerTitle').innerText='Create '+currentRole+' Account';document.getElementById('registerModal').style.display='flex';}
-function closeModal(id){document.getElementById(id).style.display='none';}
-function doRegister(){let name=document.getElementById('regName').value.trim();let phone=document.getElementById('regPhone').value.trim();let p1=document.getElementById('regPass').value;let p2=document.getElementById('regPass2').value;document.getElementById('regError').innerText='';if(!name||!phone||!p1){document.getElementById('regError').innerText='❌ Fill all fields';return;}if(p1.length<4){document.getElementById('regError').innerText='❌ Password must be 4+ characters';return;}if(p1!==p2){document.getElementById('regError').innerText='❌ Passwords do not match';return;}if(users.find(u=>u.phone===phone && u.role===currentRole)){document.getElementById('regError').innerText='❌ Account already exists. Please Login.';return;}let status=(currentRole==='Caregiver'?'Pending':'Approved');users.push({role:currentRole,name:name,phone:phone,pass:p1,status:status,date:new Date().toLocaleDateString()});localStorage.setItem('users',JSON.stringify(users));document.getElementById('regMsg').innerText=currentRole==='Caregiver'?'✅ Account created! Status: PENDING - Wait for Admin Approval to login.':'✅ Account created! You can now Login.';setTimeout(()=>{closeModal('registerModal');openLogin(currentRole);renderAll();},1200);}
-function doLogin(){let phone=document.getElementById('loginPhone').value.trim();let pass=document.getElementById('loginPass').value;document.getElementById('loginError').innerText='';document.getElementById('loginMsg').innerText='';if(currentRole==='Admin'){if(phone===ADMIN_PHONE && pass===ADMIN_PASS){loggedInUser={role:'Admin',name:'Owner',phone:phone,status:'Approved'};onLoginSuccess();}else{document.getElementById('loginError').innerText='❌ ACCESS DENIED! Wrong Admin phone or password. Only Owner can login as Admin.';return;}return;}let user=users.find(u=>u.phone===phone && u.role===currentRole);if(!user){document.getElementById('loginError').innerText='❌ No account found. Please Create Account first.';return;}if(user.pass!==pass){document.getElementById('loginError').innerText='❌ Wrong password! Try again.';return;}if(user.status!=='Approved'){document.getElementById('loginError').innerText='⏳ Your account is PENDING. Admin has not approved you yet. Please wait / WhatsApp Admin.';return;}loggedInUser=user;onLoginSuccess();}
-function onLoginSuccess(){document.getElementById('loginMsg').innerText='✅ Welcome '+loggedInUser.name+' ('+loggedInUser.role+')!';document.getElementById('loggedUser').innerText='✅ '+loggedInUser.role+': '+loggedInUser.name;document.getElementById('logoutBtn').style.display='inline-block';setTimeout(()=>{closeLogin();if(loggedInUser.role==='Admin')showPage('admin');else showPage('home');renderAll();},800);}
-function logout(){loggedInUser=null;document.getElementById('loggedUser').innerText='Not Logged In';document.getElementById('logoutBtn').style.display='none';alert('Logged out');showPage('home');}
-function updateWalletUI(){document.getElementById('walletBalance').innerText=walletBalance.toLocaleString();document.getElementById('walletBalanceTop').innerText='Balance: '+walletBalance.toLocaleString();let html=txs.length? '':'<p style="color:#888">No transactions yet.</p>';txs.slice().reverse().forEach(t=>{html+='<div class="tx"><span>'+t.desc+' <br><small>'+(t.date||'')+'</small></span><b>'+t.amt+'</b></div>'});document.getElementById('txList').innerHTML=html;let rh=requests.length? '':'<p>No requests yet.</p>';requests.slice().reverse().forEach(r=>{rh+='<div class="tx"><span>'+r.type+' - '+r.amount.toLocaleString()+' via '+r.method+' <span class="badge pending">'+r.status+'</span></span></div>'});document.getElementById('walletRequests').innerHTML=rh;}
-function openDeposit(){if(!loggedInUser){alert('🔒 Login first');openLogin('Client');return;}document.getElementById('depositModal').style.display='flex';}
-function openWithdraw(){if(!loggedInUser){alert('🔒 Login first');openLogin('Client');return;}document.getElementById('withdrawBalance').innerText=walletBalance.toLocaleString();document.getElementById('withdrawModal').style.display='flex';}
-function submitDeposit(){let amt=parseInt(document.getElementById('depositAmount').value);let method=document.getElementById('depositMethod').value;let phone=document.getElementById('depositPhone').value;if(!amt||amt<=0){alert('Enter amount');return;}requests.push({type:'DEPOSIT',amount:amt,method:method,phone:phone,status:'Pending',date:new Date().toLocaleString(),by:loggedInUser?loggedInUser.phone:''});localStorage.setItem('requests',JSON.stringify(requests));document.getElementById('depositMsg').innerText='Deposit request sent! Admin will approve ✅';setTimeout(()=>{closeModal('depositModal');renderAll();},800);}
-function submitWithdraw(){let amt=parseInt(document.getElementById('withdrawAmount').value);let method=document.getElementById('withdrawMethod').value;if(!amt||amt<=0){alert('Enter amount');return;}if(amt>walletBalance){alert('Not enough balance!');return;}requests.push({type:'WITHDRAW',amount:amt,method:method,phone:document.getElementById('withdrawPhone').value,status:'Pending',date:new Date().toLocaleString(),by:loggedInUser?loggedInUser.phone:''});localStorage.setItem('requests',JSON.stringify(requests));document.getElementById('withdrawMsg').innerText='Withdraw request sent! Admin will approve ✅';setTimeout(()=>{closeModal('withdrawModal');renderAll();},800);}
-function renderAdmin(){if(!loggedInUser || loggedInUser.role!=='Admin'){document.getElementById('adminWelcome').innerText='🔒 Admin Only - Please Login as Admin';return;}document.getElementById('adminWelcome').innerText='✅ Welcome Owner - You are Admin';document.getElementById('statBookings').innerText=bookings.length;document.getElementById('statUsers').innerText=users.length;document.getElementById('statWallet').innerText=walletBalance.toLocaleString();document.getElementById('statPending').innerText=requests.filter(r=>r.status==='Pending').length;let uh=users.length? '':'No users yet.';users.forEach((u,idx)=>{uh+='<div class="tx"><div><b>'+u.role+' - '+u.name+'</b><br><small>'+u.phone+' • '+u.status+'</small><br><span class="badge '+(u.status==='Approved'?'approved':'pending')+'">'+u.status+'</span></div>';if(u.status==='Pending'){uh+='<div class="row" style="margin-top:6px"><button onclick="approveUser('+idx+')" style="background:#0b6e4f;color:#fff;border:none;padding:8px;border-radius:8px">Approve ✅</button><button onclick="rejectUser('+idx+')" style="background:#dc3545;color:#fff;border:none;padding:8px;border-radius:8px">Reject ❌</button></div>';}uh+='</div>';});document.getElementById('adminUsers').innerHTML=uh;let rh=requests.length? '':'No requests yet.';requests.forEach((r,idx)=>{rh+='<div class="tx"><div><b>'+r.type+' - '+r.amount.toLocaleString()+'</b><br><small>'+r.method+' • '+r.phone+'</small><br><span class="badge '+(r.status==='Pending'?'pending':r.status==='Approved'?'approved':'rejected')+'">'+r.status+'</span></div>';if(r.status==='Pending'){rh+='<div class="row" style="margin-top:6px"><button onclick="approveReq('+idx+')" style="background:#0b6e4f;color:#fff;border:none;padding:8px;border-radius:8px">Approve ✅</button><button onclick="rejectReq('+idx+')" style="background:#dc3545;color:#fff;border:none;padding:8px;border-radius:8px">Reject ❌</button></div>';}rh+='</div>';});document.getElementById('adminRequests').innerHTML=rh;let bh=bookings.length? '':'No bookings yet.';bookings.slice().reverse().forEach(b=>{bh+='<div class="tx"><b>'+b.service+'</b> - '+b.name+'<br><small>'+b.phone+' • '+b.location+', '+b.country+'</small></div>'});document.getElementById('adminBookings').innerHTML=bh;}
-function approveUser(i){users[i].status='Approved';localStorage.setItem('users',JSON.stringify(users));renderAll();alert('Caregiver Approved ✅ - They can now login');}
-function rejectUser(i){users[i].status='Rejected';localStorage.setItem('users',JSON.stringify(users));renderAll();}
-function approveReq(i){let r=requests[i];if(r.type==='DEPOSIT'){walletBalance+=r.amount;txs.push({desc:'Deposit Approved - '+r.method,amt:'+'+r.amount.toLocaleString(),date:new Date().toLocaleString()});}else{walletBalance-=r.amount;txs.push({desc:'Withdraw Approved - '+r.method,amt:'-'+r.amount.toLocaleString(),date:new Date().toLocaleString()});}r.status='Approved';localStorage.setItem('requests',JSON.stringify(requests));localStorage.setItem('wallet',walletBalance);localStorage.setItem('txs',JSON.stringify(txs));renderAll();alert('Approved! ✅');}
-function rejectReq(i){requests[i].status='Rejected';localStorage.setItem('requests',JSON.stringify(requests));renderAll();}
-function renderAll(){updateWalletUI();renderAdmin();}
-renderAll();
-let myLat=null,myLng=null,myMapLink='';
-function getGPS(){document.getElementById('gpsStatus').innerText='📍 Getting GPS... Allow location...';if(!navigator.geolocation){alert('GPS not supported');return;}navigator.geolocation.getCurrentPosition(async pos=>{myLat=pos.coords.latitude;myLng=pos.coords.longitude;myMapLink='https://maps.google.com/?q='+myLat+','+myLng;document.getElementById('gpsStatus').innerText='✅ GPS: '+myLat.toFixed(5)+', '+myLng.toFixed(5);document.getElementById('gpsInput').value=myLat.toFixed(5)+', '+myLng.toFixed(5);document.getElementById('mapLink').innerHTML='<a href="'+myMapLink+'" target="_blank">📍 Open on Google Maps →</a>';try{let r=await fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+myLat+'&lon='+myLng);let d=await r.json();if(d.display_name)document.getElementById('location').value=d.display_name.split(',').slice(0,2).join(',');}catch(e){}},err=>{alert('Please allow Location');});}
-function shareGPS(){if(!myLat){alert('Tap GPS first!');getGPS();return;}window.open('https://wa.me/256771218437?text='+encodeURIComponent('My location: '+myMapLink),'_blank');}
-function selectService(name,el){document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));if(el)el.classList.add('selected');document.getElementById('service').value=name;document.getElementById('selectedBar').innerText='Selected: '+name;}
-function book(){let s=document.getElementById('service').value;let n=document.getElementById('name').value;let p=document.getElementById('phone').value;let c=document.getElementById('country').value;let l=document.getElementById('location').value;let pay=document.getElementById('payMethod').value;if(!n||!p){alert('Add name and phone');return;}bookings.push({service:s,name:n,phone:p,country:c,location:l,pay:pay,date:new Date().toLocaleString()});localStorage.setItem('bookings',JSON.stringify(bookings));let gps=myMapLink?'%0AGPS: '+myMapLink:'';window.open('https://wa.me/256771218437?text=Hello HomeCare Hero!%0ABook: '+s+'%0AName: '+n+'%0APhone: '+p+'%0ALocation: '+l+', '+c+'%0APay: '+pay+gps,'_blank');document.getElementById('msg').innerText='Booking saved + WhatsApp opened! ✅';renderAll();}
-function simulateTracker(){document.getElementById('trackerStatus').innerText='Status: Caregiver on the way 🚗 - 2.5 km away';document.getElementById('trackerInfo').innerText='Mary - Nurse - Arriving in 15 mins';}
-</script>
-</body>
-</html>
+<div class="walletCard"><small>Available Balance</small><h1 id="walletBalance" style="margin:4px 0;font-size:32px">0</h1><small id="walletRole">Client Wallet - Login Required</small
