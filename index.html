@@ -3,281 +3,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Nursing First - Friendly Prices Max 35000</title>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet">
+<title>HomeCare Hero - Worldwide</title>
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:'Plus Jakarta Sans',system-ui;background:#FFF7ED;color:#1C1917}
-.top{background:#111827;color:#fff;padding:10px 14px;display:flex;justify-content:space-between;align-items:center;font-size:13px;position:sticky;top:0;z-index:10}
-.top b{font-size:15px} #status{background:#22C55E;color:#fff;padding:6px 10px;border-radius:999px;font-weight:800;font-size:11px}
-.hero{background:linear-gradient(135deg,#0F766E,#7C3AED 55%,#DB2777);color:#fff;padding:22px 16px 30px;border-radius:0 0 26px 26px}
-.hero h1{margin:0;font-size:29px;line-height:1.05}
-.wrap{max-width:920px;margin:-14px auto 0;padding:0 12px 30px}
-.card{background:#fff;border-radius:20px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.08);margin-bottom:12px;border:1px solid #FFE7D6}
-.nurse-card{background:linear-gradient(135deg,#ECFDF5,#EFF6FF);border:2px solid #0F766E;border-radius:20px;padding:16px;margin-bottom:12px}
-.nurse-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.nurse-item{background:#fff;border:1px solid #CCFBF1;border-radius:12px;padding:10px;text-align:center;font-size:12px;font-weight:800;cursor:pointer}
-.nurse-item.active{background:#0F766E;color:#fff}
-.tabs{display:flex;gap:6px;background:#fff;padding:5px;border-radius:999px;box-shadow:0 4px 16px rgba(0,0,0,.07);margin-bottom:12px;flex-wrap:wrap}
-.tabs button{flex:1;border:0;padding:11px 6px;border-radius:999px;font-weight:800;font-size:13px;cursor:pointer;background:transparent;white-space:nowrap}
-.tabs button.active{background:#111827;color:#fff}
-label{font-size:13px;font-weight:800;display:block;margin:12px 0 5px}
-input,select,textarea{width:100%;padding:13px;border:2px solid #F1F5F9;border-radius:13px;font-size:15px;background:#F8FAFC;outline:none}
-button{border:0;border-radius:13px;padding:14px;font-weight:800;font-size:15px;cursor:pointer;width:100%}
-.btn-main{background:linear-gradient(90deg,#0F766E,#7C3AED);color:#fff} .btn-dark{background:#111827;color:#fff} .btn-green{background:#22C55E;color:#fff} .btn-red{background:#EF4444;color:#fff} .btn-gold{background:#F59E0B;color:#111}
-.wallet{background:linear-gradient(135deg,#111827,#0F766E);color:#fff;border-radius:18px;padding:16px;margin-bottom:12px;border:3px solid #F59E0B}
-.wallet h2{margin:0;font-size:15px} .bal{font-size:34px;font-weight:800;margin:6px 0} .muted{color:#78716C;font-size:13px;line-height:1.5}
-.job{border:1px solid #FFE7D6;background:linear-gradient(180deg,#fff,#FFFBEB);border-radius:16px;padding:14px;margin-top:10px}
-.pill{background:#DCFCE7;color:#166534;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800}
-.price{font-size:20px;font-weight:800;color:#0F766E} .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.actions{display:flex;gap:7px;margin-top:10px} .actions a,.actions button{flex:1;text-align:center;text-decoration:none;padding:11px;border-radius:11px;font-weight:800;font-size:13px}
-.call{background:#111827;color:#fff} .wa{background:#22C55E;color:#fff}
-.cat{display:inline-block;background:#CCFBF1;color:#0F766E;padding:4px 9px;border-radius:999px;font-size:11px;font-weight:800}
-.cat-nurse{background:#0F766E;color:#fff;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:800}
-.hidden{display:none} .tx{border-bottom:1px solid #F1F5F9;padding:10px 0;display:flex;justify-content:space-between;font-size:13px}
-.gps-box{background:#EFF6FF;border:2px dashed #3B82F6;border-radius:14px;padding:12px;margin-top:10px}
-@media(max-width:600px){.row,.nurse-grid{grid-template-columns:1fr 1fr}}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#f6f9f7}
+header{background:#0b6e4f;color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+.hero{padding:20px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
+.card{background:#fff;border-radius:16px;padding:14px;cursor:pointer;border:2px solid transparent}
+.card.selected{border-color:#0b6e4f;background:#eafff3}
+.price{font-weight:bold;color:#0b6e4f}
+.btn{background:#0b6e4f;color:#fff;border:none;padding:13px;border-radius:10px;width:100%;font-size:16px;margin-top:10px}
+.btn2{background:#111;color:#fff;border:none;padding:11px;border-radius:10px;width:100%;margin-top:8px}
+section{padding:16px}input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ccc;border-radius:10px;font-size:16px}
+.bar{background:#0b6e4f;color:#fff;padding:12px;border-radius:12px;margin:14px 16px}
+.bar2{background:#fff3cd;padding:12px;border-radius:12px;margin:0 16px;text-align:center;font-weight:bold}
+footer{background:#111;color:#fff;text-align:center;padding:20px}
 </style>
 </head>
 <body>
-<div class="top"><b>🏠 Home Care Hero</b><span id="status">🟢 REAL LIVE</span></div>
-<div class="hero"><h1>🩺 Home Nursing<br>+ Home Care.</h1><p>Registered Nurses at your home • Friendly Prices Max 35,000 • Wallet • GPS Live</p><div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap"><span style="background:rgba(255,255,255,.25);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">🩺 NURSING = MAIN SERVICE</span><span style="background:rgba(255,255,255,.25);padding:8px 12px;border-radius:12px;font-weight:800;font-size:12px">💰 Max 35,000 - Friendly</span></div></div>
-<div class="wrap">
-
-<div class="card">
-<h2 style="margin:0">🔐 Login / Create Account</h2><p class="muted" id="loginMsg">Phone + 4-digit PIN. Client / Nurse / Carer / Admin.</p>
-<div id="loggedOut">
-<label>I am a...</label><select id="role"><option value="client">🙋 Client - I Need Care</option><option value="carer">🩺 Nurse / Carer - I Want Work</option><option value="admin">🛡️ Admin - Owner Only</option></select>
-<label>Your Name</label><input id="uName" placeholder="e.g. Sarah Nakato">
-<div class="row"><div><label>Phone</label><input id="uPhone" placeholder="0770123456"></div><div><label>4-Digit PIN</label><input id="uPin" type="password" maxlength="4" placeholder="1234"></div></div>
-<label id="carerLabel" class="hidden">Are you a Nurse or Carer? + Your Skills</label><select id="carerType" class="hidden"><option>🩺 Registered Nurse</option><option>🩺 Enrolled Nurse</option><option>👵 Elderly Carer</option><option>👶 Nanny / Child Carer</option><option>🏠 House Help / Companion</option></select>
-<input id="carerExtra" class="hidden" placeholder="e.g. Ntinda, Wound Care, 5yrs exp, Nursing License No.">
-<div class="row" style="margin-top:12px"><button class="btn-main" onclick="doLogin('login')">Login</button><button class="btn-dark" onclick="doLogin('signup')">Create Account</button></div>
+<header><b>🏠 HomeCare Hero</b><select id="langSelect" onchange="setLang(this.value)"><option value="en">🌐 English</option><option value="lg">Luganda</option><option value="sw">Kiswahili</option><option value="fr">Français</option><option value="es">Español</option><option value="ar">العربية</option></select></header>
+<div class="hero"><h1 data-i18n="title">Home Nursing + Home Care - Worldwide</h1><p data-i18n="subtitle">Trusted Nurses, Nannies, House Helps & Cooks - Worldwide. Book in 1 minute.</p><button class="btn2" onclick="getGPS()" data-i18n="gpsBtn">📍 Use My GPS Location</button><p id="gpsStatus">GPS: Not yet detected</p><p id="mapLink"></p></div>
+<div class="bar2" id="currencyBar">🌍 Detecting currency...</div>
+<div style="padding:0 16px"><label>Currency (Auto)</label><select id="currencySelect" onchange="changeCurrency(this.value)"><option value="USD">USD $</option><option value="UGX">UGX</option><option value="KES">KES</option><option value="TZS">TZS</option><option value="NGN">NGN</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option><option value="GBP">GBP £</option><option value="EUR">EUR €</option><option value="AED">AED</option><option value="INR">INR</option></select></div>
+<h2 style="padding:0 16px" data-i18n="services">Our Services</h2>
+<div class="grid">
+<div class="card" onclick="selectService('Home Nursing',this)"><h3>🩺 Home Nursing</h3><p>Professional nurse</p><div class="price" data-usd="25">...</div></div>
+<div class="card" onclick="selectService('Nanny',this)"><h3>👶 Nanny</h3><p>Trusted nanny</p><div class="price" data-usd="20">...</div></div>
+<div class="card" onclick="selectService('House Help',this)"><h3>🧹 House Help</h3><p>Cleaning</p><div class="price" data-usd="15">...</div></div>
+<div class="card" onclick="selectService('Cook',this)"><h3>👩‍🍳 Cook</h3><p>Daily meals</p><div class="price" data-usd="18">...</div></div>
 </div>
-<div id="loggedIn" class="hidden"><div style="background:#FEF3C7;border-radius:12px;padding:10px;display:flex;justify-content:space-between;align-items:center"><span id="userInfo" style="font-weight:700;font-size:13px"></span><button onclick="logout()" style="width:auto;padding:8px 14px;background:#EF4444;color:#fff;font-size:12px">Logout</button></div>
-<div id="carerGPS" class="hidden"><div class="gps-box"><b>📍 GPS Tracker - Nurse / Carer</b><p class="muted" id="gpsStatus">GPS Off</p><button class="btn-green" onclick="toggleGPS()">📍 Start GPS Tracking</button><p class="muted" id="gpsCoords"></p></div></div>
-</div>
-</div>
-
-<!-- NURSING - FRIENDLY PRICES MAX 35000 -->
-<div class="nurse-card">
-<h2 style="margin:0">🩺 NURSING SERVICES - Friendly Prices - Tap to Book</h2><p class="muted" style="margin:6px 0">Highest price is 35,000. Tap a service → It fills the job form below automatically.</p>
-<div class="nurse-grid">
-<div class="nurse-item" onclick="pickNurse(this,'🩺 HOME NURSING - Registered Nurse','35000')">🩺<br>Home Nursing<br><span style="font-weight:500">UGX 35,000/day</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'🩹 WOUND CARE / DRESSING','25000')">🩹<br>Wound Care<br><span style="font-weight:500">UGX 25,000/visit</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'💉 INJECTIONS / IV / DRIP','20000')">💉<br>Injections / IV<br><span style="font-weight:500">UGX 20,000/visit</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'🩸 BP / DIABETES / VITALS CHECK','10000')">🩸<br>BP / Diabetes<br><span style="font-weight:500">UGX 10,000/visit</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'🏥 POST-SURGERY NURSING','35000')">🏥<br>Post-Surgery<br><span style="font-weight:500">UGX 35,000/day</span></div>
-<div class="nurse-item" onclick="pickNurse(this,'👵 ELDERLY NURSING CARE','30000')">👵<br>Elderly Nursing<br><span style="font-weight:500">UGX 30,000/day</span></div>
-</div>
-<p class="muted" id="nursePicked" style="font-weight:800;color:#0F766E">Selected: None - Tap one above</p>
-</div>
-
-<!-- WALLET -->
-<div class="wallet">
-<h2>💰 MY WALLET - DEPOSIT & WITHDRAW</h2><div class="bal" id="walletBal">UGX 0</div><p style="opacity:.85;font-size:13px;margin:0" id="walletRole">Login to see wallet</p>
-<label style="color:#fff">💵 Deposit / Top Up Amount (UGX)</label><input id="topupAmt" type="number" placeholder="35000" style="background:#fff">
-<label style="color:#fff">📱 MoMo Number</label><input id="topupPhone" placeholder="077..." style="background:#fff">
-<div class="row" style="margin-top:10px"><button class="btn-gold" onclick="topUp()">⬆️ DEPOSIT / TOP UP</button><button class="btn-green" onclick="withdraw()">⬇️ WITHDRAW</button></div>
-<h3 style="margin:14px 0 6px;font-size:14px">📜 Transaction History</h3><div id="txList" style="background:#fff;color:#111;border-radius:12px;padding:0 12px;max-height:220px;overflow:auto"><p class="muted">No transactions yet</p></div>
-</div>
-
-<div class="tabs"><button id="tabNurse" class="active" onclick="showTab('nurse')">🩺 Nursing</button><button id="tabClient" onclick="showTab('client')">🙋 I Need Care</button><button id="tabCarer" onclick="showTab('carer')">💜 Jobs + Nurses</button><button id="tabAdmin" onclick="showTab('admin')">🛡️ Admin</button></div>
-
-<div id="nurseView" class="card">
-<h2 style="margin:0">🩺 Book a Nurse Now - Max 35,000</h2><p class="muted">Nursing is our main service. Friendly prices for everyone.</p>
-<label>Location / Area</label><input id="nArea" placeholder="e.g. Ntinda, Kampala">
-<label>Nursing Service Needed</label><select id="nType"><option>🩺 HOME NURSING - Registered Nurse</option><option>🩹 WOUND CARE / DRESSING</option><option>💉 INJECTIONS / IV / DRIP</option><option>🩸 BP / DIABETES / VITALS CHECK</option><option>🏥 POST-SURGERY NURSING</option><option>👵 ELDERLY NURSING CARE</option><option>🤱 POSTNATAL NURSING</option><option>👶 BABY / CHILD NURSING</option></select>
-<div class="row"><div><label>Date Needed</label><input id="nDate" type="date"></div><div><label>Pay (UGX) - Max 35,000</label><input id="nPay" type="number" placeholder="35000" max="35000"></div></div>
-<label>Patient Details - What does patient need?</label><textarea id="nDetails" rows="3" placeholder="e.g. 70yr old, diabetic, needs wound dressing daily, 9am..."></textarea>
-<button class="btn-main" style="margin-top:14px" onclick="postNurseJob()">🩺 Book Nurse - Go Live Now</button><p class="muted" id="nurseMsg"></p>
-<h3>🩺 Available Nurses Near You (GPS Live)</h3><div id="liveNurses"></div>
-</div>
-
-<div id="clientView" class="card hidden">
-<h2 style="margin:0">Post a Care Job - Friendly Prices</h2><p class="muted">For non-nursing: Nanny, House Help, Companion. Max 35,000.</p>
-<label>Location / Area</label><input id="cArea" placeholder="e.g. Ntinda, Kampala">
-<label>What help?</label><select id="cType"><option>👶 Child Care / Nanny</option><option>🏠 Companion / House Help</option><option>🍲 Cleaning & Cooking</option><option>🤱 Postnatal Care</option><option>👵 Elderly Companion (Non-Medical)</option></select>
-<div class="row"><div><label>Date</label><input id="cDate" type="date"></div><div><label>Pay (UGX / day) - Max 35,000</label><input id="cPay" type="number" placeholder="25000" max="35000"></div></div>
-<label>Details</label><textarea id="cDetails" rows="3" placeholder="8am-5pm..."></textarea>
-<button class="btn-main" style="margin-top:14px" onclick="postJob()">✨ Post Care Job</button><p class="muted" id="postMsg"></p>
-</div>
-
-<div id="carerView" class="card hidden">
-<h2 style="margin:0">🔴 Live Jobs - Nursing First - Max 35,000</h2><p class="muted">Nursing jobs show first. Apply → Do job → Get paid from wallet.</p>
-<label>Filter: Show Only</label><select id="filterType" onchange="renderJobs()"><option value="">All Jobs</option><option value="NURSING">🩺 Nursing Only</option><option value="WOUND">🩹 Wound Care Only</option><option value="Elderly">👵 Elderly Only</option></select>
-<label>Search Area</label><input id="filterArea" placeholder="Ntinda..." oninput="renderJobs()">
-<div id="allJobs"></div><h3>🩺 All Nurses & Carers</h3><div id="allCarers"></div>
-</div>
-
-<div id="adminView" class="card hidden">
-<h2 style="margin:0">🛡️ Admin Dashboard</h2><p class="muted">Admin sees all nursing jobs, nurses, money.</p>
-<div class="row"><div style="background:#CCFBF1;padding:14px;border-radius:14px;text-align:center"><b id="statNurseJobs">0</b><br><span class="muted">Nursing Jobs</span></div><div style="background:#DCFCE7;padding:14px;border-radius:14px;text-align:center"><b id="statUsers">0</b><br><span class="muted">Users</span></div></div>
-<div style="background:#FEF3C7;padding:14px;border-radius:14px;text-align:center;margin-top:10px"><b id="adminEarnings">UGX 0</b><br><span class="muted">Your 10% Commission</span></div>
-<h3>All Users - Nurses First</h3><div id="adminUsers"></div><h3>All Jobs</h3><div id="adminJobs"></div>
-</div>
-<div class="card"><h3 style="margin:0">My Jobs</h3><div id="myJobs"></div></div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<div class="bar" id="selectedBar">Selected: Home Nursing</div>
+<section id="booking"><h2>Book Now - Worldwide</h2>
+<label>Service</label><select id="service"><option>Home Nursing</option><option>Nanny</option><option>House Help</option><option>Cook</option></select>
+<label>Country</label><select id="country" onchange="autoCurrency()"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>UK</option><option>USA</option><option>UAE</option><option>India</option><option>Other</option></select>
+<label>City</label><input id="location" placeholder="Kampala, Nairobi, London">
+<label>GPS Location</label><input id="gpsInput" readonly placeholder="Tap GPS button">
+<label>Your Name</label><input id="name" placeholder="Sarah">
+<label>Phone / WhatsApp</label><input id="phone" placeholder="+256 700 123 456">
+<label>When?</label><select id="when"><option>Today</option><option>Tomorrow</option><option>This Week</option></select>
+<label>Notes</label><textarea id="notes"></textarea>
+<button class="btn" onclick="book()">Confirm Booking on WhatsApp →</button>
+<button class="btn2" onclick="shareGPS()">📍 Share My Live GPS</button><p id="msg" style="color:green;font-weight:bold"></p></section>
+<section><h3>📍 Live Caregiver Tracker</h3><div style="background:#fff;padding:14px;border-radius:12px"><b id="trackerStatus">Status: Waiting...</b><br><span id="trackerInfo">Caregiver appears after booking.</span><br><br><button class="btn2" onclick="simulateTracker()">▶ Demo: See Tracking</button></div></section>
+<footer>HomeCare Hero • Worldwide • WhatsApp: +256 700 000 000<br>© 2026 HomeCare Hero</footer>
 <script>
-// --- PASTE YOUR CONFIG HERE ---
-// Paste your var firebaseConfig = { ... }; block here
-var db=null;
-try{ if(typeof firebaseConfig!=='undefined' && firebaseConfig.apiKey && !firebaseConfig.apiKey.includes("PASTE")){ firebase.initializeApp(firebaseConfig); db=firebase.database(); } }catch(e){ console.log(e); }
-var currentUser = JSON.parse(localStorage.getItem('hch_user')||'null');
-var jobs=[], users=[], locations={}, myTxs=[];
-var gpsWatch=null, gpsOn=false;
-function esc(s){return String(s||"").replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function key(phone){ return String(phone||"").replace(/\D/g,''); }
-function showTab(t){ ['nurse','client','carer','admin'].forEach(function(x){ document.getElementById(x+'View').classList.toggle('hidden', x!==t); document.getElementById('tab'+x.charAt(0).toUpperCase()+x.slice(1)).classList.toggle('active', x===t); }); }
-document.getElementById('role').addEventListener('change', function(){ var isCarer=this.value==='carer'; document.getElementById('carerType').classList.toggle('hidden',!isCarer); document.getElementById('carerExtra').classList.toggle('hidden',!isCarer); document.getElementById('carerLabel').classList.toggle('hidden',!isCarer); });
-function pickNurse(el, type, pay){
-  document.querySelectorAll('.nurse-item').forEach(function(e){ e.classList.remove('active'); }); el.classList.add('active');
-  document.getElementById('nType').value=type; document.getElementById('nPay').value=pay;
-  document.getElementById('nursePicked').textContent="Selected: "+type+" - UGX "+pay+" - Now fill Location below and Book Nurse";
-  showTab('nurse'); document.getElementById('nurseView').scrollIntoView({behavior:'smooth'});
-}
-function updateLoginUI(){
-  if(currentUser){
-    document.getElementById('loggedOut').classList.add('hidden'); document.getElementById('loggedIn').classList.remove('hidden');
-    document.getElementById('userInfo').textContent = (currentUser.role==='admin'?'🛡️ Admin • ':currentUser.role==='carer'?'🩺 Nurse/Carer • ':'🙋 Client • ')+currentUser.name+' • '+currentUser.phone;
-    document.getElementById('carerGPS').classList.toggle('hidden', currentUser.role!=='carer');
-    document.getElementById('walletRole').textContent = currentUser.role.toUpperCase()+" Wallet • "+currentUser.phone;
-    if(currentUser.role==='admin') showTab('admin');
-    listenWallet();
-  } else {
-    document.getElementById('loggedOut').classList.remove('hidden'); document.getElementById('loggedIn').classList.add('hidden');
-  }
-}
-function doLogin(mode){
-  var role=document.getElementById('role').value, name=document.getElementById('uName').value.trim(), phone=document.getElementById('uPhone').value.trim(), pin=document.getElementById('uPin').value.trim(), extra=document.getElementById('carerExtra').value.trim(), ctype=document.getElementById('carerType').value||"";
-  if(!phone||pin.length<4){ document.getElementById('loginMsg').textContent="Enter Phone + 4-digit PIN"; return; }
-  if(mode==='signup' && !name){ document.getElementById('loginMsg').textContent="Enter Name"; return; }
-  var k=key(phone);
-  if(mode==='signup'){
-    var u={name:name, phone:phone, pin:pin, role:role, extra:ctype+" | "+extra, balance:0, createdAt:Date.now(), approved: role==='carer'?false:true, isNurse: ctype.includes("Nurse")};
-    if(db) db.ref('users/'+k).set(u);
-    currentUser=u; localStorage.setItem('hch_user', JSON.stringify(u));
-    document.getElementById('loginMsg').textContent="✅ Account created! Logged in as "+role; updateLoginUI(); loadUsers();
-  } else {
-    if(!db){ document.getElementById('loginMsg').textContent="Firebase not connected"; return; }
-    db.ref('users/'+k).once('value', function(s){ var u=s.val(); if(!u){ document.getElementById('loginMsg').textContent="No account. Tap Create Account."; return; } if(u.pin!==pin){ document.getElementById('loginMsg').textContent="Wrong PIN."; return; } if(u.role!==role){ document.getElementById('loginMsg').textContent="This account is "+u.role+", change role to "+u.role; return; } currentUser=u; localStorage.setItem('hch_user', JSON.stringify(u)); document.getElementById('loginMsg').textContent="✅ Welcome back, "+u.name; updateLoginUI(); });
-  }
-}
-function logout(){ localStorage.removeItem('hch_user'); currentUser=null; stopGPS(); updateLoginUI(); }
-function listenWallet(){
-  if(!db||!currentUser) return;
-  db.ref('users/'+key(currentUser.phone)+'/balance').on('value', function(s){ var b=s.val()||0; document.getElementById('walletBal').textContent="UGX "+Number(b).toLocaleString(); currentUser.balance=b; });
-  db.ref('transactions').orderByChild('phone').equalTo(currentUser.phone).on('value', function(s){ myTxs=[]; s.forEach(function(c){ myTxs.unshift(c.val()); }); renderTxs(); });
-  if(currentUser.role==='admin'){ db.ref('transactions').orderByChild('type').equalTo('commission').on('value', function(s){ var tot=0; s.forEach(function(c){ tot+=Number(c.val().amount||0); }); document.getElementById('adminEarnings').textContent="UGX "+tot.toLocaleString(); }); }
-}
-function addTx(phone, type, amount, desc){ if(!db) return; db.ref('transactions').push({phone:phone, type:type, amount:amount, desc:desc, createdAt:Date.now()}); }
-function topUp(){
-  if(!currentUser){ alert("Login first"); return; }
-  var amt=Number(document.getElementById('topupAmt').value||0), moMo=document.getElementById('topupPhone').value||currentUser.phone;
-  if(amt<1000){ alert("Min Deposit UGX 1,000"); return; }
-  if(amt>35000 && confirm("Deposit is over 35,000 - Continue? Max job price is 35,000.")){}
-  var newBal=(currentUser.balance||0)+amt;
-  db.ref('users/'+key(currentUser.phone)+'/balance').set(newBal);
-  addTx(currentUser.phone, 'topup', amt, "Deposit via MoMo "+moMo);
-  alert("✅ DEPOSIT Successful! UGX "+amt.toLocaleString()+" added.");
-}
-function withdraw(){
-  if(!currentUser){ alert("Login first"); return; }
-  var amt=Number(prompt("WITHDRAW - How much? Balance: UGX "+(currentUser.balance||0), "20000")||0);
-  if(amt<=0||amt>(currentUser.balance||0)){ alert("Not enough balance"); return; }
-  db.ref('users/'+key(currentUser.phone)+'/balance').set((currentUser.balance||0)-amt);
-  addTx(currentUser.phone, 'withdraw', -amt, "Withdraw to MoMo "+currentUser.phone);
-  alert("✅ WITHDRAW Request Sent!");
-}
-function payForJob(job){
-  if(!currentUser||currentUser.role!=='client'){ alert("Login as Client to pay"); return; }
-  var amt=Number(job.pay||0);
-  if(amt<=0){ alert("Job has no pay set"); return; }
-  if(amt>35000){ alert("Price is over friendly max 35,000. Please lower to 35,000 or less."); return; }
-  if((currentUser.balance||0)<amt){ alert("Not enough wallet. Deposit UGX "+amt.toLocaleString()+" first."); return; }
-  if(!confirm("Pay UGX "+amt.toLocaleString()+"? Nurse/Carer gets 90%, You (Admin) get 10%.")) return;
-  var carerPay=Math.round(amt*0.9), commission=amt-carerPay;
-  db.ref('users/'+key(currentUser.phone)+'/balance').set((currentUser.balance||0)-amt);
-  addTx(currentUser.phone, 'payment', -amt, "Paid for: "+job.type+" in "+job.area);
-  var carerPhone = job.carerPhone || job.phone;
-  db.ref('users/'+key(carerPhone)).once('value', function(s){ var u=s.val(); if(u){ db.ref('users/'+key(carerPhone)+'/balance').set((u.balance||0)+carerPay); addTx(carerPhone, 'earning', carerPay, "Earning: "+job.type+" in "+job.area); } });
-  db.ref('users/0771218437').once('value', function(s){ var a=s.val(); if(a){ db.ref('users/0771218437/balance').set((a.balance||0)+commission); addTx('0771218437','commission', commission, "10% commission "+job.area); } });
-  if(db) db.ref('jobs/'+job.id+'/status').set("Paid ✅");
-  alert("✅ Paid! Nurse got UGX "+carerPay.toLocaleString()+", Admin got UGX "+commission.toLocaleString());
-}
-function renderTxs(){
-  var h=""; if(myTxs.length===0) h="<p class='muted'>No transactions yet</p>";
-  myTxs.slice(0,20).forEach(function(t){ var col=t.amount>=0?"#166534":"#B91C1C"; h+="<div class='tx'><div><b>"+esc(t.desc)+"</b><br><span class='muted'>"+new Date(t.createdAt).toLocaleString()+" • "+esc(t.type)+"</span></div><b style='color:"+col+"'>"+(t.amount>=0?"+":"")+Number(t.amount).toLocaleString()+"</b></div>"; });
-  document.getElementById('txList').innerHTML=h;
-}
-function postNurseJob(){
-  if(!currentUser||currentUser.role!=='client'){ document.getElementById('nurseMsg').textContent="Login as Client first."; return; }
-  var a=document.getElementById('nArea').value.trim(), ty=document.getElementById('nType').value, d=document.getElementById('nDate').value, pay=Number(document.getElementById('nPay').value||0), det=document.getElementById('nDetails').value.trim();
-  if(!a){ document.getElementById('nurseMsg').textContent="Enter Area"; return; }
-  if(pay>35000){ document.getElementById('nurseMsg').textContent="Friendly max is 35,000. Please lower price to 35,000 or less."; return; }
-  var job={name:currentUser.name, phone:currentUser.phone, area:a, type:ty, date:d, pay:pay, details:det, createdAt:Date.now(), status:"Open", owner:currentUser.phone, category:"NURSING"};
-  if(db) db.ref('jobs').push(job).then(function(){ document.getElementById('nurseMsg').textContent="✅ Nursing Job Posted LIVE! Nurses will see it now."; });
-}
-function postJob(){
-  if(!currentUser||currentUser.role!=='client'){ document.getElementById('postMsg').textContent="Login as Client first."; return; }
-  var a=document.getElementById('cArea').value.trim(), ty=document.getElementById('cType').value, d=document.getElementById('cDate').value, pay=Number(document.getElementById('cPay').value||0), det=document.getElementById('cDetails').value.trim();
-  if(!a){ document.getElementById('postMsg').textContent="Enter Area"; return; }
-  if(pay>35000){ document.getElementById('postMsg').textContent="Friendly max is 35,000."; return; }
-  var job={name:currentUser.name, phone:currentUser.phone, area:a, type:ty, date:d, pay:pay, details:det, createdAt:Date.now(), status:"Open", owner:currentUser.phone, category:"CARE"};
-  if(db) db.ref('jobs').push(job).then(function(){ document.getElementById('postMsg').textContent="✅ Posted LIVE!"; });
-}
-function deleteJob(id){ if(confirm("Admin: Delete this job?")){ if(db) db.ref('jobs/'+id).remove(); } }
-function approveCarer(phoneKey){ if(db) db.ref('users/'+phoneKey+'/approved').set(true); }
-function applyJob(j){
-  if(!currentUser||currentUser.role!=='carer'){ alert("Login as Nurse/Carer to apply"); return; }
-  if(db) db.ref('jobs/'+j.id).update({carerPhone: currentUser.phone, carerName: currentUser.name, status:"Assigned"});
-  var msg="Hi "+j.name+", I am "+currentUser.name+" (Nurse/Carer). I want your job: "+j.type+" in "+j.area+" for UGX "+j.pay+". Pay via App Wallet.";
-  window.open("https://wa.me/"+j.phone.replace(/\D/g,'').replace(/^0/,'256')+"?text="+encodeURIComponent(msg),"_blank");
-}
-function toggleGPS(){
-  if(!currentUser||currentUser.role!=='carer'){ alert("Login as Nurse/Carer"); return; }
-  if(gpsOn){ stopGPS(); return; }
-  if(!navigator.geolocation){ alert("GPS not supported"); return; }
-  document.getElementById('gpsStatus').textContent="📡 Getting GPS... Allow location.";
-  gpsWatch=navigator.geolocation.watchPosition(function(pos){ var lat=pos.coords.latitude, lng=pos.coords.longitude; gpsOn=true; document.getElementById('gpsStatus').textContent="🟢 LIVE - Sharing location"; document.getElementById('gpsCoords').textContent="Lat: "+lat.toFixed(5)+" Lng: "+lng.toFixed(5); document.querySelector('#carerGPS button').textContent="⏹️ Stop GPS"; if(db) db.ref('locations/'+key(currentUser.phone)).set({name:currentUser.name, phone:currentUser.phone, extra:currentUser.extra||"", lat:lat, lng:lng, updatedAt:Date.now()}); }, function(e){ document.getElementById('gpsStatus').textContent="GPS Error: "+e.message; }, {enableHighAccuracy:true});
-}
-function stopGPS(){ if(gpsWatch) navigator.geolocation.clearWatch(gpsWatch); gpsOn=false; var b=document.querySelector('#carerGPS button'); if(b) b.textContent="📍 Start GPS Tracking"; }
-function renderJobs(){
-  var f=(document.getElementById('filterArea').value||"").toLowerCase();
-  var ft=document.getElementById('filterType').value||"";
-  var sorted=[].concat(jobs).sort(function(a,b){ var an=(a.category==="NURSING"|| (a.type||"").includes("NURSING")|| (a.type||"").includes("WOUND"))?0:1; var bn=(b.category==="NURSING"|| (b.type||"").includes("NURSING")|| (b.type||"").includes("WOUND"))?0:1; return an-bn; });
-  var list=sorted.filter(function(j){ var okArea=!f||(j.area||"").toLowerCase().includes(f); var okType=!ft|| (ft==="NURSING" && (j.category==="NURSING"||j.type.includes("NURSING")||j.type.includes("WOUND")||j.type.includes("INJECTIONS")||j.type.includes("BP"))) || (ft==="WOUND" && j.type.includes("WOUND")) || (ft==="Elderly" && j.type.includes("ELDERLY")); return okArea && okType; });
-  var h=""; if(list.length===0) h="<p class='muted' style='text-align:center;padding:16px'>No jobs yet. Post a Nursing job above 👆</p>";
-  list.forEach(function(j){
-    var wa=j.phone.replace(/\D/g,''); if(wa.length===10&&wa[0]==='0') wa='256'+wa.slice(1);
-    var isAdmin = currentUser && currentUser.role==='admin';
-    var isClientOwner = currentUser && currentUser.phone===j.owner;
-    var isNurse = j.category==="NURSING" || (j.type||"").includes("NURSING") || (j.type||"").includes("WOUND") || (j.type||"").includes("INJECTIONS");
-    h+="<div class='job' style='"+(isNurse?"border:2px solid #0F766E;":"")+"'><div style='display:flex;justify-content:space-between'><div>"+(isNurse?"<span class='cat-nurse'>🩺 NURSING</span>":"<span class='cat'>"+esc(j.type)+"</span>")+"<h3 style='margin:8px 0 4px'>"+esc(j.area)+"</h3><p class='muted' style='margin:0'>📅 "+esc(j.date||"ASAP")+" • "+esc(j.name)+ (j.carerName ? " • Nurse: "+esc(j.carerName):"") +"</p></div><div style='text-align:right'><div class='price'>UGX "+esc(j.pay||"Negotiable")+"</div><span class='pill'>● "+esc(j.status||"Open")+"</span></div></div><p><b>"+esc(j.type)+"</b><br>"+esc(j.details||"")+"</p><div class='actions'><a class='call' href='tel:"+esc(j.phone)+"'>📞 Call</a><a class='wa' target='_blank' href='https://wa.me/"+wa+"'>💬 WhatsApp</a><button class='btn-green' style='flex:1' onclick='applyJob("+JSON.stringify(j).replace(/'/g,"\\'")+ ")'>Apply</button></div>"+((isClientOwner||isAdmin) && j.status!=="Paid ✅" ? "<button class='btn-gold' style='margin-top:8px' onclick='payForJob("+JSON.stringify(j).replace(/'/g,"\\'")+ ")'>💰 Pay Nurse UGX "+esc(j.pay)+" from Wallet (90/10)</button>":"")+(isAdmin?"<button class='btn-red' style='margin-top:8px' onclick=\"deleteJob('"+j.id+"')\">🗑️ Admin Delete</button>":"")+"</div>";
-  });
-  document.getElementById('allJobs').innerHTML=h; document.getElementById('myJobs').innerHTML=h;
-  var nurseCount=jobs.filter(function(j){ return j.category==="NURSING" || (j.type||"").includes("NURSING"); }).length;
-  var el=document.getElementById('statNurseJobs'); if(el) el.textContent=nurseCount+" / "+jobs.length;
-  var ah=""; jobs.forEach(function(j){ ah+="<div class='job'><b>"+esc(j.area)+" - "+esc(j.type)+"</b> • "+esc(j.name)+"<br><button class='btn-red' style='margin-top:8px' onclick=\"deleteJob('"+j.id+"')\">Delete</button></div>"; });
-  document.getElementById('adminJobs').innerHTML=ah||"<p class='muted'>No jobs</p>";
-}
-function renderUsers(){
-  var sorted=[].concat(users).sort(function(a,b){ var an=(a.isNurse|| (a.extra||"").includes("Nurse"))?0:1; var bn=(b.isNurse|| (b.extra||"").includes("Nurse"))?0:1; return an-bn; });
-  var h=""; sorted.filter(function(u){return u.role==='carer'}).forEach(function(u){ var isNurse=u.isNurse|| (u.extra||"").includes("Nurse"); h+="<div class='job' style='"+(isNurse?"border:2px solid #0F766E;":"")+"'><b>"+(isNurse?"🩺 NURSE - ":"💜 ")+esc(u.name)+"</b> • "+esc(u.phone)+" • Bal: UGX "+Number(u.balance||0).toLocaleString()+"<br><span class='muted'>"+esc(u.extra||"")+"</span><br><span class='pill'>"+(u.approved?"✅ Approved":"⏳ Pending")+"</span></div>"; });
-  document.getElementById('allCarers').innerHTML=h||"<p class='muted'>No nurses yet</p>";
-  var au=""; sorted.forEach(function(u){ var isNurse=u.isNurse|| (u.extra||"").includes("Nurse"); au+="<div class='job'><b>"+esc(u.role.toUpperCase())+(isNurse?" - 🩺 NURSE":"")+" - "+esc(u.name)+"</b> • "+esc(u.phone)+" • Bal: UGX "+Number(u.balance||0).toLocaleString()+"<br><span class='muted'>"+esc(u.extra||"")+"</span> "+(u.role==='carer' && !u.approved ? "<button class='btn-green' style='margin-top:8px' onclick=\"approveCarer('"+key(u.phone)+"')\">✅ Approve</button>":"")+"</div>"; });
-  document.getElementById('adminUsers').innerHTML=au||"<p class='muted'>No users yet</p>";
-  document.getElementById('statUsers').textContent=users.length;
-}
-function renderLocations(){
-  var h=""; Object.keys(locations).forEach(function(k){ var l=locations[k]; var ago=Math.floor((Date.now()-l.updatedAt)/60000); h+="<div class='job'><b>🩺 "+esc(l.name)+"</b> • "+esc(l.phone)+"<br><span class='muted'>"+esc(l.extra||"")+" • Updated "+ago+" min ago</span><br><a target='_blank' href='https://www.google.com/maps?q="+l.lat+","+l.lng+"' style='display:block;text-align:center;background:#0F766E;color:#fff;padding:11px;border-radius:11px;text-decoration:none;font-weight:800;margin-top:8px'>🗺️ View Nurse Live Location</a></div>"; });
-  document.getElementById('liveNurses').innerHTML=h||"<p class='muted'>No nurses sharing GPS. Nurses: Login → Start GPS.</p>";
-}
-function loadUsers(){ if(!db) return; db.ref('users').on('value', function(s){ users=[]; s.forEach(function(c){ var v=c.val(); v._key=c.key; users.push(v); }); renderUsers(); }); }
-if(db){ db.ref('jobs').orderByChild('createdAt').on('value', function(s){ jobs=[]; s.forEach(function(c){ var v=c.val(); v.id=c.key; jobs.unshift(v); }); renderJobs(); }); db.ref('locations').on('value', function(s){ locations=s.val()||{}; renderLocations(); }); loadUsers(); }
-updateLoginUI(); renderJobs(); renderUsers(); renderLocations();
+const T={en:{title:"Home Nursing + Home Care - Worldwide",subtitle:"Trusted Nurses, Nannies, House Helps & Cooks - Worldwide. Book in 1 minute.",gpsBtn:"📍 Use My GPS Location",services:"Our Services"},lg:{title:"Okujjanjaba Awaka - Ensi Yonna",subtitle:"Baanaansi abeesigwa - Ensi yonna.",gpsBtn:"📍 Kozesa GPS Yange",services:"Emirimu Gyaffe"},sw:{title:"Uuguzi wa Nyumbani - Duniani",subtitle:"Wauguzi wanaoaminika - Duniani.",gpsBtn:"📍 Tumia GPS Yangu",services:"Huduma Zetu"},fr:{title:"Soins à Domicile - Mondial",subtitle:"Infirmières de confiance - Dans le monde entier.",gpsBtn:"📍 Utiliser Mon GPS",services:"Nos Services"},es:{title:"Cuidado en Casa - Mundial",subtitle:"Enfermeras de confianza - En todo el mundo.",gpsBtn:"📍 Usar Mi GPS",services:"Nuestros Servicios"},ar:{title:"رعاية منزلية - حول العالم",subtitle:"ممرضات موثوقات - حول العالم.",gpsBtn:"📍 استخدم موقعي",services:"خدماتنا"}};
+function setLang(l){let d=T[l]||T.en;document.querySelectorAll('[data-i18n]').forEach(el=>{let k=el.getAttribute('data-i18n');if(d[k])el.innerText=d[k];});document.body.dir=(l==='ar'?'rtl':'ltr');}
+let rates={USD:1,UGX:3850,KES:130,TZS:2600,NGN:1500,GHS:15,ZAR:18,GBP:0.79,EUR:0.92,AED:3.67,INR:83};
+let symbols={USD:'$',UGX:'UGX ',KES:'KES ',TZS:'TZS ',NGN:'₦',GHS:'GH₵',ZAR:'R',GBP:'£',EUR:'€',AED:'AED ',INR:'₹'};
+let currentCurrency='USD';
+async function loadRates(){try{let r=await fetch('https://open.er-api.com/v6/latest/USD');let d=await r.json();if(d.rates)rates=d.rates;}catch(e){}updatePrices();}
+function autoCurrency(){let m={'Uganda':'UGX','Kenya':'KES','Tanzania':'TZS','Nigeria':'NGN','Ghana':'GHS','South Africa':'ZAR','UK':'GBP','USA':'USD','UAE':'AED','India':'INR'};let c=document.getElementById('country').value;if(m[c]){currentCurrency=m[c];document.getElementById('currencySelect').value=currentCurrency;updatePrices();}}
+function changeCurrency(cur){currentCurrency=cur;updatePrices();}
+function updatePrices(){let sym=symbols[currentCurrency]||'$';let rate=rates[currentCurrency]||1;document.querySelectorAll('.price').forEach(el=>{let usd=parseFloat(el.getAttribute('data-usd'));el.innerText=sym+Math.round(usd*rate).toLocaleString()+' / day';});document.getElementById('currencyBar').innerText='🌍 '+currentCurrency+' • 1 USD = '+sym+Math.round(rate).toLocaleString()+' • Live Rate';}
+let myLat=null,myLng=null,myMapLink='';
+function getGPS(){document.getElementById('gpsStatus').innerText='📍 Getting GPS... Allow location...';if(!navigator.geolocation){alert('GPS not supported');return;}navigator.geolocation.getCurrentPosition(async pos=>{myLat=pos.coords.latitude;myLng=pos.coords.longitude;myMapLink='https://maps.google.com/?q='+myLat+','+myLng;document.getElementById('gpsStatus').innerText='✅ GPS: '+myLat.toFixed(5)+', '+myLng.toFixed(5);document.getElementById('gpsInput').value=myLat.toFixed(5)+', '+myLng.toFixed(5);document.getElementById('mapLink').innerHTML='<a href="'+myMapLink+'" target="_blank">📍 Open on Google Maps →</a>';try{let r=await fetch('https://nominatim.openstreetmap.org/reverse?format=json&lat='+myLat+'&lon='+myLng);let d=await r.json();if(d.display_name)document.getElementById('location').value=d.display_name.split(',').slice(0,2).join(',');}catch(e){}},err=>{alert('Please allow Location');});}
+function shareGPS(){if(!myLat){alert('Tap GPS first!');getGPS();return;}window.open('https://wa.me/256700000000?text='+encodeURIComponent('My location: '+myMapLink),'_blank');}
+function selectService(name,el){document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));el.classList.add('selected');document.getElementById('service').value=name;document.getElementById('selectedBar').innerText='Selected: '+name;}
+function book(){let s=document.getElementById('service').value;let n=document.getElementById('name').value;let p=document.getElementById('phone').value;let c=document.getElementById('country').value;let l=document.getElementById('location').value;if(!n||!p){alert('Add name and phone');return;}let gps=myMapLink?'%0AGPS: '+myMapLink:'';window.open('https://wa.me/256700000000?text=Hello HomeCare Hero!%0ABook: '+s+'%0AName: '+n+'%0APhone: '+p+'%0ALocation: '+l+', '+c+gps,'_blank');document.getElementById('msg').innerText='Opening WhatsApp... Booking sent!';}
+function simulateTracker(){document.getElementById('trackerStatus').innerText='Status: Caregiver on the way 🚗 - 2.5 km away';document.getElementById('trackerInfo').innerText='Mary - Nurse - Arriving in 15 mins';}
+loadRates();
 </script>
 </body>
 </html>
