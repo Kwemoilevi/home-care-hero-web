@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Nursing at Home</title>
+<title>Home Care Hero - Nursing at Home | Uganda Only</title>
 <style>
 *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f6f8fb;color:#111}
 header{background:#0b5ed7;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10}
@@ -20,10 +20,13 @@ input,select,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radiu
 .hidden{display:none}.row{display:flex;gap:10px}.row>*{flex:1}
 .item{border:1px solid #eee;border-radius:12px;padding:12px;margin-top:10px}
 .timeline{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.step{padding:6px 10px;border-radius:20px;background:#eee;font-size:12px;font-weight:700}.step.on{background:#198754;color:#fff}.step.now{background:#ffc107;color:#111}
+#ugBlock{display:none;position:fixed;inset:0;background:#0b5ed7;color:#fff;z-index:9999;padding:30px;text-align:center}
+#ugBlock h1{font-size:28px}#ugBlock p{font-size:16px;line-height:1.6}
 </style>
 <script>
 // NAVIGATION FIRST - WORKS EVEN IF FIREBASE FAILS
 function showPage(page){
+  if(window.isBlocked && page!=='home'){ alert('This service is only available in Uganda 🇺🇬'); return; }
   var pages=['home','book','track','wallet','login','admin'];
   for(var i=0;i<pages.length;i++){
     var p=pages[i];
@@ -36,11 +39,34 @@ function showPage(page){
   if(page==='track' && window.loadTracking) loadTracking();
   if(page==='admin' && window.loadAdmin) loadAdmin();
 }
-function testBtn(){ alert('Buttons are working ✅ Now Firebase can load'); }
+function testBtn(){ alert('Buttons are working ✅'); }
+// UGANDA ONLY CHECK
+window.isBlocked=false;
+async function checkUganda(){
+  try{
+    var r=await fetch('https://ipapi.co/json/');
+    var d=await r.json();
+    var country=d.country_code||'';
+    var city=d.city||''; var cname=d.country_name||'';
+    var el=document.getElementById('geoInfo');
+    if(el) el.innerHTML='📍 Location detected: '+(city?city+', ':'')+cname+' ('+country+') - '+(country==='UG'?'Access Allowed ✅':'Access Blocked');
+    if(country && country!=='UG'){
+      window.isBlocked=true;
+      document.getElementById('ugBlock').style.display='block';
+    }
+  }catch(e){
+    // If location check fails, allow - so Uganda users on slow network are not blocked
+    var el=document.getElementById('geoInfo');
+    if(el) el.innerHTML='📍 Location: Could not detect - Allowed (Uganda service)';
+  }
+}
+document.addEventListener('DOMContentLoaded', checkUganda);
 </script>
 </head>
 <body>
-<header><b>🏥 Home Care Hero</b><nav>
+<div id="ugBlock"><h1>🇺🇬 Home Care Hero</h1><h1>Only Available in Uganda</h1><p>Sorry, this service is currently only available<br>inside Uganda - Kampala & surrounding areas.<br><br>We provide nursing at home in Uganda only.<br><br>If you are in Uganda and seeing this, please turn off VPN and refresh.</p><button style="background:#ffc107;border:0;padding:12px 20px;border-radius:10px;font-weight:800" onclick="location.reload()">I am in Uganda - Retry</button></div>
+
+<header><b>🏥 Home Care Hero</b><div class="small" style="color:#dbeafe" id="geoInfo">📍 Checking location... Uganda Only</div><nav>
 <button onclick="showPage('home')" id="b-home" class="active">Home</button>
 <button onclick="showPage('book')" id="b-book">Book Nurse</button>
 <button onclick="showPage('track')" id="b-track">Track Booking</button>
@@ -50,142 +76,9 @@ function testBtn(){ alert('Buttons are working ✅ Now Firebase can load'); }
 </nav></header>
 
 <div class="container">
-<div id="status" class="card small">Firebase: Checking... If this stays, tap a button above - navigation now works separately.</div>
-<button class="btn btn-yellow" onclick="testBtn()">TEST - Tap me, if I pop up buttons are fixed</button>
+<div id="status" class="card small">Firebase: Checking...</div>
+<div class="card" style="background:#fff3cd;border:1px solid #ffc107"><b>🇺🇬 Uganda Only Service</b><p class="small" style="margin:4px 0">This app works only in Uganda. Services: Kampala - Ntinda, Bukoto, Muyenga, Kololo, Najjera, Kira, Entebbe Road & surrounding. Mobile Money: MTN & Airtel Uganda only.</p></div>
 
 <div id="page-home">
-<div class="card"><span class="badge">NURSING ONLY • KAMPALA</span><h1 style="margin:8px 0">Professional Nursing at Your Home</h1><p>Qualified nurses for home care, elderly care, post-surgery care, wound care, injections, vitals monitoring & chronic care.</p><div class="row"><button class="btn" onclick="showPage('book')">Book a Nurse</button><button class="btn btn-yellow" onclick="showPage('login')">Login / Create Account</button></div><button class="btn btn-outline" onclick="showPage('track')">📍 Track My Booking</button></div>
-<div class="grid"><div class="card"><b>🩺 Home Nursing</b><p class="small">Daily visits, vitals, medication</p></div><div class="card"><b>👴 Elderly Care</b><p class="small">Compassionate elderly support</p></div><div class="card"><b>🏥 Post-Surgery</b><p class="small">Wound care & recovery</p></div></div>
-<div class="card"><h3>How it works</h3><p>1. Create account & Login<br>2. Book a nurse<br>3. Pay securely with Flutterwave / Mobile Money<br>4. Track booking - Pending → Confirmed → Nurse Assigned → On The Way → Completed</p></div>
-</div>
-
-<div id="page-book" class="hidden">
-<div class="card"><h2>Book a Nurse</h2><p class="small">Login required. No amount shown - admin confirms after booking.</p>
-<label>Service Needed</label><select id="service"><option>Home Nursing Visit</option><option>Elderly Care</option><option>Post-Surgery Care</option><option>Wound Dressing</option><option>Injection / IV</option><option>Vitals & Medication</option><option>Chronic / Diabetes / BP Care</option></select>
-<label>Patient Name</label><input id="patient" placeholder="Patient full name">
-<label>Location in Kampala</label><input id="location" placeholder="e.g. Ntinda, Bukoto">
-<label>Date</label><input id="date" type="date">
-<label>Notes</label><textarea id="notes" placeholder="Condition, special needs..."></textarea>
-<button class="btn" onclick="makeBooking()">Submit Booking Request</button>
-<p id="bookMsg" class="small"></p></div>
-</div>
-
-<div id="page-track" class="hidden">
-<div class="card"><h2>📍 Track My Booking</h2><p class="small">Live status of your bookings. Login to see yours.</p><button class="btn btn-outline" onclick="loadTracking()">Refresh Tracking</button><div id="trackList"></div></div>
-</div>
-
-<div id="page-wallet" class="hidden">
-<div class="card"><h2>My Wallet</h2><div class="stat" id="bal">UGX 0</div><p class="small" id="walletEmail">Login to see wallet</p>
-<label>Top Up Amount (UGX)</label><input id="topupAmt" type="number" placeholder="e.g. 50000">
-<button class="btn btn-green" onclick="topup()">Top Up with Flutterwave / Mobile Money</button>
-<button class="btn btn-outline" onclick="loadWallet()">Refresh Wallet</button></div>
-<div class="card"><h3>Wallet History</h3><div id="walletHist"></div></div>
-</div>
-
-<div id="page-login" class="hidden">
-<div class="card"><h2>Login</h2><p class="small" id="loginState">Not logged in</p>
-<input id="email" type="email" placeholder="Email">
-<input id="pass" type="password" placeholder="Password">
-<button class="btn" onclick="loginEmail()">Login with Email</button>
-<button class="btn btn-yellow" onclick="registerEmail()">Create Account</button>
-<button class="btn btn-outline" onclick="loginGoogle()">Login with Google</button>
-<button class="btn" style="background:#dc3545" onclick="logout()">Logout</button>
-<p id="loginMsg" class="small"></p></div>
-</div>
-
-<div id="page-admin" class="hidden">
-<div class="card"><h2>Admin Dashboard</h2><div class="grid"><div class="card"><div>Total Bookings</div><div class="stat" id="aBookings">0</div></div><div class="card"><div>Total Payments</div><div class="stat" id="aPayments">UGX 0</div></div><div class="card"><div>Total Withdraws</div><div class="stat" id="aWithdraws">0</div></div></div>
-<button class="btn" onclick="loadAdmin()">Refresh Admin Data</button></div>
-<div class="card"><h3>All Bookings - Update Tracking Status</h3><div id="adminBookings"></div></div>
-<div class="card"><h3>All Payments</h3><div id="adminPayments"></div></div>
-<div class="card"><h3>Withdraw Request</h3><input id="wdAmt" type="number" placeholder="Amount to withdraw"><input id="wdPhone" placeholder="Mobile Money Number e.g. 077..."><button class="btn btn-yellow" onclick="requestWithdraw()">Request Withdraw</button><div id="adminWithdraws" style="margin-top:10px"></div></div>
-</div>
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://checkout.flutterwave.com/v3.js"></script>
-<script>
-var auth=null, db=null, currentUser=null;
-var firebaseConfig = {
-  apiKey: "PASTE_YOUR_APIKEY_HERE",
-  authDomain: "PASTE_YOUR_AUTHDOMAIN_HERE",
-  projectId: "home-care-hero",
-  storageBucket: "PASTE_YOUR_STORAGEBUCKET_HERE",
-  messagingSenderId: "PASTE_YOUR_SENDERID_HERE",
-  appId: "PASTE_YOUR_APPID_HERE"
-};
-try{
-  if(typeof firebase==='undefined') throw new Error('Firebase CDN blocked - check internet');
-  firebase.initializeApp(firebaseConfig);
-  auth=firebase.auth(); db=firebase.firestore();
-  document.getElementById('status').innerHTML='Firebase: Connected ✅ | Project: '+firebaseConfig.projectId;
-}catch(e){
-  document.getElementById('status').innerHTML='Firebase: Not connected - '+e.message+' - Buttons still work, but Login needs real config pasted.';
-}
-function timelineHTML(status){
-  var steps=['Pending','Confirmed','Nurse Assigned','On The Way','Completed'];
-  var idx=steps.indexOf(status); if(idx<0) idx=0; var h='<div class="timeline">';
-  steps.forEach(function(s,i){ var cls='step'; if(i<idx) cls+=' on'; if(i===idx) cls+=' now'; h+='<span class="'+cls+'">'+s+'</span>'; });
-  return h+'</div>';
-}
-async function loginEmail(){
-  if(!auth) return alert('Firebase not connected - paste real config in GitHub first');
-  try{ await auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); document.getElementById('loginMsg').innerText='Logged in ✅'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; }
-}
-async function registerEmail(){
-  if(!auth) return alert('Firebase not connected');
-  try{ await auth.createUserWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); await db.collection('users').doc(auth.currentUser.uid).set({email:auth.currentUser.email, balance:0, created:new Date()}); document.getElementById('loginMsg').innerText='Account created ✅'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; }
-}
-async function loginGoogle(){
-  if(!auth) return alert('Firebase not connected');
-  try{ var p=new firebase.auth.GoogleAuthProvider(); await auth.signInWithPopup(p); document.getElementById('loginMsg').innerText='Google Login OK ✅'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; }
-}
-async function logout(){ if(!auth) return; await auth.signOut(); updateUser(); document.getElementById('loginMsg').innerText='Logged out'; }
-function updateUser(){
-  currentUser=auth?auth.currentUser:null;
-  var ls=document.getElementById('loginState'); if(ls) ls.innerText=currentUser?('Logged in as: '+currentUser.email):'Not logged in';
-  var we=document.getElementById('walletEmail'); if(we) we.innerText=currentUser?currentUser.email:'Login to see wallet';
-  if(currentUser) loadWallet();
-}
-if(auth) auth.onAuthStateChanged(function(){ updateUser(); });
-async function makeBooking(){
-  if(!auth||!currentUser){ alert('Please Login first'); showPage('login'); return; }
-  var data={userId:currentUser.uid, email:currentUser.email, service:document.getElementById('service').value, patient:document.getElementById('patient').value, location:document.getElementById('location').value, date:document.getElementById('date').value, notes:document.getElementById('notes').value, status:'Pending', created:new Date()};
-  if(!data.patient||!data.location||!data.date){ alert('Fill patient, location and date'); return; }
-  await db.collection('bookings').add(data); document.getElementById('bookMsg').innerText='Booking submitted ✅ Go to Track Booking to see status.'; showPage('track');
-}
-async function loadTracking(){
-  if(!auth||!currentUser){ document.getElementById('trackList').innerHTML='<p class="small">Please login to track.</p>'; return; }
-  var s=await db.collection('bookings').where('userId','==',currentUser.uid).get(); var h='';
-  s.forEach(function(d){ var b=d.data(); h+='<div class="item"><b>'+b.service+'</b> - <b>'+b.status+'</b><br><span class="small">'+b.patient+' | '+b.location+' | '+b.date+'</span>'+timelineHTML(b.status)+'</div>'; });
-  document.getElementById('trackList').innerHTML=h||'No bookings yet - book one first.';
-}
-async function loadWallet(){
-  if(!auth||!currentUser) return;
-  var doc=await db.collection('users').doc(currentUser.uid).get(); var bal=doc.exists?(doc.data().balance||0):0; document.getElementById('bal').innerText='UGX '+Number(bal).toLocaleString();
-  var s=await db.collection('payments').where('userId','==',currentUser.uid).get(); var h=''; s.forEach(function(d){ var p=d.data(); h+='<div class="item">'+(p.type||'Topup')+' - UGX '+p.amount+' - '+(p.status||'done')+'</div>'; }); document.getElementById('walletHist').innerHTML=h||'No wallet history';
-}
-function topup(){
-  if(!auth||!currentUser){ alert('Login first'); showPage('login'); return; }
-  var amt=Number(document.getElementById('topupAmt').value); if(!amt||amt<1000){ alert('Enter amount 1000+'); return; }
-  FlutterwaveCheckout({public_key:"FLW_PUBLIC_KEY", tx_ref:"HCH-"+Date.now(), amount:amt, currency:"UGX", customer:{email:currentUser.email}, callback: async function(d){ if(d.status==='successful'){ await db.collection('payments').add({userId:currentUser.uid,email:currentUser.email,amount:amt,type:'Topup',status:'successful',tx:d.transaction_id,created:new Date()}); var ref=db.collection('users').doc(currentUser.uid); var doc=await ref.get(); var bal=(doc.exists?doc.data().balance||0:0)+amt; await ref.set({email:currentUser.email,balance:bal},{merge:true}); alert('Topup successful ✅'); loadWallet(); } }, onclose:function(){}, customizations:{title:"Home Care Hero", description:"Wallet Topup"} });
-}
-async function loadAdmin(){
-  if(!db) return;
-  try{
-    var b=await db.collection('bookings').get(); document.getElementById('aBookings').innerText=b.size; var hb=''; b.forEach(function(d){ var x=d.data(); hb+='<div class="item"><b>'+x.service+'</b> - '+x.status+'<br><span class="small">'+x.patient+' | '+x.email+' | '+x.location+' | '+x.date+'</span>'+timelineHTML(x.status)+'<br><button onclick="updateBooking(\''+d.id+'\',\'Confirmed\')">Confirm</button> <button onclick="updateBooking(\''+d.id+'\',\'Nurse Assigned\')">Assign Nurse</button> <button onclick="updateBooking(\''+d.id+'\',\'On The Way\')">On The Way</button> <button onclick="updateBooking(\''+d.id+'\',\'Completed\')">Complete</button></div>'; }); document.getElementById('adminBookings').innerHTML=hb||'No bookings';
-    var p=await db.collection('payments').get(); var tot=0, hp=''; p.forEach(function(d){ var x=d.data(); tot+=Number(x.amount||0); hp+='<div class="item">UGX '+x.amount+' - '+x.email+'</div>'; }); document.getElementById('aPayments').innerText='UGX '+tot.toLocaleString(); document.getElementById('adminPayments').innerHTML=hp||'No payments';
-    var w=await db.collection('withdraws').get(); document.getElementById('aWithdraws').innerText=w.size; var hw=''; w.forEach(function(d){ var x=d.data(); hw+='<div class="item">UGX '+x.amount+' - '+x.phone+' - '+x.email+'</div>'; }); document.getElementById('adminWithdraws').innerHTML=hw||'No withdraws';
-  }catch(e){ console.log(e); }
-}
-async function updateBooking(id,status){ await db.collection('bookings').doc(id).update({status:status}); loadAdmin(); loadTracking(); }
-async function requestWithdraw(){
-  if(!auth||!currentUser){ alert('Login first'); return; }
-  var amt=Number(document.getElementById('wdAmt').value); var phone=document.getElementById('wdPhone').value; if(!amt||!phone){ alert('Enter amount and phone'); return; }
-  await db.collection('withdraws').add({userId:currentUser.uid,email:currentUser.email,amount:amt,phone:phone,status:'Pending',created:new Date()}); alert('Withdraw requested ✅'); loadAdmin();
-}
-</script>
-</body>
-</html>
+<div class="card"><span class="badge">NURSING ONLY • KAMPALA • UGANDA ONLY</span><h1 style="margin:8px 0">Professional Nursing at Your Home</h1><p>Qualified nurses for home care, elderly care, post-surgery care, wound care, injections, vitals monitoring & chronic care. <b>Uganda only.</b></p><div class="row"><button class="btn" onclick="showPage('book')">Book a Nurse</button><button class="btn btn-yellow" onclick="showPage('login')">Login / Create Account</button></div><button class="btn btn-outline" onclick="showPage('track')">📍 Track My Booking</button></div>
+<div class="grid"><div class="card"><b>🩺 Home Nursing
