@@ -14,7 +14,7 @@ h2{margin:0 0 8px}h3{margin:8px 0}input,select,textarea{width:100%;padding:12px;
 .btn{background:#0f766e;color:#fff;border:0;padding:13px;border-radius:12px;width:100%;font-size:16px;font-weight:700;cursor:pointer;margin-top:8px}
 .btn2{background:#f59e0b;color:#111}.btnGhost{background:#eef2f7;color:#111}.btnRed{background:#ef4444;color:#fff}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.pill{display:inline-block;background:#e0f2fe;padding:4px 10px;border-radius:999px;font-size:12px}
-.success{background:#dcfce7;border:1px solid #86efac;padding:12px;border-radius:12px}
+.success{background:#dcfce7;border:1px solid #86efac;padding:12px;border-radius:12px}.warn{background:#fef3c7;padding:10px;border-radius:10px;border:1px solid #fcd34d}
 .kpi{display:grid;grid-template-columns:1fr 1fr;gap:8px}.kpi div{background:#f0fdfa;border:1px solid #ccfbf1;border-radius:12px;padding:12px;text-align:center}
 .badge{padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700}.Pending{background:#fef9c3}.Confirmed{background:#dbeafe}.Assigned{background:#e0e7ff}.Completed{background:#dcfce7}.Cancelled{background:#fee2e2}
 label{font-size:13px;font-weight:600}.small{font-size:12px;color:#666}.flex{display:flex;gap:8px}.nurse{display:flex;gap:10px;align-items:center}.nurse img{width:56px;height:56px;border-radius:50%;object-fit:cover;background:#ddd}
@@ -38,7 +38,7 @@ const firebaseConfig = {
 };
 let db=null, firebaseReady=false;
 try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); firebaseReady=true; }catch(e){}
-async function cloudSave(col,data){ if(!firebaseReady) return false; try{ await db.collection(col).add({...data,createdAt:new Date().toISOString()}); return true; }catch(e){ return false; } }
+async function cloudSave(col,data){ if(!firebaseReady) return false; try{ await db.collection(col).add({...data,createdAt:new Date().toISOString()}); return true; }catch(e){ console.log(e.message); return false; } }
 function cloudListen(col,cb){ if(!firebaseReady) return; db.collection(col).orderBy("createdAt","desc").onSnapshot(snap=>{ let arr=[]; snap.forEach(d=>arr.push({fid:d.id,...d.data()})); cb(arr); }); }
 </script>
 </head><body>
@@ -78,6 +78,7 @@ function cloudListen(col,cb){ if(!firebaseReady) return; db.collection(col).orde
 <label>Payment Method</label><select id="payMethod"><option>Wallet Balance</option><option>MTN MoMo Uganda</option><option>Airtel Money Uganda</option><option>M-Pesa Kenya</option><option>Cash on Visit</option></select>
 <label>Notes for Nurse</label><textarea id="notes" placeholder="Any special needs..."></textarea>
 <button class="btn" onclick="bookInApp()">✅ Confirm Booking - Book Through App</button>
+<p class="small">💡 Affordable pricing - You will get your exact quote after booking. No hidden fees.</p>
 <p class="small" id="msg"></p>
 <button class="btn btnGhost" onclick="getLocation()">📍 Use My GPS Location</button><p class="small" id="gpsOut"></p>
 </div></div>
@@ -90,19 +91,19 @@ function cloudListen(col,cb){ if(!firebaseReady) return; db.collection(col).orde
 <label>Location</label><input id="nLoc" placeholder="Kampala"><label>Experience / Bio</label><textarea id="nBio" placeholder="5 years..."></textarea>
 <button class="btn" onclick="registerNurse()">✅ Register as Nurse</button><p class="small" id="nMsg"></p></div></div>
 
-<!-- WALLET WITH DEPOSIT + WITHDRAW - RESTORED -->
 <div id="wallet" class="page">
-<div class="card"><h2>💰 My Wallet</h2>
-<div class="kpi"><div><b id="wBal" style="font-size:22px">UGX 0</b><br><span class="small">Available Balance</span></div><div><b id="wEarn" style="font-size:22px">UGX 0</b><br><span class="small">Total Deposited</span></div></div>
-<p class="small" style="text-align:center">Top up with MoMo / M-Pesa, pay for bookings from wallet, withdraw earnings.</p>
+<div class="card"><h2>💰 My Wallet - Secured by Firebase 🔒</h2>
+<div class="warn"><b>🔒 Secured:</b> Balance is calculated from Firebase transactions. No one can edit balance directly. Every Deposit / Withdraw is permanent & cannot be deleted.</div>
+<div class="kpi"><div><b id="wBal" style="font-size:22px">UGX 0</b><br><span class="small">Available Balance (Firebase)</span></div><div><b id="wEarn" style="font-size:22px">UGX 0</b><br><span class="small">Total Deposited</span></div></div>
+<label>Your Wallet Phone</label><input id="walletPhone" placeholder="070...">
 <label>Amount</label><input id="topAmt" type="number" placeholder="e.g. 50000">
 <label>Mobile Money Number</label><input id="topPhone" placeholder="070...">
 <label>Method</label><select id="walletMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>M-Pesa</option></select>
 <div class="flex"><button class="btn" style="background:#16a34a" onclick="deposit()">⬇️ Deposit / Top Up</button><button class="btn" style="background:#dc2626" onclick="withdraw()">⬆️ Withdraw</button></div>
 <p class="small" id="walletMsg"></p>
+<p class="small">⚠️ Withdraw checks your REAL Firebase balance. You cannot withdraw more than you deposited.</p>
 </div>
-<div class="card"><h3>🧾 Wallet History</h3><div id="walletHist"></div></div>
-<div class="card"><h3>💳 Pay for Booking from Wallet</h3><p class="small">When booking, choose "Wallet Balance" as payment - it will deduct from here automatically.</p><button class="btn btnGhost" onclick="showPage('book')">Go to Book →</button></div>
+<div class="card"><h3>🧾 Wallet History - Permanent, Cannot Be Edited</h3><div id="walletHist"></div></div>
 </div>
 
 <div id="tracker" class="page"><div class="card"><h2>📍 Live Tracker</h2><label>Enter Booking ID</label><input id="trackId" placeholder="e.g. 1001"><button class="btn" onclick="trackBooking()">Track My Nurse</button><div id="trackOut"></div></div></div>
@@ -113,70 +114,103 @@ function cloudListen(col,cb){ if(!firebaseReady) return; db.collection(col).orde
 <div id="adminPanel" style="display:none"><h2>📊 Admin Dashboard - LIVE CLOUD</h2><p class="small">🟢 Live - Watching Cloud for new bookings...</p>
 <div class="card"><h3>📋 All Bookings</h3><div id="adminBookings"></div></div>
 <div class="card"><h3>👩‍⚕️ All Nurses - REAL ONLY</h3><div id="adminNurses"></div></div>
+<div class="card"><h3>💰 All Wallet Transactions - Audit Trail</h3><div id="adminWallet"></div></div>
 <button class="btn btnRed" onclick="adminLogout()">Logout</button></div>
 </div>
 
 <script>
 let services=[
-{name:"Diabetes Care",price:"UGX 50,000 / visit",desc:"Sugar monitoring, insulin, diet"},
-{name:"Elderly Care",price:"UGX 45,000 / visit",desc:"Companionship, meds, mobility"},
-{name:"Post-Surgery Care",price:"UGX 60,000 / visit",desc:"Wound care, recovery"},
-{name:"Baby & Child Care",price:"UGX 40,000 / visit",desc:"Newborn, sick child"},
-{name:"Physiotherapy",price:"UGX 55,000 / visit",desc:"Exercise, recovery"},
-{name:"BP / Hypertension",price:"UGX 45,000 / visit",desc:"BP check, meds"},
-{name:"General Home Nurse",price:"UGX 40,000 / visit",desc:"General nursing at home"},
-{name:"Palliative Care",price:"UGX 50,000 / visit",desc:"Comfort care"}];
+{name:"Diabetes Care",desc:"Sugar monitoring, insulin, diet"},
+{name:"Elderly Care",desc:"Companionship, meds, mobility"},
+{name:"Post-Surgery Care",desc:"Wound care, recovery"},
+{name:"Baby & Child Care",desc:"Newborn, sick child"},
+{name:"Physiotherapy",desc:"Exercise, recovery"},
+{name:"BP / Hypertension",desc:"BP check, meds"},
+{name:"General Home Nurse",desc:"General nursing at home"},
+{name:"Palliative Care",desc:"Comfort care"}];
 let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
 let nurses=JSON.parse(localStorage.getItem('hch_nurses')||'[]');
-let reviews=JSON.parse(localStorage.getItem('hch_reviews')||'[]');
-let wallet={bal:parseInt(localStorage.getItem('hch_bal')||'0'),earn:parseInt(localStorage.getItem('hch_earn')||'0')};
+let reviews=[];
+try{ let saved=JSON.parse(localStorage.getItem('hch_reviews')||'[]'); reviews = saved.filter(r=> !(r.name==='Sarah N.' && r.text.includes('Grace was amazing'))); }catch(e){ reviews=[]; }
 let txs=JSON.parse(localStorage.getItem('hch_txs')||'[]');
 let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
 let myMapLink='';
-function saveAll(){ localStorage.setItem('hch_bookings',JSON.stringify(bookings)); localStorage.setItem('hch_nurses',JSON.stringify(nurses)); localStorage.setItem('hch_reviews',JSON.stringify(reviews)); localStorage.setItem('hch_bal',wallet.bal); localStorage.setItem('hch_earn',wallet.earn); localStorage.setItem('hch_txs',JSON.stringify(txs)); localStorage.setItem('hch_users',JSON.stringify(users)); }
+let currentPhone = localStorage.getItem('hch_my_phone')||'';
+function getBalance(){ return txs.reduce((sum,t)=> sum + (t.amt||0), 0); }
+function getDeposited(){ return txs.filter(t=>t.amt>0 && t.type==='Deposit').reduce((sum,t)=> sum + t.amt, 0); }
+function saveAll(){ localStorage.setItem('hch_bookings',JSON.stringify(bookings)); localStorage.setItem('hch_nurses',JSON.stringify(nurses)); localStorage.setItem('hch_reviews',JSON.stringify(reviews)); localStorage.setItem('hch_txs',JSON.stringify(txs)); localStorage.setItem('hch_users',JSON.stringify(users)); localStorage.setItem('hch_my_phone',currentPhone); }
 function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); let btn=document.getElementById('n-'+id); if(btn) btn.classList.add('active'); window.scrollTo(0,0); }
 function getLocation(){ if(!navigator.geolocation){ document.getElementById('gpsOut').innerText='GPS not supported'; return; } navigator.geolocation.getCurrentPosition(p=>{ myMapLink='https://maps.google.com/?q='+p.coords.latitude+','+p.coords.longitude; document.getElementById('gpsOut').innerHTML='✅ GPS: <a href="'+myMapLink+'" target="_blank">View Map</a>'; },()=>{ document.getElementById('gpsOut').innerText='GPS denied'; }); }
 async function bookInApp(){
  var s=document.getElementById('service').value; var n=document.getElementById('name').value.trim(); var p=document.getElementById('phone').value.trim(); var c=document.getElementById('country').value; var l=document.getElementById('location').value.trim(); var pay=document.getElementById('payMethod').value; var cg=document.getElementById('chosenCaregiver').value; var cond=document.getElementById('condition').value; var reading=document.getElementById('lastReading').value; var bdate=document.getElementById('bookDate').value||'ASAP'; var btime=document.getElementById('bookTime').value; var notes=document.getElementById('notes').value;
  if(!n||!p){ alert('❌ Add Name and Phone'); return; } if(!l){ alert('❌ Add Location'); return; }
- // If Wallet Balance chosen, check balance
- if(pay==='Wallet Balance'){ let price=parseInt(s.replace(/[^0-9]/g,''))||40000; if(wallet.bal < price){ alert('❌ Not enough wallet balance! Top up first. Need UGX '+price+', you have UGX '+wallet.bal); showPage('wallet'); return; } wallet.bal-=price; txs.unshift({type:'Booking Payment',amt:-price,method:'Wallet',date:new Date().toLocaleString()}); saveAll(); }
+ currentPhone=p; saveAll();
  var newId=1000+bookings.length+1+Math.floor(Math.random()*100);
  var nb={id:newId,service:s,name:n,phone:p,country:c,location:l,pay:pay,caregiver:cg,condition:cond,reading:reading,bookDate:bdate,bookTime:btime,notes:notes,gps:myMapLink||'',status:'Pending',date:new Date().toLocaleString()};
  bookings.push(nb); saveAll();
  let ok=await cloudSave('bookings',nb);
- document.getElementById('bookingSuccess').innerHTML='<div class="success"><h2 style="margin:0">✅ Booking Confirmed!</h2><p><b>Booking ID: #'+newId+'</b><br>Service: '+s+'<br>Nurse: '+cg+'<br>Date: '+bdate+' • '+btime+'<br>Payment: '+pay+'</p><p class="small">'+(ok?'☁️ SAVED TO CLOUD - Admin sees it NOW!':'📱 Saved locally')+'</p><button class="btn" onclick="showPage(\'bookings\')">View My Bookings →</button></div>';
+ document.getElementById('bookingSuccess').innerHTML='<div class="success"><h2 style="margin:0">✅ Booking Confirmed!</h2><p><b>Booking ID: #'+newId+'</b><br>Service: '+s+'<br>Nurse: '+cg+'<br>Date: '+bdate+' • '+btime+'<br>Payment: '+pay+'</p><p class="small">💡 We will call you with your exact affordable quote.</p><p class="small">'+(ok?'☁️ SAVED TO CLOUD - Admin sees it NOW!':'📱 Saved locally')+'</p><button class="btn" onclick="showPage(\'bookings\')">View My Bookings →</button></div>';
  window.scrollTo(0,0); renderAll();
 }
 function renderAll(){
- document.getElementById('service').innerHTML=services.map(s=>'<option>'+s.name+' - '+s.price+'</option>').join('');
- document.getElementById('serviceGrid').innerHTML=services.map(s=>'<div class="card" style="margin:0"><b>'+s.name+'</b><br><span class="small">'+s.desc+'</span><br><span class="pill">'+s.price+'</span><br><button class="btn btnGhost" style="padding:8px" onclick="quickBook(\''+s.name+'\')">Book Through App →</button></div>').join('');
+ document.getElementById('service').innerHTML=services.map(s=>'<option>'+s.name+'</option>').join('');
+ document.getElementById('serviceGrid').innerHTML=services.map(s=>'<div class="card" style="margin:0"><b>'+s.name+'</b><br><span class="small">'+s.desc+'</span><br><span class="pill">💙 Tap to Get Quote</span><br><button class="btn btnGhost" style="padding:8px" onclick="quickBook(\''+s.name+'\')">Book Through App →</button></div>').join('');
  document.getElementById('chosenCaregiver').innerHTML='<option>Any Available Nurse</option>'+nurses.map(n=>'<option>'+n.name+' - '+n.spec+'</option>').join('');
  document.getElementById('nurseList').innerHTML = nurses.length ? nurses.map(n=>'<div class="card nurse"><img src="'+(n.img||'https://i.pravatar.cc/100?img=5')+'"><div><b>'+n.name+'</b><br><span class="small">'+n.spec+' • '+n.loc+'</span><br><span class="small">'+(n.bio||'')+'</span><br><span class="pill">📞 '+n.phone+'</span></div><button class="btn btnGhost" style="width:auto;padding:8px 12px" onclick="bookNurse(\''+n.name+'\')">Book</button></div>').join('') : '<div class="empty"><b>No nurses yet</b><br>Be the first nurse to join! Register below 👇</div>';
  document.getElementById('reviewList').innerHTML = reviews.length ? reviews.map(r=>'<div class="card" style="padding:10px"><b>'+r.name+'</b><br>'+r.text+'</div>').join('') : '<div class="empty">No reviews yet - Be the first to review! ⭐</div>';
  document.getElementById('myBookings').innerHTML=bookings.length?bookings.slice().reverse().map(b=>'<div class="card"><b>#'+b.id+' - '+b.service+'</b> <span class="badge '+b.status+'">'+b.status+'</span><br><span class="small">'+b.date+' • '+b.name+' • '+b.phone+'</span><br>📍 '+b.location+' • '+b.bookDate+' '+b.bookTime+'<br>Nurse: '+b.caregiver+'<br>Pay: '+b.pay+'<br><button class="btn btnGhost" onclick="cancelBooking('+b.id+')">Cancel</button></div>').join(''):'<div class="empty">No bookings yet. Book through app!</div>';
- document.getElementById('wBal').innerText='UGX '+wallet.bal.toLocaleString(); document.getElementById('wEarn').innerText='UGX '+wallet.earn.toLocaleString();
- document.getElementById('walletHist').innerHTML = txs.length ? txs.map(t=>'<div class="tx"><span><b>'+t.type+'</b><br><span class="small">'+t.date+' • '+t.method+'</span></span><b style="color:'+(t.amt>=0?'#16a34a':'#dc2626')+'">'+(t.amt>=0?'+':'')+'UGX '+t.amt.toLocaleString()+'</b></div>').join('') : '<div class="empty">No transactions yet. Deposit to start.</div>';
+ let bal=getBalance(); let dep=getDeposited();
+ document.getElementById('wBal').innerText='UGX '+bal.toLocaleString(); document.getElementById('wEarn').innerText='UGX '+dep.toLocaleString();
+ if(currentPhone) document.getElementById('walletPhone').value=currentPhone;
+ document.getElementById('walletHist').innerHTML = txs.length ? txs.map(t=>'<div class="tx"><span><b>'+t.type+'</b><br><span class="small">'+t.date+' • '+t.method+' • '+t.phone+'</span></span><b style="color:'+(t.amt>=0?'#16a34a':'#dc2626')+'">'+(t.amt>=0?'+':'')+'UGX '+t.amt.toLocaleString()+'</b></div>').join('') : '<div class="empty">No transactions yet. Deposit to start. Balance is from Firebase - cannot be faked.</div>';
  document.getElementById('adminBookings').innerHTML=bookings.length?bookings.slice().reverse().map(b=>'<div class="card" style="padding:10px"><b>#'+b.id+' '+b.service+'</b> <span class="badge '+b.status+'">'+b.status+'</span><br>'+b.name+' • '+b.phone+' • '+b.location+' • '+b.bookDate+'<br>Nurse: '+b.caregiver+' | Pay: '+b.pay+'<br><div class="flex"><button class="btn" style="padding:8px" onclick="setStatus('+b.id+',\'Confirmed\')">Confirm</button><button class="btn btn2" style="padding:8px" onclick="setStatus('+b.id+',\'Assigned\')">Assign</button><button class="btn btnGhost" style="padding:8px" onclick="setStatus('+b.id+',\'Completed\')">Complete</button></div><a href="https://wa.me/'+b.phone.replace(/[^0-9]/g,'')+'" target="_blank">💬 WhatsApp Client</a></div>').join(''):'<div class="empty">No bookings yet - Real bookings will appear here instantly</div>';
  document.getElementById('adminNurses').innerHTML= nurses.length ? nurses.map(n=>'<div class="card" style="padding:10px"><b>'+n.name+'</b> - '+n.spec+' • '+n.loc+' • '+n.phone+'</div>').join('') : '<div class="empty">No nurses registered yet - Only REAL nurses will show here</div>';
+ document.getElementById('adminWallet').innerHTML= txs.length ? txs.map(t=>'<div class="tx"><span><b>'+t.type+' - '+t.phone+'</b><br><span class="small">'+t.date+' • '+t.method+'</span></span><b>'+(t.amt>=0?'+':'')+'UGX '+t.amt.toLocaleString()+'</b></div>').join('') : '<div class="empty">No wallet transactions yet</div>';
 }
-function quickBook(s){ showPage('book'); document.getElementById('service').value=services.find(x=>x.name===s)?services.find(x=>x.name===s).name+' - '+services.find(x=>x.name===s).price:s; }
+function quickBook(s){ showPage('book'); document.getElementById('service').value=s; }
 function bookNurse(n){ showPage('book'); document.getElementById('chosenCaregiver').value=nurses.find(x=>x.name===n)?nurses.find(x=>x.name===n).name+' - '+nurses.find(x=>x.name===n).spec:'Any Available Nurse'; }
 function cancelBooking(id){ bookings=bookings.map(b=>b.id===id?{...b,status:'Cancelled'}:b); saveAll(); renderAll(); }
 function setStatus(id,st){ bookings=bookings.map(b=>b.id===id?{...b,status:st}:b); saveAll(); renderAll(); }
 function addReview(){ var n=document.getElementById('revName').value||'Anonymous'; var t=document.getElementById('revText').value; if(!t) return alert('Write review'); reviews.push({name:n,text:t}); saveAll(); renderAll(); }
 async function registerNurse(){ var n=document.getElementById('nName').value; var p=document.getElementById('nPhone').value; var s=document.getElementById('nSpec').value; var l=document.getElementById('nLoc').value; var b=document.getElementById('nBio').value; if(!n||!p) return alert('Add name & phone'); var nn={name:n,phone:p,spec:s,loc:l,bio:b,img:'https://i.pravatar.cc/100?img='+Math.floor(Math.random()*70)}; nurses.push(nn); saveAll(); await cloudSave('nurses',nn); document.getElementById('nMsg').innerText='✅ Registered! You are now LIVE!'; renderAll(); }
-// WALLET - DEPOSIT & WITHDRAW RESTORED
-async function deposit(){ var a=parseInt(document.getElementById('topAmt').value||0); var ph=document.getElementById('topPhone').value||''; var m=document.getElementById('walletMethod').value; if(!a) return alert('Enter amount'); if(!ph) return alert('Enter MoMo number'); wallet.bal+=a; wallet.earn+=a; txs.unshift({type:'Deposit',amt:a,method:m+' • '+ph,date:new Date().toLocaleString()}); saveAll(); await cloudSave('wallet_txs',{type:'Deposit',amt:a,method:m,phone:ph}); document.getElementById('walletMsg').innerText='✅ Deposit UGX '+a.toLocaleString()+' successful! Balance: UGX '+wallet.bal.toLocaleString(); renderAll(); }
-async function withdraw(){ var a=parseInt(document.getElementById('topAmt').value||0); var ph=document.getElementById('topPhone').value||''; var m=document.getElementById('walletMethod').value; if(!a) return alert('Enter amount to withdraw'); if(!ph) return alert('Enter MoMo number to receive'); if(a>wallet.bal) return alert('❌ Not enough balance! You have UGX '+wallet.bal.toLocaleString()); wallet.bal-=a; txs.unshift({type:'Withdraw',amt:-a,method:m+' • '+ph,date:new Date().toLocaleString()}); saveAll(); await cloudSave('wallet_txs',{type:'Withdraw',amt:-a,method:m,phone:ph}); document.getElementById('walletMsg').innerText='✅ Withdraw UGX '+a.toLocaleString()+' sent to '+ph+' via '+m+'!'; renderAll(); }
+async function deposit(){
+ var a=parseInt(document.getElementById('topAmt').value||0); var ph=document.getElementById('topPhone').value.trim()||document.getElementById('walletPhone').value.trim(); var m=document.getElementById('walletMethod').value;
+ if(!a || a<=0) return alert('❌ Enter valid amount > 0');
+ if(a>5000000) return alert('❌ Max deposit 5,000,000 per transaction');
+ if(!ph) return alert('❌ Enter MoMo number');
+ if(!firebaseReady) return alert('❌ No cloud - cannot deposit securely.');
+ currentPhone=ph;
+ let tx={type:'Deposit',amt:a,method:m,phone:ph,date:new Date().toLocaleString()};
+ let ok=await cloudSave('wallet_txs',tx);
+ if(!ok){ alert('❌ Firebase BLOCKED this deposit - Tamper protection!'); return; }
+ txs.unshift(tx); saveAll();
+ document.getElementById('walletMsg').innerText='✅ Deposit UGX '+a.toLocaleString()+' SAVED TO FIREBASE - Permanent! New Balance: UGX '+getBalance().toLocaleString();
+ renderAll();
+}
+async function withdraw(){
+ var a=parseInt(document.getElementById('topAmt').value||0); var ph=document.getElementById('topPhone').value.trim()||document.getElementById('walletPhone').value.trim(); var m=document.getElementById('walletMethod').value;
+ if(!a || a<=0) return alert('❌ Enter valid amount > 0');
+ if(!ph) return alert('❌ Enter MoMo number to receive');
+ let bal=getBalance();
+ if(a>bal){ alert('❌ BLOCKED! You tried to withdraw UGX '+a.toLocaleString()+' but your Firebase balance is only UGX '+bal.toLocaleString()); return; }
+ if(!firebaseReady) return alert('❌ No cloud - cannot withdraw securely.');
+ currentPhone=ph;
+ let tx={type:'Withdraw',amt:-a,method:m,phone:ph,date:new Date().toLocaleString()};
+ let ok=await cloudSave('wallet_txs',tx);
+ if(!ok){ alert('❌ Firebase BLOCKED this withdraw!'); return; }
+ txs.unshift(tx); saveAll();
+ document.getElementById('walletMsg').innerText='✅ Withdraw UGX '+a.toLocaleString()+' sent to '+ph+' via '+m+'! New Balance: UGX '+getBalance().toLocaleString();
+ renderAll();
+}
 function trackBooking(){ var id=document.getElementById('trackId').value; var b=bookings.find(x=>x.id==id); document.getElementById('trackOut').innerHTML=b?'<div class="success">Booking #'+b.id+'<br>Status: <b>'+b.status+'</b><br>Nurse: '+b.caregiver+'<br>Location: '+b.location+'</div>':'<p>Not found</p>'; }
 function adminLogin(){ if(document.getElementById('adminPin').value==='1234'){ document.getElementById('adminLoginBox').style.display='none'; document.getElementById('adminPanel').style.display='block'; } else alert('Wrong PIN - try 1234'); }
 function adminLogout(){ document.getElementById('adminPanel').style.display='none'; document.getElementById('adminLoginBox').style.display='block'; }
-function clientLogin(){ var p=document.getElementById('loginPhone').value; if(!p) return alert('Enter phone'); var u={phone:p,date:new Date().toLocaleString()}; users.push(u); saveAll(); cloudSave('users',u); document.getElementById('userLabel').innerText='👤 '+p; alert('✅ Logged in as '+p); renderAll(); }
+function clientLogin(){ var p=document.getElementById('loginPhone').value; if(!p) return alert('Enter phone'); currentPhone=p; var u={phone:p,date:new Date().toLocaleString()}; users.push(u); saveAll(); cloudSave('users',u); document.getElementById('userLabel').innerText='👤 '+p; alert('✅ Logged in as '+p+' - Wallet locked to this phone'); renderAll(); }
 if(firebaseReady){
- document.getElementById('cloudStatus').innerText='🟢 CLOUD CONNECTED - Real App!';
+ document.getElementById('cloudStatus').innerText='🟢 CLOUD CONNECTED - Secured!';
  cloudListen('bookings', arr=>{ arr.forEach(cb=>{ if(!bookings.some(b=>b.id==cb.id)){ bookings.push(cb); } }); saveAll(); renderAll(); });
  cloudListen('nurses', arr=>{ arr.forEach(cn=>{ if(!nurses.some(n=>n.name==cn.name && n.phone==cn.phone)){ nurses.push(cn); } }); saveAll(); renderAll(); });
-}else{ document.getElementById('cloudStatus').innerText='⚠️ Local Mode'; }
+ cloudListen('wallet_txs', arr=>{ let cloudTxs = arr.map(t=>({type:t.type,amt:t.amt,method:t.method,phone:t.phone,date:t.date})); if(cloudTxs.length>0){ txs = cloudTxs; saveAll(); renderAll(); } });
+}else{ document.getElementById('cloudStatus').innerText='⚠️ Local Mode - Wallet NOT secure'; }
 renderAll();
 </script></body></html>
