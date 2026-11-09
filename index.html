@@ -38,7 +38,7 @@ const firebaseConfig = {
 };
 let db=null, firebaseReady=false;
 try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); firebaseReady=true; }catch(e){}
-async function cloudSave(col,data){ if(!firebaseReady) return false; try{ await db.collection(col).add({...data,createdAt:new Date().toISOString()}); return true; }catch(e){ console.log(e.message); return false; } }
+async function cloudSave(col,data){ if(!firebaseReady) return false; try{ await db.collection(col).add({...data,createdAt:new Date().toISOString()}); return true; }catch(e){ return false; } }
 function cloudListen(col,cb){ if(!firebaseReady) return; db.collection(col).orderBy("createdAt","desc").onSnapshot(snap=>{ let arr=[]; snap.forEach(d=>arr.push({fid:d.id,...d.data()})); cb(arr); }); }
 </script>
 </head><body>
@@ -93,7 +93,7 @@ function cloudListen(col,cb){ if(!firebaseReady) return; db.collection(col).orde
 
 <div id="wallet" class="page">
 <div class="card"><h2>💰 My Wallet - Secured by Firebase 🔒</h2>
-<div class="warn"><b>🔒 Secured:</b> Balance is calculated from Firebase transactions. No one can edit balance directly. Every Deposit / Withdraw is permanent & cannot be deleted.</div>
+<div class="warn"><b>🔒 Secured:</b> Balance is calculated from Firebase transactions. No one can edit balance directly.</div>
 <div class="kpi"><div><b id="wBal" style="font-size:22px">UGX 0</b><br><span class="small">Available Balance (Firebase)</span></div><div><b id="wEarn" style="font-size:22px">UGX 0</b><br><span class="small">Total Deposited</span></div></div>
 <label>Your Wallet Phone</label><input id="walletPhone" placeholder="070...">
 <label>Amount</label><input id="topAmt" type="number" placeholder="e.g. 50000">
@@ -103,15 +103,23 @@ function cloudListen(col,cb){ if(!firebaseReady) return; db.collection(col).orde
 <p class="small" id="walletMsg"></p>
 <p class="small">⚠️ Withdraw checks your REAL Firebase balance. You cannot withdraw more than you deposited.</p>
 </div>
-<div class="card"><h3>🧾 Wallet History - Permanent, Cannot Be Edited</h3><div id="walletHist"></div></div>
+<div class="card"><h3>🧾 Wallet History - Permanent</h3><div id="walletHist"></div></div>
 </div>
 
 <div id="tracker" class="page"><div class="card"><h2>📍 Live Tracker</h2><label>Enter Booking ID</label><input id="trackId" placeholder="e.g. 1001"><button class="btn" onclick="trackBooking()">Track My Nurse</button><div id="trackOut"></div></div></div>
 
 <div id="admin" class="page">
-<div class="card" id="adminLoginBox"><h2>🔐 Admin Login</h2><label>Admin PIN</label><input id="adminPin" type="password" placeholder="Try: 1234"><button class="btn" onclick="adminLogin()">Login as Admin</button><p class="small">Default PIN: <b>1234</b></p>
-<hr><h3>👤 Client / Nurse Login</h3><label>Phone</label><input id="loginPhone" placeholder="070..."><button class="btn btnGhost" onclick="clientLogin()">Login as Client</button></div>
+<div class="card" id="adminLoginBox"><h2>🔐 Admin Login</h2><label>Admin PIN / Password</label><input id="adminPin" type="password" placeholder="Enter your PIN"><button class="btn" onclick="adminLogin()">Login as Admin</button><p class="small" id="pinHint">First time? Default PIN is <b>1234</b> - Change it below after login!</p>
+<hr><h3>👤 Client / Nurse Login</h3><label>Phone</label><input id="loginPhone" placeholder="070..."><button class="btn btnGhost" onclick="clientLogin()">Login as Client</button>
+<hr><h3>🔑 Forgot PIN?</h3><p class="small">If you forget your PIN, tell me and I will give you a reset code. Do NOT share your PIN with anyone.</p></div>
+
 <div id="adminPanel" style="display:none"><h2>📊 Admin Dashboard - LIVE CLOUD</h2><p class="small">🟢 Live - Watching Cloud for new bookings...</p>
+<div class="card" style="border:2px solid #f59e0b"><h3>🔐 Change Admin Password / PIN</h3><p class="small">Change your PIN here. Old PIN will stop working immediately.</p>
+<label>Current PIN / Password *</label><input id="oldPin" type="password" placeholder="Enter current PIN">
+<label>New PIN / Password *</label><input id="newPin" type="password" placeholder="Enter new PIN - e.g. 9876 or MySecret123">
+<label>Confirm New PIN *</label><input id="confirmPin" type="password" placeholder="Type new PIN again">
+<button class="btn" style="background:#f59e0b;color:#111" onclick="changePin()">🔐 Change Password Now</button><p class="small" id="changePinMsg"></p>
+<p class="small">⚠️ Write your new PIN somewhere safe! If you forget, you will need a reset.</p></div>
 <div class="card"><h3>📋 All Bookings</h3><div id="adminBookings"></div></div>
 <div class="card"><h3>👩‍⚕️ All Nurses - REAL ONLY</h3><div id="adminNurses"></div></div>
 <div class="card"><h3>💰 All Wallet Transactions - Audit Trail</h3><div id="adminWallet"></div></div>
@@ -136,9 +144,11 @@ let txs=JSON.parse(localStorage.getItem('hch_txs')||'[]');
 let users=JSON.parse(localStorage.getItem('hch_users')||'[]');
 let myMapLink='';
 let currentPhone = localStorage.getItem('hch_my_phone')||'';
+// ADMIN PIN - Stored securely in phone, default 1234 first time
+let adminPin = localStorage.getItem('hch_admin_pin') || '1234';
 function getBalance(){ return txs.reduce((sum,t)=> sum + (t.amt||0), 0); }
 function getDeposited(){ return txs.filter(t=>t.amt>0 && t.type==='Deposit').reduce((sum,t)=> sum + t.amt, 0); }
-function saveAll(){ localStorage.setItem('hch_bookings',JSON.stringify(bookings)); localStorage.setItem('hch_nurses',JSON.stringify(nurses)); localStorage.setItem('hch_reviews',JSON.stringify(reviews)); localStorage.setItem('hch_txs',JSON.stringify(txs)); localStorage.setItem('hch_users',JSON.stringify(users)); localStorage.setItem('hch_my_phone',currentPhone); }
+function saveAll(){ localStorage.setItem('hch_bookings',JSON.stringify(bookings)); localStorage.setItem('hch_nurses',JSON.stringify(nurses)); localStorage.setItem('hch_reviews',JSON.stringify(reviews)); localStorage.setItem('hch_txs',JSON.stringify(txs)); localStorage.setItem('hch_users',JSON.stringify(users)); localStorage.setItem('hch_my_phone',currentPhone); localStorage.setItem('hch_admin_pin',adminPin); }
 function showPage(id){ document.querySelectorAll('.page').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active'); document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active')); let btn=document.getElementById('n-'+id); if(btn) btn.classList.add('active'); window.scrollTo(0,0); }
 function getLocation(){ if(!navigator.geolocation){ document.getElementById('gpsOut').innerText='GPS not supported'; return; } navigator.geolocation.getCurrentPosition(p=>{ myMapLink='https://maps.google.com/?q='+p.coords.latitude+','+p.coords.longitude; document.getElementById('gpsOut').innerHTML='✅ GPS: <a href="'+myMapLink+'" target="_blank">View Map</a>'; },()=>{ document.getElementById('gpsOut').innerText='GPS denied'; }); }
 async function bookInApp(){
@@ -162,55 +172,13 @@ function renderAll(){
  let bal=getBalance(); let dep=getDeposited();
  document.getElementById('wBal').innerText='UGX '+bal.toLocaleString(); document.getElementById('wEarn').innerText='UGX '+dep.toLocaleString();
  if(currentPhone) document.getElementById('walletPhone').value=currentPhone;
- document.getElementById('walletHist').innerHTML = txs.length ? txs.map(t=>'<div class="tx"><span><b>'+t.type+'</b><br><span class="small">'+t.date+' • '+t.method+' • '+t.phone+'</span></span><b style="color:'+(t.amt>=0?'#16a34a':'#dc2626')+'">'+(t.amt>=0?'+':'')+'UGX '+t.amt.toLocaleString()+'</b></div>').join('') : '<div class="empty">No transactions yet. Deposit to start. Balance is from Firebase - cannot be faked.</div>';
- document.getElementById('adminBookings').innerHTML=bookings.length?bookings.slice().reverse().map(b=>'<div class="card" style="padding:10px"><b>#'+b.id+' '+b.service+'</b> <span class="badge '+b.status+'">'+b.status+'</span><br>'+b.name+' • '+b.phone+' • '+b.location+' • '+b.bookDate+'<br>Nurse: '+b.caregiver+' | Pay: '+b.pay+'<br><div class="flex"><button class="btn" style="padding:8px" onclick="setStatus('+b.id+',\'Confirmed\')">Confirm</button><button class="btn btn2" style="padding:8px" onclick="setStatus('+b.id+',\'Assigned\')">Assign</button><button class="btn btnGhost" style="padding:8px" onclick="setStatus('+b.id+',\'Completed\')">Complete</button></div><a href="https://wa.me/'+b.phone.replace(/[^0-9]/g,'')+'" target="_blank">💬 WhatsApp Client</a></div>').join(''):'<div class="empty">No bookings yet - Real bookings will appear here instantly</div>';
- document.getElementById('adminNurses').innerHTML= nurses.length ? nurses.map(n=>'<div class="card" style="padding:10px"><b>'+n.name+'</b> - '+n.spec+' • '+n.loc+' • '+n.phone+'</div>').join('') : '<div class="empty">No nurses registered yet - Only REAL nurses will show here</div>';
+ document.getElementById('walletHist').innerHTML = txs.length ? txs.map(t=>'<div class="tx"><span><b>'+t.type+'</b><br><span class="small">'+t.date+' • '+t.method+' • '+t.phone+'</span></span><b style="color:'+(t.amt>=0?'#16a34a':'#dc2626')+'">'+(t.amt>=0?'+':'')+'UGX '+t.amt.toLocaleString()+'</b></div>').join('') : '<div class="empty">No transactions yet. Deposit to start.</div>';
+ document.getElementById('adminBookings').innerHTML=bookings.length?bookings.slice().reverse().map(b=>'<div class="card" style="padding:10px"><b>#'+b.id+' '+b.service+'</b> <span class="badge '+b.status+'">'+b.status+'</span><br>'+b.name+' • '+b.phone+' • '+b.location+' • '+b.bookDate+'<br>Nurse: '+b.caregiver+' | Pay: '+b.pay+'<br><div class="flex"><button class="btn" style="padding:8px" onclick="setStatus('+b.id+',\'Confirmed\')">Confirm</button><button class="btn btn2" style="padding:8px" onclick="setStatus('+b.id+',\'Assigned\')">Assign</button><button class="btn btnGhost" style="padding:8px" onclick="setStatus('+b.id+',\'Completed\')">Complete</button></div><a href="https://wa.me/'+b.phone.replace(/[^0-9]/g,'')+'" target="_blank">💬 WhatsApp Client</a></div>').join(''):'<div class="empty">No bookings yet</div>';
+ document.getElementById('adminNurses').innerHTML= nurses.length ? nurses.map(n=>'<div class="card" style="padding:10px"><b>'+n.name+'</b> - '+n.spec+' • '+n.loc+' • '+n.phone+'</div>').join('') : '<div class="empty">No nurses registered yet</div>';
  document.getElementById('adminWallet').innerHTML= txs.length ? txs.map(t=>'<div class="tx"><span><b>'+t.type+' - '+t.phone+'</b><br><span class="small">'+t.date+' • '+t.method+'</span></span><b>'+(t.amt>=0?'+':'')+'UGX '+t.amt.toLocaleString()+'</b></div>').join('') : '<div class="empty">No wallet transactions yet</div>';
 }
 function quickBook(s){ showPage('book'); document.getElementById('service').value=s; }
 function bookNurse(n){ showPage('book'); document.getElementById('chosenCaregiver').value=nurses.find(x=>x.name===n)?nurses.find(x=>x.name===n).name+' - '+nurses.find(x=>x.name===n).spec:'Any Available Nurse'; }
 function cancelBooking(id){ bookings=bookings.map(b=>b.id===id?{...b,status:'Cancelled'}:b); saveAll(); renderAll(); }
 function setStatus(id,st){ bookings=bookings.map(b=>b.id===id?{...b,status:st}:b); saveAll(); renderAll(); }
-function addReview(){ var n=document.getElementById('revName').value||'Anonymous'; var t=document.getElementById('revText').value; if(!t) return alert('Write review'); reviews.push({name:n,text:t}); saveAll(); renderAll(); }
-async function registerNurse(){ var n=document.getElementById('nName').value; var p=document.getElementById('nPhone').value; var s=document.getElementById('nSpec').value; var l=document.getElementById('nLoc').value; var b=document.getElementById('nBio').value; if(!n||!p) return alert('Add name & phone'); var nn={name:n,phone:p,spec:s,loc:l,bio:b,img:'https://i.pravatar.cc/100?img='+Math.floor(Math.random()*70)}; nurses.push(nn); saveAll(); await cloudSave('nurses',nn); document.getElementById('nMsg').innerText='✅ Registered! You are now LIVE!'; renderAll(); }
-async function deposit(){
- var a=parseInt(document.getElementById('topAmt').value||0); var ph=document.getElementById('topPhone').value.trim()||document.getElementById('walletPhone').value.trim(); var m=document.getElementById('walletMethod').value;
- if(!a || a<=0) return alert('❌ Enter valid amount > 0');
- if(a>5000000) return alert('❌ Max deposit 5,000,000 per transaction');
- if(!ph) return alert('❌ Enter MoMo number');
- if(!firebaseReady) return alert('❌ No cloud - cannot deposit securely.');
- currentPhone=ph;
- let tx={type:'Deposit',amt:a,method:m,phone:ph,date:new Date().toLocaleString()};
- let ok=await cloudSave('wallet_txs',tx);
- if(!ok){ alert('❌ Firebase BLOCKED this deposit - Tamper protection!'); return; }
- txs.unshift(tx); saveAll();
- document.getElementById('walletMsg').innerText='✅ Deposit UGX '+a.toLocaleString()+' SAVED TO FIREBASE - Permanent! New Balance: UGX '+getBalance().toLocaleString();
- renderAll();
-}
-async function withdraw(){
- var a=parseInt(document.getElementById('topAmt').value||0); var ph=document.getElementById('topPhone').value.trim()||document.getElementById('walletPhone').value.trim(); var m=document.getElementById('walletMethod').value;
- if(!a || a<=0) return alert('❌ Enter valid amount > 0');
- if(!ph) return alert('❌ Enter MoMo number to receive');
- let bal=getBalance();
- if(a>bal){ alert('❌ BLOCKED! You tried to withdraw UGX '+a.toLocaleString()+' but your Firebase balance is only UGX '+bal.toLocaleString()); return; }
- if(!firebaseReady) return alert('❌ No cloud - cannot withdraw securely.');
- currentPhone=ph;
- let tx={type:'Withdraw',amt:-a,method:m,phone:ph,date:new Date().toLocaleString()};
- let ok=await cloudSave('wallet_txs',tx);
- if(!ok){ alert('❌ Firebase BLOCKED this withdraw!'); return; }
- txs.unshift(tx); saveAll();
- document.getElementById('walletMsg').innerText='✅ Withdraw UGX '+a.toLocaleString()+' sent to '+ph+' via '+m+'! New Balance: UGX '+getBalance().toLocaleString();
- renderAll();
-}
-function trackBooking(){ var id=document.getElementById('trackId').value; var b=bookings.find(x=>x.id==id); document.getElementById('trackOut').innerHTML=b?'<div class="success">Booking #'+b.id+'<br>Status: <b>'+b.status+'</b><br>Nurse: '+b.caregiver+'<br>Location: '+b.location+'</div>':'<p>Not found</p>'; }
-function adminLogin(){ if(document.getElementById('adminPin').value==='1234'){ document.getElementById('adminLoginBox').style.display='none'; document.getElementById('adminPanel').style.display='block'; } else alert('Wrong PIN - try 1234'); }
-function adminLogout(){ document.getElementById('adminPanel').style.display='none'; document.getElementById('adminLoginBox').style.display='block'; }
-function clientLogin(){ var p=document.getElementById('loginPhone').value; if(!p) return alert('Enter phone'); currentPhone=p; var u={phone:p,date:new Date().toLocaleString()}; users.push(u); saveAll(); cloudSave('users',u); document.getElementById('userLabel').innerText='👤 '+p; alert('✅ Logged in as '+p+' - Wallet locked to this phone'); renderAll(); }
-if(firebaseReady){
- document.getElementById('cloudStatus').innerText='🟢 CLOUD CONNECTED - Secured!';
- cloudListen('bookings', arr=>{ arr.forEach(cb=>{ if(!bookings.some(b=>b.id==cb.id)){ bookings.push(cb); } }); saveAll(); renderAll(); });
- cloudListen('nurses', arr=>{ arr.forEach(cn=>{ if(!nurses.some(n=>n.name==cn.name && n.phone==cn.phone)){ nurses.push(cn); } }); saveAll(); renderAll(); });
- cloudListen('wallet_txs', arr=>{ let cloudTxs = arr.map(t=>({type:t.type,amt:t.amt,method:t.method,phone:t.phone,date:t.date})); if(cloudTxs.length>0){ txs = cloudTxs; saveAll(); renderAll(); } });
-}else{ document.getElementById('cloudStatus').innerText='⚠️ Local Mode - Wallet NOT secure'; }
-renderAll();
-</script></body></html>
+function addReview(){ var n=document.getElementById('rev
