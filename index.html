@@ -23,11 +23,10 @@ input,select,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radiu
 </style>
 <script>
 function showPage(page){
-  // ADMIN PROTECTION - block if not admin
   if(page==='admin' && !window.isAdmin){
-    alert('🔒 Admin Only! Please login with Admin account first.');
+    alert('🔒 Admin Only! Login with kwemoilevi64@gmail.com first.');
     page='login';
-    document.getElementById('loginMsg').innerText='Admin Login Required - login with admin email to open Admin Dashboard';
+    document.getElementById('loginMsg').innerText='Admin Login Required - login with kwemoilevi64@gmail.com';
   }
   var pages=['home','book','track','wallet','login','admin'];
   for(var i=0;i<pages.length;i++){
@@ -53,15 +52,12 @@ function showPage(page){
 <button onclick="showPage('login')" id="b-login">Login</button>
 <button onclick="showPage('admin')" id="b-admin">🔒 Admin Dashboard</button>
 </nav></header>
-
 <div class="container">
 <div id="status" class="card small">Firebase: Checking...</div>
-
 <div id="page-home">
 <div class="card"><span class="badge">NURSING ONLY • WORLDWIDE • PAYPAL SAFE</span><h1 style="margin:8px 0">Professional Nursing at Your Home</h1><p>Qualified nurses for home care, elderly care, post-surgery care, wound care, injections, vitals monitoring & chronic care.</p><p class="small">🔒 Pay safely inside the app with <b>PayPal</b>. Wallet + PayPal + Firebase.</p><div class="row"><button class="btn" onclick="showPage('book')">Book a Nurse</button><button class="btn btn-yellow" onclick="showPage('login')">Login / Create Account</button></div><button class="btn btn-outline" onclick="showPage('track')">📍 Track My Booking</button><button class="btn btn-green" onclick="showPage('wallet')">💰 My Wallet</button></div>
 <div class="grid"><div class="card"><b>🩺 Home Nursing</b><p class="small">Daily visits, vitals, medication</p></div><div class="card"><b>👴 Elderly Care</b><p class="small">Compassionate elderly support</p></div><div class="card"><b>🏥 Post-Surgery</b><p class="small">Wound care & recovery</p></div></div>
 </div>
-
 <div id="page-book" class="hidden">
 <div class="card"><h2>Book a Nurse</h2>
 <label>Country</label><select id="country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>USA</option><option>UK</option><option>Canada</option><option>UAE</option><option>Other</option></select>
@@ -70,45 +66,39 @@ function showPage(page){
 <label>City / Location</label><input id="location" placeholder="City, Area">
 <label>Phone</label><input id="phone" placeholder="Phone">
 <label>Date</label><input id="date" type="date">
-<label>Amount (USD) - to pay in app</label><input id="amount" type="number" placeholder="e.g. 30">
+<label>Amount (USD)</label><input id="amount" type="number" placeholder="e.g. 30">
 <label>Notes</label><textarea id="notes"></textarea>
 <button class="btn" onclick="makeBooking()">Save Booking & Pay with PayPal</button><p id="bookMsg" class="small"></p>
 <div id="paySection" class="hidden"><h3>🔒 Pay with PayPal</h3><p class="small">Booking: <b id="payDesc">-</b> | Amount: $<span id="payAmtShow">0</span></p><div id="paypal-button-container"></div><p id="payMsg" class="small"></p></div>
 </div>
 </div>
-
 <div id="page-track" class="hidden">
 <div class="card"><h2>📍 Track My Booking</h2><button class="btn btn-outline" onclick="loadTracking()">Refresh</button><div id="trackList"></div></div>
 <div class="card"><h3>My Transactions</h3><div id="myTrans"></div></div>
 </div>
-
-<!-- WALLET BACK -->
 <div id="page-wallet" class="hidden">
 <div class="card"><h2>💰 My Wallet</h2><div class="stat" id="bal">$0</div><p class="small" id="walletEmail">Login to see wallet</p>
 <label>Top Up Amount (USD)</label><input id="topupAmt" type="number" placeholder="e.g. 50">
-<p class="small">Top up safely with PayPal inside the app. Money goes to your wallet balance.</p>
+<p class="small">Top up safely with PayPal inside the app.</p>
 <div id="paypal-wallet-container"></div>
 <button class="btn btn-outline" onclick="loadWallet()">Refresh Wallet</button>
 <p id="walletMsg" class="small"></p></div>
 <div class="card"><h3>Wallet History</h3><div id="walletHist"></div></div>
 </div>
-
 <div id="page-login" class="hidden">
 <div class="card"><h2>Login</h2><p class="small" id="loginState">Not logged in</p>
-<input id="email" type="email" placeholder="Email">
+<input id="email" type="email" placeholder="Email" value="kwemoilevi64@gmail.com">
 <input id="pass" type="password" placeholder="Password">
 <button class="btn" onclick="loginEmail()">Login with Email</button>
 <button class="btn btn-yellow" onclick="registerEmail()">Create Account</button>
 <button class="btn btn-outline" onclick="loginGoogle()">Login with Google</button>
 <button class="btn btn-red" onclick="logout()">Logout</button>
 <p id="loginMsg" class="small"></p>
-<div class="card" style="background:#fff3cd"><b>🔒 Admin?</b><p class="small">Admin must login here with admin email. Only admin email can open Admin Dashboard. Normal users will be blocked.</p></div>
+<div class="card" style="background:#fff3cd"><b>🔒 Admin?</b><p class="small">Admin email is <b>kwemoilevi64@gmail.com</b>. Only this email can open Admin Dashboard. Normal users will be blocked.</p></div>
 </div>
 </div>
-
-<!-- ADMIN - PROTECTED -->
 <div id="page-admin" class="hidden">
-<div id="adminLocked" class="lockbox"><h2>🔒 Admin Login Required</h2><p>You are not logged in as Admin. Please login with admin email.</p><button class="btn" onclick="showPage('login')">Go to Admin Login</button></div>
+<div id="adminLocked" class="lockbox"><h2>🔒 Admin Login Required</h2><p>You are not logged in as Admin. Please login with kwemoilevi64@gmail.com</p><button class="btn" onclick="showPage('login')">Go to Admin Login</button></div>
 <div id="adminContent" class="hidden">
 <div class="card"><h2>🔒 Admin Dashboard - Welcome Admin</h2><p class="small" id="adminEmailShow"></p><div class="grid"><div class="card"><div>Total Bookings</div><div class="stat" id="aBookings">0</div></div><div class="card"><div>Total PayPal Payments</div><div class="stat" id="aPayments">$0</div></div><div class="card"><div>Paid Bookings</div><div class="stat" id="aPaid">0</div></div></div><button class="btn" onclick="loadAdmin()">Refresh Admin Data</button><button class="btn btn-red" onclick="logout()">Admin Logout</button></div>
 <div class="card"><h3>All Bookings</h3><div id="adminBookings"></div></div>
@@ -117,39 +107,38 @@ function showPage(page){
 </div>
 </div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script>
-// ===== CHANGE TO YOUR ADMIN EMAIL HERE - ONLY THIS EMAIL CAN OPEN ADMIN =====
-var ADMIN_EMAILS = ["admin@homecarehero.com", "YOUR_EMAIL_HERE@gmail.com"];
-// ===== PASTE YOUR FIREBASE CONFIG HERE =====
-var firebaseConfig = {
-  apiKey: "PASTE_YOUR_APIKEY_HERE",
-  authDomain: "PASTE_YOUR_AUTHDOMAIN_HERE",
+// ===== ADMIN EMAIL - ALREADY SET =====
+var ADMIN_EMAILS = ["kwemoilevi64@gmail.com"];
+// ===== YOUR REAL FIREBASE CONFIG - ALREADY FIXED =====
+const firebaseConfig = {
+  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
+  authDomain: "home-care-hero.firebaseapp.com",
+  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
   projectId: "home-care-hero",
-  storageBucket: "PASTE_YOUR_STORAGEBUCKET_HERE",
-  messagingSenderId: "PASTE_YOUR_SENDERID_HERE",
-  appId: "PASTE_YOUR_APPID_HERE"
+  storageBucket: "home-care-hero.firebasestorage.app",
+  messagingSenderId: "38632827016",
+  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
+  measurementId: "G-ZV09KN6R90"
 };
 var auth=null, db=null, currentUser=null, lastBookingId=null, lastAmount=0, lastDesc="";
 window.isAdmin=false;
 try{ firebase.initializeApp(firebaseConfig); auth=firebase.auth(); db=firebase.firestore(); document.getElementById('status').innerHTML='Firebase: Connected ✅ | Wallet + PayPal + Admin Protected'; }catch(e){ document.getElementById('status').innerHTML='Firebase: Not connected - '+e.message; }
-
 function checkAdmin(){
   window.isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
   var locked=document.getElementById('adminLocked'); var content=document.getElementById('adminContent');
   if(window.isAdmin){ if(locked) locked.classList.add('hidden'); if(content) content.classList.remove('hidden'); document.getElementById('adminEmailShow').innerText='Logged in as Admin: '+currentUser.email; }
   else { if(locked) locked.classList.remove('hidden'); if(content) content.classList.add('hidden'); }
 }
-async function loginEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); document.getElementById('loginMsg').innerText='Logged in ✅'; updateUser(); if(window.isAdmin){ alert('Welcome Admin ✅'); showPage('admin'); } }catch(e){ document.getElementById('loginMsg').innerText=e.message; } }
-async function registerEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.createUserWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); await db.collection('users').doc(auth.currentUser.uid).set({email:auth.currentUser.email,balance:0,created:new Date()}); document.getElementById('loginMsg').innerText='Account created ✅'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; } }
-async function loginGoogle(){ if(!auth) return alert('Firebase not connected'); try{ var p=new firebase.auth.GoogleAuthProvider(); await auth.signInWithPopup(p); document.getElementById('loginMsg').innerText='Google OK ✅'; updateUser(); if(window.isAdmin){ alert('Welcome Admin ✅'); showPage('admin'); } }catch(e){ document.getElementById('loginMsg').innerText=e.message; } }
+async function loginEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); document.getElementById('loginMsg').innerText='Logged in ✅'; updateUser(); if(window.isAdmin){ alert('Welcome Admin ✅'); showPage('admin'); } }catch(e){ document.getElementById('loginMsg').innerText='Firebase Error: '+e.message; } }
+async function registerEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.createUserWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); await db.collection('users').doc(auth.currentUser.uid).set({email:auth.currentUser.email,balance:0,created:new Date()}); document.getElementById('loginMsg').innerText='Account created ✅'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText='Firebase Error: '+e.message; } }
+async function loginGoogle(){ if(!auth) return alert('Firebase not connected'); try{ var p=new firebase.auth.GoogleAuthProvider(); await auth.signInWithPopup(p); document.getElementById('loginMsg').innerText='Google OK ✅'; updateUser(); if(window.isAdmin){ alert('Welcome Admin ✅'); showPage('admin'); } }catch(e){ document.getElementById('loginMsg').innerText='Firebase Error: '+e.message; } }
 async function logout(){ if(!auth) return; await auth.signOut(); updateUser(); document.getElementById('loginMsg').innerText='Logged out'; showPage('home'); }
 function updateUser(){ currentUser=auth?auth.currentUser:null; var ls=document.getElementById('loginState'); if(ls) ls.innerText=currentUser?('Logged in as: '+currentUser.email):'Not logged in'; var we=document.getElementById('walletEmail'); if(we) we.innerText=currentUser?currentUser.email:'Login to see wallet'; checkAdmin(); if(currentUser) loadWallet(); }
 if(auth) auth.onAuthStateChanged(function(){ updateUser(); });
-
 async function makeBooking(){
   if(!auth||!currentUser){ alert('Login first'); showPage('login'); return; }
   var amt=Number(document.getElementById('amount').value);
@@ -188,10 +177,7 @@ async function loadWallet(){
   if(!auth||!currentUser) return;
   var doc=await db.collection('users').doc(currentUser.uid).get(); var bal=doc.exists?(doc.data().balance||0):0; document.getElementById('bal').innerText='$'+Number(bal).toLocaleString();
   var s=await db.collection('payments').where('userId','==',currentUser.uid).get(); var h=''; s.forEach(function(d){ var x=d.data(); h+='<div class="item">'+(x.method||'PayPal')+' - $'+x.amount+' - '+x.status+'</div>'; }); document.getElementById('walletHist').innerHTML=h||'No history';
-  // Render PayPal wallet button with amount typed
-  var amt=Number(document.getElementById('topupAmt').value||0);
-  if(amt>0 && typeof paypal!=='undefined'){ lastAmount=amt; lastDesc='Wallet Topup'; renderPayPal('paypal-wallet-container', amt, 'wallet'); }
-  else { document.getElementById('paypal-wallet-container').innerHTML='<p class="small">Type amount above, then tap Refresh Wallet to show PayPal button, or tap Topup below.</p><button class="btn btn-green" onclick="showWalletPayPal()">Show PayPal Button for Topup</button>'; }
+  document.getElementById('paypal-wallet-container').innerHTML='<p class="small">Type amount above, then tap below to show PayPal button.</p><button class="btn btn-green" onclick="showWalletPayPal()">Show PayPal Button for Topup</button>';
 }
 function showWalletPayPal(){ var amt=Number(document.getElementById('topupAmt').value); if(!amt) return alert('Enter topup amount first'); lastAmount=amt; lastDesc='Wallet Topup $'+amt; renderPayPal('paypal-wallet-container', amt, 'wallet'); }
 async function loadAdmin(){
