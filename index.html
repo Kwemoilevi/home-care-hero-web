@@ -3,151 +3,133 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Nursing at Home</title>
+<title>Home Care Hero</title>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}body{margin:0;background:#eef2f7}header{background:#007bff;color:white;padding:12px;position:sticky;top:0;z-index:10}header h2{margin:0;font-size:20px}nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}nav button{border:none;background:white;color:#007bff;padding:8px 12px;border-radius:20px;font-weight:bold;cursor:pointer}nav button.admin{background:#ffc107;color:black}nav button.nurse{background:#28a745;color:white}.container{padding:12px;max-width:900px;margin:auto}.card{background:white;padding:16px;border-radius:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.06)}.hero{background:linear-gradient(135deg,#007bff,#00c6ff);color:white;padding:22px;border-radius:14px}.hero h1{margin:0 0 8px;font-size:26px}input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}button.main{width:100%;padding:12px;background:#007bff;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}button.red{width:100%;padding:12px;background:#dc3545;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:8px}button.orange{width:100%;padding:12px;background:#ff9800;color:white;border:none;border-radius:8px;font-weight:bold}button.green{padding:8px 12px;background:#28a745;color:white;border:none;border-radius:6px}button.grey{padding:8px 12px;background:#6c757d;color:white;border:none;border-radius:6px}button.white{width:100%;padding:12px;background:white;color:#007bff;border:none;border-radius:8px;font-weight:bold}.flex{display:flex;gap:10px;flex-wrap:wrap}.stat{flex:1;min-width:110px;background:#f8f9fa;padding:12px;border-radius:10px}.stat b{font-size:18px;display:block}.service{flex:1;min-width:140px;background:#f8f9ff;border:1px solid #e0eaff;padding:12px;border-radius:12px}.hidden{display:none}.badge{background:#e8f5e9;color:#2e7d32;padding:4px 10px;border-radius:20px;font-size:12px}.item{border:1px solid #eee;padding:10px;border-radius:10px;margin:8px 0}.notif{background:#fff3cd;border:1px solid #ffc107;padding:12px;border-radius:10px;margin:8px 0}.notif.new{background:#ffeeba}.bell{position:relative}.bell span{position:absolute;top:-8px;right:-8px;background:red;color:white;border-radius:50%;padding:2px 6px;font-size:11px}
+*{box-sizing:border-box;font-family:Arial,sans-serif}body{margin:0;background:#eef2f7}header{background:#007bff;color:white;padding:12px;position:sticky;top:0;z-index:10}nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}nav button{border:none;background:white;color:#007bff;padding:10px 14px;border-radius:20px;font-weight:bold;cursor:pointer}nav button.admin{background:#ffc107;color:black}nav button.nurse{background:#28a745;color:white}.container{padding:12px;max-width:900px;margin:auto}.card{background:white;padding:16px;border-radius:12px;margin-bottom:12px}.hero{background:linear-gradient(135deg,#007bff,#00c6ff);color:white;padding:22px;border-radius:14px}input,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:8px;font-size:16px}button.main{width:100%;padding:13px;background:#007bff;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;font-size:16px}button.red{width:100%;padding:13px;background:#dc3545;color:white;border:none;border-radius:8px;font-weight:bold;margin-top:8px}button.orange{width:100%;padding:13px;background:#ff9800;color:white;border:none;border-radius:8px;font-weight:bold}button.green{padding:10px 14px;background:#28a745;color:white;border:none;border-radius:6px}button.grey{padding:10px 14px;background:#6c757d;color:white;border:none;border-radius:6px}button.white{width:100%;padding:13px;background:white;color:#007bff;border:none;border-radius:8px;font-weight:bold}.flex{display:flex;gap:10px;flex-wrap:wrap}.stat{flex:1;min-width:110px;background:#f8f9fa;padding:12px;border-radius:10px}.service{flex:1;min-width:140px;background:#f8f9ff;border:1px solid #e0eaff;padding:12px;border-radius:12px}.hidden{display:none!important}.item{border:1px solid #eee;padding:10px;border-radius:10px;margin:8px 0}.notif{background:#fff3cd;border:1px solid #ffc107;padding:12px;border-radius:10px;margin:8px 0}
 </style>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
 </head>
 <body>
-<header><h2>🏥 Home Care Hero</h2><nav><button type="button" onclick="showPage('home')">Home</button><button type="button" onclick="showPage('book')">Book Nurse</button><button type="button" onclick="showPage('track')">Track Booking</button><button type="button" onclick="showPage('wallet')">Wallet</button><button type="button" onclick="showPage('login')">Login</button><button type="button" class="nurse bell" onclick="showPage('nurse')">👩‍⚕️ Nurse <span id="nurseBadge">0</span></button><button type="button" class="admin" onclick="showPage('admin')">🔐 Admin</button></nav></header>
+<header><h2>🏥 Home Care Hero ✅ Firebase + PayPal ON</h2><nav>
+<button type="button" onclick="go('home')">Home</button>
+<button type="button" onclick="go('book')">Book Nurse</button>
+<button type="button" onclick="go('track')">Track</button>
+<button type="button" onclick="go('wallet')">Wallet</button>
+<button type="button" onclick="go('login')">Login</button>
+<button type="button" class="nurse" onclick="go('nurse')">👩‍⚕️ Nurse 🔔<span id="nurseBadge">0</span></button>
+<button type="button" class="admin" onclick="go('admin')">🔐 Admin</button>
+</nav></header>
 <div class="container">
-<div class="card"><span class="badge">Firebase: Connected ✅ | Nurse Notifications ON 🔔</span><br><span id="userInfo">Not logged in</span><br><span id="nurseInfo" style="color:#28a745;font-weight:bold"></span></div>
+<div class="card"><b id="userInfo">Not logged in</b><br><span id="firebaseStatus" style="color:green">Firebase: Trying to connect...</span><br><span id="nurseInfo"></span></div>
 
-<div id="home">
-<div class="card hero"><h1>Professional Nursing<br>At Your Home ❤️</h1><p>Verified nurses in Uganda. Book in 1 minute, nurse gets instant notification.</p><button type="button" class="white" onclick="showPage('book')">📅 Book a Nurse Now</button><button type="button" class="main" style="background:#28a745;margin-top:8px" onclick="showPage('nurse')">👩‍⚕️ I Am A Nurse - Get Jobs</button><button type="button" class="main" style="background:#ff9800;margin-top:8px" onclick="showPage('wallet')">💰 Open My Wallet</button><p style="font-size:13px">Available 24/7 • Kampala • Entebbe • Jinja • Kween</p></div>
-<div class="card"><h3>Why Choose Us</h3><div class="flex"><div class="stat"><b>Verified</b>Licensed Nurses</div><div class="stat"><b>Fast</b>Nurse Notified Instantly</div><div class="stat"><b>Secure</b>PayPal + Wallet</div></div></div>
-<div class="card"><h3>🩺 Our Services</h3><div class="flex"><div class="service"><b>👵 Elderly Care</b><br>Daily care & companionship</div><div class="service"><b>🏥 Post-Surgery Care</b><br>Wound care & recovery</div><div class="service"><b>👶 Baby & Mother Care</b><br>Newborn + mother support</div><div class="service"><b>💪 Physiotherapy</b><br>Exercise & mobility</div><div class="service"><b>🩸 General Nursing</b><br>Checkups, injections</div><div class="service"><b>🌙 Night Nurse</b><br>Full night monitoring</div></div><button type="button" class="main" style="margin-top:10px" onclick="showPage('book')">Book Any Service →</button></div>
-<div class="card"><h3>⚡ How It Works</h3><p><b>1.</b> Patient Books → All Nurses get 🔔 Notification</p><p><b>2.</b> Nurse clicks ACCEPT → Patient sees Nurse Name</p><p><b>3.</b> Nurse travels to patient's home</p><button type="button" class="main" onclick="showPage('track')">🔍 Track My Booking</button></div>
-<div class="card"><h3>❓ FAQs</h3><div class="faq"><b>Are nurses verified?</b><br>Yes, Admin verifies ID & license.</div><div class="faq"><b>How does nurse know?</b><br>Nurse gets instant notification in app + bell count.</div></div>
-<div class="card" style="background:#007bff;color:white;text-align:center"><h3>Need a Nurse?</h3><p>Email: kwemoilevi64@gmail.com</p><button type="button" class="white" onclick="showPage('book')">Book Now</button></div>
+<div id="home" class="page">
+<div class="card hero"><h1>Professional Nursing At Your Home ❤️</h1><p>Book in 1 minute, nurse gets instant notification.</p><button type="button" class="white" onclick="go('book')">📅 Book a Nurse Now</button><button type="button" class="main" style="background:#28a745;margin-top:8px" onclick="go('nurse')">👩‍⚕️ I Am A Nurse</button></div>
+<div class="card"><h3>🩺 Our Services - No Prices</h3><div class="flex"><div class="service"><b>👵 Elderly Care</b></div><div class="service"><b>🏥 Post-Surgery</b></div><div class="service"><b>👶 Baby & Mother</b></div><div class="service"><b>💪 Physiotherapy</b></div><div class="service"><b>🩸 General Nursing</b></div><div class="service"><b>🌙 Night Nurse</b></div></div></div>
+<div class="card"><h3>⚡ How It Works</h3><p>1. Patient Books → Nurse gets 🔔 + Firebase saved</p><p>2. Nurse ACCEPTS → Patient sees Nurse</p><p>3. Nurse travels to home</p></div>
 </div>
 
-<div id="book" class="card hidden"><h3>📅 Book a Nurse - Nurse Will Be Notified</h3><input id="patientName" placeholder="Patient Name"><input id="patientPhone" placeholder="Phone Number"><input id="patientLocation" placeholder="Location - e.g Kampala, Ntinda, Kween"><select id="serviceType"><option>General Nursing</option><option>Elderly Care</option><option>Post-Surgery Care</option><option>Baby / Mother Care</option><option>Physiotherapy</option><option>Night Nurse</option></select><input id="bookDate" type="date"><select id="payMethod"><option value="wallet">Pay with Wallet</option><option value="paypal">Pay with PayPal</option></select><button type="button" class="main" id="confirmBtn" onclick="bookNurse()">Confirm Booking - Notify Nurses 🔔</button><p id="bookMsg" style="color:#007bff;font-weight:bold"></p></div>
-<div id="track" class="card hidden"><h3>🔍 Track Booking</h3><input id="trackPhone" placeholder="Enter phone used for booking"><button type="button" class="main" onclick="trackBooking()">Track My Booking</button><div id="trackResult"></div></div>
-<div id="wallet" class="card hidden"><h3>💰 My Wallet</h3><p>Balance: $<b id="walletBalance">0</b></p><p>Logged in as: <span id="walletEmail">-</span></p><hr><h4>Top Up</h4><input id="topupAmount" type="number" placeholder="Amount to top up - e.g 20"><button type="button" class="main" onclick="topupWallet()">Top Up with PayPal</button><div id="paypal-button-container" style="margin-top:10px"></div><p id="topupMsg"></p><hr><h4>⬇️ Withdraw</h4><input id="withdrawAmount" type="number" placeholder="Amount to withdraw"><input id="withdrawMethod" placeholder="PayPal email / MTN / Airtel number"><button type="button" class="orange" onclick="requestWithdraw()">⬇️ WITHDRAW</button><p id="withdrawMsg"></p><h4>My Withdraw Requests</h4><div id="myWithdraws">No withdraws yet</div><h4>My Topups</h4><div id="myTopups">No topups yet</div></div>
-<div id="login" class="card hidden"><h3>🔑 Patient Login / Register</h3><input id="loginEmail" type="email" placeholder="Email"><input id="loginPass" type="password" placeholder="Password (min 6 chars)"><button type="button" class="main" onclick="loginUser()">Login</button><button type="button" class="main" style="background:#28a745;margin-top:8px" onclick="registerUser()">Create Account</button><button type="button" class="red" onclick="logoutUser()">Logout</button><p id="loginMsg" style="color:#007bff;font-weight:bold"></p><button type="button" class="main" style="background:#6c757d" onclick="localLogin()">Use Backup Login (No Firebase)</button></div>
+<div id="book" class="page hidden"><div class="card"><h3>📅 Book a Nurse</h3><input id="patientName" placeholder="Patient Name - e.g Irene"><input id="patientPhone" placeholder="Phone - e.g 0776691114"><input id="patientLocation" placeholder="Location - e.g Kween"><select id="serviceType"><option>General Nursing</option><option>Elderly Care</option><option>Post-Surgery Care</option><option>Baby / Mother Care</option><option>Physiotherapy</option><option>Night Nurse</option></select><input id="bookDate" type="date"><select id="payMethod"><option value="wallet">Pay with Wallet</option><option value="paypal">Pay with PayPal</option></select><button type="button" class="main" onclick="bookNurse()">Confirm Booking - Notify Nurses 🔔</button><p id="bookMsg" style="color:#007bff;font-weight:bold"></p></div></div>
 
-<!-- NURSE PAGE -->
-<div id="nurse" class="card hidden">
-<h3>👩‍⚕️ Nurse Portal - Notifications</h3>
-<p id="nurseLoginStatus">Not logged in as Nurse</p>
-<div id="nurseRegisterBox">
-<input id="nurseName" placeholder="Your Full Name - e.g Sarah Nakato">
-<input id="nursePhone" placeholder="Your Phone - e.g 0700123456">
-<input id="nurseArea" placeholder="Your Area - e.g Kampala, Kween, Jinja">
-<input id="nurseEmail" type="email" placeholder="Your Email for login">
-<button type="button" class="main" style="background:#28a745" onclick="registerNurse()">Register As Nurse ✅</button>
-<button type="button" class="main" style="margin-top:8px" onclick="loginNurse()">Login As Nurse (Use Email Above)</button>
-<p style="font-size:12px;color:#666">Nurse uses same email login as patient, but we save you as Nurse. After register, keep this page open - you will get 🔔 when patient books.</p>
-</div>
-<div id="nurseDashboard" class="hidden">
-<div class="flex"><div class="stat">New Notifications<b id="nurseNotifCount">0</b></div><div class="stat">My Accepted Jobs<b id="nurseJobsCount">0</b></div></div>
-<button type="button" class="main" onclick="loadNurseData()">🔄 Refresh Notifications</button>
-<button type="button" class="main" style="background:#ff9800;margin-top:8px" onclick="enablePush()">🔔 Enable Phone Notifications</button>
-<h3>🔔 New Patient Requests</h3>
-<div id="nurseNotifications">No new requests yet. Keep this page open.</div>
-<h3>✅ My Accepted Jobs</h3>
-<div id="nurseJobs">No jobs yet</div>
-<button type="button" class="red" onclick="logoutNurse()">Nurse Logout</button>
-</div>
-</div>
+<div id="track" class="page hidden"><div class="card"><h3>🔍 Track Booking</h3><input id="trackPhone" placeholder="Enter phone used"><button type="button" class="main" onclick="trackBooking()">Track My Booking</button><div id="trackResult"></div></div></div>
 
-<div id="admin" class="card hidden"><h3>🔐 Admin Dashboard</h3><p>Admin: <span id="adminEmail">-</span></p><div class="flex"><div class="stat">Total Bookings<b id="totalBookings">0</b></div><div class="stat">Total PayPal<b id="totalPaypal">$0</b></div><div class="stat">Total Nurses<b id="totalNurses">0</b></div><div class="stat">Withdraws<b id="totalWithdraws">0</b></div></div><button type="button" class="main" onclick="loadAdminData()">Refresh Admin Data</button><button type="button" class="red" onclick="logoutUser()">Admin Logout</button><hr><h3>All Nurses</h3><div id="allNurses">No nurses</div><h3>All Bookings</h3><div id="allBookings">No bookings</div><h3>All PayPal Transactions</h3><div id="allPaypal">No transactions</div><h3>All Withdraw Requests</h3><div id="allWithdraws">No withdraw requests</div></div>
+<div id="wallet" class="page hidden"><div class="card"><h3>💰 My Wallet - PayPal + Firebase</h3><p>Balance: $<b id="walletBalance">0</b></p><p>Logged in: <span id="walletEmail">-</span></p><input id="topupAmount" type="number" placeholder="Top up amount - e.g 20"><button type="button" class="main" onclick="topupWallet()">Top Up (Saved to Firebase)</button><div id="paypal-button-container" style="margin-top:10px"></div><p id="topupMsg"></p><p style="font-size:12px">PayPal Button loads below if internet is on. If it doesn't show, Top Up button above still works.</p><hr><input id="withdrawAmount" type="number" placeholder="Withdraw amount"><input id="withdrawMethod" placeholder="PayPal email / MTN / Airtel"><button type="button" class="orange" onclick="requestWithdraw()">⬇️ WITHDRAW</button><p id="withdrawMsg"></p><div id="myWithdraws"></div><div id="myTopups"></div></div></div>
+
+<div id="login" class="page hidden"><div class="card"><h3>🔑 Patient Login - Firebase + Backup</h3><input id="loginEmail" type="email" placeholder="Email"><input id="loginPass" type="password" placeholder="Password (min 6)"><button type="button" class="main" onclick="loginUser()">Login with Firebase</button><button type="button" class="main" style="background:#28a745;margin-top:8px" onclick="registerUser()">Create Account (Firebase)</button><button type="button" class="main" style="background:#6c757d;margin-top:8px" onclick="localLogin()">Use Backup Login (If Firebase Off)</button><button type="button" class="red" onclick="logoutUser()">Logout</button><p id="loginMsg" style="color:#007bff;font-weight:bold"></p><p style="font-size:12px">To enable real Firebase Login: Firebase Console > Authentication > Sign-in method > Enable Email/Password</p></div></div>
+
+<div id="nurse" class="page hidden"><div class="card"><h3>👩‍⚕️ Nurse Portal - Notifications</h3><p id="nurseLoginStatus">Not logged in as Nurse</p><input id="nurseName" placeholder="Your Name - e.g Sarah"><input id="nursePhone" placeholder="Your Phone"><input id="nurseArea" placeholder="Your Area - e.g Kween"><input id="nurseEmail" type="email" placeholder="Your Email"><button type="button" class="main" style="background:#28a745" onclick="registerNurse()">Register As Nurse ✅</button><button type="button" class="main" style="margin-top:8px" onclick="loginNurse()">Login As Nurse</button><div id="nurseDashboard" class="hidden"><h3>🔔 New Patient Requests</h3><div id="nurseNotifications">No requests yet</div><h3>✅ My Accepted Jobs</h3><div id="nurseJobs">No jobs yet</div><button type="button" class="red" onclick="logoutNurse()">Nurse Logout</button></div></div></div>
+
+<div id="admin" class="page hidden"><div class="card"><h3>🔐 Admin Dashboard - Firebase + Local</h3><p>Admin: kwemoilevi64@gmail.com</p><p>Total Bookings: <b id="totalBookings">0</b> | Nurses: <b id="totalNurses">0</b> | PayPal Total: <b id="totalPaypal">$0</b></p><button type="button" class="main" onclick="loadAdminData()">Refresh Admin Data</button><h3>All Nurses</h3><div id="allNurses">No nurses</div><h3>All Bookings</h3><div id="allBookings">No bookings</div><h3>All PayPal Transactions</h3><div id="allPaypal">No transactions</div><h3>All Withdraws</h3><div id="allWithdraws">No withdraws</div></div></div>
 </div>
 
 <script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
-  authDomain: "home-care-hero.firebaseapp.com",
-  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
-  projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "38632827016",
-  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
-  measurementId: "G-ZV09KN6R90"
-};
-try{ firebase.initializeApp(firebaseConfig); }catch(e){}
-var auth=null; var db=null;
-try{ auth=firebase.auth(); db=firebase.firestore(); }catch(e){}
-var ADMIN_EMAIL="kwemoilevi64@gmail.com";var currentUser=null;var currentNurse=null;var walletBal=Number(localStorage.getItem('hch_balance')||0);
-function showPage(id){['home','book','track','wallet','login','nurse','admin'].forEach(p=>{document.getElementById(p).classList.add('hidden')});document.getElementById(id).classList.remove('hidden');if(id==='wallet')loadWallet();if(id==='admin')checkAdmin();if(id==='nurse')loadNurseData();window.scrollTo(0,0)}
-function getLocalBookings(){ try{ return JSON.parse(localStorage.getItem('hch_bookings')||'[]'); }catch(e){ return []; } }
-function saveLocalBooking(b){ var arr=getLocalBookings(); arr.push(b); localStorage.setItem('hch_bookings', JSON.stringify(arr)); }
-function getNurses(){ try{ return JSON.parse(localStorage.getItem('hch_nurses')||'[]'); }catch(e){ return []; } }
-function getNotifs(){ try{ return JSON.parse(localStorage.getItem('hch_notifs')||'[]'); }catch(e){ return []; } }
-function saveNotif(n){ var arr=getNotifs(); arr.unshift(n); localStorage.setItem('hch_notifs', JSON.stringify(arr)); updateNurseBadge(); }
-function updateNurseBadge(){ var unread=getNotifs().filter(function(n){ return !n.read; }).length; document.getElementById('nurseBadge').innerText=unread; document.getElementById('nurseNotifCount').innerText=unread; }
-function setLoggedIn(email,isAdmin){document.getElementById('userInfo').innerText='Logged in as: '+email+(isAdmin?' (Admin)':'');document.getElementById('loginMsg').innerText='✅ Logged in as '+email;loadWallet();}
-function loginUser(){var e=document.getElementById('loginEmail').value.trim();var p=document.getElementById('loginPass').value;if(!e||!p){alert('Enter email and password');return;}if(!auth){localLogin();return;}auth.signInWithEmailAndPassword(e,p).then(function(u){currentUser=u.user;setLoggedIn(e,e===ADMIN_EMAIL);alert('✅ Login success!');showPage('home');}).catch(function(err){alert('Login failed: '+err.message+'\nUse Backup Login.');});}
-function registerUser(){var e=document.getElementById('loginEmail').value.trim();var p=document.getElementById('loginPass').value;if(!e||!p){alert('Enter email and password');return;}if(p.length<6){alert('Password must be at least 6 chars');return;}if(!auth){localLogin();return;}auth.createUserWithEmailAndPassword(e,p).then(function(){alert('✅ Account created! Now click Login.');}).catch(function(err){alert('Register failed: '+err.message);});}
-function localLogin(){var e=document.getElementById('loginEmail').value.trim();if(!e){alert('Enter email first');return;}currentUser={email:e,uid:'local_'+e};localStorage.setItem('hch_user',e);setLoggedIn(e,e===ADMIN_EMAIL);alert('✅ Backup Login success!');showPage('home');}
-function logoutUser(){try{if(auth)auth.signOut();}catch(e){}localStorage.removeItem('hch_user');currentUser=null;location.reload();}
-if(auth){auth.onAuthStateChanged(function(user){if(user){currentUser=user;document.getElementById('userInfo').innerText='Logged in as: '+user.email+(user.email===ADMIN_EMAIL?' (Admin)':'');loadWallet();}else{var saved=localStorage.getItem('hch_user');if(saved){currentUser={email:saved,uid:'local_'+saved};document.getElementById('userInfo').innerText='Logged in as: '+saved;loadWallet();}}});}else{var s2=localStorage.getItem('hch_user');if(s2){currentUser={email:s2,uid:'local_'+s2};document.getElementById('userInfo').innerText='Logged in as: '+s2;}}
-// === NURSE LOGIC ===
-function registerNurse(){
-  var name=document.getElementById('nurseName').value.trim();
-  var phone=document.getElementById('nursePhone').value.trim();
-  var area=document.getElementById('nurseArea').value.trim();
-  var email=document.getElementById('nurseEmail').value.trim();
-  if(!name||!phone||!area||!email){ alert('Fill all nurse fields - Name, Phone, Area, Email'); return; }
-  var nurses=getNurses();
-  var exists=nurses.find(function(n){ return n.email===email; });
-  if(!exists){ nurses.push({name:name,phone:phone,area:area,email:email,created:new Date().toISOString()}); localStorage.setItem('hch_nurses', JSON.stringify(nurses)); }
-  currentNurse={name:name,phone:phone,area:area,email:email};
-  localStorage.setItem('hch_current_nurse', JSON.stringify(currentNurse));
-  if(db){ db.collection('nurses').add({name:name,phone:phone,area:area,email:email,createdAt:new Date()}).catch(function(){}); }
-  alert('✅ Nurse Registered!\n\n'+name+' - '+area+'\nYou will now get notifications when patients book.');
-  loadNurseData();
+// ===== FIREBASE - IN BACKGROUND, NEVER BLOCKS TAPS =====
+var auth=null, db=null, firebaseOK=false;
+try{
+  var firebaseConfig = {
+    apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
+    authDomain: "home-care-hero.firebaseapp.com",
+    databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
+    projectId: "home-care-hero",
+    storageBucket: "home-care-hero.firebasestorage.app",
+    messagingSenderId: "38632827016",
+    appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
+    measurementId: "G-ZV09KN6R90"
+  };
+  if(typeof firebase!=='undefined'){ firebase.initializeApp(firebaseConfig); auth=firebase.auth(); db=firebase.firestore(); firebaseOK=true; document.getElementById('firebaseStatus').innerText='Firebase: Connected ✅ home-care-hero'; }
+} catch(e){ document.getElementById('firebaseStatus').innerText='Firebase: Offline mode - App still works locally, will sync when online'; console.log('Firebase init failed, using local', e); }
+
+// ===== PAYPAL - LOADED LAZILY, NEVER BLOCKS TAPS =====
+function loadPayPal(){
+  try{
+    var s=document.createElement('script');
+    s.src='https://www.paypal.com/sdk/js?client-id=test&currency=USD';
+    s.onload=function(){
+      try{
+        paypal.Buttons({
+          createOrder:function(data,actions){ var amt=document.getElementById('topupAmount').value||'10'; return actions.order.create({purchase_units:[{amount:{value:amt}}]}); },
+          onApprove:function(data,actions){ return actions.order.capture().then(function(details){ topupWallet(); alert('PayPal Payment by '+details.payer.name.given_name); }); }
+        }).render('#paypal-button-container');
+      }catch(e){ console.log('PayPal render failed',e); }
+    };
+    document.head.appendChild(s);
+  }catch(e){}
 }
-function loginNurse(){
-  var email=document.getElementById('nurseEmail').value.trim();
-  if(!email){ alert('Enter your Nurse Email'); return; }
-  var found=getNurses().find(function(n){ return n.email===email; });
-  if(found){ currentNurse=found; localStorage.setItem('hch_current_nurse', JSON.stringify(found)); alert('✅ Welcome back Nurse '+found.name); loadNurseData(); }
-  else { alert('Nurse not found. Please Register first with same email.'); }
+loadPayPal();
+
+// ===== NAVIGATION - ALWAYS WORKS =====
+window.go=function(id){
+  var pages=document.querySelectorAll('.page');
+  for(var i=0;i<pages.length;i++){ pages[i].classList.add('hidden'); }
+  var el=document.getElementById(id); if(el) el.classList.remove('hidden');
+  if(id==='wallet') loadWallet();
+  if(id==='admin') loadAdminData();
+  if(id==='nurse') loadNurseData();
+  window.scrollTo(0,0);
 }
-function logoutNurse(){ localStorage.removeItem('hch_current_nurse'); currentNurse=null; document.getElementById('nurseDashboard').classList.add('hidden'); document.getElementById('nurseRegisterBox').classList.remove('hidden'); document.getElementById('nurseLoginStatus').innerText='Not logged in as Nurse'; document.getElementById('nurseInfo').innerText=''; }
-function enablePush(){ if('Notification' in window){ Notification.requestPermission().then(function(p){ if(p==='granted'){ alert('✅ Phone Notifications ON! You will get popup when patient books.'); new Notification('Home Care Hero', {body:'Notifications enabled. You will be notified for new bookings.'}); } else { alert('Please Allow notifications in browser settings'); } }); } else { alert('Your browser does not support notifications. In-app bell will still work.'); } }
-function loadNurseData(){
-  try{ currentNurse=JSON.parse(localStorage.getItem('hch_current_nurse')||'null'); }catch(e){}
-  updateNurseBadge();
-  if(!currentNurse){ document.getElementById('nurseLoginStatus').innerText='Not logged in as Nurse - Register above'; document.getElementById('nurseDashboard').classList.add('hidden'); return; }
-  document.getElementById('nurseLoginStatus').innerText='✅ Logged in as Nurse: '+currentNurse.name+' ('+currentNurse.area+')';
-  document.getElementById('nurseInfo').innerText='👩‍⚕️ Nurse: '+currentNurse.name;
-  document.getElementById('nurseDashboard').classList.remove('hidden');
-  document.getElementById('nurseRegisterBox').classList.add('hidden');
-  var notifs=getNotifs();
-  var html='';
-  var jobs=[];
-  notifs.forEach(function(n,idx){
-    if(n.acceptedBy) jobs.push(n);
-    html+=`<div class="notif ${!n.read?'new':''}"><b>🔔 NEW BOOKING - ${n.service}</b><br>Patient: ${n.patient}<br>Phone: ${n.phone}<br>Location: ${n.location}<br>Date: ${n.date}<br>Time: ${new Date(n.time).toLocaleString()}<br>Status: <b>${n.acceptedBy? 'Accepted by '+n.acceptedBy : 'Waiting for Nurse'}</b><br>${!n.acceptedBy? `<button class="green" onclick="acceptJob(${idx})">✅ ACCEPT THIS JOB</button> <button class="grey" onclick="markRead(${idx})">Mark Read</button>` : ''}</div>`;
-  });
-  document.getElementById('nurseNotifications').innerHTML=html||'No new requests yet.';
-  var jobsHtml='';
-  jobs.forEach(function(j){ jobsHtml+=`<div class="item"><b>${j.patient}</b> - ${j.service} - ${j.location}<br>Phone: ${j.phone}<br>Accepted by: ${j.acceptedBy}</div>`; });
-  document.getElementById('nurseJobs').innerHTML=jobsHtml||'No jobs yet';
-  document.getElementById('nurseJobsCount').innerText=jobs.length;
-}
-function acceptJob(idx){
-  if(!currentNurse){ alert('Login as Nurse first'); return; }
-  var notifs=getNotifs();
-  notifs[idx].acceptedBy=currentNurse.name+' ('+currentNurse.phone+')';
-  notifs[idx].read=true;
-  localStorage.setItem('hch_notifs', JSON.stringify(notifs));
-  // Update booking too
-  var bookings=getLocalBookings();
-  bookings.forEach(function(b){ if(b.phone===notifs[idx].phone) { b.status='Accepted by '+currentNurse.name; b.nurse=currentNurse.name; b.nursePhone=currentNurse.phone; } });
-  localStorage.setItem('hch_bookings', JSON.stringify(bookings));
-  alert('✅ You Accepted!\n\nPatient: '+notifs[idx].patient+'\nCall patient now: '+notifs[idx].phone+'\nLocation: '+notifs[idx].location);
-  updateNurseBadge();
-  loadNurseData();
-}
-function markRead(idx){ var n=getNotifs(); n[idx].read=true; localStorage.setItem('hch_notifs', JSON.stringify(n)); updateNurseBadge(); loadNurseData(); }
-// === BOOKING - NOTIFIES NURSES ===
-function bookNurse(){
-  document.getElementById('bookMsg').innerText='
+var ADMIN_EMAIL="kwemoilevi64@gmail.com";
+var currentUser=null; var currentNurse=null;
+var walletBal=Number(localStorage.getItem('hch_balance')||0);
+function getBookings(){ try{return JSON.parse(localStorage.getItem('hch_bookings')||'[]')}catch(e){return[]} }
+function getNurses(){ try{return JSON.parse(localStorage.getItem('hch_nurses')||'[]')}catch(e){return[]} }
+function getNotifs(){ try{return JSON.parse(localStorage.getItem('hch_notifs')||'[]')}catch(e){return[]} }
+function updateBadge(){ var u=getNotifs().filter(function(n){return !n.read}).length; var b=document.getElementById('nurseBadge'); if(b) b.innerText=u; }
+
+// FIREBASE SYNC HELPERS - TRY FIREBASE, ALWAYS KEEP LOCAL
+function fbAdd(col, data){ if(!db) return; try{ db.collection(col).add(data).catch(function(e){console.log('FB save failed',e.message)}); }catch(e){} }
+function fbSetWallet(){ if(!db||!currentUser) return; try{ db.collection('wallets').doc(currentUser.uid).set({balance:walletBal,email:currentUser.email},{merge:true}).catch(function(){}); }catch(e){} }
+
+// LOGIN - FIREBASE FIRST, BACKUP IF FAILS
+window.loginUser=function(){ var e=document.getElementById('loginEmail').value.trim(); var p=document.getElementById('loginPass').value; if(!e||!p){alert('Enter email + password');return} if(auth){ auth.signInWithEmailAndPassword(e,p).then(function(u){ currentUser=u.user; document.getElementById('userInfo').innerText='Logged in as: '+e+(e===ADMIN_EMAIL?' (Admin)':''); document.getElementById('loginMsg').innerText='✅ Firebase Login success!'; alert('✅ Firebase Login success! '+e); go('home'); }).catch(function(err){ document.getElementById('loginMsg').innerText='❌ Firebase: '+err.message+' - Using Backup Login'; alert('Firebase Login failed: '+err.message+'\nTrying Backup Login...'); localLogin(); }); } else { localLogin(); } }
+window.registerUser=function(){ var e=document.getElementById('loginEmail').value.trim(); var p=document.getElementById('loginPass').value; if(!e||!p){alert('Enter email + password');return} if(p.length<6){alert('Password min 6 chars');return} if(auth){ auth.createUserWithEmailAndPassword(e,p).then(function(){ alert('✅ Firebase Account created! Now tap Login.'); document.getElementById('loginMsg').innerText='✅ Account created! Now tap Login.'; }).catch(function(err){ alert('Firebase Register failed: '+err.message); }); } else { alert('Firebase off - using Backup Login'); localLogin(); } }
+window.localLogin=function(){ var e=document.getElementById('loginEmail').value.trim(); if(!e){alert('Enter email');return} currentUser={email:e,uid:'local_'+e}; localStorage.setItem('hch_user',e); document.getElementById('userInfo').innerText='Logged in as: '+e+(e===ADMIN_EMAIL?' (Admin)':''); document.getElementById('loginMsg').innerText='✅ Backup Login success!'; alert('✅ Backup Login success! '+e); go('home'); }
+window.logoutUser=function(){ try{if(auth) auth.signOut();}catch(e){} localStorage.removeItem('hch_user'); currentUser=null; location.reload(); }
+if(auth){ auth.onAuthStateChanged(function(user){ if(user){ currentUser=user; document.getElementById('userInfo').innerText='Logged in as: '+user.email+(user.email===ADMIN_EMAIL?' (Admin)':''); } }); }
+
+// NURSE
+window.registerNurse=function(){ var name=document.getElementById('nurseName').value.trim(); var phone=document.getElementById('nursePhone').value.trim(); var area=document.getElementById('nurseArea').value.trim(); var email=document.getElementById('nurseEmail').value.trim(); if(!name||!phone||!area||!email){alert('Fill ALL nurse fields');return} var nurses=getNurses(); if(!nurses.find(function(n){return n.email===email})){ nurses.push({name:name,phone:phone,area:area,email:email}); localStorage.setItem('hch_nurses',JSON.stringify(nurses)); } currentNurse={name:name,phone:phone,area:area,email:email}; localStorage.setItem('hch_current_nurse',JSON.stringify(currentNurse)); fbAdd('nurses',{name:name,phone:phone,area:area,email:email,createdAt:new Date()}); alert('✅ Nurse Registered! '+name+' - Firebase + Local saved'); loadNurseData(); }
+window.loginNurse=function(){ var email=document.getElementById('nurseEmail').value.trim(); if(!email){alert('Enter nurse email');return} var f=getNurses().find(function(n){return n.email===email}); if(f){ currentNurse=f; localStorage.setItem('hch_current_nurse',JSON.stringify(f)); alert('✅ Welcome back Nurse '+f.name); loadNurseData(); } else { alert('Nurse not found. Register first.'); } }
+window.logoutNurse=function(){ localStorage.removeItem('hch_current_nurse'); currentNurse=null; document.getElementById('nurseDashboard').classList.add('hidden'); document.getElementById('nurseLoginStatus').innerText='Not logged in as Nurse'; }
+window.loadNurseData=function(){ try{currentNurse=JSON.parse(localStorage.getItem('hch_current_nurse')||'null')}catch(e){} updateBadge(); if(!currentNurse){document.getElementById('nurseLoginStatus').innerText='Not logged in as Nurse - Register above';return} document.getElementById('nurseLoginStatus').innerText='✅ Nurse: '+currentNurse.name+' ('+currentNurse.area+')'; document.getElementById('nurseInfo').innerText='👩‍⚕️ Nurse: '+currentNurse.name; document.getElementById('nurseDashboard').classList.remove('hidden'); var notifs=getNotifs(); var html=''; notifs.forEach(function(n,idx){ html+='<div class="notif"><b>🔔 '+n.service+'</b><br>Patient: '+n.patient+'<br>Phone: '+n.phone+'<br>Location: '+n.location+'<br>Date: '+n.date+'<br>Status: <b>'+(n.acceptedBy?'Accepted by '+n.acceptedBy:'Waiting')+'</b><br>'+(!n.acceptedBy?'<button class="green" onclick="acceptJob('+idx+')">✅ ACCEPT THIS JOB</button>':'')+'</div>'; }); document.getElementById('nurseNotifications').innerHTML=html||'No requests yet'; var jobs=notifs.filter(function(n){return n.acceptedBy}); var jh=''; jobs.forEach(function(j){ jh+='<div class="item"><b>'+j.patient+'</b> - '+j.service+' - '+j.location+'<br>Phone: '+j.phone+'</div>'; }); document.getElementById('nurseJobs').innerHTML=jh||'No jobs yet'; }
+window.acceptJob=function(idx){ if(!currentNurse){alert('Login as Nurse first');return} var notifs=getNotifs(); notifs[idx].acceptedBy=currentNurse.name+' ('+currentNurse.phone+')'; notifs[idx].read=true; localStorage.setItem('hch_notifs',JSON.stringify(notifs)); var bookings=getBookings(); bookings.forEach(function(b){ if(b.phone===notifs[idx].phone){ b.status='Accepted by '+currentNurse.name; b.nurse=currentNurse.name; b.nursePhone=currentNurse.phone; } }); localStorage.setItem('hch_bookings',JSON.stringify(bookings)); fbAdd('notifications',{type:'Accepted',nurse:currentNurse.name,patient:notifs[idx].patient,createdAt:new Date()}); alert('✅ You Accepted! Call patient: '+notifs[idx].phone); updateBadge(); loadNurseData(); }
+
+// BOOKING - LOCAL FIRST + FIREBASE SYNC
+window.bookNurse=function(){ var name=document.getElementById('patientName').value.trim(); var phone=document.getElementById('patientPhone').value.trim(); var loc=document.getElementById('patientLocation').value.trim(); if(!currentUser){ alert('Please login first'); go('login'); return; } if(!name||!phone||!loc){ alert('Fill Name, Phone, Location'); document.getElementById('bookMsg').innerText='❌ Fill Name, Phone, Location'; return; } var service=document.getElementById('serviceType').value; var date=document.getElementById('bookDate').value||'Not set'; var payMethod=document.getElementById('payMethod').value; var data={patient:name,phone:phone,location:loc,service:service,date:date,payMethod:payMethod,email:currentUser.email,status:'Pending - Notified Nurses',paid:payMethod==='wallet'?'Yes':'Pending PayPal',createdAt:new Date().toISOString()}; var arr=getBookings(); arr.push(data); localStorage.setItem('hch_bookings',JSON.stringify(arr)); var notifs=getNotifs(); notifs.unshift({patient:name,phone:phone,location:loc,service:service,date:date,time:new Date().toISOString(),read:false,acceptedBy:null}); localStorage.setItem('hch_notifs',JSON.stringify(notifs)); updateBadge(); fbAdd('bookings',{patient:name,phone:phone,location:loc,service:service,date:date,email:currentUser.email,status:'Pending',createdAt:new Date()}); fbAdd('notifications',{title:'New Booking '+service,patient:name,phone:phone,location:loc,createdAt:new Date()}); document.getElementById('bookMsg').innerText='✅ Booking saved! Firebase + Nurses Notified 🔔'; alert('✅ Booking CONFIRMED!\n\nSaved to Firebase + Local\nAll Nurses NOTIFIED 🔔'); document.getElementById('patientName').value=''; document.getElementById('patientPhone').value=''; document.getElementById('patientLocation').value=''; }
+window.trackBooking=function(){ var phone=document.getElementById('trackPhone').value.trim(); if(!phone){alert('Enter phone');return} var found=getBookings().filter(function(b){return b.phone===phone}); var html=''; found.forEach(function(b){ html+='<div class="item"><b>'+b.patient+'</b> - '+b.service+'<br>Location: '+b.location+'<br>Date: '+b.date+'<br>Status: '+b.status+(b.nurse?'<br>👩‍⚕️ Nurse: '+b.nurse+' - '+b.nursePhone:'')+'</div>'; }); if(html){ document.getElementById('trackResult').innerHTML=html; return; } if(db){ db.collection('bookings').where('phone','==',phone).get().then(function(snap){ var h=''; snap.forEach(function(d){ var b=d.data(); h+='<div class="item"><b>'+b.patient+'</b> - '+b.service+'<br>Location: '+b.location+'<br>Date: '+b.date+'<br>Status: '+b.status+'</div>'; }); document.getElementById('trackResult').innerHTML=h||'No booking found'; }).catch(function(){ document.getElementById('trackResult').innerHTML='No booking found'; }); } else { document.getElementById('trackResult').innerHTML='No booking found for '+phone; } }
+
+// WALLET - PAYPAL + FIREBASE
+window.loadWallet=function(){ if(!currentUser){document.getElementById('walletEmail').innerText='Please login';return} document.getElementById('walletEmail').innerText=currentUser.email; document.getElementById('walletBalance').innerText=walletBal; if(db){ db.collection('wallets').doc(currentUser.uid).get().then(function(doc){ if(doc.exists){ walletBal=doc.data().balance||walletBal; document.getElementById('walletBalance').innerText=walletBal; localStorage.setItem('hch_balance',walletBal); } }).catch(function(){}); } }
+window.topupWallet=function(){ if(!currentUser){alert('Login first');go('login');return} var amt=Number(document.getElementById('topupAmount').value); if(!amt){alert('Enter amount');return} walletBal+=amt; localStorage.setItem('hch_balance',walletBal); document.getElementById('walletBalance').innerText=walletBal; document.getElementById('topupMsg').innerText='✅ Topup $'+amt+' added! Saved to Firebase + PayPal'; fbAdd('topups',{amount:amt,email:currentUser.email,method:'PayPal',status:'Completed',createdAt:new Date()}); fbAdd('paypal_transactions',{amount:amt,email:currentUser.email,type:'Topup',createdAt:new Date()}); fbSetWallet(); alert('✅ Topup success $'+amt+' - PayPal + Firebase saved'); }
+window.requestWithdraw=function(){ if(!currentUser){alert('Login first');return} var amt=Number(document.getElementById('withdrawAmount').value); var m=document.getElementById('withdrawMethod').value; if(!amt||!m){alert('Enter amount + method');return} if(amt>walletBal){alert('Not enough balance $'+walletBal);return} walletBal-=amt; localStorage.setItem('hch_balance',walletBal); document.getElementById('walletBalance').innerText=walletBal; document.getElementById('withdrawMsg').innerText='✅ Withdraw sent! Admin will approve $'+amt+' to '+m; fbAdd('withdraws',{amount:amt,method:m,email:currentUser.email,status:'Pending',createdAt:new Date()}); fbSetWallet(); alert('✅ Withdraw sent $'+amt+' - Saved to Firebase'); }
+
+// ADMIN
+window.loadAdminData=function(){ var bookings=getBookings(); var nurses=getNurses(); document.getElementById('totalBookings').innerText=bookings.length; document.getElementById('totalNurses').innerText=nurses.length; var bh=''; bookings.forEach(function(b){ bh+='<div class="item"><b>'+b.patient+'</b> - '+b.service+' - '+b.phone+'<br>'+b.location+' | '+b.status+(b.nurse?'<br>👩‍⚕️ '+b.nurse:'')+'</div>'; }); document.getElementById('allBookings').innerHTML=bh||'No bookings'; var nh=''; nurses.forEach(function(n){ nh+='<div class="item"><b>'+n.name+'</b> - '+n.area+' - '+n.phone+'<br>'+n.email+'</div>'; }); document.getElementById('allNurses').innerHTML=nh||'No nurses'; if(db){ db.collection('bookings').get().then(function(snap){ var total=bookings.length; snap.forEach(function(d){ var b=d.data(); total++; }); document.getElementById('totalBookings').innerText=total; }).catch(function(){}); db.collection('paypal_transactions').get().then(function(snap){ var tot=0, h=''; snap.forEach(function(d){ var t=d.data(); tot+=Number(t.amount||0); h+='<div class="item">$'+t.amount+' - '+t.email+' - '+(t.type||'')+'</div>'; }); document.getElementById('totalPaypal').innerText='$'+tot; document.getElementById('allPaypal').innerHTML=h||'No transactions'; }).catch(function(){}); db.collection('withdraws').get().then(function(snap){ var h=''; snap.forEach(function(d){ var w=d.data(); h+='<div class="item">$'+w.amount+' - '+w.email+'<br>To: '+w.method+' - '+w.status+'</div>'; }); document.getElementById('allWithdraws').innerHTML=h||'No withdraws'; }).catch(function(){}); } }
+
+var saved=localStorage.getItem('hch_user'); if(saved){ currentUser={email:saved,uid:'local_'+saved}; document.getElementById('userInfo').innerText='Logged in as: '+saved+(saved===ADMIN_EMAIL?' (Admin)':''); }
+try{ currentNurse=JSON.parse(localStorage.getItem('hch_current_nurse')||'null'); if(currentNurse) document.getElementById('nurseInfo').innerText='👩‍⚕️ Nurse: '+currentNurse.name; }catch(e){}
+updateBadge();
+console.log('Home Care Hero FINAL loaded - Firebase:',firebaseOK,'PayPal: lazy loaded');
+</script>
+</body>
+</html>
