@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Nursing at Home | Worldwide</title>
+<title>Home Care Hero - Nursing at Home</title>
 <style>
 *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f6f8fb;color:#111}
 header{background:#0b5ed7;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10}
@@ -19,7 +19,6 @@ input,select,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radiu
 .stat{font-size:26px;font-weight:900}.small{font-size:13px;color:#666}
 .hidden{display:none}.row{display:flex;gap:10px}.row>*{flex:1}
 .item{border:1px solid #eee;border-radius:12px;padding:12px;margin-top:10px}
-.timeline{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.step{padding:6px 10px;border-radius:20px;background:#eee;font-size:12px;font-weight:700}.step.on{background:#198754;color:#fff}.step.now{background:#ffc107;color:#111}
 </style>
 <script>
 function showPage(page){
@@ -31,13 +30,62 @@ function showPage(page){
     var b=document.getElementById('b-'+p);
     if(b){ if(p===page) b.classList.add('active'); else b.classList.remove('active'); }
   }
-  if(page==='wallet' && window.loadWallet) loadWallet();
-  if(page==='track' && window.loadTracking) loadTracking();
-  if(page==='admin' && window.loadAdmin) loadAdmin();
 }
 </script>
 </head>
 <body>
-<header><b>🌍 Home Care Hero - Worldwide</b><div class="small" style="color:#dbeafe">Available Worldwide • Nursing at Home in Any Country</div><nav>
+<header><b>🏥 Home Care Hero</b><nav>
 <button onclick="showPage('home')" id="b-home" class="active">Home</button>
 <button onclick="showPage('book')" id="b-book">Book Nurse</button>
+<button onclick="showPage('track')" id="b-track">Track Booking</button>
+<button onclick="showPage('wallet')" id="b-wallet">Wallet</button>
+<button onclick="showPage('login')" id="b-login">Login</button>
+<button onclick="showPage('admin')" id="b-admin">Admin Dashboard</button>
+</nav></header>
+<div class="container">
+<div id="status" class="card small">Firebase: Checking...</div>
+<div id="page-home">
+<div class="card"><span class="badge">NURSING ONLY • WORLDWIDE</span><h1>Professional Nursing at Your Home</h1><p>Qualified nurses for home care, elderly care, post-surgery care, wound care, injections, vitals monitoring & chronic care.</p><div class="row"><button class="btn" onclick="showPage('book')">Book a Nurse</button><button class="btn btn-yellow" onclick="showPage('login')">Login / Create Account</button></div><button class="btn btn-outline" onclick="showPage('track')">Track My Booking</button></div>
+<div class="grid"><div class="card"><b>Home Nursing</b><p class="small">Daily visits, vitals, medication</p></div><div class="card"><b>Elderly Care</b><p class="small">Compassionate elderly support</p></div><div class="card"><b>Post-Surgery</b><p class="small">Wound care & recovery</p></div></div>
+</div>
+<div id="page-book" class="hidden"><div class="card"><h2>Book a Nurse</h2><label>Country</label><select id="country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Nigeria</option><option>USA</option><option>UK</option><option>Canada</option><option>UAE</option><option>Other</option></select><label>Service</label><select id="service"><option>Home Nursing Visit</option><option>Elderly Care</option><option>Post-Surgery Care</option><option>Wound Dressing</option><option>Injection / IV</option><option>Vitals & Medication</option><option>Chronic Care</option></select><label>Patient Name</label><input id="patient" placeholder="Patient full name"><label>Location</label><input id="location" placeholder="City, Area"><label>Phone</label><input id="ugPhone" placeholder="Phone number"><label>Date</label><input id="date" type="date"><label>Notes</label><textarea id="notes"></textarea><button class="btn" onclick="makeBooking()">Submit Booking Request</button><p id="bookMsg" class="small"></p></div></div>
+<div id="page-track" class="hidden"><div class="card"><h2>Track My Booking</h2><button class="btn btn-outline" onclick="loadTracking()">Refresh Tracking</button><div id="trackList"></div></div></div>
+<div id="page-wallet" class="hidden"><div class="card"><h2>My Wallet</h2><div class="stat" id="bal">0</div><p class="small" id="walletEmail">Login to see wallet</p><label>Top Up Amount</label><input id="topupAmt" type="number" placeholder="e.g. 50000"><button class="btn btn-green" onclick="topup()">Top Up with Flutterwave</button><button class="btn btn-outline" onclick="loadWallet()">Refresh Wallet</button></div><div class="card"><h3>Wallet History</h3><div id="walletHist"></div></div></div>
+<div id="page-login" class="hidden"><div class="card"><h2>Login</h2><p class="small" id="loginState">Not logged in</p><input id="email" type="email" placeholder="Email"><input id="pass" type="password" placeholder="Password"><button class="btn" onclick="loginEmail()">Login with Email</button><button class="btn btn-yellow" onclick="registerEmail()">Create Account</button><button class="btn btn-outline" onclick="loginGoogle()">Login with Google</button><button class="btn" style="background:#dc3545" onclick="logout()">Logout</button><p id="loginMsg" class="small"></p></div></div>
+<div id="page-admin" class="hidden"><div class="card"><h2>Admin Dashboard</h2><div class="grid"><div class="card"><div>Total Bookings</div><div class="stat" id="aBookings">0</div></div><div class="card"><div>Total Payments</div><div class="stat" id="aPayments">0</div></div><div class="card"><div>Total Withdraws</div><div class="stat" id="aWithdraws">0</div></div></div><button class="btn" onclick="loadAdmin()">Refresh Admin Data</button></div><div class="card"><h3>All Bookings</h3><div id="adminBookings"></div></div><div class="card"><h3>All Payments</h3><div id="adminPayments"></div></div><div class="card"><h3>Withdraw Request</h3><input id="wdAmt" type="number" placeholder="Amount"><input id="wdPhone" placeholder="Phone"><button class="btn btn-yellow" onclick="requestWithdraw()">Request Withdraw</button><div id="adminWithdraws"></div></div></div>
+</div>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
+<script src="https://checkout.flutterwave.com/v3.js"></script>
+<script>
+var auth=null, db=null, currentUser=null;
+var firebaseConfig = {
+  apiKey: "PASTE_YOUR_APIKEY_HERE",
+  authDomain: "PASTE_YOUR_AUTHDOMAIN_HERE",
+  projectId: "home-care-hero",
+  storageBucket: "PASTE_YOUR_STORAGEBUCKET_HERE",
+  messagingSenderId: "PASTE_YOUR_SENDERID_HERE",
+  appId: "PASTE_YOUR_APPID_HERE"
+};
+try{
+  firebase.initializeApp(firebaseConfig);
+  auth=firebase.auth(); db=firebase.firestore();
+  document.getElementById('status').innerHTML='Firebase: Connected';
+}catch(e){ document.getElementById('status').innerHTML='Firebase: Not connected - '+e.message; }
+async function loginEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); document.getElementById('loginMsg').innerText='Logged in'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; } }
+async function registerEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.createUserWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); await db.collection('users').doc(auth.currentUser.uid).set({email:auth.currentUser.email,balance:0,created:new Date()}); document.getElementById('loginMsg').innerText='Account created'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; } }
+async function loginGoogle(){ if(!auth) return alert('Firebase not connected'); try{ var p=new firebase.auth.GoogleAuthProvider(); await auth.signInWithPopup(p); document.getElementById('loginMsg').innerText='Google OK'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText=e.message; } }
+async function logout(){ if(!auth) return; await auth.signOut(); updateUser(); }
+function updateUser(){ currentUser=auth?auth.currentUser:null; document.getElementById('loginState').innerText=currentUser?('Logged in as: '+currentUser.email):'Not logged in'; document.getElementById('walletEmail').innerText=currentUser?currentUser.email:'Login to see wallet'; if(currentUser) loadWallet(); }
+if(auth) auth.onAuthStateChanged(function(){ updateUser(); });
+async function makeBooking(){ if(!auth||!currentUser){ alert('Login first'); showPage('login'); return; } var data={userId:currentUser.uid,email:currentUser.email,country:document.getElementById('country').value,service:document.getElementById('service').value,patient:document.getElementById('patient').value,location:document.getElementById('location').value,phone:document.getElementById('ugPhone').value,date:document.getElementById('date').value,notes:document.getElementById('notes').value,status:'Pending',created:new Date()}; if(!data.patient||!data.location||!data.date){ alert('Fill all'); return; } await db.collection('bookings').add(data); document.getElementById('bookMsg').innerText='Booking submitted'; showPage('track'); }
+async function loadTracking(){ if(!auth||!currentUser){ document.getElementById('trackList').innerHTML='Please login'; return; } var s=await db.collection('bookings').where('userId','==',currentUser.uid).get(); var h=''; s.forEach(function(d){ var b=d.data(); h+='<div class="item"><b>'+b.service+'</b> - '+b.status+'<br><span class="small">'+b.patient+' | '+b.location+' | '+b.date+'</span></div>'; }); document.getElementById('trackList').innerHTML=h||'No bookings'; }
+async function loadWallet(){ if(!auth||!currentUser) return; var doc=await db.collection('users').doc(currentUser.uid).get(); var bal=doc.exists?(doc.data().balance||0):0; document.getElementById('bal').innerText=bal; var s=await db.collection('payments').where('userId','==',currentUser.uid).get(); var h=''; s.forEach(function(d){ var p=d.data(); h+='<div class="item">'+p.amount+' - '+p.status+'</div>'; }); document.getElementById('walletHist').innerHTML=h||'No history'; }
+function topup(){ if(!auth||!currentUser){ alert('Login first'); showPage('login'); return; } var amt=Number(document.getElementById('topupAmt').value); if(!amt) return alert('Enter amount'); FlutterwaveCheckout({public_key:"FLW_PUBLIC_KEY",tx_ref:"HCH-"+Date.now(),amount:amt,currency:"UGX",customer:{email:currentUser.email},callback: async function(d){ if(d.status==='successful'){ await db.collection('payments').add({userId:currentUser.uid,email:currentUser.email,amount:amt,status:'successful',created:new Date()}); var ref=db.collection('users').doc(currentUser.uid); var doc=await ref.get(); var bal=(doc.exists?doc.data().balance||0:0)+amt; await ref.set({email:currentUser.email,balance:bal},{merge:true}); alert('Topup successful'); loadWallet(); } },onclose:function(){},customizations:{title:"Home Care Hero",description:"Wallet Topup"}}); }
+async function loadAdmin(){ if(!db) return; var b=await db.collection('bookings').get(); document.getElementById('aBookings').innerText=b.size; var hb=''; b.forEach(function(d){ var x=d.data(); hb+='<div class="item"><b>'+x.service+'</b> - '+x.status+'<br><span class="small">'+x.patient+' | '+x.email+' | '+x.location+'</span><br><button onclick="updateBooking(\''+d.id+'\',\'Confirmed\')">Confirm</button> <button onclick="updateBooking(\''+d.id+'\',\'Completed\')">Complete</button></div>'; }); document.getElementById('adminBookings').innerHTML=hb||'No bookings'; var p=await db.collection('payments').get(); var tot=0,hp=''; p.forEach(function(d){ var x=d.data(); tot+=Number(x.amount||0); hp+='<div class="item">'+x.amount+' - '+x.email+'</div>'; }); document.getElementById('aPayments').innerText=tot; document.getElementById('adminPayments').innerHTML=hp||'No payments'; var w=await db.collection('withdraws').get(); document.getElementById('aWithdraws').innerText=w.size; var hw=''; w.forEach(function(d){ var x=d.data(); hw+='<div class="item">'+x.amount+' - '+x.phone+' - '+x.email+'</div>'; }); document.getElementById('adminWithdraws').innerHTML=hw||'No withdraws'; }
+async function updateBooking(id,s){ await db.collection('bookings').doc(id).update({status:s}); loadAdmin(); }
+async function requestWithdraw(){ if(!auth||!currentUser) return alert('Login first'); var amt=Number(document.getElementById('wdAmt').value); var ph=document.getElementById('wdPhone').value; if(!amt||!ph) return alert('Fill all'); await db.collection('withdraws').add({userId:currentUser.uid,email:currentUser.email,amount:amt,phone:ph,status:'Pending',created:new Date()}); alert('Withdraw requested'); loadAdmin(); }
+</script>
+</body>
+</html>
