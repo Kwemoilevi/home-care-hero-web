@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Nursing at Home | Uganda Only</title>
+<title>Home Care Hero - Nursing at Home | Worldwide</title>
 <style>
 *{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f6f8fb;color:#111}
 header{background:#0b5ed7;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10}
@@ -20,13 +20,9 @@ input,select,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radiu
 .hidden{display:none}.row{display:flex;gap:10px}.row>*{flex:1}
 .item{border:1px solid #eee;border-radius:12px;padding:12px;margin-top:10px}
 .timeline{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.step{padding:6px 10px;border-radius:20px;background:#eee;font-size:12px;font-weight:700}.step.on{background:#198754;color:#fff}.step.now{background:#ffc107;color:#111}
-#ugBlock{display:none;position:fixed;inset:0;background:#0b5ed7;color:#fff;z-index:9999;padding:30px;text-align:center}
-#ugBlock h1{font-size:28px}#ugBlock p{font-size:16px;line-height:1.6}
 </style>
 <script>
-// NAVIGATION FIRST - WORKS EVEN IF FIREBASE FAILS
 function showPage(page){
-  if(window.isBlocked && page!=='home'){ alert('This service is only available in Uganda 🇺🇬'); return; }
   var pages=['home','book','track','wallet','login','admin'];
   for(var i=0;i<pages.length;i++){
     var p=pages[i];
@@ -39,46 +35,9 @@ function showPage(page){
   if(page==='track' && window.loadTracking) loadTracking();
   if(page==='admin' && window.loadAdmin) loadAdmin();
 }
-function testBtn(){ alert('Buttons are working ✅'); }
-// UGANDA ONLY CHECK
-window.isBlocked=false;
-async function checkUganda(){
-  try{
-    var r=await fetch('https://ipapi.co/json/');
-    var d=await r.json();
-    var country=d.country_code||'';
-    var city=d.city||''; var cname=d.country_name||'';
-    var el=document.getElementById('geoInfo');
-    if(el) el.innerHTML='📍 Location detected: '+(city?city+', ':'')+cname+' ('+country+') - '+(country==='UG'?'Access Allowed ✅':'Access Blocked');
-    if(country && country!=='UG'){
-      window.isBlocked=true;
-      document.getElementById('ugBlock').style.display='block';
-    }
-  }catch(e){
-    // If location check fails, allow - so Uganda users on slow network are not blocked
-    var el=document.getElementById('geoInfo');
-    if(el) el.innerHTML='📍 Location: Could not detect - Allowed (Uganda service)';
-  }
-}
-document.addEventListener('DOMContentLoaded', checkUganda);
 </script>
 </head>
 <body>
-<div id="ugBlock"><h1>🇺🇬 Home Care Hero</h1><h1>Only Available in Uganda</h1><p>Sorry, this service is currently only available<br>inside Uganda - Kampala & surrounding areas.<br><br>We provide nursing at home in Uganda only.<br><br>If you are in Uganda and seeing this, please turn off VPN and refresh.</p><button style="background:#ffc107;border:0;padding:12px 20px;border-radius:10px;font-weight:800" onclick="location.reload()">I am in Uganda - Retry</button></div>
-
-<header><b>🏥 Home Care Hero</b><div class="small" style="color:#dbeafe" id="geoInfo">📍 Checking location... Uganda Only</div><nav>
+<header><b>🌍 Home Care Hero - Worldwide</b><div class="small" style="color:#dbeafe">Available Worldwide • Nursing at Home in Any Country</div><nav>
 <button onclick="showPage('home')" id="b-home" class="active">Home</button>
 <button onclick="showPage('book')" id="b-book">Book Nurse</button>
-<button onclick="showPage('track')" id="b-track">Track Booking</button>
-<button onclick="showPage('wallet')" id="b-wallet">Wallet</button>
-<button onclick="showPage('login')" id="b-login">Login</button>
-<button onclick="showPage('admin')" id="b-admin">Admin Dashboard</button>
-</nav></header>
-
-<div class="container">
-<div id="status" class="card small">Firebase: Checking...</div>
-<div class="card" style="background:#fff3cd;border:1px solid #ffc107"><b>🇺🇬 Uganda Only Service</b><p class="small" style="margin:4px 0">This app works only in Uganda. Services: Kampala - Ntinda, Bukoto, Muyenga, Kololo, Najjera, Kira, Entebbe Road & surrounding. Mobile Money: MTN & Airtel Uganda only.</p></div>
-
-<div id="page-home">
-<div class="card"><span class="badge">NURSING ONLY • KAMPALA • UGANDA ONLY</span><h1 style="margin:8px 0">Professional Nursing at Your Home</h1><p>Qualified nurses for home care, elderly care, post-surgery care, wound care, injections, vitals monitoring & chronic care. <b>Uganda only.</b></p><div class="row"><button class="btn" onclick="showPage('book')">Book a Nurse</button><button class="btn btn-yellow" onclick="showPage('login')">Login / Create Account</button></div><button class="btn btn-outline" onclick="showPage('track')">📍 Track My Booking</button></div>
-<div class="grid"><div class="card"><b>🩺 Home Nursing
