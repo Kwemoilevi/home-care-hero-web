@@ -3,21 +3,26 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HomeCare Hero</title>
+<title>HomeCare Hero - Nursing</title>
 <style>
 body{margin:0;font-family:Arial;background:#f5f5f5}
 .header{background:#16a34a;color:#fff;padding:16px;text-align:center;font-size:22px;font-weight:bold}
-.nav{display:flex;justify-content:center;gap:8px;background:#fff;padding:10px}
+.nav{display:flex;justify-content:center;gap:8px;background:#fff;padding:10px;flex-wrap:wrap}
 .nav button{border:0;background:#e8f5e9;padding:10px 14px;border-radius:20px;font-weight:bold;cursor:pointer}
 .nav button.active{background:#16a34a;color:#fff}
 .card{background:#fff;margin:12px;padding:16px;border-radius:12px}
 input,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-radius:10px;font-size:16px;box-sizing:border-box}
-.btn{background:#16a34a;color:#fff;border:0;padding:14px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer}
+.btn{background:#16a34a;color:#fff;border:0;padding:14px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:8px}
 .btn2{background:#f59e0b}
+.btnRed{background:#dc2626}
 .small{color:#666;font-size:14px;text-align:center}
 .balance{font-size:32px;font-weight:bold;text-align:center;color:#16a34a}
 .msg{text-align:center;color:#16a34a;font-weight:bold;margin-top:10px}
 .hidden{display:none}
+.stat{display:flex;gap:10px}
+.stat div{flex:1;background:#e8f5e9;padding:12px;border-radius:10px;text-align:center}
+.stat b{font-size:20px;display:block}
+.item{border:1px solid #eee;padding:10px;border-radius:10px;margin:8px 0}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -25,56 +30,98 @@ input,select{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd;border-r
 </head>
 <body>
 <div class="header">💚 HomeCare Hero</div>
+
+<!-- IN-APP PAYMENT FRAME - Payment stays INSIDE app -->
+<div id="payFrame" class="hidden" style="position:fixed;top:0;left:0;right:0;bottom:0;background:#fff;z-index:999;padding:10px">
+<button class="btn btnRed" onclick="closePay()">✕ Close Payment - Back to App</button>
+<p style="text-align:center;font-weight:bold">Pay with MoMo / Card - Inside App</p>
+<iframe id="pesapalFrame" src="" style="width:100%;height:75%;border:0;border-radius:12px"></iframe>
+<button class="btn btn2" onclick="afterPay()">I Have Finished Paying - Confirm</button>
+</div>
+
 <div class="nav">
 <button onclick="show('home')">Home</button>
-<button onclick="show('book')">Book</button>
+<button onclick="show('book')">Book Nurse</button>
 <button onclick="show('wallet')">Wallet</button>
-<button onclick="show('admin')">Admin</button>
+<button onclick="show('login')">Login</button>
+<button onclick="show('admin')">Admin Dashboard</button>
 </div>
 
 <div id="home" class="card">
-<h2>Trusted Home Care in Kampala</h2>
-<p>Nurses, cleaners, babysitters, physio - at your home.</p>
-<p><b>Popular:</b> Nursing Care - UGX 50,000<br>House Cleaning - UGX 30,000<br>Babysitting - UGX 25,000</p>
-<button class="btn" onclick="show('book')">Book Now -></button>
-<br><br>
+<h2>Trusted Nursing Care in Kampala</h2>
+<p>Professional nurses at your home in Kampala.</p>
+<p><b>Our Care:</b><br>✔ Home Nursing<br>✔ Elderly Care<br>✔ Post-Surgery Care<br>✔ Mother & Baby Care</p>
+<button class="btn" onclick="show('book')">Book a Nurse -></button>
+<br>
 <button class="btn btn2" onclick="show('wallet')">PAY NOW with MoMo / Card</button>
-<p class="small">Real payment via Pesapal - MTN MoMo, Airtel Money, Visa</p>
+<p class="small">Real payment via Pesapal - MTN MoMo, Airtel Money, Visa - Inside App</p>
 <p class="small" id="loginStatus">Firebase: connecting...</p>
-<button class="btn" onclick="loginGoogle()">Login with Google (Firebase)</button>
 </div>
 
 <div id="book" class="card hidden">
-<h2>Book Care</h2>
-<select id="bookService"><option>Nursing Care - 50000</option><option>House Cleaning - 30000</option><option>Babysitting - 25000</option><option>Physiotherapy - 60000</option></select>
-<input id="bookName" placeholder="Your Name">
+<h2>Book a Nurse</h2>
+<select id="bookService"><option>Home Nursing</option><option>Elderly Care</option><option>Post-Surgery Care</option><option>Mother & Baby Care</option></select>
+<input id="bookName" placeholder="Patient / Your Name">
 <input id="bookPhone" placeholder="Phone e.g. 0770000000">
+<input id="bookLocation" placeholder="Location in Kampala e.g. Ntinda">
 <input id="bookTime" type="datetime-local">
-<button class="btn" onclick="bookNow()">Book & Pay with Pesapal</button>
+<input id="bookNotes" placeholder="Notes e.g. Diabetes care, wound dressing">
+<button class="btn" onclick="bookNow()">Book & Pay Inside App</button>
 <p id="bookMsg" class="msg"></p>
 </div>
 
 <div id="wallet" class="card hidden">
-<h2 style="text-align:center">Wallet</h2>
+<h2 style="text-align:center">Wallet - REAL Money</h2>
 <p style="text-align:center">Balance</p>
 <div class="balance" id="bal">UGX 0</div>
-<p class="small">Balance only goes up AFTER real Pesapal payment. No fake deposit.</p>
+<p class="small">Deposit = REAL via Pesapal inside app. Withdraw = REAL request to Admin.</p>
+<h3>1. Deposit - REAL</h3>
 <input id="depAmt" type="number" placeholder="Amount e.g. 1000" value="1000">
-<button class="btn" onclick="realDeposit()">Deposit - Pay REAL with MoMo</button>
+<button class="btn" onclick="realDeposit()">Deposit - Pay REAL Inside App</button>
 <p id="walletMsg" class="msg"></p>
 <hr>
-<p class="small">After you pay in Pesapal, tap below. It saves to Firebase for Admin to verify.</p>
-<button class="btn btn2" onclick="confirmPaid()">I Have Paid in Pesapal - Confirm</button>
+<p class="small">After you pay in Pesapal, tap below.</p>
+<button class="btn btn2" onclick="confirmPaid()">I Have Paid in Pesapal - Confirm Deposit</button>
+<hr>
+<h3>2. Withdraw - REAL Request</h3>
+<input id="withAmt" type="number" placeholder="Withdraw amount e.g. 5000">
+<input id="withPhone" placeholder="MoMo number to receive e.g. 0770000000">
+<button class="btn btnRed" onclick="requestWithdraw()">Request Withdraw - REAL</button>
+<p id="withdrawMsg" class="msg"></p>
+<p class="small">Withdraw does NOT instantly reduce balance. Admin must send via MoMo, then mark PAID.</p>
+<div id="myWithdraws"></div>
+</div>
+
+<div id="login" class="card hidden">
+<h2>Login</h2>
+<p id="userInfo" class="small">Not logged in</p>
+<input id="loginEmail" placeholder="Email">
+<input id="loginPass" type="password" placeholder="Password">
+<button class="btn" onclick="loginEmail()">Login with Email</button>
+<button class="btn btn2" onclick="signupEmail()">Create Account</button>
+<button class="btn" onclick="loginGoogle()">Login with Google</button>
+<button class="btn btnRed hidden" id="logoutBtn" onclick="logout()">Logout</button>
+<p id="loginMsg" class="msg"></p>
 </div>
 
 <div id="admin" class="card hidden">
-<h2>Admin</h2>
-<p class="small">Live from Firebase + Local</p>
-<p id="adminList">Loading...</p>
+<h2>Admin Dashboard</h2>
+<div class="stat">
+<div><b id="statBookings">0</b>Total Bookings</div>
+<div><b id="statPays">UGX 0</b>Total Payments</div>
+<div><b id="statPending">0</b>Pending</div>
+</div>
+<h3>Bookings</h3>
+<div id="adminList">Loading...</div>
+<h3>Payments</h3>
+<div id="adminPays">Loading...</div>
+<h3>Withdraw Requests - REAL</h3>
+<div id="adminWithdraws">No withdraw requests yet.</div>
+<button class="btn" onclick="updateBal()">Refresh Dashboard</button>
 </div>
 
 <script>
-// ==== STEP: REPLACE THIS WITH YOUR OWN CONFIG FROM backup.html ====
+// ==== REPLACE WITH YOUR CONFIG FROM backup.html ====
 const firebaseConfig = {
   apiKey: "PASTE_YOUR_APIKEY_HERE",
   authDomain: "PASTE_YOUR_PROJECT.firebaseapp.com",
@@ -83,14 +130,17 @@ const firebaseConfig = {
   messagingSenderId: "PASTE_YOURS",
   appId: "PASTE_YOURS"
 };
-// ==== END FIREBASE CONFIG ====
-
-let db=null;
+let db=null, auth=null;
 try{
   firebase.initializeApp(firebaseConfig);
-  db=firebase.firestore();
+  db=firebase.firestore(); auth=firebase.auth();
   document.getElementById('loginStatus').innerText='Firebase: Connected ✅';
-  firebase.auth().onAuthStateChanged(u=>{ if(u) document.getElementById('loginStatus').innerText='Logged in as '+u.email+' ✅'; });
+  auth.onAuthStateChanged(u=>{
+    if(u){ document.getElementById('loginStatus').innerText='Logged in as '+u.email+' ✅';
+      document.getElementById('userInfo').innerText='Logged in: '+u.email;
+      document.getElementById('logoutBtn').classList.remove('hidden');
+    } else { document.getElementById('logoutBtn').classList.add('hidden'); }
+  });
 }catch(e){ document.getElementById('loginStatus').innerText='Firebase: Using local mode (paste your config)'; }
 
 let bookings = JSON.parse(localStorage.getItem('hc_bookings')||'[]');
@@ -98,41 +148,69 @@ let pays = JSON.parse(localStorage.getItem('hc_pays')||'[]');
 function getBal(){return pays.reduce((s,p)=>s+p.amt,0);}
 function updateBal(){
   document.getElementById('bal').innerText='UGX '+getBal().toLocaleString();
-  document.getElementById('adminList').innerHTML=bookings.map(b=>b.name+' - '+b.service+' - '+b.status).join('<br>')||'No bookings yet.';
-  // Live from Firebase if available
-  if(db){ db.collection('bookings').limit(20).get().then(snap=>{ let h=''; snap.forEach(d=>{let b=d.data(); h+= (b.name||'')+' - '+(b.service||'')+' - '+(b.status||'')+'<br>';}); if(h) document.getElementById('adminList').innerHTML='<b>Firebase:</b><br>'+h; }); }
+  document.getElementById('statBookings').innerText=bookings.length;
+  document.getElementById('statPays').innerText='UGX '+getBal().toLocaleString();
+  document.getElementById('statPending').innerText=bookings.filter(b=>b.status && b.status.includes('Pending')).length;
+  document.getElementById('adminList').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>'+(b.date||'')+'<br>Status: '+b.status+'<br><button onclick="approveBooking('+i+')">Approve</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No bookings yet.';
+  document.getElementById('adminPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+' - '+(p.note||'')+'</div>').join('') : 'No payments yet.';
+  let reqs = JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
+  let wEl = document.getElementById('adminWithdraws');
+  if(wEl) wEl.innerHTML = reqs.length ? reqs.map((r,i)=>'<div class="item">UGX '+r.amt.toLocaleString()+' to '+r.phone+'<br>'+r.date+'<br>Status: '+r.status+'<br><button onclick="markWithdrawPaid('+i+')">Mark as PAID - I Sent via MoMo</button></div>').join('') : 'No withdraw requests yet.';
+  document.getElementById('myWithdraws').innerHTML = reqs.length ? '<h4>My Withdraw Requests</h4>'+reqs.map(r=>'<div class="item">UGX '+r.amt.toLocaleString()+' to '+r.phone+' - '+r.status+'</div>').join('') : '';
+  if(db){
+    db.collection('bookings').limit(30).get().then(snap=>{ let h=''; snap.forEach(d=>{let b=d.data(); h+='<div class="item"><b>Firebase:</b> '+(b.name||'')+' - '+(b.service||'')+' - '+(b.status||'')+'</div>';}); if(h) document.getElementById('adminList').innerHTML = h + document.getElementById('adminList').innerHTML; });
+  }
 }
-function show(id){['home','book','wallet','admin'].forEach(x=>document.getElementById(x).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); updateBal();}
-function loginGoogle(){
-  if(!db){alert('Paste your Firebase config first');return;}
-  let p=new firebase.auth.GoogleAuthProvider();
-  firebase.auth().signInWithPopup(p).catch(e=>alert(e.message));
-}
+function show(id){['home','book','wallet','login','admin'].forEach(x=>document.getElementById(x).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); updateBal();}
+function openInAppPay(){ document.getElementById('payFrame').classList.remove('hidden'); document.getElementById('pesapalFrame').src='https://store.pesapal.com/homecareheropayment'; window.scrollTo(0,0); }
+function closePay(){ document.getElementById('payFrame').classList.add('hidden'); document.getElementById('pesapalFrame').src=''; }
+function afterPay(){ closePay(); show('wallet'); alert('If payment succeeded, tap "I Have Paid - Confirm" now. Admin will verify in Pesapal Dashboard.'); }
+function loginGoogle(){ if(!auth){alert('Paste Firebase config first');return;} let p=new firebase.auth.GoogleAuthProvider(); auth.signInWithPopup(p).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(e=>alert(e.message)); }
+function loginEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.signInWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(er=>alert(er.message)); }
+function signupEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.createUserWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Account created ✅'; show('home');}).catch(er=>alert(er.message)); }
+function logout(){ auth.signOut().then(()=>{document.getElementById('userInfo').innerText='Logged out'; document.getElementById('loginMsg').innerText='Logged out';}); }
 function bookNow(){
-  let name=document.getElementById('bookName').value;
-  let phone=document.getElementById('bookPhone').value;
+  let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value;
   if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;}
-  let data={name:name,phone:phone,service:document.getElementById('bookService').value,status:'Pending - Waiting for Pesapal Payment',date:new Date().toLocaleString()};
+  let data={name:name,phone:phone,service:document.getElementById('bookService').value,location:document.getElementById('bookLocation').value,notes:document.getElementById('bookNotes').value,status:'Pending - Waiting for Pesapal Payment',date:new Date().toLocaleString()};
   bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings));
   if(db) db.collection('bookings').add(data);
-  document.getElementById('bookMsg').innerText='Saved to Firebase as Pending. Now opening REAL Pesapal...';
-  window.location.href='https://store.pesapal.com/homecareheropayment';
+  document.getElementById('bookMsg').innerText='Saved to Firebase as Pending. Opening payment INSIDE app...';
+  openInAppPay();
 }
 function realDeposit(){
   let a=Number(document.getElementById('depAmt').value||0);
   if(a<500){document.getElementById('walletMsg').innerText='Enter at least 500';return;}
-  document.getElementById('walletMsg').innerText='Opening REAL Pesapal for UGX '+a.toLocaleString()+'... Pay with MTN MoMo there.';
-  window.location.href='https://store.pesapal.com/homecareheropayment';
+  document.getElementById('walletMsg').innerText='Opening REAL Pesapal INSIDE app for UGX '+a.toLocaleString()+'...';
+  openInAppPay();
 }
 function confirmPaid(){
-  let a=Number(document.getElementById('depAmt').value||0);
-  if(a<500){alert('Enter amount first');return;}
+  let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;}
   let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - verify in Pesapal dashboard'};
   pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays));
   if(db) db.collection('payments').add(data);
-  updateBal();
-  document.getElementById('walletMsg').innerText='Saved to Firebase as PENDING verification. Admin will check Pesapal.';
+  updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase as PENDING verification. Admin will check Pesapal.';
 }
+function requestWithdraw(){
+  let a=Number(document.getElementById('withAmt').value||0); let ph=document.getElementById('withPhone').value;
+  if(a<500){document.getElementById('withdrawMsg').innerText='Enter at least 500';return;}
+  if(!ph||ph.length<9){document.getElementById('withdrawMsg').innerText='Enter MoMo number to receive money';return;}
+  if(a>getBal()){document.getElementById('withdrawMsg').innerText='Not enough balance. Your balance is UGX '+getBal().toLocaleString();return;}
+  let data={amt:a,phone:ph,date:new Date().toLocaleString(),status:'PENDING - Admin to send via MoMo',type:'withdraw'};
+  let reqs=JSON.parse(localStorage.getItem('hc_withdraws')||'[]'); reqs.push(data); localStorage.setItem('hc_withdraws',JSON.stringify(reqs));
+  if(db) db.collection('withdrawals').add(data);
+  document.getElementById('withdrawMsg').innerText='Withdraw REQUEST sent to Admin ✅ Admin will send UGX '+a.toLocaleString()+' to '+ph+' via MoMo and mark PAID.';
+  updateBal();
+}
+function markWithdrawPaid(i){
+  let reqs=JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
+  pays.push({amt:-reqs[i].amt,date:new Date().toLocaleString(),note:'Withdraw PAID to '+reqs[i].phone+' via MoMo'});
+  localStorage.setItem('hc_pays',JSON.stringify(pays));
+  reqs[i].status='PAID ✅ Sent via MoMo'; localStorage.setItem('hc_withdraws',JSON.stringify(reqs));
+  updateBal(); alert('Marked as PAID. Balance reduced now because money was really sent.');
+}
+function approveBooking(i){ bookings[i].status='Approved ✅'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); }
+function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); } }
 updateBal();
 </script>
 </body>
