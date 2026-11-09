@@ -5,187 +5,108 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home Care Hero - Nursing at Home</title>
 <style>
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f6f8fb;color:#111}
-header{background:#0b5ed7;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10}
-header b{font-size:19px}nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}nav button{background:#fff;color:#0b5ed7;border:0;padding:8px 10px;border-radius:20px;font-weight:700;cursor:pointer}
-nav button.active{background:#ffc107;color:#111}
-.container{max-width:900px;margin:0 auto;padding:16px}
-.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.06)}
-input,select,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:10px;margin:7px 0;font-size:15px}
-.btn{background:#0b5ed7;color:#fff;border:0;padding:12px;border-radius:10px;width:100%;font-weight:800;cursor:pointer;font-size:15px;margin-top:6px}
-.btn-yellow{background:#ffc107;color:#111}.btn-green{background:#198754}.btn-outline{background:#fff;color:#0b5ed7;border:2px solid #0b5ed7}.btn-red{background:#dc3545}
-.badge{background:#e7f1ff;color:#0b5ed7;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;display:inline-block}
-.grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}@media(max-width:600px){.grid{grid-template-columns:1fr}}
-.stat{font-size:26px;font-weight:900}.small{font-size:13px;color:#666}
-.hidden{display:none}.row{display:flex;gap:10px}.row>*{flex:1}
-.item{border:1px solid #eee;border-radius:12px;padding:12px;margin-top:10px}
-.lockbox{background:#ffe8e8;border:2px solid #dc3545;border-radius:12px;padding:16px;text-align:center}
+*{box-sizing:border-box;font-family:Arial,sans-serif}
+body{margin:0;background:#eef2f7}
+header{background:#007bff;color:white;padding:12px}
+header h2{margin:0;font-size:20px}
+nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
+nav button{border:none;background:white;color:#007bff;padding:8px 12px;border-radius:20px;font-weight:bold;cursor:pointer}
+nav button.admin{background:#ffc107;color:black}
+.container{padding:12px;max-width:900px;margin:auto}
+.card{background:white;padding:16px;border-radius:12px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+input,select,textarea{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px}
+button.main{width:100%;padding:12px;background:#007bff;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+button.red{width:100%;padding:12px;background:#dc3545;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:8px}
+button.orange{width:100%;padding:12px;background:#ff9800;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer}
+button.green{padding:8px 12px;background:#28a745;color:white;border:none;border-radius:6px;cursor:pointer}
+button.grey{padding:8px 12px;background:#6c757d;color:white;border:none;border-radius:6px;cursor:pointer}
+.flex{display:flex;gap:10px;flex-wrap:wrap}
+.stat{flex:1;min-width:120px;background:#f8f9fa;padding:12px;border-radius:10px}
+.stat b{font-size:22px;display:block}
+.hidden{display:none}
+.badge{background:#e8f5e9;color:#2e7d32;padding:4px 10px;border-radius:20px;font-size:12px}
+.item{border:1px solid #eee;padding:10px;border-radius:10px;margin:8px 0}
 </style>
-<script>
-function showPage(page){
-  if(page==='admin' && !window.isAdmin){
-    alert('🔒 Admin Only! Login with kwemoilevi64@gmail.com first.');
-    page='login';
-    document.getElementById('loginMsg').innerText='Admin Login Required - login with kwemoilevi64@gmail.com';
-  }
-  var pages=['home','book','track','wallet','login','admin'];
-  for(var i=0;i<pages.length;i++){
-    var p=pages[i];
-    var el=document.getElementById('page-'+p);
-    if(el){ if(p===page) el.classList.remove('hidden'); else el.classList.add('hidden'); }
-    var b=document.getElementById('b-'+p);
-    if(b){ if(p===page) b.classList.add('active'); else b.classList.remove('active'); }
-  }
-  if(page==='track' && window.loadTracking) loadTracking();
-  if(page==='wallet' && window.loadWallet) loadWallet();
-  if(page==='admin' && window.loadAdmin) loadAdmin();
-}
-</script>
-<script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.paypal.com/sdk/js?client-id=test&currency=USD"></script>
 </head>
 <body>
-<header><b>🏥 Home Care Hero</b><nav>
-<button onclick="showPage('home')" id="b-home" class="active">Home</button>
-<button onclick="showPage('book')" id="b-book">Book Nurse</button>
-<button onclick="showPage('track')" id="b-track">Track Booking</button>
-<button onclick="showPage('wallet')" id="b-wallet">Wallet</button>
-<button onclick="showPage('login')" id="b-login">Login</button>
-<button onclick="showPage('admin')" id="b-admin">🔒 Admin Dashboard</button>
-</nav></header>
+
+<header>
+<h2>🏥 Home Care Hero</h2>
+<nav>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('book')">Book Nurse</button>
+<button onclick="showPage('track')">Track Booking</button>
+<button onclick="showPage('wallet')">Wallet</button>
+<button onclick="showPage('login')">Login</button>
+<button class="admin" onclick="showPage('admin')">🔐 Admin Dashboard</button>
+</nav>
+</header>
+
 <div class="container">
-<div id="status" class="card small">Firebase: Checking...</div>
-<div id="page-home">
-<div class="card"><span class="badge">NURSING ONLY • WORLDWIDE • PAYPAL SAFE</span><h1 style="margin:8px 0">Professional Nursing at Your Home</h1><p>Qualified nurses for home care, elderly care, post-surgery care, wound care, injections, vitals monitoring & chronic care.</p><p class="small">🔒 Pay safely inside the app with <b>PayPal</b>. Wallet + PayPal + Firebase.</p><div class="row"><button class="btn" onclick="showPage('book')">Book a Nurse</button><button class="btn btn-yellow" onclick="showPage('login')">Login / Create Account</button></div><button class="btn btn-outline" onclick="showPage('track')">📍 Track My Booking</button><button class="btn btn-green" onclick="showPage('wallet')">💰 My Wallet</button></div>
-<div class="grid"><div class="card"><b>🩺 Home Nursing</b><p class="small">Daily visits, vitals, medication</p></div><div class="card"><b>👴 Elderly Care</b><p class="small">Compassionate elderly support</p></div><div class="card"><b>🏥 Post-Surgery</b><p class="small">Wound care & recovery</p></div></div>
+<div class="card"><span class="badge">Firebase: Connected ✅ | Wallet + PayPal + Admin Protected</span><br><span id="userInfo">Not logged in</span></div>
+
+<!-- HOME -->
+<div id="home" class="card">
+<h2>Welcome to Home Care Hero ❤️</h2>
+<p>Professional Nursing at Home in Uganda. Book a nurse, pay with PayPal or Wallet, track your booking live.</p>
+<div class="flex">
+<div class="stat"><b>24/7</b>Available</div>
+<div class="stat"><b>100+</b>Nurses</div>
+<div class="stat"><b>UGX / USD</b>PayPal + Wallet</div>
 </div>
-<div id="page-book" class="hidden">
-<div class="card"><h2>Book a Nurse</h2>
-<label>Country</label><select id="country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>USA</option><option>UK</option><option>Canada</option><option>UAE</option><option>Other</option></select>
-<label>Service</label><select id="service"><option>Home Nursing Visit</option><option>Elderly Care</option><option>Post-Surgery Care</option><option>Wound Dressing</option><option>Injection / IV</option><option>Vitals & Medication</option><option>Chronic Care</option></select>
-<label>Patient Name</label><input id="patient" placeholder="Patient full name">
-<label>City / Location</label><input id="location" placeholder="City, Area">
-<label>Phone</label><input id="phone" placeholder="Phone">
-<label>Date</label><input id="date" type="date">
-<label>Amount (USD)</label><input id="amount" type="number" placeholder="e.g. 30">
-<label>Notes</label><textarea id="notes"></textarea>
-<button class="btn" onclick="makeBooking()">Save Booking & Pay with PayPal</button><p id="bookMsg" class="small"></p>
-<div id="paySection" class="hidden"><h3>🔒 Pay with PayPal</h3><p class="small">Booking: <b id="payDesc">-</b> | Amount: $<span id="payAmtShow">0</span></p><div id="paypal-button-container"></div><p id="payMsg" class="small"></p></div>
+<button class="main" onclick="showPage('book')">Book a Nurse Now</button>
 </div>
+
+<!-- BOOK -->
+<div id="book" class="card hidden">
+<h3>📅 Book a Nurse</h3>
+<input id="patientName" placeholder="Patient Name">
+<input id="patientPhone" placeholder="Phone Number">
+<input id="patientLocation" placeholder="Location - e.g Kampala, Ntinda">
+<select id="serviceType">
+<option>General Nursing</option>
+<option>Elderly Care</option>
+<option>Post-Surgery Care</option>
+<option>Baby / Mother Care</option>
+<option>Physiotherapy</option>
+</select>
+<input id="bookDate" type="date">
+<select id="payMethod"><option value="wallet">Pay with Wallet</option><option value="paypal">Pay with PayPal</option></select>
+<input id="bookAmount" type="number" placeholder="Amount USD - e.g 25">
+<button class="main" onclick="bookNurse()">Confirm Booking</button>
+<p id="bookMsg"></p>
 </div>
-<div id="page-track" class="hidden">
-<div class="card"><h2>📍 Track My Booking</h2><button class="btn btn-outline" onclick="loadTracking()">Refresh</button><div id="trackList"></div></div>
-<div class="card"><h3>My Transactions</h3><div id="myTrans"></div></div>
+
+<!-- TRACK -->
+<div id="track" class="card hidden">
+<h3>🔍 Track Booking</h3>
+<input id="trackPhone" placeholder="Enter phone used for booking">
+<button class="main" onclick="trackBooking()">Track My Booking</button>
+<div id="trackResult"></div>
 </div>
-<div id="page-wallet" class="hidden">
-<div class="card"><h2>💰 My Wallet</h2><div class="stat" id="bal">$0</div><p class="small" id="walletEmail">Login to see wallet</p>
-<label>Top Up Amount (USD)</label><input id="topupAmt" type="number" placeholder="e.g. 50">
-<p class="small">Top up safely with PayPal inside the app.</p>
-<div id="paypal-wallet-container"></div>
-<button class="btn btn-outline" onclick="loadWallet()">Refresh Wallet</button>
-<p id="walletMsg" class="small"></p></div>
-<div class="card"><h3>Wallet History</h3><div id="walletHist"></div></div>
-</div>
-<div id="page-login" class="hidden">
-<div class="card"><h2>Login</h2><p class="small" id="loginState">Not logged in</p>
-<input id="email" type="email" placeholder="Email" value="kwemoilevi64@gmail.com">
-<input id="pass" type="password" placeholder="Password">
-<button class="btn" onclick="loginEmail()">Login with Email</button>
-<button class="btn btn-yellow" onclick="registerEmail()">Create Account</button>
-<button class="btn btn-outline" onclick="loginGoogle()">Login with Google</button>
-<button class="btn btn-red" onclick="logout()">Logout</button>
-<p id="loginMsg" class="small"></p>
-<div class="card" style="background:#fff3cd"><b>🔒 Admin?</b><p class="small">Admin email is <b>kwemoilevi64@gmail.com</b>. Only this email can open Admin Dashboard. Normal users will be blocked.</p></div>
-</div>
-</div>
-<div id="page-admin" class="hidden">
-<div id="adminLocked" class="lockbox"><h2>🔒 Admin Login Required</h2><p>You are not logged in as Admin. Please login with kwemoilevi64@gmail.com</p><button class="btn" onclick="showPage('login')">Go to Admin Login</button></div>
-<div id="adminContent" class="hidden">
-<div class="card"><h2>🔒 Admin Dashboard - Welcome Admin</h2><p class="small" id="adminEmailShow"></p><div class="grid"><div class="card"><div>Total Bookings</div><div class="stat" id="aBookings">0</div></div><div class="card"><div>Total PayPal Payments</div><div class="stat" id="aPayments">$0</div></div><div class="card"><div>Paid Bookings</div><div class="stat" id="aPaid">0</div></div></div><button class="btn" onclick="loadAdmin()">Refresh Admin Data</button><button class="btn btn-red" onclick="logout()">Admin Logout</button></div>
-<div class="card"><h3>All Bookings</h3><div id="adminBookings"></div></div>
-<div class="card"><h3>All PayPal Transactions</h3><div id="adminPayments"></div></div>
-<div class="card"><h3>All Wallet Topups</h3><div id="adminWithdraws"></div></div>
-</div>
-</div>
-</div>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script>
-// ===== ADMIN EMAIL - ALREADY SET =====
-var ADMIN_EMAILS = ["kwemoilevi64@gmail.com"];
-// ===== YOUR REAL FIREBASE CONFIG - ALREADY FIXED =====
-const firebaseConfig = {
-  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
-  authDomain: "home-care-hero.firebaseapp.com",
-  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
-  projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "38632827016",
-  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
-  measurementId: "G-ZV09KN6R90"
-};
-var auth=null, db=null, currentUser=null, lastBookingId=null, lastAmount=0, lastDesc="";
-window.isAdmin=false;
-try{ firebase.initializeApp(firebaseConfig); auth=firebase.auth(); db=firebase.firestore(); document.getElementById('status').innerHTML='Firebase: Connected ✅ | Wallet + PayPal + Admin Protected'; }catch(e){ document.getElementById('status').innerHTML='Firebase: Not connected - '+e.message; }
-function checkAdmin(){
-  window.isAdmin = currentUser && ADMIN_EMAILS.includes(currentUser.email);
-  var locked=document.getElementById('adminLocked'); var content=document.getElementById('adminContent');
-  if(window.isAdmin){ if(locked) locked.classList.add('hidden'); if(content) content.classList.remove('hidden'); document.getElementById('adminEmailShow').innerText='Logged in as Admin: '+currentUser.email; }
-  else { if(locked) locked.classList.remove('hidden'); if(content) content.classList.add('hidden'); }
-}
-async function loginEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.signInWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); document.getElementById('loginMsg').innerText='Logged in ✅'; updateUser(); if(window.isAdmin){ alert('Welcome Admin ✅'); showPage('admin'); } }catch(e){ document.getElementById('loginMsg').innerText='Firebase Error: '+e.message; } }
-async function registerEmail(){ if(!auth) return alert('Firebase not connected'); try{ await auth.createUserWithEmailAndPassword(document.getElementById('email').value, document.getElementById('pass').value); await db.collection('users').doc(auth.currentUser.uid).set({email:auth.currentUser.email,balance:0,created:new Date()}); document.getElementById('loginMsg').innerText='Account created ✅'; updateUser(); }catch(e){ document.getElementById('loginMsg').innerText='Firebase Error: '+e.message; } }
-async function loginGoogle(){ if(!auth) return alert('Firebase not connected'); try{ var p=new firebase.auth.GoogleAuthProvider(); await auth.signInWithPopup(p); document.getElementById('loginMsg').innerText='Google OK ✅'; updateUser(); if(window.isAdmin){ alert('Welcome Admin ✅'); showPage('admin'); } }catch(e){ document.getElementById('loginMsg').innerText='Firebase Error: '+e.message; } }
-async function logout(){ if(!auth) return; await auth.signOut(); updateUser(); document.getElementById('loginMsg').innerText='Logged out'; showPage('home'); }
-function updateUser(){ currentUser=auth?auth.currentUser:null; var ls=document.getElementById('loginState'); if(ls) ls.innerText=currentUser?('Logged in as: '+currentUser.email):'Not logged in'; var we=document.getElementById('walletEmail'); if(we) we.innerText=currentUser?currentUser.email:'Login to see wallet'; checkAdmin(); if(currentUser) loadWallet(); }
-if(auth) auth.onAuthStateChanged(function(){ updateUser(); });
-async function makeBooking(){
-  if(!auth||!currentUser){ alert('Login first'); showPage('login'); return; }
-  var amt=Number(document.getElementById('amount').value);
-  var data={userId:currentUser.uid,email:currentUser.email,country:document.getElementById('country').value,service:document.getElementById('service').value,patient:document.getElementById('patient').value,location:document.getElementById('location').value,phone:document.getElementById('phone').value,date:document.getElementById('date').value,notes:document.getElementById('notes').value,amount:amt,paymentStatus:'Unpaid',status:'Pending',created:new Date()};
-  if(!data.patient||!data.location||!data.date||!amt){ alert('Fill all + amount'); return; }
-  var ref=await db.collection('bookings').add(data); lastBookingId=ref.id; lastAmount=amt; lastDesc=data.service+' - '+data.patient;
-  document.getElementById('bookMsg').innerText='Booking saved ✅ Pay below with PayPal.';
-  document.getElementById('paySection').classList.remove('hidden'); document.getElementById('payDesc').innerText=lastDesc; document.getElementById('payAmtShow').innerText=lastAmount; renderPayPal('paypal-button-container', amt, 'booking');
-}
-function renderPayPal(containerId, amt, type){
-  if(typeof paypal==='undefined'){ document.getElementById('payMsg').innerText='PayPal not loaded - check Client ID'; return; }
-  document.getElementById(containerId).innerHTML='';
-  paypal.Buttons({
-    createOrder:function(d,a){ return a.order.create({purchase_units:[{description:lastDesc||'Wallet Topup', amount:{value:String(amt)}}]}); },
-    onApprove: async function(data,actions){
-      var details=await actions.order.capture();
-      if(type==='booking'){
-        await db.collection('payments').add({userId:currentUser.uid,email:currentUser.email,bookingId:lastBookingId,amount:amt,currency:'USD',method:'PayPal',status:'Paid',paypalOrderId:data.orderID,created:new Date()});
-        await db.collection('bookings').doc(lastBookingId).update({paymentStatus:'Paid',status:'Confirmed',paypalOrderId:data.orderID});
-        document.getElementById('payMsg').innerText='✅ Payment Successful! Booking Confirmed.'; alert('Payment Successful ✅'); showPage('track');
-      } else {
-        await db.collection('payments').add({userId:currentUser.uid,email:currentUser.email,amount:amt,currency:'USD',method:'PayPal Wallet Topup',status:'Paid',paypalOrderId:data.orderID,created:new Date()});
-        var ref=db.collection('users').doc(currentUser.uid); var doc=await ref.get(); var bal=(doc.exists?doc.data().balance||0:0)+amt; await ref.set({email:currentUser.email,balance:bal},{merge:true});
-        document.getElementById('walletMsg').innerText='✅ Wallet Topup Successful! $'+amt+' added.'; alert('Wallet Topup Successful ✅'); loadWallet();
-      }
-    },
-    onError:function(e){ alert('PayPal error: '+e); }
-  }).render('#'+containerId);
-}
-async function loadTracking(){
-  if(!auth||!currentUser){ document.getElementById('trackList').innerHTML='Please login'; return; }
-  var s=await db.collection('bookings').where('userId','==',currentUser.uid).get(); var h=''; s.forEach(function(d){ var b=d.data(); h+='<div class="item"><b>'+b.service+'</b> - '+b.status+' - Payment: '+(b.paymentStatus||'Unpaid')+'<br><span class="small">'+b.patient+' | '+b.location+' | $'+(b.amount||0)+'</span></div>'; }); document.getElementById('trackList').innerHTML=h||'No bookings';
-  var p=await db.collection('payments').where('userId','==',currentUser.uid).get(); var ht=''; p.forEach(function(d){ var x=d.data(); ht+='<div class="item">PayPal - $'+x.amount+' - '+x.status+' - '+(x.method||'')+'</div>'; }); document.getElementById('myTrans').innerHTML=ht||'No transactions';
-}
-async function loadWallet(){
-  if(!auth||!currentUser) return;
-  var doc=await db.collection('users').doc(currentUser.uid).get(); var bal=doc.exists?(doc.data().balance||0):0; document.getElementById('bal').innerText='$'+Number(bal).toLocaleString();
-  var s=await db.collection('payments').where('userId','==',currentUser.uid).get(); var h=''; s.forEach(function(d){ var x=d.data(); h+='<div class="item">'+(x.method||'PayPal')+' - $'+x.amount+' - '+x.status+'</div>'; }); document.getElementById('walletHist').innerHTML=h||'No history';
-  document.getElementById('paypal-wallet-container').innerHTML='<p class="small">Type amount above, then tap below to show PayPal button.</p><button class="btn btn-green" onclick="showWalletPayPal()">Show PayPal Button for Topup</button>';
-}
-function showWalletPayPal(){ var amt=Number(document.getElementById('topupAmt').value); if(!amt) return alert('Enter topup amount first'); lastAmount=amt; lastDesc='Wallet Topup $'+amt; renderPayPal('paypal-wallet-container', amt, 'wallet'); }
-async function loadAdmin(){
-  if(!window.isAdmin){ document.getElementById('adminLocked').classList.remove('hidden'); document.getElementById('adminContent').classList.add('hidden'); return; }
-  var b=await db.collection('bookings').get(); document.getElementById('aBookings').innerText=b.size; var hb=''; var paid=0; b.forEach(function(d){ var x=d.data(); if(x.paymentStatus==='Paid') paid++; hb+='<div class="item"><b>'+x.service+'</b> - '+x.status+' - '+(x.paymentStatus||'Unpaid')+'<br><span class="small">'+x.patient+' | '+x.email+' | '+x.location+' | $'+(x.amount||0)+'</span><br><button onclick="updateBooking(\''+d.id+'\',\'Confirmed\')">Confirm</button> <button onclick="updateBooking(\''+d.id+'\',\'Nurse Assigned\')">Assign</button> <button onclick="updateBooking(\''+d.id+'\',\'Completed\')">Complete</button></div>'; }); document.getElementById('adminBookings').innerHTML=hb||'No bookings'; document.getElementById('aPaid').innerText=paid;
-  var p=await db.collection('payments').get(); var tot=0,hp=''; p.forEach(function(d){ var x=d.data(); tot+=Number(x.amount||0); hp+='<div class="item">PayPal - $'+x.amount+' - '+x.email+' - '+(x.method||'')+' - '+x.status+'</div>'; }); document.getElementById('aPayments').innerText='$'+tot.toLocaleString(); document.getElementById('adminPayments').innerHTML=hp||'No payments'; document.getElementById('adminWithdraws').innerHTML=hp||'No wallet topups';
-}
-async function updateBooking(id,s){ if(!window.isAdmin) return alert('Admin only'); await db.collection('bookings').doc(id).update({status:s}); loadAdmin(); }
-</script>
-</body>
-</html>
+
+<!-- WALLET -->
+<div id="wallet" class="card hidden">
+<h3>💰 My Wallet</h3>
+<p>Balance: $<b id="walletBalance">0</b></p>
+<p>Logged in as: <span id="walletEmail">-</span></p>
+<hr>
+<h4>Top Up</h4>
+<input id="topupAmount" type="number" placeholder="Amount to top up - e.g 20">
+<button class="main" onclick="topupWallet()">Top Up with PayPal</button>
+<div id="paypal-button-container" style="margin-top:10px"></div>
+<p id="topupMsg"></p>
+<hr>
+<h4>⬇️ Withdraw</h4>
+<input id="withdrawAmount" type="number" placeholder="Amount to withdraw">
+<input id="withdrawMethod" placeholder="PayPal email / MTN / Airtel number for withdraw">
+<button class="orange" onclick="requestWithdraw()">⬇️ WITHDRAW</button>
+<p id="withdrawMsg"></p>
+<h4>My Withdraw Requests</h4>
+<div id="myWithdraws">No withdraws yet - login to see</div>
+<h4>My Topups</h4>
+<div id="
