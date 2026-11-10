@@ -1,0 +1,26 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nurse Application - Home Care Hero</title>
+<style>body{margin:0;font:15px system-ui;background:#f1f5f9;padding:16px}.card{max-width:480px;margin:auto;background:#fff;padding:20px;border-radius:14px}input,select,textarea{width:100%;padding:12px;margin:7px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}button{width:100%;padding:13px;border:0;border-radius:8px;background:#0f172a;color:#fff;font-weight:700;font-size:16px}label{font-size:13px;color:#555}</style></head>
+<body><div class="card"><h2>👩‍⚕️ Join as Nurse / Caregiver</h2><p style="color:#666">Home Care Hero - REAL Applications. We review in Firebase, then approve you.</p>
+<label>Full Name *</label><input id="name" placeholder="e.g. Amina Nakato">
+<label>Phone / WhatsApp *</label><input id="phone" placeholder="077... / +256...">
+<label>Country *</label><select id="country"><option>Uganda</option><option>Kenya</option><option>Other</option></select>
+<label>City / District *</label><input id="city" placeholder="Kampala">
+<label>Service *</label><select id="service"><option>General Nursing</option><option>Elderly Care</option><option>Baby Care / Nanny</option><option>Physiotherapy</option><option>Home Help / Cleaning</option></select>
+<label>Years Experience</label><input id="exp" placeholder="e.g. 3">
+<label>License / ID No.</label><input id="license" placeholder="Nursing Council ID / National ID">
+<label>Your Rate (per day / per visit)</label><input id="rate" placeholder="e.g. 50000 UGX / $20">
+<label>About You</label><textarea id="about" rows="3" placeholder="Your skills, availability..."></textarea>
+<button onclick="submitNurse()">Submit Application ✅</button><p id="msg"></p><a href="index.html">← Back to App</a></div>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+// SAME Firebase as your index.html - replace if your config differs
+const firebaseConfig={apiKey:"AIzaSyDUMMY-REPLACE-WITH-YOUR-REAL-KEY",authDomain:"home-care-hero.firebaseapp.com",projectId:"home-care-hero"};
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+async function submitNurse(){
+let d={name:val('name'),phone:val('phone'),country:val('country'),city:val('city'),service:val('service'),exp:val('exp'),license:val('license'),rate:val('rate'),about:val('about'),status:'pending',createdAt:new Date().toISOString()};
+if(!d.name||!d.phone||!d.city){document.getElementById('msg').innerText='Please fill Name, Phone, City';return;}
+try{await db.collection('nurseApplications').add(d);document.getElementById('msg').innerText='✅ Application Sent! We will contact you on WhatsApp. Thank you.';}catch(e){document.getElementById('msg').innerText='Error: '+e.message+' - Check Firebase config';}
+}
+function val(id){return document.getElementById(id).value.trim();}
+</script></body></html>
