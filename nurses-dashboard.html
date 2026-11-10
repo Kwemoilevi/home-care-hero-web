@@ -1,0 +1,19 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nurse Alarm - Home Care Hero</title><style>body{margin:0;font:15px system-ui;background:#f1f5f9;padding:16px}.card{background:#fff;padding:18px;border-radius:12px;max-width:480px;margin:auto}button{width:100%;padding:14px;border:0;border-radius:8px;background:#ef4444;color:#fff;font-weight:700;font-size:16px;margin-top:10px}.job{background:#fff;padding:14px;border-radius:10px;margin:10px 0;border-left:4px solid #ef4444}</style></head>
+<body><div class="card"><h2>🔔 Nurse Live Jobs</h2><p>Keep this page OPEN. When client needs you, it will BEEP.</p><button onclick="enableNurseAlarm()">🔔 TAP TO ENABLE ALARM</button><p id="status">Alarm: OFF - Tap above</p></div><div id="jobs" style="max-width:480px;margin:auto"></div>
+<div id="alarmBox" style="position:fixed;top:0;left:0;right:0;background:#ef4444;color:#fff;padding:16px;text-align:center;font-weight:700;display:none;z-index:9999">🚨 NEW CLIENT! <span id="alarmText"></span><br><button onclick="stopNurseAlarm()" style="background:#fff;color:#ef4444;padding:10px 20px;border:0;border-radius:8px;font-weight:700;margin-top:8px">I SAW IT - STOP</button></div>
+<audio id="alarmSound" loop><source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script><script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+const firebaseConfig={apiKey:"AIzaSyDUMMY-REPLACE-WITH-YOUR-REAL-KEY",authDomain:"home-care-hero.firebaseapp.com",projectId:"home-care-hero"};
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+let enabled=false, audio=document.getElementById('alarmSound'), first=true, last=0;
+function enableNurseAlarm(){enabled=true; audio.play().then(()=>{audio.pause();audio.currentTime=0;}); document.getElementById('status').innerText='✅ Alarm ON - Listening for clients...'; alert('Alarm ON! Do not close this page.');}
+function stopNurseAlarm(){document.getElementById('alarmBox').style.display='none'; audio.pause(); audio.currentTime=0; if(navigator.vibrate) navigator.vibrate(0);}
+db.collection('bookings').orderBy('createdAt','desc').limit(10).onSnapshot(snap=>{
+let html=''; snap.forEach(d=>{let x=d.data(); html+=`<div class="job"><b>${x.service||''}</b> - ${x.location||x.city||''}<br>${x.phone||''} • Status: ${x.status||'pending'}<br><a href="https://wa.me/${(x.phone||'').replace(/[^0-9]/g,'')}"><button style="background:#16a34a">WhatsApp Client</button></a></div>`;});
+document.getElementById('jobs').innerHTML=html||'No jobs yet';
+if(first){last=snap.size; first=false; return;}
+if(snap.size>last){let n=snap.docs[0].data(); if(enabled){document.getElementById('alarmText').innerText=(n.service||'')+' - '+(n.phone||''); document.getElementById('alarmBox').style.display='block'; audio.play(); if(navigator.vibrate) navigator.vibrate([500,200,500]);}} last=snap.size;
+});
+</script></body></html>
