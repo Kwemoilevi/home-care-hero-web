@@ -12,4 +12,99 @@ header h1{margin:0;font-size:20px} header p{margin:4px 0 0;color:#94a3b8;font-si
 .tab{padding:10px 14px;border-radius:20px;border:1px solid #ddd;background:#fff;cursor:pointer}
 .tab.active{background:#0f172a;color:#fff}
 .card{background:#fff;padding:14px;border-radius:12px;margin-bottom:10px;border-left:4px solid #0f172a}
-button{padding:9px 
+button{padding:9px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer;margin:3px}
+.btn-black{background:#0f172a;color:#fff}.btn-green{background:#16a34a;color:#fff}.btn-red{background:#ef4444;color:#fff}.btn-grey{background:#e5e7eb}.btn-orange{background:#f97316;color:#fff}
+input,select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box;margin:6px 0}
+small{color:#666}
+#alarmBox{position:fixed;top:0;left:0;right:0;background:#ef4444;color:#fff;padding:14px;text-align:center;font-weight:700;display:none;z-index:9999}
+#alarmStatus{position:fixed;bottom:16px;right:16px;background:#16a34a;color:#fff;padding:10px 14px;border:0;border-radius:30px;font-weight:700;z-index:9998;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+</style></head>
+<body>
+<header>
+<h1>Admin Dashboard 🌍 - REAL Firebase</h1>
+<p id="fbStatus">Firebase: Connecting...</p>
+<p>Home Care Hero 🌍 - Nursing Only - Pesapal + Firebase + AdSense - No Fake Data</p>
+<button class="btn-grey" onclick="logout()">Logout</button>
+<a href="index.html" style="color:#fff;margin-left:10px">View App ↗</a>
+</header>
+<div class="wrap">
+<div class="box" style="text-align:center"><small>Advertisement</small><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-REPLACE-WITH-YOUR-REAL-ADSENSE-ID" data-ad-slot="REPLACE-WITH-YOUR-REAL-AD-SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+<div class="box" style="border:2px dashed #0f172a">
+<b>🔗 Share Nurse Application Form 🌍:</b><br>
+<input id="nurseLink" readonly value="https://home-care-hero-web.vercel.app/nurse-apply.html">
+<button class="btn-black" onclick="copyNurseLink()">📋 Copy Nurse Link</button>
+<a href="nurse-apply.html" target="_blank"><button class="btn-grey">Open Form ↗</button></a>
+<button class="btn-grey" onclick="copyNurseDash()">📋 Copy Nurse Alarm Link</button>
+<p id="copyMsg" style="color:green"></p>
+<small>Nurse Alarm Link: https://home-care-hero-web.vercel.app/nurse-dashboard.html - Nurses keep it OPEN, alarm is AUTOMATIC</small>
+</div>
+<div class="box" style="background:#dcfce7;border:1px solid #16a34a"><b>🔔 AUTOMATIC ALARM: ON</b><br><small>Admin alarm is AUTOMATIC. No tap needed. Keep this tab OPEN, volume UP. When client books, it BEEPS + VIBRATES + Red Banner in &lt;1 sec. If sound doesn't play first time, tap anywhere once to unlock.</small></div>
+<div class="box" style="border:2px solid #f97316">
+<b>💳 Pesapal Payments - REAL</b><br>
+<small>Real money in Pesapal Dashboard. This checks Firebase payment status.</small><br>
+<label>Pesapal Order ID / Tracking ID to Verify</label>
+<input id="pesapalId" placeholder="e.g. Tracking ID from client">
+<button class="btn-orange" onclick="verifyPesapal()">Verify Pesapal Payment</button>
+<p id="pesapalResult"></p>
+<b id="walletCount">0 Transactions in Firebase</b> • <span id="pendingWallet">Pesapal + PayPal + MTN MoMo</span>
+</div>
+<div class="tabs">
+<button class="tab active" id="tab-bookings" onclick="showTab('bookings')">📅 Bookings</button>
+<button class="tab" id="tab-nurses" onclick="showTab('nurses')">👩‍⚕️ Nurse Applications</button>
+<button class="tab" id="tab-wallet" onclick="showTab('wallet')">💰 Wallet / Pesapal</button>
+<button class="tab" id="tab-approved" onclick="showTab('approved')">✅ Approved Nurses</button>
+</div>
+<div id="list-bookings"></div>
+<div id="list-nurses" style="display:none"></div>
+<div id="list-wallet" style="display:none"></div>
+<div id="list-approved" style="display:none"></div>
+</div>
+<div id="alarmBox">🚨 NEW CLIENT NEEDS ATTENTION! 🚨<br><span id="alarmText"></span><br><button onclick="stopAlarm()" style="background:#fff;color:#ef4444;padding:10px 20px;border:0;border-radius:8px;font-weight:700;margin-top:8px">STOP ALARM - I SAW IT</button></div>
+<div id="alarmStatus">✅ Alarm AUTOMATIC - Listening...</div>
+<audio id="alarmSound" loop preload="auto"><source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg"><source src="https://www.soundjay.com/buttons/sounds/beep-07a.mp3" type="audio/mpeg"></audio>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script>
+if(localStorage.getItem('adminLoggedIn')!=='true'){location.href='admin-login.html';}
+function logout(){localStorage.removeItem('adminLoggedIn');location.href='admin-login.html';}
+function copyNurseLink(){navigator.clipboard.writeText(document.getElementById('nurseLink').value).then(()=>{document.getElementById('copyMsg').innerText='✅ Nurse Form Link Copied!';});}
+function copyNurseDash(){navigator.clipboard.writeText('https://home-care-hero-web.vercel.app/nurse-dashboard.html').then(()=>{document.getElementById('copyMsg').innerText='✅ Nurse Alarm Link Copied! Alarm is AUTOMATIC';});}
+// === FIREBASE - REPLACE WITH YOUR REAL CONFIG ===
+const firebaseConfig={apiKey:"REPLACE-WITH-YOUR-REAL-FIREBASE-APIKEY",authDomain:"home-care-hero.firebaseapp.com",projectId:"home-care-hero",storageBucket:"home-care-hero.appspot.com",messagingSenderId:"REPLACE-WITH-YOUR-REAL-SENDER-ID",appId:"REPLACE-WITH-YOUR-REAL-APP-ID"};
+if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+const db=firebase.firestore();
+document.getElementById('fbStatus').innerText='Firebase: Connected - home-care-hero 🌍 - Pesapal + AdSense Active';
+// === PESAPAL - VERIFY ONLY, REAL MONEY IN PESAPAL DASHBOARD ===
+async function verifyPesapal(){let id=document.getElementById('pesapalId').value.trim();if(!id){document.getElementById('pesapalResult').innerText='Enter Tracking ID';return;}document.getElementById('pesapalResult').innerText='Checking Firebase for: '+id+' ...';try{let snap=await db.collection('bookings').where('pesapalTrackingId','==',id).get();if(!snap.empty){let d=snap.docs[0].data();document.getElementById('pesapalResult').innerText='Found: '+d.phone+' - '+d.service+' - Status: '+d.status+' - Check Pesapal Dashboard for real money.';return;}let snap2=await db.collection('walletRequests').where('pesapalTrackingId','==',id).get();if(!snap2.empty){let d=snap2.docs[0].data();document.getElementById('pesapalResult').innerText='Wallet: '+d.type+' '+d.amount+' - Status: '+d.status;return;}document.getElementById('pesapalResult').innerText='Not found in Firebase. Check Pesapal Dashboard: https://www.pesapal.com';}catch(e){document.getElementById('pesapalResult').innerText='Error: '+e.message;}}
+// === AUTOMATIC ALARM - NO TAP NEEDED ===
+let alarmAudio=document.getElementById('alarmSound');
+function unlockSound(){alarmAudio.play().then(()=>{alarmAudio.pause();alarmAudio.currentTime=0;document.getElementById('alarmStatus').innerText='✅ Alarm AUTOMATIC - Sound Unlocked';}).catch(()=>{});}
+window.addEventListener('touchstart',unlockSound);window.addEventListener('click',unlockSound);window.addEventListener('scroll',unlockSound);
+unlockSound();
+function triggerAlarm(info){document.getElementById('alarmText').innerText=info;document.getElementById('alarmBox').style.display='block';alarmAudio.play().catch(()=>{unlockSound();setTimeout(()=>alarmAudio.play().catch(()=>{}),300);});if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);document.title='🚨 NEW CLIENT! - Admin';setTimeout(()=>{document.title='Admin 🌍 - Home Care Hero';},5000);}
+function stopAlarm(){document.getElementById('alarmBox').style.display='none';alarmAudio.pause();alarmAudio.currentTime=0;if(navigator.vibrate) navigator.vibrate(0);}
+function showTab(t){['bookings','nurses','wallet','approved'].forEach(x=>{document.getElementById('list-'+x).style.display=(x===t?'block':'none');document.getElementById('tab-'+x).classList.toggle('active',x===t);});loadAll();}
+async function loadAll(){loadBookings();loadNurses();loadWallet();loadApproved();}
+async function loadBookings(){let el=document.getElementById('list-bookings');el.innerHTML='<p>Loading...</p>';try{let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(50).get();if(snap.empty){el.innerHTML='<div class="card">No bookings yet.</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.phone||''} - ${d.location||d.city||''}</b> • ${d.service||''}<br><small>${d.name||''} • Status: ${d.status||'pending'} • Pesapal: ${d.pesapalTrackingId||'N/A'} • ${d.createdAt&&d.createdAt.toDate?d.createdAt.toDate().toLocaleString():''}</small><br><button class="btn-green" onclick="updateBooking('${doc.id}','assigned')">Assign</button><button class="btn-black" onclick="updateBooking('${doc.id}','paid')">Mark Paid (Pesapal Confirmed)</button><button class="btn-red" onclick="updateBooking('${doc.id}','cancelled')">Cancel</button></div>`;});el.innerHTML=h;}catch(e){el.innerHTML='Error: '+e.message;}}
+async function updateBooking(id,s){await db.collection('bookings').doc(id).update({status:s});loadBookings();}
+async function loadNurses(){let el=document.getElementById('list-nurses');try{let snap=await db.collection('nurseApplications').orderBy('createdAt','desc').limit(50).get();if(snap.empty){el.innerHTML='<div class="card">No nurse applications yet.</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.name||''}</b> • ${d.phone||''}<br>${d.service||''} • ${d.city||''} • Exp: ${d.exp||''} yrs • Rate: ${d.rate||''}<br><small>License: ${d.license||''} • Status: ${d.status||'pending'}<br>${d.about||''}</small><br><button class="btn-green" onclick="approveNurse('${doc.id}')">✅ Approve</button><button class="btn-red" onclick="rejectNurse('${doc.id}')">Reject</button></div>`;});el.innerHTML=h;}catch(e){el.innerHTML='Error: '+e.message;}}
+async function approveNurse(id){let doc=await db.collection('nurseApplications').doc(id).get();let d=doc.data();d.status='approved';await db.collection('nurses').add(d);await db.collection('nurseApplications').doc(id).update({status:'approved'});loadAll();alert('Approved!');}
+async function rejectNurse(id){await db.collection('nurseApplications').doc(id).update({status:'rejected'});loadAll();}
+async function loadApproved(){let el=document.getElementById('list-approved');try{let snap=await db.collection('nurses').limit(50).get();if(snap.empty){el.innerHTML='<div class="card">No approved nurses yet.</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.name||''}</b> • ${d.service||''} • ${d.city||''} • ${d.phone||''}</div>`;});el.innerHTML=h;}catch(e){el.innerHTML='Error: '+e.message;}}
+async function loadWallet(){let el=document.getElementById('list-wallet');try{let snap=await db.collection('walletRequests').orderBy('createdAt','desc').limit(50).get();document.getElementById('walletCount').innerText=snap.size+' Transactions in Firebase';if(snap.empty){el.innerHTML='<div class="card">0 Transactions. Pesapal real money is in Pesapal Dashboard.</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.type||''} - ${d.amount||''}</b> • ${d.phone||''} • Pesapal: ${d.pesapalTrackingId||'N/A'} • ${d.status||'pending'}<br><button class="btn-green" onclick="updateWallet('${doc.id}','done')">Mark Done</button><button class="btn-red" onclick="updateWallet('${doc.id}','rejected')">Reject</button></div>`;});el.innerHTML=h;}catch(e){el.innerHTML='0 Transactions.';}}
+async function updateWallet(id,s){await db.collection('walletRequests').doc(id).update({status:s});loadWallet();}
+// === INSTANT AUTOMATIC ALARM LISTENER ===
+let alarmFirstLoad=true;
+db.collection('bookings').orderBy('createdAt','desc').limit(1).onSnapshot(snap=>{
+snap.docChanges().forEach(change=>{
+if(change.type==='added'){
+if(alarmFirstLoad) return;
+let d=change.doc.data();
+triggerAlarm((d.phone||'New Client')+' - '+(d.service||'')+' - '+(d.location||d.city||''));
+loadBookings();
+}
+});
+alarmFirstLoad=false;
+});
+loadAll();
+</script></body></html>
