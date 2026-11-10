@@ -2,7 +2,7 @@
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Admin - Home Care Hero - REAL</title>
 <style>
-body{margin:0;font:15px system-ui;background:#f1f5f9}
+body{margin:0;font:15px system-ui;background:#f1f5f9;padding-bottom:80px}
 header{background:#0f172a;color:#fff;padding:16px}
 header h1{margin:0;font-size:20px} header p{margin:4px 0 0;color:#94a3b8;font-size:13px}
 .wrap{padding:14px;max-width:900px;margin:auto}
@@ -15,6 +15,8 @@ button{padding:9px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointe
 .btn-black{background:#0f172a;color:#fff}.btn-green{background:#16a34a;color:#fff}.btn-red{background:#ef4444;color:#fff}.btn-grey{background:#e5e7eb}
 input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box;margin:6px 0}
 small{color:#666}
+#alarmBox{position:fixed;top:0;left:0;right:0;background:#ef4444;color:#fff;padding:14px;text-align:center;font-weight:700;display:none;z-index:9999}
+#enableAlarmBtn{position:fixed;bottom:16px;right:16px;background:#ef4444;color:#fff;padding:12px 16px;border:0;border-radius:30px;font-weight:700;z-index:9998;box-shadow:0 4px 12px rgba(0,0,0,.3)}
 </style></head>
 <body>
 <header>
@@ -26,24 +28,26 @@ small{color:#666}
 </header>
 
 <div class="wrap">
-<!-- 1. SHARE NURSE FORM BOX -->
+<!-- SHARE NURSE FORM -->
 <div class="box" style="border:2px dashed #0f172a">
 <b>🔗 Share Nurse Application Form:</b><br>
-<small>Copy this link and send to nurses on WhatsApp. They fill form, you approve here.</small>
+<small>Copy and send to nurses on WhatsApp. They fill, you approve here.</small>
 <input id="nurseLink" readonly value="https://home-care-hero-web.vercel.app/nurse-apply.html">
 <button class="btn-black" onclick="copyNurseLink()">📋 Copy Nurse Link</button>
 <a href="nurse-apply.html" target="_blank"><button class="btn-grey">Open Form ↗</button></a>
+<button class="btn-grey" onclick="copyNurseDash()">📋 Copy Nurse Alarm Link</button>
 <p id="copyMsg" style="color:green"></p>
+<small>Nurse Alarm Link: https://home-care-hero-web.vercel.app/nurse-dashboard.html - Nurses keep it OPEN to hear BEEP</small>
 </div>
 
-<!-- 2. WALLET SUMMARY REAL -->
+<!-- WALLET -->
 <div class="box">
 <b>💰 Admin Wallet - REAL Firebase Only</b><br>
 <small>Real money is in Pesapal / PayPal / MTN MoMo. This only shows requests.</small><br><br>
-<b id="walletCount">0 Transactions in Firebase</b> • <span id="pendingWallet">0 pending wallet requests</span>
+<b id="walletCount">0 Transactions in Firebase</b> • <span id="pendingWallet">0 pending</span>
 </div>
 
-<!-- 3. TABS -->
+<!-- TABS -->
 <div class="tabs">
 <button class="tab active" id="tab-bookings" onclick="showTab('bookings')">📅 Bookings</button>
 <button class="tab" id="tab-nurses" onclick="showTab('nurses')">👩‍⚕️ Nurse Applications</button>
@@ -57,54 +61,52 @@ small{color:#666}
 <div id="list-approved" style="display:none"></div>
 </div>
 
+<!-- ALARM UI -->
+<div id="alarmBox">🚨 NEW CLIENT NEEDS ATTENTION! 🚨<br><span id="alarmText"></span><br><button onclick="stopAlarm()" style="background:#fff;color:#ef4444;padding:10px 20px;border:0;border-radius:8px;font-weight:700;margin-top:8px">STOP ALARM - I SAW IT</button></div>
+<button id="enableAlarmBtn" onclick="enableAlarm()">🔔 Enable Sound Alarm</button>
+<audio id="alarmSound" loop preload="auto"><source src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" type="audio/ogg"><source src="https://www.soundjay.com/buttons/sounds/beep-07a.mp3" type="audio/mpeg"></audio>
+
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script>
-// === CHECK LOGIN ===
+// === LOGIN CHECK ===
 if(localStorage.getItem('adminLoggedIn')!=='true'){location.href='admin-login.html';}
 function logout(){localStorage.removeItem('adminLoggedIn');location.href='admin-login.html';}
-function copyNurseLink(){
-let v=document.getElementById('nurseLink').value;
-navigator.clipboard.writeText(v).then(()=>{document.getElementById('copyMsg').innerText='✅ Copied! Paste to WhatsApp now.';});
-}
+function copyNurseLink(){let v=document.getElementById('nurseLink').value;navigator.clipboard.writeText(v).then(()=>{document.getElementById('copyMsg').innerText='✅ Nurse Form Link Copied! Paste to WhatsApp';});}
+function copyNurseDash(){navigator.clipboard.writeText('https://home-care-hero-web.vercel.app/nurse-dashboard.html').then(()=>{document.getElementById('copyMsg').innerText='✅ Nurse Alarm Link Copied! Nurses keep it OPEN to hear BEEP';});}
 
-// === FIREBASE - COPY CONFIG FROM YOUR index.html ===
+// === FIREBASE - REPLACE APIKEY WITH YOUR REAL ONE FROM index.html ===
 const firebaseConfig={apiKey:"AIzaSyDUMMY-REPLACE-WITH-YOUR-REAL-KEY",authDomain:"home-care-hero.firebaseapp.com",projectId:"home-care-hero"};
 if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 document.getElementById('fbStatus').innerText='Firebase: Connected - home-care-hero';
 
-let currentTab='bookings';
-function showTab(t){
-currentTab=t;
-['bookings','nurses','wallet','approved'].forEach(x=>{
-document.getElementById('list-'+x).style.display=(x===t?'block':'none');
-document.getElementById('tab-'+x).classList.toggle('active',x===t);
-});
-loadAll();
-}
+// === ALARM ===
+let alarmEnabled=false, alarmAudio=document.getElementById('alarmSound'), lastBookingCount=0, firstLoad=true;
+function enableAlarm(){alarmEnabled=true;alarmAudio.play().then(()=>{alarmAudio.pause();alarmAudio.currentTime=0;}).catch(()=>{});document.getElementById('enableAlarmBtn').innerText='✅ Alarm Armed - Listening...';document.getElementById('enableAlarmBtn').style.background='#16a34a';alert('Alarm Armed! Keep this Admin tab OPEN. New booking = BEEP + VIBRATE + Red Banner.');}
+function triggerAlarm(info){if(!alarmEnabled) return;document.getElementById('alarmText').innerText=info;document.getElementById('alarmBox').style.display='block';alarmAudio.play().catch(()=>{});if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);}
+function stopAlarm(){document.getElementById('alarmBox').style.display='none';alarmAudio.pause();alarmAudio.currentTime=0;if(navigator.vibrate) navigator.vibrate(0);}
 
-// === LOAD ALL ===
-async function loadAll(){
-loadBookings(); loadNurses(); loadWallet(); loadApproved();
-}
-async function loadBookings(){
-let el=document.getElementById('list-bookings'); el.innerHTML='<p>Loading bookings...</p>';
-try{
-let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(50).get();
-if(snap.empty){el.innerHTML='<div class="card">No bookings yet. Share your app link: https://home-care-hero-web.vercel.app</div>';return;}
-let h='';
-snap.forEach(doc=>{
-let d=doc.data();
-h+=`<div class="card"><b>${d.phone||''} - ${d.location||d.city||''}</b> • ${d.service||''}<br><small>${d.name||''} • Status: ${d.status||'pending'} • ${d.createdAt||''}</small><br>
-<button class="btn-green" onclick="updateBooking('${doc.id}','assigned')">Assign</button>
-<button class="btn-black" onclick="updateBooking('${doc.id}','paid')">Mark Paid</button>
-<button class="btn-red" onclick="updateBooking('${doc.id}','cancelled')">Cancel</button></div>`;
-});
-el.innerHTML=h;
-}catch(e){el.innerHTML='Error: '+e.message;}
-}
+// === TABS ===
+function showTab(t){['bookings','nurses','wallet','approved'].forEach(x=>{document.getElementById('list-'+x).style.display=(x===t?'block':'none');document.getElementById('tab-'+x).classList.toggle('active',x===t);});loadAll();}
+async function loadAll(){loadBookings();loadNurses();loadWallet();loadApproved();}
+
+// === BOOKINGS ===
+async function loadBookings(){let el=document.getElementById('list-bookings');el.innerHTML='<p>Loading bookings...</p>';try{let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(50).get();if(snap.empty){el.innerHTML='<div class="card">No bookings yet. Share app: https://home-care-hero-web.vercel.app</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.phone||''} - ${d.location||d.city||''}</b> • ${d.service||''}<br><small>${d.name||''} • Status: ${d.status||'pending'} • ${d.createdAt||''}</small><br><button class="btn-green" onclick="updateBooking('${doc.id}','assigned')">Assign</button><button class="btn-black" onclick="updateBooking('${doc.id}','paid')">Mark Paid</button><button class="btn-red" onclick="updateBooking('${doc.id}','cancelled')">Cancel</button></div>`;});el.innerHTML=h;}catch(e){el.innerHTML='Error: '+e.message;}}
 async function updateBooking(id,status){await db.collection('bookings').doc(id).update({status:status});loadBookings();}
 
-async function loadNurses(){
-let el=document.getElementById('
+// === NURSE APPLICATIONS ===
+async function loadNurses(){let el=document.getElementById('list-nurses');el.innerHTML='<p>Loading...</p>';try{let snap=await db.collection('nurseApplications').orderBy('createdAt','desc').limit(50).get();if(snap.empty){el.innerHTML='<div class="card">No nurse applications yet. Share link above.</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.name||''}</b> • ${d.phone||''}<br>${d.service||''} • ${d.city||''}, ${d.country||''} • Exp: ${d.exp||''} yrs • Rate: ${d.rate||''}<br><small>License: ${d.license||''} • Status: ${d.status||'pending'}<br>${d.about||''}</small><br><button class="btn-green" onclick="approveNurse('${doc.id}')">✅ Approve Nurse</button><button class="btn-red" onclick="rejectNurse('${doc.id}')">Reject</button><a href="https://wa.me/${(d.phone||'').replace(/[^0-9]/g,'')}" target="_blank"><button class="btn-grey">WhatsApp Nurse</button></a></div>`;});el.innerHTML=h;}catch(e){el.innerHTML='Error: '+e.message;}}
+async function approveNurse(id){let doc=await db.collection('nurseApplications').doc(id).get();let d=doc.data();d.status='approved';await db.collection('nurses').add(d);await db.collection('nurseApplications').doc(id).update({status:'approved'});loadAll();alert('Approved! Nurse now shows in app.');}
+async function rejectNurse(id){await db.collection('nurseApplications').doc(id).update({status:'rejected'});loadAll();}
+async function loadApproved(){let el=document.getElementById('list-approved');try{let snap=await db.collection('nurses').limit(50).get();if(snap.empty){el.innerHTML='<div class="card">No approved nurses yet.</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.name||''}</b> • ${d.service||''} • ${d.city||''} • ${d.phone||''}<br><small>${d.about||''}</small></div>`;});el.innerHTML=h;}catch(e){el.innerHTML='Error: '+e.message;}}
+
+// === WALLET ===
+async function loadWallet(){let el=document.getElementById('list-wallet');try{let snap=await db.collection('walletRequests').orderBy('createdAt','desc').limit(50).get();document.getElementById('walletCount').innerText=snap.size+' Transactions in Firebase';if(snap.empty){el.innerHTML='<div class="card">0 Transactions. When client does Deposit/Withdraw, it will show here.</div>';return;}let h='';snap.forEach(doc=>{let d=doc.data();h+=`<div class="card"><b>${d.type||''} - ${d.amount||''}</b> • ${d.phone||''} • ${d.status||'pending'}<br><small>${d.createdAt||''}</small><br><button class="btn-green" onclick="updateWallet('${doc.id}','done')">Mark Done</button><button class="btn-red" onclick="updateWallet('${doc.id}','rejected')">Reject</button></div>`;});el.innerHTML=h;}catch(e){el.innerHTML='No walletRequests yet - 0 Transactions.';}}
+async function updateWallet(id,status){await db.collection('walletRequests').doc(id).update({status:status});loadWallet();}
+
+// === REAL-TIME ALARM LISTENER ===
+db.collection('bookings').orderBy('createdAt','desc').limit(5).onSnapshot(snap=>{let count=snap.size;if(firstLoad){lastBookingCount=count;firstLoad=false;return;}if(count>lastBookingCount){let newest=snap.docs[0].data();triggerAlarm((newest.phone||'New Client')+' - '+(newest.service||'')+' - '+(newest.location||newest.city||''));lastBookingCount=count;loadBookings();}else{lastBookingCount=count;}});
+
+loadAll();
+</script></body></html>
