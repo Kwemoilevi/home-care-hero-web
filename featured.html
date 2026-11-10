@@ -1,0 +1,25 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Featured Nurse - Worldwide</title>
+<style>body{margin:0;font:14px system-ui;background:#f8fafc;padding:16px} .card{background:#fff;padding:16px;border-radius:12px;max-width:400px;margin:0 auto} input{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box} button{width:100%;padding:12px;background:#f59e0b;color:#fff;border:0;border-radius:8px;font-weight:700}</style></head>
+<body>
+<div class="card">
+<h3>⭐ Be Featured - Show On Top - Worldwide</h3>
+<p style="font-size:12px;color:#64748b">Pay 10,000 UGX / $3 for 7 days on top. Customers see you first. You get more bookings.</p>
+<input id="name" placeholder="Your Name as Nurse">
+<input id="phone" placeholder="Phone / WhatsApp">
+<input id="location" placeholder="City / Country e.g. Kampala, Uganda">
+<button onclick="feat()">Request Featured</button>
+<p id="msg" style="font-size:13px"></p>
+<a href="https://store.pesapal.com/shop/72vf28-homecarehero" target="_blank" style="display:block;text-align:center;background:#e4002b;color:white;padding:12px;border-radius:8px;font-weight:700;text-decoration:none;margin-top:10px">💳 Pay Featured - Pesapal - MTN / Airtel / Visa</a>
+<p style="font-size:11px;color:#64748b;text-align:center">Step 1: Request above. Step 2: Tap Pay. Admin puts you on top after payment.</p>
+<a href="index.html">← Home</a>
+</div>
+<script>
+async function feat(){
+ const data={type:'featured',name:document.getElementById('name').value,phone:document.getElementById('phone').value,location:document.getElementById('location').value,status:'pending_payment'};
+ if(!data.name||!data.phone){ document.getElementById('msg').innerText='Fill name, phone'; return; }
+ try{ await fetch('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }catch(e){}
+ let f=[]; try{ f=JSON.parse(localStorage.getItem('featured')||'[]'); }catch(e){} data.id=Date.now(); f.push(data); localStorage.setItem('featured',JSON.stringify(f));
+ document.getElementById('msg').innerText='✅ Request saved! Now tap Pay Featured. Reference #'+data.id;
+}
+</script>
+</body></html>
