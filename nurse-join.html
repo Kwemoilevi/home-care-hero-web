@@ -1,0 +1,30 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Join as Nurse - Worldwide</title>
+<style>body{margin:0;font:14px system-ui;background:#f8fafc;padding:16px} .card{background:#fff;padding:16px;border-radius:12px;max-width:400px;margin:0 auto} input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box} button{width:100%;padding:12px;background:#16a34a;color:#fff;border:0;border-radius:8px;font-weight:700}</style></head>
+<body>
+<div class="card">
+<h3>👩‍⚕️ Join as Nurse / Caregiver - Worldwide</h3>
+<p style="font-size:12px;color:#64748b">Pay subscription to get bookings. Without subscription, you are listed but you don't get jobs.</p>
+<input id="name" placeholder="Your Full Name">
+<input id="phone" placeholder="Phone / WhatsApp e.g. +256 700 000 000">
+<select id="country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>UK</option><option>USA</option><option>Canada</option><option>UAE</option><option>India</option><option>Other</option></select>
+<input id="location" placeholder="City e.g. Kampala, Nairobi, London">
+<select id="plan"><option value="monthly">Monthly - 20,000 UGX / $5 - Get jobs for 30 days</option><option value="yearly">Yearly - 150,000 UGX / $35 - Get jobs for 12 months - SAVE</option></select>
+<button onclick="join()">Join Now</button>
+<p id="msg" style="font-size:13px"></p>
+
+<!-- STEP 2: PAY SUBSCRIPTION - SAME REAL PESAPAL SHOP -->
+<a href="https://store.pesapal.com/shop/72vf28-homecarehero" target="_blank" style="display:block;text-align:center;background:#e4002b;color:white;padding:12px;border-radius:8px;font-weight:700;text-decoration:none;margin-top:10px">💳 Pay Subscription - Pesapal - MTN / Airtel / Visa</a>
+<p style="font-size:11px;color:#64748b;text-align:center">Step 1: Join above. Step 2: Tap Pay. Admin will activate you after payment.</p>
+<a href="index.html">← Home</a>
+</div>
+<script>
+async function join(){
+ const c=document.getElementById('country').value;
+ const data={type:'nurse_join',name:document.getElementById('name').value,phone:document.getElementById('phone').value,country:c,location:document.getElementById('location').value+', '+c,plan:document.getElementById('plan').value,status:'pending_payment'};
+ if(!data.name||!data.phone||!document.getElementById('location').value){ document.getElementById('msg').innerText='Fill name, phone, city'; return; }
+ try{ await fetch('/api/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)}); }catch(e){}
+ let n=[]; try{ n=JSON.parse(localStorage.getItem('caregivers')||'[]'); }catch(e){} data.id=Date.now(); n.push(data); localStorage.setItem('caregivers',JSON.stringify(n));
+ document.getElementById('msg').innerText='✅ Saved! Now tap Pay Subscription above. Reference #'+data.id;
+}
+</script>
+</body></html>
