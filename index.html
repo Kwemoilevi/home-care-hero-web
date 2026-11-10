@@ -1,143 +1,134 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Care Hero - Worldwide Home Nursing</title>
-<!-- GOOGLE ADSENSE - PASTE YOUR ca-pub HERE WHEN YOU FIND IT -->
-<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
-<!-- FIREBASE SDK - REAL -->
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Home Care Hero - Worldwide App</title>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 <style>
 body{margin:0;font:14px system-ui;background:#f8fafc;color:#0f172a}
-header{background:#0284c7;color:#fff;padding:14px}
-header h1{margin:0;font-size:22px}
+header{background:#0284c7;color:#fff;padding:14px;position:sticky;top:0;z-index:9}
+header h1{margin:0;font-size:20px}
 nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-nav a{padding:8px 14px;background:#fff;color:#0369a1;border-radius:20px;text-decoration:none;font-weight:700;font-size:13px}
-nav a.green{background:#16a34a;color:#fff} nav a.yellow{background:#facc15;color:#000} nav a.red{background:#ef4444;color:#fff}
+nav a,nav button{padding:8px 14px;background:#fff;color:#0369a1;border:0;border-radius:20px;text-decoration:none;font-weight:700;font-size:13px;cursor:pointer}
+nav a.green{background:#16a34a;color:#fff} nav a.yellow{background:#facc15;color:#000}
 .card{background:#fff;margin:12px;padding:16px;border-radius:12px}
-.ad{background:#fef9c3;border:2px dashed #facc15;margin:12px;padding:16px;border-radius:12px;text-align:center}
 input,select{width:100%;padding:11px;margin:6px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
 .btn{width:100%;padding:12px;border:0;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
-.green{background:#16a34a;color:#fff} .blue{background:#2563eb;color:#fff} .red{background:#ef4444;color:#fff}
+.green{background:#16a34a;color:#fff} .blue{background:#2563eb;color:#fff} .red{background:#e4002b;color:#fff} .dark{background:#0f172a;color:#fff}
 h3{margin:0 0 8px} .small{font-size:12px;color:#64748b}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
 .box{background:#f1f5f9;padding:12px;border-radius:10px;text-align:center}
-.box b{font-size:18px}
+.tab{padding:8px 12px;border:0;border-radius:20px;font-weight:700;cursor:pointer;background:#e2e8f0} .tab.on{background:#0f172a;color:#fff}
+.payOpt{border:2px solid #e2e8f0;padding:10px;border-radius:10px;margin:6px 0;cursor:pointer} .payOpt.on{border-color:#16a34a;background:#f0fdf4}
+.hidden{display:none}
 </style></head>
 <body>
-<header>
-<h1>🏥 Home Care Hero 🌍 Worldwide</h1>
+<header><h1>🏥 Home Care Hero 🌍 Worldwide App</h1><div class="small" style="color:#fff;opacity:.9" id="fbStatus">Firebase: Connecting...</div>
 <nav>
-<a href="index.html">Home</a>
-<a href="booking.html">Book Nurse</a>
-<a href="#track">Track</a>
-<a href="booking.html">Wallet</a>
-<a href="admin-login.html">Login</a>
-<a href="nurse-join.html" class="green">👩‍⚕️ Nurse</a>
-<a href="admin-login.html" class="yellow">🔐 Admin</a>
-</nav>
-</header>
+<button class="tab on" id="t1" onclick="show('home')">🏠 Home</button>
+<button class="tab" id="t2" onclick="show('book')">📅 Book</button>
+<button class="tab" id="t3" onclick="show('track')">🔍 Track</button>
+<button class="tab" id="t4" onclick="show('trans')">💳 My Transactions</button>
+<button class="tab" id="t5" onclick="show('nurse')">👩‍⚕️ Nurse</button>
+</nav></header>
 
-<div class="ad">
-<b>🏥 Your Clinic / Hospital Here - Advertise Worldwide!</b><br>
-<span class="small">Email: kwemoilevi64@gmail.com</span>
-<!-- ADSENSE AD SLOT - Will show after you add ca-pub above -->
-<!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-XXXXXXXXXXXXXXX" data-ad-slot="1234567890" data-ad-format="auto"></ins> -->
+<div id="page-home">
+<div class="card"><h3>Trusted Nurses, Nannies, House Helps & Cooks - Worldwide</h3><p class="small">All bookings & payments happen INSIDE this app. Kampala, Nairobi, London, New York, Dubai.</p>
+<div class="grid"><div class="box"><b>👩‍⚕️ Nursing</b><br><span class="small">Home Nursing</span></div><div class="box"><b>👶 Baby Care</b><br><span class="small">Nannies</span></div><div class="box"><b>👵 Elderly Care</b><br><span class="small">Compassionate</span></div><div class="box"><b>🏠 House Help</b><br><span class="small">Cooks & Helpers</span></div></div>
+<button class="btn blue" onclick="show('book')" style="margin-top:12px">📅 Book Nurse Inside App →</button></div>
+<div class="card"><h3>⭐ Featured Nurses - Worldwide</h3><div id="featuredHome">Loading from Firebase...</div></div>
+<div class="card"><h3>👩‍⚕️ All Nurses - Worldwide</h3><div id="nursesHome">Loading from Firebase...</div></div>
+<div class="card" style="text-align:center"><b>Home Care Hero • Worldwide</b><br><span class="small">kwemoilevi64@gmail.com • <a href="admin-login.html">Admin Login</a></span></div>
 </div>
 
-<div class="card">
-<h3>Trusted Nurses, Nannies, House Helps & Cooks - Worldwide</h3>
-<p class="small">Book in 1 minute, wherever you are. Kampala, Nairobi, London, New York, Dubai - we cover worldwide. <span id="fbStatus" style="color:#16a34a">Firebase: Connecting...</span></p>
-<div class="grid">
-<div class="box"><b>👩‍⚕️ Nursing</b><br><span class="small">Home Nursing Care</span></div>
-<div class="box"><b>👶 Baby Care</b><br><span class="small">Nannies & Babysitters</span></div>
-<div class="box"><b>👵 Elderly Care</b><br><span class="small">Compassionate Care</span></div>
-<div class="box"><b>🏠 House Help</b><br><span class="small">Cooks & Helpers</span></div>
+<div id="page-book" class="hidden">
+<div class="card"><h3>📅 Book Nurse - Inside App - Step 1/2</h3>
+<input id="bName" placeholder="Your Full Name">
+<input id="bPhone" placeholder="Phone / WhatsApp e.g. +256 700 000 000">
+<select id="bCountry"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>UK</option><option>USA</option><option>Canada</option><option>UAE</option><option>India</option><option>Other</option></select>
+<input id="bCity" placeholder="City e.g. Kampala, Nairobi, London">
+<select id="bService"><option>Nursing Care</option><option>Baby Care / Nanny</option><option>Elderly Care</option><option>House Help</option><option>Cook</option><option>Physiotherapy</option></select>
+<input id="bDate" type="date">
+<select id="bPay"><option value="pesapal">Pesapal - MTN / Airtel / Visa / Mastercard</option><option value="paypal">PayPal - Worldwide</option><option value="cash">Pay Cash After Service</option></select>
+<p id="bMsg" style="font-size:13px"></p>
+<button class="btn green" onclick="createBooking()">Continue to Payment Inside App →</button>
 </div>
-<a href="booking.html" style="display:block;text-align:center;background:#2563eb;color:#fff;padding:14px;border-radius:8px;font-weight:700;text-decoration:none;margin-top:12px">📅 Book Nurse Now - Worldwide</a>
-<a href="https://store.pesapal.com/shop/72vf28-homecarehero" target="_blank" style="display:block;text-align:center;background:#e4002b;color:#fff;padding:12px;border-radius:8px;font-weight:700;text-decoration:none;margin-top:8px">💳 Pay - MTN / Airtel / Visa / Mastercard - Pesapal</a>
-<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=kwemoilevi64@gmail.com&currency_code=USD" target="_blank" style="display:block;text-align:center;background:#003087;color:#fff;padding:12px;border-radius:8px;font-weight:700;text-decoration:none;margin-top:8px">💙 Pay with PayPal - Worldwide</a>
-<p class="small" style="text-align:center">PayPal: kwemoilevi64@gmail.com • Pesapal: MTN / Airtel / Visa</p>
+<div class="card hidden" id="payCard"><h3>💳 Step 2/2 - Pay Inside App</h3><p class="small">Booking saved to Firebase. Now choose payment. Your transaction will be saved in Firebase.</p>
+<div id="payInfo"></div>
+<div class="payOpt on" id="opt-pesapal" onclick="selPay('pesapal')"><b>💳 Pesapal</b> - MTN MoMo / Airtel / Visa / Mastercard</div>
+<div class="payOpt" id="opt-paypal" onclick="selPay('paypal')"><b>💙 PayPal</b> - Worldwide</div>
+<div class="payOpt" id="opt-cash" onclick="selPay('cash')"><b>💵 Cash</b> - Pay after service</div>
+<button class="btn red" onclick="payNow()">Pay Now - Opens Secure Payment</button>
+<button class="btn dark" onclick="payCash()">I Will Pay Cash - Finish Booking</button>
+<p class="small">After you pay, come back to this app → Track → You will see your payment as PENDING until Admin confirms it in Pesapal / PayPal.</p>
 </div>
-
-<div class="card" id="track">
-<h3>🔍 Track Your Booking - REAL Firebase</h3>
-<p class="small">Enter your phone to see your REAL booking from Firebase.</p>
-<input id="trackPhone" placeholder="Phone e.g. +256 700 000 000">
-<button class="btn blue" onclick="track()">Track Booking</button>
-<p id="trackResult" style="font-size:13px"></p>
-</div>
-
-<div class="card">
-<h3>👩‍⚕️ Nurse Portal - Worldwide 🌍</h3>
-<p>Join nurses from USA, UK, Africa, Asia, Everywhere! Get bookings worldwide.</p>
-<p class="small">Not logged in as Nurse</p>
-<input id="nName" placeholder="Your Name">
-<input id="nPhone" placeholder="Your Phone - with country code">
-<input id="nArea" placeholder="Your Area - City, Country - e.g Kampala, Uganda / London, UK">
-<input id="nEmail" placeholder="Your Email">
-<button class="btn green" onclick="location.href='nurse-join.html'">Register As Nurse - Worldwide ✅</button>
-<div style="height:8px"></div>
-<button class="btn blue" onclick="location.href='nurse-join.html'">Login As Nurse</button>
-<div style="height:8px"></div>
-<button class="btn red" onclick="localStorage.clear();alert('Logged out');location.reload()">🔓 Logout All</button>
 </div>
 
-<div class="card">
-<h3>⭐ Featured Nurses - Worldwide - REAL Firebase</h3>
-<p class="small">Top nurses, verified. Want to be on top? <a href="featured.html">Get Featured - 10,000 UGX / $3 for 7 days</a></p>
-<div id="featuredHome">Loading featured nurses from Firebase...</div>
+<div id="page-track" class="hidden">
+<div class="card"><h3>🔍 Track Your Booking - Inside App</h3><input id="trackPhone" placeholder="Phone e.g. +256 700 000 000"><button class="btn blue" onclick="track()">Track Booking</button><p id="trackResult"></p></div>
 </div>
 
-<div class="card">
-<h3>👩‍⚕️ All Nurses - Worldwide - REAL Firebase</h3>
-<p class="small">Nurses who joined and paid subscription appear here.</p>
-<div id="nursesHome">Loading nurses from Firebase...</div>
-<div style="margin-top:10px"><a href="nurse-join.html" style="color:#16a34a;font-weight:700">Join as Nurse →</a> | <a href="featured.html" style="color:#f59e0b;font-weight:700">Be Featured →</a></div>
+<div id="page-trans" class="hidden">
+<div class="card"><h3>💳 My Transactions - Inside App - REAL Firebase</h3><p class="small">Only YOUR transactions from Firebase. No demo.</p><input id="transPhone" placeholder="Enter your phone to see your transactions"><button class="btn blue" onclick="loadTrans()">Show My Transactions</button><div id="transList" style="margin-top:10px"></div></div>
 </div>
 
-<div class="ad"><span class="small">Advertisement</span><br><b>Advertise Here - Reach Patients Worldwide 🌍</b><br><span class="small">Email: kwemoilevi64@gmail.com</span></div>
-
-<div class="card" style="text-align:center">
-<b>Home Care Hero • Worldwide • Available in 20+ Countries</b><br>
-<span class="small">Call / WhatsApp: +256 700 000 000 • Email: kwemoilevi64@gmail.com</span><br><br>
-<a href="booking.html">Book</a> | <a href="nurse-join.html">Join as Nurse</a> | <a href="featured.html">Featured</a> | <a href="admin-login.html">Admin Login</a>
+<div id="page-nurse" class="hidden">
+<div class="card"><h3>👩‍⚕️ Nurse Portal - Worldwide</h3><p>Join nurses from USA, UK, Africa, Asia, Everywhere! Get bookings worldwide.</p>
+<input id="nName" placeholder="Your Name"><input id="nPhone" placeholder="Phone"><input id="nArea" placeholder="City, Country"><button class="btn green" onclick="location.href='nurse-join.html'">Register As Nurse Inside App →</button><div style="height:8px"></div><button class="btn blue" onclick="location.href='featured.html'">⭐ Be Featured - Inside App</button></div>
 </div>
 
 <script>
-// YOUR REAL FIREBASE - home-care-hero - DO NOT CHANGE
-const firebaseConfig = {
-  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
-  authDomain: "home-care-hero.firebaseapp.com",
-  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
-  projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "38632827016",
-  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
-  measurementId: "G-ZV09KN6R90"
-};
-let db=null;
-try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); document.getElementById('fbStatus').innerText='Firebase: Connected ✅'; }catch(e){ document.getElementById('fbStatus').innerText='Firebase: Local Mode'; }
-
+const firebaseConfig={apiKey:"AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain:"home-care-hero.firebaseapp.com",databaseURL:"https://home-care-hero-default-rtdb.firebaseio.com",projectId:"home-care-hero",storageBucket:"home-care-hero.firebasestorage.app",messagingSenderId:"38632827016",appId:"1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId:"G-ZV09KN6R90"};
+let db=null; try{firebase.initializeApp(firebaseConfig); db=firebase.firestore(); document.getElementById('fbStatus').innerText='Firebase: Connected ✅ home-care-hero';}catch(e){document.getElementById('fbStatus').innerText='Firebase: Local Mode';}
+let currentBooking=null; let selectedPay='pesapal';
+function show(p){ ['home','book','track','trans','nurse'].forEach(x=>{ document.getElementById('page-'+x).classList.toggle('hidden',x!==p); document.getElementById('t'+(['home','book','track','trans','nurse'].indexOf(x)+1)).className='tab'+(x===p?' on':''); }); if(p==='home') loadHome(); }
+function selPay(v){ selectedPay=v; ['pesapal','paypal','cash'].forEach(x=>document.getElementById('opt-'+x).className='payOpt'+(x===v?' on':'')); }
+async function createBooking(){
+ let data={type:'booking',name:document.getElementById('bName').value.trim(),phone:document.getElementById('bPhone').value.trim(),country:document.getElementById('bCountry').value,location:document.getElementById('bCity').value.trim()+', '+document.getElementById('bCountry').value,service:document.getElementById('bService').value,date:document.getElementById('bDate').value,payMethod:document.getElementById('bPay').value,status:'pending_payment',createdAt:new Date().toISOString()};
+ if(!data.name||!data.phone||!document.getElementById('bCity').value){ document.getElementById('bMsg').innerText='Fill name, phone, city'; return; }
+ data.id=Date.now();
+ try{ if(db){ await db.collection('bookings').add(data); await db.collection('transactions').add({bookingId:data.id,type:'booking',name:data.name,phone:data.phone,method:data.payMethod,status:'pending_payment',createdAt:data.createdAt}); } }catch(e){}
+ let b=[]; try{ b=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){} b.push(data); localStorage.setItem('bookings',JSON.stringify(b));
+ let t=[]; try{ t=JSON.parse(localStorage.getItem('transactions')||'[]'); }catch(e){} t.push({bookingId:data.id,type:'booking',name:data.name,phone:data.phone,method:data.payMethod,status:'pending_payment'}); localStorage.setItem('transactions',JSON.stringify(t));
+ currentBooking=data; selectedPay=data.payMethod==='paypal'?'paypal':data.payMethod==='cash'?'cash':'pesapal'; selPay(selectedPay);
+ document.getElementById('payInfo').innerHTML='<b>Booking #'+data.id+'</b><br>'+data.service+' - '+data.location+'<br>Phone: '+data.phone+'<br>Status: <b>PENDING PAYMENT</b>';
+ document.getElementById('payCard').classList.remove('hidden'); document.getElementById('bMsg').innerText='✅ Booking saved INSIDE APP to Firebase! Now pay below.';
+ document.getElementById('payCard').scrollIntoView({behavior:'smooth'});
+}
+function payNow(){
+ if(!currentBooking){ alert('Create booking first'); return; }
+ if(selectedPay==='paypal'){ window.open('https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=kwemoilevi64@gmail.com&currency_code=USD','_blank'); }
+ else if(selectedPay==='pesapal'){ window.open('https://store.pesapal.com/shop/72vf28-homecarehero','_blank'); }
+ else { payCash(); return; }
+ alert('After payment, return to this app > My Transactions. Admin will confirm your payment.');
+ show('trans'); document.getElementById('transPhone').value=currentBooking.phone;
+}
+async function payCash(){
+ if(!currentBooking) return;
+ try{ if(db){ await db.collection('transactions').add({bookingId:currentBooking.id,type:'booking',name:currentBooking.name,phone:currentBooking.phone,method:'cash',status:'pending_cash',createdAt:new Date().toISOString()}); } }catch(e){}
+ alert('✅ Booking finished INSIDE APP. You will pay cash to nurse. Reference #'+currentBooking.id);
+ show('trans'); document.getElementById('transPhone').value=currentBooking.phone; loadTrans();
+}
 async function track(){
- let p=document.getElementById('trackPhone').value.trim();
- if(!p){ document.getElementById('trackResult').innerText='Enter phone'; return; }
+ let p=document.getElementById('trackPhone').value.trim(); if(!p){ document.getElementById('trackResult').innerText='Enter phone'; return; }
  document.getElementById('trackResult').innerText='Searching Firebase...';
- try{
-  if(db){ let s=await db.collection('bookings').where('phone','==',p).get(); if(!s.empty){ document.getElementById('trackResult').innerHTML=''; s.forEach(d=>{ let x=d.data(); document.getElementById('trackResult').innerHTML+='<b>'+(x.service||'Booking')+'</b> - '+(x.location||'')+' - Status: <b>'+(x.status||'pending')+'</b><br>'; }); return; } }
- }catch(e){}
- let b=[]; try{ b=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){}
- let found=b.filter(x=>(x.phone||'').replace(/\s/g,'')===p.replace(/\s/g,''));
- if(found.length===0){ document.getElementById('trackResult').innerText='No booking found for this phone in Firebase. Book at /booking.html'; return; }
- document.getElementById('trackResult').innerHTML=found.map(x=>'<b>'+(x.service||'Booking')+'</b> - '+(x.location||'')+' - Status: <b>'+(x.status||'pending')+'</b>').join('<br>');
+ let html='';
+ try{ if(db){ let s=await db.collection('bookings').where('phone','==',p).get(); s.forEach(d=>{ let x=d.data(); html+='<div style="padding:8px;border-bottom:1px solid #eee"><b>'+(x.service||'Booking')+'</b> - '+(x.location||'')+' - <b>'+(x.status||'pending')+'</b></div>'; }); } }catch(e){}
+ if(!html){ let b=[]; try{ b=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){} let f=b.filter(x=>x.phone===p); if(f.length) html=f.map(x=>'<div><b>'+x.service+'</b> - '+x.location+' - <b>'+x.status+'</b></div>').join(''); }
+ document.getElementById('trackResult').innerHTML=html||'No booking found in Firebase for this phone.';
+}
+async function loadTrans(){
+ let p=document.getElementById('transPhone').value.trim(); if(!p){ document.getElementById('transList').innerText='Enter phone'; return; }
+ document.getElementById('transList').innerText='Loading from Firebase...';
+ let html='';
+ try{ if(db){ let s=await db.collection('transactions').where('phone','==',p).get(); s.forEach(d=>{ let x=d.data(); html+='<div style="padding:10px;border-bottom:1px solid #eee"><b>'+(x.type||'booking')+'</b> - Method: '+(x.method||'')+' - Status: <b>'+(x.status||'')+'</b><br><small>'+(x.createdAt||'')+'</small></div>'; }); } }catch(e){}
+ if(!html){ let t=[]; try{ t=JSON.parse(localStorage.getItem('transactions')||'[]'); }catch(e){} let f=t.filter(x=>x.phone===p); if(f.length) html=f.map(x=>'<div><b>'+x.type+'</b> - '+x.method+' - <b>'+x.status+'</b></div>').join(''); }
+ document.getElementById('transList').innerHTML=html||'No transactions in Firebase for this phone.';
 }
 async function loadHome(){
- let nurses=[], featured=[];
+ let nurses=[],featured=[];
  try{ if(db){ let s=await db.collection('bookings').where('type','==','nurse_join').get(); s.forEach(d=>nurses.push(d.data())); let f=await db.collection('bookings').where('type','==','featured').get(); f.forEach(d=>featured.push(d.data())); } }catch(e){}
- if(nurses.length===0){ try{ nurses=JSON.parse(localStorage.getItem('caregivers')||'[]'); }catch(e){} }
- if(featured.length===0){ try{ featured=JSON.parse(localStorage.getItem('featured')||'[]'); }catch(e){} }
- if(featured.length===0) document.getElementById('featuredHome').innerHTML='<p class="small">No featured nurses yet. Be the first.</p>';
- else document.getElementById('featuredHome').innerHTML=featured.map(x=>'<div style="padding:8px;border-bottom:1px solid #eee"><b>⭐ '+x.name+'</b> - '+(x.location||'')+'<br><small>'+(x.phone||'')+'</small></div>').join('');
- if(nurses.length===0) document.getElementById('nursesHome').innerHTML='<p class="small">No nurses yet. Join to be listed.</p>';
- else document.getElementById('nursesHome').innerHTML=nurses.map(x=>'<div style="padding:8px;border-bottom:1px solid #eee"><b>'+x.name+'</b> - '+(x.location||'')+' - '+(x.status||'pending')+'<br><small>'+(x.phone||'')+'</small></div>').join('');
+ if(!nurses.length){ try{ nurses=JSON.parse(localStorage.getItem('caregivers')||'[]'); }catch(e){} }
+ if(!featured.length){ try{ featured=JSON.parse(localStorage.getItem('featured')||'[]'); }catch(e){} }
+ document.getElementById('featuredHome').innerHTML=featured.length?featured.map(x=>'<div style="padding:8px;border-bottom:1px solid #eee"><b>⭐ '+x.name+'</b> - '+(x.location||'')+'</div>').join(''):'<p class="small">No featured nurses yet.</p>';
+ document.getElementById('nursesHome').innerHTML=nurses.length?nurses.map(x=>'<div style="padding:8px;border-bottom:1px solid #eee"><b>'+x.name+'</b> - '+(x.location||'')+' - '+(x.status||'pending')+'</div>').join(''):'<p class="small">No nurses yet.</p>';
 }
 loadHome();
 </script>
