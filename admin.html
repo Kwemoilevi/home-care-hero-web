@@ -1,87 +1,74 @@
 <!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard - Home Care Hero Worldwide</title>
 <style>
 body{margin:0;font:14px system-ui;background:#f1f5f9;color:#0f172a}
-header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
 .card{background:#fff;margin:10px;padding:12px;border-radius:12px}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
 .stat{background:#fff;padding:12px;border-radius:12px;text-align:center}
-table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px;vertical-align:top}
 .btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}
-.blue{background:#2563eb;color:#fff} .green{background:#16a34a;color:#fff} .red{background:#ef4444;color:#fff} .gray{background:#e2e8f0}
+.blue{background:#2563eb;color:#fff} .green{background:#16a34a;color:#fff} .red{background:#ef4444;color:#fff} .gray{background:#e2e8f0} .yellow{background:#f59e0b;color:#fff}
 input{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
-.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700} .pending{background:#fef3c7;color:#92400e} .assigned{background:#dbeafe;color:#1e40af} .paid{background:#dcfce7;color:#166534}
+.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap} .pending{background:#fef3c7;color:#92400e} .assigned{background:#dbeafe;color:#1e40af} .paid{background:#dcfce7;color:#166534} .active{background:#dcfce7;color:#166534}
+.tab{padding:8px 12px;border:0;border-radius:20px;font-weight:700;cursor:pointer;font-size:13px;background:#e2e8f0}
+.tab.on{background:#0f172a;color:#fff}
 </style></head>
 <body>
-<header><div><b>🏠 Admin Dashboard</b> <span style="opacity:.7;font-size:11px">Worldwide • Separate</span> <span id="dbStatus" style="opacity:.7;font-size:11px">LOCAL</span></div><div><a href="index.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">View Site</a><button class="btn red" onclick="logout()">Logout</button></div></header>
+<header><div><b>🏠 Admin Dashboard</b> <span style="opacity:.7;font-size:11px">Worldwide • Separate</span> <span id="dbStatus" style="opacity:.7;font-size:11px">LOCAL</span></div><div><a href="index.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">View Site</a><a href="nurse-join.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">Nurse Join Link</a><button class="btn red" onclick="logout()">Logout</button></div></header>
 
-<div style="padding:10px 10px 0;font-size:13px">Logged in as: <b id="adminEmail">Admin</b> • <span style="color:#16a34a">Firebase: Connected ✅</span></div>
+<div style="padding:10px 10px 0;font-size:13px">Logged in as: <b id="adminEmail">Admin</b> • <span style="color:#16a34a">Firebase: Connected ✅</span> • <a href="https://store.pesapal.com" target="_blank" style="color:#2563eb">Check Pesapal Payments →</a></div>
 
-<div class="grid"><div class="stat"><small>TOTAL BOOKINGS</small><br><b id="total">0</b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>ASSIGNED</small><br><b id="assigned">0</b></div><div class="stat"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div></div>
+<div class="grid"><div class="stat"><small>TOTAL BOOKINGS</small><br><b id="total">0</b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>NURSES</small><br><b id="nurseCount">0</b></div><div class="stat"><small>PAID BOOKINGS</small><br><b id="paidCount">0</b></div></div>
 
-<div class="card">
+<div style="padding:0 10px;display:flex;gap:6px;flex-wrap:wrap">
+<button class="tab on" id="tab1Btn" onclick="showTab('bookings')">📋 Bookings</button>
+<button class="tab" id="tab2Btn" onclick="showTab('nurses')">👩‍⚕️ Nurses / Subscription</button>
+<button class="tab" id="tab3Btn" onclick="showTab('featured')">⭐ Featured</button>
+<button class="tab" id="tab4Btn" onclick="showTab('wallet')">💰 Wallet</button>
+</div>
+
+<!-- TAB 1: BOOKINGS -->
+<div id="tab-bookings" class="card">
 <h3 style="margin:0 0 8px">📋 All Bookings - Worldwide</h3>
 <div style="display:flex;gap:8px;margin-bottom:10px"><input id="search" placeholder="Search name, phone, country, city..." oninput="render()"><button class="btn gray" onclick="load()">Refresh</button></div>
 <div id="list">Loading...</div>
 </div>
 
-<div class="card">
-<h3 style="margin:0 0 8px">👩‍⚕️ Caregivers / Nurses</h3>
-<p style="font-size:12px;color:#64748b">Verification list - from your existing caregiver signup. Approve / Reject here.</p>
+<!-- TAB 2: NURSES -->
+<div id="tab-nurses" class="card" style="display:none">
+<h3 style="margin:0 0 8px">👩‍⚕️ Nurses / Caregivers - Subscription</h3>
+<p style="font-size:12px;color:#64748b">Nurses who joined via <b>nurse-join.html</b>. Check Pesapal for payment, then tap Activate. Monthly 20,000 UGX / $5 • Yearly 150,000 UGX / $35</p>
 <div id="caregivers">Loading caregivers...</div>
+<div style="margin-top:10px"><button class="btn blue" onclick="loadCaregivers()">Refresh Nurses</button> <button class="btn gray" onclick="localStorage.removeItem('caregivers');loadCaregivers()">Clear Local Test</button></div>
 </div>
 
-<div class="card">
-<h3 style="margin:0 0 8px">💰 Wallet / Payments</h3>
-<p style="font-size:12px;color:#64748b">Pesapal payments appear in Pesapal > Transactions. This shows bookings marked PAID.</p>
-<div id="wallet">Loading...</div>
+<!-- TAB 3: FEATURED -->
+<div id="tab-featured" class="card" style="display:none">
+<h3 style="margin:0 0 8px">⭐ Featured Requests - 10,000 UGX / $3 for 7 Days</h3>
+<p style="font-size:12px;color:#64748b">Nurses who requested Featured via <b>featured.html</b>. Check Pesapal, then tap Approve to put on top.</p>
+<div id="featuredList">Loading...</div>
+<div style="margin-top:10px"><button class="btn blue" onclick="loadFeatured()">Refresh Featured</button></div>
+</div>
+
+<!-- TAB 4: WALLET -->
+<div id="tab-wallet" class="card" style="display:none">
+<h3 style="margin:0 0 8px">💰 Wallet / Payments - REAL MONEY ONLY</h3>
+<p style="font-size:12px;color:#64748b">This site does NOT pay you. Only Pesapal pays you. Views / Taps = $0. Check real money in Pesapal > Transactions.</p>
+<div id="wallet" style="font-size:13px;line-height:1.8">Loading...</div>
+<a href="https://store.pesapal.com/shop/72vf28-homecarehero" target="_blank" style="display:inline-block;margin-top:10px;background:#e4002b;color:#fff;padding:10px 14px;border-radius:8px;font-weight:700;text-decoration:none">Open My Pesapal Shop →</a>
+<div style="margin-top:12px;background:#f8fafc;padding:10px;border-radius:8px;font-size:12px">
+<b>How you earn:</b><br>
+1. Booking commission - Customer pays Pesapal<br>
+2. Nurse Subscription - 20,000 UGX / $5 monthly<br>
+3. Featured - 10,000 UGX / $3 for 7 days<br>
+4. AdSense - Later, after 1000+ visitors/day
+</div>
 </div>
 
 <script>
 if(localStorage.getItem('adminLoggedIn')!=='true'){ location.href='admin-login.html'; }
-document.getElementById('adminEmail').innerText = localStorage.getItem('adminEmail') || 'kwemoilevi64@gmail.com';
+document.getElementById('adminEmail').innerText = localStorage.getItem('adminEmail') || 'Admin';
 function logout(){ localStorage.removeItem('adminLoggedIn'); location.href='admin-login.html'; }
-let BOOKINGS=[];
-async function load(){
- document.getElementById('list').innerHTML='Loading...';
- try{
-  const r=await fetch('/api/bookings',{cache:'no-store'});
-  if(r.ok){ const data=await r.json(); if(Array.isArray(data)){ BOOKINGS=data; document.getElementById('dbStatus').innerText='REAL API'; render(); loadCaregivers(); return; } }
- }catch(e){}
- try{ BOOKINGS=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){ BOOKINGS=[]; }
- document.getElementById('dbStatus').innerText='LOCAL MODE';
- render(); loadCaregivers();
-}
-function render(){
- const q=(document.getElementById('search').value||'').toLowerCase();
- const filtered=BOOKINGS.filter(b=> ((b.name||'')+(b.phone||'')+(b.location||'')+(b.country||'')).toLowerCase().includes(q));
- document.getElementById('total').innerText=BOOKINGS.length;
- document.getElementById('pending').innerText=BOOKINGS.filter(b=>b.status==='pending').length;
- document.getElementById('assigned').innerText=BOOKINGS.filter(b=>b.status==='assigned').length;
- document.getElementById('rev').innerText=(BOOKINGS.filter(b=>b.status==='paid').length*50000).toLocaleString();
- document.getElementById('wallet').innerHTML='<b>Paid bookings:</b> '+BOOKINGS.filter(b=>b.status==='paid').length+' • <b>Pending payment:</b> '+BOOKINGS.filter(b=>b.status!=='paid').length;
- let html='<table><tr><th>Client</th><th>Service / Country</th><th>Status</th><th>Action</th></tr>';
- if(filtered.length===0) html+='<tr><td colspan=4>No bookings. Go to /booking.html</td></tr>';
- else filtered.slice().reverse().forEach(b=>{
-  const badge=b.status==='assigned'?'<span class="badge assigned">ASSIGNED</span>':b.status==='paid'?'<span class="badge paid">PAID</span>':'<span class="badge pending">PENDING</span>';
-  html+=`<tr><td><b>${b.name||''}</b><br><small>${b.phone||''}</small><br><small>${b.location||''}</small></td><td>${b.service||''}<br><small>${b.date||''}</small></td><td>${badge}</td><td><button class="btn blue" onclick="updateStatus(${b.id},'assigned')">Assign</button> <button class="btn green" onclick="updateStatus(${b.id},'paid')">Paid</button> <button class="btn red" onclick="del(${b.id})">X</button></td></tr>`;
- });
- html+='</table>';
- document.getElementById('list').innerHTML=html;
-}
-async function updateStatus(id,status){
- try{ await fetch('/api/bookings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})}); }catch(e){}
- BOOKINGS=BOOKINGS.map(b=> b.id==id?{...b,status}:b);
- localStorage.setItem('bookings',JSON.stringify(BOOKINGS));
- render();
-}
-async function del(id){ if(!confirm('Delete?')) return; BOOKINGS=BOOKINGS.filter(b=>b.id!=id); localStorage.setItem('bookings',JSON.stringify(BOOKINGS)); render(); }
-function loadCaregivers(){
- let c=[]; try{ c=JSON.parse(localStorage.getItem('caregivers')||'[]'); }catch(e){}
- if(c.length===0){ document.getElementById('caregivers').innerHTML='<p style="font-size:12px">No caregiver signups in local storage yet. They will appear here when they sign up.</p>'; return; }
- let h='<table><tr><th>Name</th><th>Phone / Country</th><th>Status</th></tr>';
- c.forEach(x=>{ h+=`<tr><td>${x.name||''}</td><td>${x.phone||''} - ${x.country||x.location||''}</td><td>${x.verified||'pending'}</td></tr>`; });
- h+='</table>'; document.getElementById('caregivers').innerHTML=h;
-}
-load();
-</script>
-</body></html>
+function showTab(t){
+ ['bookings','nurses','featured','wallet'].forEach(x=>{
+  document.getElementById('tab-'+x).style.display = (x===t?'block':'none');
