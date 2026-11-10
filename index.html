@@ -3,6 +3,8 @@
 <title>Home Care Hero 🌍 - Nursing Only</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#0284c7">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-REPLACE-WITH-YOUR-REAL-ADSENSE-ID" crossorigin="anonymous"></script>
 <style>
 body{margin:0;font:15px system-ui;background:#f8fafc}
@@ -32,7 +34,8 @@ small{color:#666}
 <h2 style="margin:8px 0 4px">Trusted Nurses 🌍</h2>
 <p style="color:#64748b;margin:0">NURSING ONLY. All payments MUST be inside App Wallet. No Cash. No outside payment. REAL - No Demo.</p>
 <button class="btn" style="background:#16a34a" id="installBtn" onclick="installApp()">📲 DOWNLOAD APP - Install to Home Screen</button>
-<p id="installMsg" style="text-align:center;font-size:13px;color:#16a34a"></p>
+<p id="installMsg" style="text-align:center;font-size:13px;color:#16a34a;background:#dcfce7;padding:8px;border-radius:8px">Tap Download - If button does not install, use manual steps below.</p>
+<div class="box" style="background:#fef9c3"><b>📲 If Download Button Does Not Respond:</b><br><small>1. You MUST open in <b>Chrome</b>, NOT WhatsApp<br>2. Tap <b>⋮ 3 dots top right</b> > <b>Add to Home screen</b> / <b>Install app</b> > <b>Install</b><br>3. iPhone: Safari > Share > Add to Home Screen</small></div>
 <div class="walletBox" id="wallet">
 <b>💰 My Wallet - In-App Only</b><br>
 <small style="color:#cbd5e1">All transactions in this app. No cash. No outside payment.</small><br><br>
@@ -69,11 +72,22 @@ small{color:#666}
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script>
-// DOWNLOAD APP - PWA
+// === FIXED DOWNLOAD - ALWAYS RESPONDS ===
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',(e)=>{e.preventDefault();deferredPrompt=e;document.getElementById('installMsg').innerText='✅ App is ready to Download - Tap green button above';});
-async function installApp(){if(deferredPrompt){deferredPrompt.prompt();let r=await deferredPrompt.userChoice;document.getElementById('installMsg').innerText=r.outcome==='accepted'?'✅ App Downloading... Check Home Screen':'Tap ⋮ > Add to Home screen';deferredPrompt=null;}else{document.getElementById('installMsg').innerText='On Android: Tap ⋮ (3 dots) > Add to Home screen / Install app. On iPhone: Share > Add to Home Screen';}}
-// FIREBASE - REPLACE WITH YOUR REAL CONFIG - DO NOT CHANGE ANYTHING ELSE
+async function installApp(){
+  // ALWAYS show something, never silent
+  if(deferredPrompt){
+    try{deferredPrompt.prompt();let r=await deferredPrompt.userChoice;document.getElementById('installMsg').innerText=r.outcome==='accepted'?'✅ App Downloading... Check Home Screen':'❌ You cancelled. Tap again or use ⋮ > Add to Home screen';deferredPrompt=null;return;}
+    catch(e){alert('Use manual: Tap ⋮ (3 dots) > Add to Home screen');}
+  }
+  // If Chrome blocks prompt - show manual steps - THIS IS THE FIX
+  alert('To Download App:\n\n1. Tap ⋮ 3 dots top right in Chrome\n2. Tap Add to Home screen / Install app\n3. Tap Install / Add\n\nIf you are in WhatsApp, tap ⋮ > Open in Chrome first!');
+  document.getElementById('installMsg').innerText='On Android: Tap ⋮ (3 dots) > Add to Home screen / Install app. If you are in WhatsApp, tap ⋮ > Open in Chrome first!';
+}
+// Register Service Worker - Makes Download work in Chrome
+if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{});});}
+// FIREBASE - DO NOT CHANGE ANYTHING ELSE
 const firebaseConfig={apiKey:"REPLACE-WITH-YOUR-REAL-FIREBASE-APIKEY",authDomain:"home-care-hero.firebaseapp.com",projectId:"home-care-hero",storageBucket:"home-care-hero.appspot.com",messagingSenderId:"REPLACE-WITH-YOUR-REAL-SENDER-ID",appId:"REPLACE-WITH-YOUR-REAL-APP-ID"};
 if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
@@ -82,4 +96,8 @@ function selectService(s){document.getElementById('cService').value=s;document.g
 let myBalance=0;
 async function loadWallet(){let ph=document.getElementById('wPhone').value.trim()||document.getElementById('cPhone').value.trim();if(!ph){document.getElementById('walletMsg').innerText='Enter phone first';return;}document.getElementById('walletPhoneLabel').innerText='Wallet for: '+ph;document.getElementById('cPhone').value=ph;try{let snap=await db.collection('wallets').doc(ph).get();if(!snap.exists){myBalance=0;document.getElementById('walletBal').innerText='UGX 0';}else{myBalance=snap.data().balance||0;document.getElementById('walletBal').innerText='UGX '+myBalance.toLocaleString();}let hSnap=await db.collection('walletRequests').where('phone','==',ph).orderBy('createdAt','desc').limit(10).get();let h='<b>Wallet History:</b><br>';if(hSnap.empty){h+='No transactions yet.';}else{hSnap.forEach(d=>{let x=d.data();h+=`${x.type||''} - UGX ${x.amount||''} - ${x.status||''}<br>`;});}let hd=document.getElementById('walletHistory');hd.style.display='block';hd.innerHTML=h;document.getElementById('walletMsg').innerText='Balance loaded.';}catch(e){document.getElementById('walletMsg').innerText='Error: '+e.message;}}
 async function topupWallet(){let ph=document.getElementById('wPhone').value.trim(),amt=parseInt(document.getElementById('topupAmt').value);if(!ph||!amt||amt<1000){document.getElementById('walletMsg').innerText='Enter phone + amount min 1000';return;}try{await db.collection('walletRequests').add({phone:ph,type:'Top Up',amount:amt,status:'pending - Pesapal',paymentMethod:'Pesapal - MTN / Airtel / Visa',pesapalTrackingId:'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('walletMsg').innerText='✅ Top Up Request Sent! Pay via Pesapal now. Admin will confirm and add to your Wallet. Request: UGX '+amt;alert('Top Up Request Sent! Now pay via Pesapal. Admin will add UGX '+amt+' to your Wallet after Pesapal confirms. No cash.');loadWallet();}catch(e){document.getElementById('walletMsg').innerText='Error: '+e.message;}}
-async function bookNurse(){let name=document.getElementById('cName').value.trim(),phone=document.getElementById('cPhone').value.trim(),loc=document.getElementById('cLocation').value.trim(),service=document.getElementById('cService').value,notes=document.getElementById('cNotes').value.trim(),
+async function bookNurse(){let name=document.getElementById('cName').value.trim(),phone=document.getElementById('cPhone').value.trim(),loc=document.getElementById('cLocation').value.trim(),service=document.getElementById('cService').value,notes=document.getElementById('cNotes').value.trim(),amt=parseInt(document.getElementById('cAmount').value);if(!name||!phone||!loc||!amt){document.getElementById('bookMsg').innerText='Please fill Name, Phone, Location, Amount';return;}let wSnap=await db.collection('wallets').doc(phone).get();let bal=wSnap.exists?(wSnap.data().balance||0):0;if(bal<amt){document.getElementById('bookMsg').innerText='❌ Wallet balance UGX '+bal+' is less than UGX '+amt+'. Top Up Wallet first via Pesapal above. NO CASH allowed.';document.getElementById('wallet').scrollIntoView();return;}try{await db.collection('wallets').doc(phone).set({phone:phone,balance:bal-amt,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});await db.collection('walletRequests').add({phone:phone,type:'Payment for '+service,amount:amt,status:'paid - from Wallet',paymentMethod:'In-App Wallet',createdAt:firebase.firestore.FieldValue.serverTimestamp()});let docRef=await db.collection('bookings').add({name:name,phone:phone,location:loc,city:loc,service:service,notes:notes,amount:amt,paymentMethod:'In-App Wallet',status:'pending',pesapalTrackingId:'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('bookMsg').innerText='✅ Booked! UGX '+amt+' paid from Wallet. New balance: UGX '+(bal-amt)+'. Admin + Nurses got AUTOMATIC ALARM. ID: '+docRef.id;loadWallet();}catch(e){document.getElementById('bookMsg').innerText='Error: '+e.message;}}
+async function trackBooking(){let ph=document.getElementById('trackPhone').value.trim();let el=document.getElementById('trackResult');el.innerHTML='Searching...';let snap=await db.collection('bookings').where('phone','==',ph).orderBy('createdAt','desc').limit(5).get();if(snap.empty){el.innerHTML='No booking found.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.service}</b> - ${x.location} • UGX ${x.amount||''} • Paid via Wallet • Status: <b>${x.status}</b></div>`;});el.innerHTML=h;}
+async function loadNurses(){try{let snap=await db.collection('nurses').limit(20).get();if(snap.empty) return;let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.name}</b> • ${x.service} • ${x.city} • ${x.phone}</div>`;});document.getElementById('allNurses').innerHTML=h;document.getElementById('featuredNurses').innerHTML=h;}catch(e){}}
+loadNurses();
+</script></body></html>
