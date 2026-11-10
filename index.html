@@ -1,14 +1,13 @@
 <!doctype html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Home Care Hero - Nursing Only - Worldwide</title>
-<!-- GOOGLE ADSENSE - KEEP YOUR REAL ca-pub -->
+<title>Home Care Hero 🌍 - Nursing Only</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-REPLACE-WITH-YOUR-REAL-ADSENSE-ID" crossorigin="anonymous"></script>
 <style>
 body{margin:0;font:15px system-ui;background:#f8fafc}
 header{background:#0284c7;color:#fff;padding:14px}
 header h1{margin:0;font-size:19px} header p{margin:3px 0 0;font-size:12px;color:#e0f2fe}
 .nav{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}
-.nav a,.nav button{background:#0f172a;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;font-size:13px;border:0;cursor:pointer}
+.nav a{background:#0f172a;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;font-size:13px}
 .wrap{padding:14px;max-width:700px;margin:auto}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .card{background:#fff;padding:14px;border-radius:12px;text-align:center;border:1px solid #e2e8f0;cursor:pointer}
@@ -20,108 +19,47 @@ small{color:#666}
 </style></head>
 <body>
 <header>
-<h1>🏥 Home Care Hero 🌍 Worldwide</h1>
+<h1>🏥 Home Care Hero 🌍</h1>
 <p id="fbStatus">Firebase: Connecting...</p>
-<div class="nav">
-<a href="#">🏠 Home</a><a href="#book">📅 Book & Pay</a><a href="#track">🔍 Track</a><a href="#pay">💰 My Payments</a><a href="nurse-apply.html">👩‍⚕️ Nurse</a><a href="admin-login.html">🔐 Admin</a>
-</div>
+<div class="nav"><a href="#">🏠 Home</a><a href="#book">📅 Book & Pay</a><a href="#track">🔍 Track</a><a href="#pay">💰 My Payments</a><a href="nurse-apply.html">👩‍⚕️ Nurse</a><a href="admin-login.html">🔐 Admin</a></div>
 </header>
 <div class="wrap">
-<h2 style="margin:8px 0 4px">Trusted Nurses - Worldwide</h2>
+<h2 style="margin:8px 0 4px">Trusted Nurses 🌍</h2>
 <p style="color:#64748b;margin:0">NURSING ONLY. Book and pay INSIDE this app. Kampala, Nairobi, London, New York, Dubai.</p>
-
-<!-- NURSING ONLY - NO HOUSE HELP, NO BABY CARE, NO NANNIES, NO COOKS -->
 <div class="grid" style="margin-top:12px">
 <div class="card" onclick="selectService('General Nursing')"><b>🩺 General Nursing</b><span>Home Nursing</span></div>
 <div class="card" onclick="selectService('Elderly Nursing Care')"><b>👴 Elderly Nursing Care</b><span>Compassionate Nursing</span></div>
 <div class="card" onclick="selectService('Post-Surgery Nursing')"><b>🏥 Post-Surgery Nursing</b><span>Recovery at Home</span></div>
 <div class="card" onclick="selectService('Physiotherapy Nursing')"><b>🦵 Physiotherapy Nursing</b><span>Rehab & Mobility</span></div>
 </div>
-
 <button class="btn" onclick="document.getElementById('book').scrollIntoView()">📅 Book & Pay Inside App →</button>
-<p style="text-align:center;font-size:13px;color:#666">Pay with Pesapal - MTN / Airtel / Visa / PayPal - Worldwide • Cash after service</p>
-
-<!-- ADSENSE -->
-<div class="box" style="background:#fef9c3;text-align:center"><small>Advertisement - Google AdSense</small><br><b>Your Clinic Here - Advertise Worldwide</b><br><small>Email: kwemoilevi64@gmail.com</small><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-REPLACE-WITH-YOUR-REAL-ADSENSE-ID" data-ad-slot="REPLACE-WITH-YOUR-REAL-AD-SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-
-<!-- BOOK -->
-<div class="box" id="book">
-<h3>📅 Book a Nurse</h3>
+<p style="text-align:center;font-size:13px;color:#666">Pay with Pesapal - MTN / Airtel / Visa / PayPal 🌍 • Cash after service</p>
+<div class="box" style="background:#fef9c3;text-align:center"><small>Advertisement - Google AdSense</small><br><b>Your Clinic Here - Advertise 🌍</b><br><small>Email: kwemoilevi64@gmail.com</small><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-REPLACE-WITH-YOUR-REAL-ADSENSE-ID" data-ad-slot="REPLACE-WITH-YOUR-REAL-AD-SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
+<div class="box" id="book"><h3>📅 Book a Nurse</h3>
 <label>Your Name</label><input id="cName" placeholder="Full name">
 <label>Phone / WhatsApp</label><input id="cPhone" placeholder="077... / +256...">
 <label>Location / City</label><input id="cLocation" placeholder="Kampala, Ntinda">
-<label>Nursing Service Needed *</label>
-<select id="cService">
-<option>General Nursing</option>
-<option>Elderly Nursing Care</option>
-<option>Post-Surgery Nursing</option>
-<option>Physiotherapy Nursing</option>
-<option>Chronic Care Nursing</option>
-<option>Night Nurse</option>
-</select>
+<label>Nursing Service Needed *</label><select id="cService"><option>General Nursing</option><option>Elderly Nursing Care</option><option>Post-Surgery Nursing</option><option>Physiotherapy Nursing</option><option>Chronic Care Nursing</option><option>Night Nurse</option></select>
 <label>Details</label><textarea id="cNotes" rows="2" placeholder="Patient condition, days needed..."></textarea>
-<label>Payment Method</label>
-<select id="cPay"><option>Pesapal - MTN / Airtel / Visa</option><option>PayPal</option><option>Cash after service</option></select>
-<button class="btn" onclick="bookNurse()">Book Nurse & Pay →</button>
-<p id="bookMsg"></p>
-<small>After booking, Admin + Nurses get INSTANT ALARM BEEP. We will call you on WhatsApp.</small>
-</div>
-
-<!-- TRACK -->
+<label>Payment Method</label><select id="cPay"><option>Pesapal - MTN / Airtel / Visa</option><option>PayPal</option><option>Cash after service</option></select>
+<button class="btn" onclick="bookNurse()">Book Nurse & Pay →</button><p id="bookMsg"></p><small>After booking, Admin + Nurses get AUTOMATIC ALARM BEEP. We will call you on WhatsApp.</small></div>
 <div class="box" id="track"><h3>🔍 Track Booking</h3><input id="trackPhone" placeholder="Enter your phone"><button class="btn" onclick="trackBooking()">Track My Booking</button><div id="trackResult"></div></div>
-
-<!-- PAYMENTS -->
 <div class="box" id="pay"><h3>💰 My Payments</h3><input id="payPhone" placeholder="Enter phone to see payments"><button class="btn" onclick="loadPayments()">View Payments</button><div id="payResult"></div></div>
-
-<!-- NURSES LIST - NURSING ONLY -->
-<div class="box"><h3>⭐ Featured Nurses - Worldwide</h3><div id="featuredNurses">No featured nurses yet.</div></div>
-<div class="box"><h3>👩‍⚕️ All Nurses - Worldwide</h3><div id="allNurses">No nurses yet.</div></div>
-
-<div style="text-align:center;padding:10px"><b>Home Care Hero • Worldwide</b><br><small>kwemoilevi64@gmail.com • <a href="admin-login.html">Admin Login</a></small></div>
+<div class="box"><h3>⭐ Featured Nurses 🌍</h3><div id="featuredNurses">No featured nurses yet.</div></div>
+<div class="box"><h3>👩‍⚕️ All Nurses 🌍</h3><div id="allNurses">No nurses yet.</div></div>
+<div style="text-align:center;padding:10px"><b>Home Care Hero 🌍</b><br><small>kwemoilevi64@gmail.com • <a href="admin-login.html">Admin Login</a></small></div>
 </div>
-
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script>
-// === FIREBASE - REPLACE WITH YOUR REAL CONFIG ===
 const firebaseConfig={apiKey:"REPLACE-WITH-YOUR-REAL-FIREBASE-APIKEY",authDomain:"home-care-hero.firebaseapp.com",projectId:"home-care-hero",storageBucket:"home-care-hero.appspot.com",messagingSenderId:"REPLACE-WITH-YOUR-REAL-SENDER-ID",appId:"REPLACE-WITH-YOUR-REAL-APP-ID"};
 if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 document.getElementById('fbStatus').innerText='Firebase: Connected - home-care-hero - REAL DATA ONLY';
-
 function selectService(s){document.getElementById('cService').value=s;document.getElementById('book').scrollIntoView();}
-
-// === BOOK NURSE - INSTANT ALARM TRIGGER + PESAPAL READY ===
-async function bookNurse(){
-let name=document.getElementById('cName').value.trim(),phone=document.getElementById('cPhone').value.trim(),loc=document.getElementById('cLocation').value.trim(),service=document.getElementById('cService').value,notes=document.getElementById('cNotes').value.trim(),pay=document.getElementById('cPay').value;
-if(!name||!phone||!loc){document.getElementById('bookMsg').innerText='Please fill Name, Phone, Location';return;}
-try{
-// INSTANT - serverTimestamp makes Admin Alarm fire in <1 sec
-let docRef=await db.collection('bookings').add({name:name,phone:phone,location:loc,city:loc,service:service,notes:notes,paymentMethod:pay,status:'pending',pesapalTrackingId:'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
-document.getElementById('bookMsg').innerText='✅ Booking Sent! Nurse will be assigned. Admin + Nurses got INSTANT ALARM. Booking ID: '+docRef.id;
-// PESAPAL - If Pesapal chosen, redirect to your existing Pesapal checkout here
-// KEEP YOUR EXISTING PESAPAL CODE: if(pay.includes('Pesapal')){ window.location.href='YOUR-PESAPAL-CHECKOUT-URL?booking='+docRef.id; }
-}catch(e){document.getElementById('bookMsg').innerText='Error: '+e.message;}
-}
-
-async function trackBooking(){
-let ph=document.getElementById('trackPhone').value.trim();let el=document.getElementById('trackResult');el.innerHTML='Searching...';
-let snap=await db.collection('bookings').where('phone','==',ph).orderBy('createdAt','desc').limit(5).get();
-if(snap.empty){el.innerHTML='No booking found for this phone.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.service}</b> - ${x.location} • Status: <b>${x.status}</b></div>`;});el.innerHTML=h;
-}
-async function loadPayments(){
-let ph=document.getElementById('payPhone').value.trim();let el=document.getElementById('payResult');el.innerHTML='Loading...';
-let snap=await db.collection('walletRequests').where('phone','==',ph).orderBy('createdAt','desc').limit(10).get();
-if(snap.empty){el.innerHTML='No payments yet. Real money is in Pesapal / PayPal.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div>${x.type||''} ${x.amount||''} - ${x.status||''}</div>`;});el.innerHTML=h;
-}
-async function loadNurses(){
-try{
-let snap=await db.collection('nurses').limit(20).get();
-if(snap.empty) return;
-let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.name}</b> • ${x.service} • ${x.city} • ${x.phone}</div>`;});
-document.getElementById('allNurses').innerHTML=h;
-document.getElementById('featuredNurses').innerHTML=h;
-}catch(e){}
-}
+async function bookNurse(){let name=document.getElementById('cName').value.trim(),phone=document.getElementById('cPhone').value.trim(),loc=document.getElementById('cLocation').value.trim(),service=document.getElementById('cService').value,notes=document.getElementById('cNotes').value.trim(),pay=document.getElementById('cPay').value;if(!name||!phone||!loc){document.getElementById('bookMsg').innerText='Please fill Name, Phone, Location';return;}try{let docRef=await db.collection('bookings').add({name:name,phone:phone,location:loc,city:loc,service:service,notes:notes,paymentMethod:pay,status:'pending',pesapalTrackingId:'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('bookMsg').innerText='✅ Booking Sent! Admin + Nurses got AUTOMATIC ALARM. ID: '+docRef.id;}catch(e){document.getElementById('bookMsg').innerText='Error: '+e.message;}}
+async function trackBooking(){let ph=document.getElementById('trackPhone').value.trim();let el=document.getElementById('trackResult');el.innerHTML='Searching...';let snap=await db.collection('bookings').where('phone','==',ph).orderBy('createdAt','desc').limit(5).get();if(snap.empty){el.innerHTML='No booking found.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.service}</b> - ${x.location} • Status: <b>${x.status}</b></div>`;});el.innerHTML=h;}
+async function loadPayments(){let ph=document.getElementById('payPhone').value.trim();let el=document.getElementById('payResult');el.innerHTML='Loading...';let snap=await db.collection('walletRequests').where('phone','==',ph).orderBy('createdAt','desc').limit(10).get();if(snap.empty){el.innerHTML='No payments yet. Real money is in Pesapal / PayPal.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div>${x.type||''} ${x.amount||''} - ${x.status||''}</div>`;});el.innerHTML=h;}
+async function loadNurses(){try{let snap=await db.collection('nurses').limit(20).get();if(snap.empty) return;let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.name}</b> • ${x.service} • ${x.city} • ${x.phone}</div>`;});document.getElementById('allNurses').innerHTML=h;document.getElementById('featuredNurses').innerHTML=h;}catch(e){}}
 loadNurses();
 </script></body></html>
