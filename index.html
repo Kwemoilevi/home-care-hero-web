@@ -13,38 +13,56 @@ header h1{margin:0;font-size:19px} header p{margin:3px 0 0;font-size:12px;color:
 .card{background:#fff;padding:14px;border-radius:12px;text-align:center;border:1px solid #e2e8f0;cursor:pointer}
 .card b{display:block;font-size:15px}.card span{font-size:12px;color:#64748b}
 .btn{width:100%;padding:13px;border:0;border-radius:10px;background:#0284c7;color:#fff;font-weight:700;font-size:16px;cursor:pointer;margin:8px 0}
+.btn-green{background:#16a34a}.btn-orange{background:#f97316}
 input,select,textarea{width:100%;padding:11px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box;margin:6px 0}
 .box{background:#fff;padding:14px;border-radius:12px;margin:12px 0}
 small{color:#666}
+.walletBox{background:#0f172a;color:#fff;padding:16px;border-radius:14px;margin:12px 0}
+.walletBox b{font-size:22px}
 </style></head>
 <body>
 <header>
 <h1>🏥 Home Care Hero 🌍</h1>
 <p id="fbStatus">Firebase: Connecting...</p>
-<div class="nav"><a href="#">🏠 Home</a><a href="#book">📅 Book & Pay</a><a href="#track">🔍 Track</a><a href="#pay">💰 My Payments</a><a href="nurse-apply.html">👩‍⚕️ Nurse</a><a href="admin-login.html">🔐 Admin</a></div>
+<div class="nav"><a href="#">🏠 Home</a><a href="#wallet">💰 My Wallet</a><a href="#book">📅 Book & Pay</a><a href="#track">🔍 Track</a><a href="nurse-apply.html">👩‍⚕️ Nurse</a><a href="admin-login.html">🔐 Admin</a></div>
 </header>
 <div class="wrap">
 <h2 style="margin:8px 0 4px">Trusted Nurses 🌍</h2>
-<p style="color:#64748b;margin:0">NURSING ONLY. Book and pay INSIDE this app. Kampala, Nairobi, London, New York, Dubai.</p>
+<p style="color:#64748b;margin:0">NURSING ONLY. All payments MUST be inside App Wallet. No Cash. No outside payment.</p>
+
+<!-- IN-APP WALLET - ALL TRANSACTIONS HERE -->
+<div class="walletBox" id="wallet">
+<b>💰 My Wallet - In-App Only</b><br>
+<small style="color:#cbd5e1">All transactions in this app. No cash. No outside payment.</small><br><br>
+<span>Your Balance:</span><br><b id="walletBal">UGX 0</b><br><small id="walletPhoneLabel">Enter phone to see balance</small><br>
+<input id="wPhone" placeholder="Enter your phone 077...">
+<button class="btn btn-green" onclick="loadWallet()">🔄 Check My Wallet Balance</button>
+<label>Top Up Amount (UGX)</label><input id="topupAmt" type="number" placeholder="e.g. 50000">
+<button class="btn btn-orange" onclick="topupWallet()">➕ Top Up Wallet via Pesapal - MTN / Airtel / Visa</button>
+<p id="walletMsg" style="color:#facc15"></p>
+<small style="color:#cbd5e1">Top Up goes via Pesapal to your In-App Wallet. Then you pay Nurse from Wallet.</small>
+<div id="walletHistory" style="background:#fff;color:#000;padding:10px;border-radius:8px;margin-top:10px;display:none"></div>
+</div>
+
 <div class="grid" style="margin-top:12px">
 <div class="card" onclick="selectService('General Nursing')"><b>🩺 General Nursing</b><span>Home Nursing</span></div>
 <div class="card" onclick="selectService('Elderly Nursing Care')"><b>👴 Elderly Nursing Care</b><span>Compassionate Nursing</span></div>
 <div class="card" onclick="selectService('Post-Surgery Nursing')"><b>🏥 Post-Surgery Nursing</b><span>Recovery at Home</span></div>
 <div class="card" onclick="selectService('Physiotherapy Nursing')"><b>🦵 Physiotherapy Nursing</b><span>Rehab & Mobility</span></div>
 </div>
-<button class="btn" onclick="document.getElementById('book').scrollIntoView()">📅 Book & Pay Inside App →</button>
-<p style="text-align:center;font-size:13px;color:#666">Pay with Pesapal - MTN / Airtel / Visa / PayPal 🌍 • Cash after service</p>
 <div class="box" style="background:#fef9c3;text-align:center"><small>Advertisement - Google AdSense</small><br><b>Your Clinic Here - Advertise 🌍</b><br><small>Email: kwemoilevi64@gmail.com</small><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-REPLACE-WITH-YOUR-REAL-ADSENSE-ID" data-ad-slot="REPLACE-WITH-YOUR-REAL-AD-SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle=window.adsbygoogle||[]).push({});</script></div>
-<div class="box" id="book"><h3>📅 Book a Nurse</h3>
+
+<!-- BOOK - WALLET ONLY -->
+<div class="box" id="book"><h3>📅 Book a Nurse - Pay From Wallet Only</h3>
 <label>Your Name</label><input id="cName" placeholder="Full name">
-<label>Phone / WhatsApp</label><input id="cPhone" placeholder="077... / +256...">
+<label>Phone / WhatsApp - MUST match Wallet phone</label><input id="cPhone" placeholder="077... / +256...">
 <label>Location / City</label><input id="cLocation" placeholder="Kampala, Ntinda">
 <label>Nursing Service Needed *</label><select id="cService"><option>General Nursing</option><option>Elderly Nursing Care</option><option>Post-Surgery Nursing</option><option>Physiotherapy Nursing</option><option>Chronic Care Nursing</option><option>Night Nurse</option></select>
+<label>Amount to Pay Nurse (UGX) - Will be taken from Wallet</label><input id="cAmount" type="number" placeholder="e.g. 50000">
 <label>Details</label><textarea id="cNotes" rows="2" placeholder="Patient condition, days needed..."></textarea>
-<label>Payment Method</label><select id="cPay"><option>Pesapal - MTN / Airtel / Visa</option><option>PayPal</option><option>Cash after service</option></select>
-<button class="btn" onclick="bookNurse()">Book Nurse & Pay →</button><p id="bookMsg"></p><small>After booking, Admin + Nurses get AUTOMATIC ALARM BEEP. We will call you on WhatsApp.</small></div>
+<label>Payment Method - Wallet Only</label><select id="cPay"><option>In-App Wallet - Pesapal Top Up</option></select>
+<button class="btn" onclick="bookNurse()">Book Nurse & Pay From Wallet →</button><p id="bookMsg"></p><small>✅ No Cash. All money stays in App Wallet. Admin + Nurses get AUTOMATIC ALARM BEEP.</small></div>
 <div class="box" id="track"><h3>🔍 Track Booking</h3><input id="trackPhone" placeholder="Enter your phone"><button class="btn" onclick="trackBooking()">Track My Booking</button><div id="trackResult"></div></div>
-<div class="box" id="pay"><h3>💰 My Payments</h3><input id="payPhone" placeholder="Enter phone to see payments"><button class="btn" onclick="loadPayments()">View Payments</button><div id="payResult"></div></div>
 <div class="box"><h3>⭐ Featured Nurses 🌍</h3><div id="featuredNurses">No featured nurses yet.</div></div>
 <div class="box"><h3>👩‍⚕️ All Nurses 🌍</h3><div id="allNurses">No nurses yet.</div></div>
 <div style="text-align:center;padding:10px"><b>Home Care Hero 🌍</b><br><small>kwemoilevi64@gmail.com • <a href="admin-login.html">Admin Login</a></small></div>
@@ -52,14 +70,58 @@ small{color:#666}
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script>
+// FIREBASE - REPLACE WITH YOUR REAL CONFIG
 const firebaseConfig={apiKey:"REPLACE-WITH-YOUR-REAL-FIREBASE-APIKEY",authDomain:"home-care-hero.firebaseapp.com",projectId:"home-care-hero",storageBucket:"home-care-hero.appspot.com",messagingSenderId:"REPLACE-WITH-YOUR-REAL-SENDER-ID",appId:"REPLACE-WITH-YOUR-REAL-APP-ID"};
 if(!firebase.apps.length) firebase.initializeApp(firebaseConfig);
 const db=firebase.firestore();
 document.getElementById('fbStatus').innerText='Firebase: Connected - home-care-hero - REAL DATA ONLY';
 function selectService(s){document.getElementById('cService').value=s;document.getElementById('book').scrollIntoView();}
-async function bookNurse(){let name=document.getElementById('cName').value.trim(),phone=document.getElementById('cPhone').value.trim(),loc=document.getElementById('cLocation').value.trim(),service=document.getElementById('cService').value,notes=document.getElementById('cNotes').value.trim(),pay=document.getElementById('cPay').value;if(!name||!phone||!loc){document.getElementById('bookMsg').innerText='Please fill Name, Phone, Location';return;}try{let docRef=await db.collection('bookings').add({name:name,phone:phone,location:loc,city:loc,service:service,notes:notes,paymentMethod:pay,status:'pending',pesapalTrackingId:'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});document.getElementById('bookMsg').innerText='✅ Booking Sent! Admin + Nurses got AUTOMATIC ALARM. ID: '+docRef.id;}catch(e){document.getElementById('bookMsg').innerText='Error: '+e.message;}}
-async function trackBooking(){let ph=document.getElementById('trackPhone').value.trim();let el=document.getElementById('trackResult');el.innerHTML='Searching...';let snap=await db.collection('bookings').where('phone','==',ph).orderBy('createdAt','desc').limit(5).get();if(snap.empty){el.innerHTML='No booking found.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.service}</b> - ${x.location} • Status: <b>${x.status}</b></div>`;});el.innerHTML=h;}
-async function loadPayments(){let ph=document.getElementById('payPhone').value.trim();let el=document.getElementById('payResult');el.innerHTML='Loading...';let snap=await db.collection('walletRequests').where('phone','==',ph).orderBy('createdAt','desc').limit(10).get();if(snap.empty){el.innerHTML='No payments yet. Real money is in Pesapal / PayPal.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div>${x.type||''} ${x.amount||''} - ${x.status||''}</div>`;});el.innerHTML=h;}
+// === WALLET - ALL TRANSACTIONS IN APP ===
+let myBalance=0;
+async function loadWallet(){
+let ph=document.getElementById('wPhone').value.trim()||document.getElementById('cPhone').value.trim();
+if(!ph){document.getElementById('walletMsg').innerText='Enter phone first';return;}
+document.getElementById('walletPhoneLabel').innerText='Wallet for: '+ph;
+document.getElementById('cPhone').value=ph;
+try{
+let snap=await db.collection('wallets').doc(ph).get();
+if(!snap.exists){myBalance=0;document.getElementById('walletBal').innerText='UGX 0';}
+else{myBalance=snap.data().balance||0;document.getElementById('walletBal').innerText='UGX '+myBalance.toLocaleString();}
+let hSnap=await db.collection('walletRequests').where('phone','==',ph).orderBy('createdAt','desc').limit(10).get();
+let h='<b>Wallet History:</b><br>';if(hSnap.empty){h+='No transactions yet.';}else{hSnap.forEach(d=>{let x=d.data();h+=`${x.type||''} - UGX ${x.amount||''} - ${x.status||''}<br>`;});}
+let hd=document.getElementById('walletHistory');hd.style.display='block';hd.innerHTML=h;
+document.getElementById('walletMsg').innerText='Balance loaded.';
+}catch(e){document.getElementById('walletMsg').innerText='Error: '+e.message;}
+}
+async function topupWallet(){
+let ph=document.getElementById('wPhone').value.trim(),amt=parseInt(document.getElementById('topupAmt').value);
+if(!ph||!amt||amt<1000){document.getElementById('walletMsg').innerText='Enter phone + amount min 1000';return;}
+try{
+await db.collection('walletRequests').add({phone:ph,type:'Top Up',amount:amt,status:'pending - Pesapal',paymentMethod:'Pesapal - MTN / Airtel / Visa',pesapalTrackingId:'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+document.getElementById('walletMsg').innerText='✅ Top Up Request Sent! Pay via Pesapal now. Admin will confirm and add to your Wallet. Request: UGX '+amt;
+// PESAPAL: KEEP YOUR EXISTING PESAPAL CHECKOUT HERE - window.location.href='YOUR-PESAPAL-URL?amount='+amt+'&phone='+ph;
+alert('Top Up Request Sent! Now pay via Pesapal. Admin will add UGX '+amt+' to your Wallet after Pesapal confirms. No cash.');
+loadWallet();
+}catch(e){document.getElementById('walletMsg').innerText='Error: '+e.message;}
+}
+// === BOOK - PAY FROM WALLET ONLY, NO CASH ===
+async function bookNurse(){
+let name=document.getElementById('cName').value.trim(),phone=document.getElementById('cPhone').value.trim(),loc=document.getElementById('cLocation').value.trim(),service=document.getElementById('cService').value,notes=document.getElementById('cNotes').value.trim(),amt=parseInt(document.getElementById('cAmount').value);
+if(!name||!phone||!loc||!amt){document.getElementById('bookMsg').innerText='Please fill Name, Phone, Location, Amount';return;}
+// Check wallet balance first
+let wSnap=await db.collection('wallets').doc(phone).get();
+let bal=wSnap.exists?(wSnap.data().balance||0):0;
+if(bal<amt){document.getElementById('bookMsg').innerText='❌ Wallet balance UGX '+bal+' is less than UGX '+amt+'. Top Up Wallet first via Pesapal above. NO CASH allowed.';document.getElementById('wallet').scrollIntoView();return;}
+try{
+// Deduct from wallet + save booking + save wallet transaction - ALL IN APP
+await db.collection('wallets').doc(phone).set({phone:phone,balance:bal-amt,updatedAt:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
+await db.collection('walletRequests').add({phone:phone,type:'Payment for '+service,amount:amt,status:'paid - from Wallet',paymentMethod:'In-App Wallet',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+let docRef=await db.collection('bookings').add({name:name,phone:phone,location:loc,city:loc,service:service,notes:notes,amount:amt,paymentMethod:'In-App Wallet',status:'pending',pesapalTrackingId:'',createdAt:firebase.firestore.FieldValue.serverTimestamp()});
+document.getElementById('bookMsg').innerText='✅ Booked! UGX '+amt+' paid from Wallet. New balance: UGX '+(bal-amt)+'. Admin + Nurses got AUTOMATIC ALARM. ID: '+docRef.id;
+loadWallet();
+}catch(e){document.getElementById('bookMsg').innerText='Error: '+e.message;}
+}
+async function trackBooking(){let ph=document.getElementById('trackPhone').value.trim();let el=document.getElementById('trackResult');el.innerHTML='Searching...';let snap=await db.collection('bookings').where('phone','==',ph).orderBy('createdAt','desc').limit(5).get();if(snap.empty){el.innerHTML='No booking found.';return;}let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.service}</b> - ${x.location} • UGX ${x.amount||''} • Paid via Wallet • Status: <b>${x.status}</b></div>`;});el.innerHTML=h;}
 async function loadNurses(){try{let snap=await db.collection('nurses').limit(20).get();if(snap.empty) return;let h='';snap.forEach(d=>{let x=d.data();h+=`<div style="border:1px solid #ddd;padding:10px;border-radius:8px;margin:6px 0"><b>${x.name}</b> • ${x.service} • ${x.city} • ${x.phone}</div>`;});document.getElementById('allNurses').innerHTML=h;document.getElementById('featuredNurses').innerHTML=h;}catch(e){}}
 loadNurses();
 </script></body></html>
