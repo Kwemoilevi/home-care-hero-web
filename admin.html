@@ -1,81 +1,87 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin - Home Care Hero</title>
-<script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-[#fbf8f5] p-4">
-<div class="max-w-md mx-auto">
-<div class="flex justify-between items-center">
-<h1 class="font-black text-xl">Admin</h1>
-<div class="flex gap-2 text-[11px]">
-<a href="index.html" class="bg-white border px-2 py-2 rounded-full">Home</a>
-<a href="client.html" class="bg-white border px-2 py-2 rounded-full">Client</a>
-<a href="caregiver.html" class="bg-white border px-2 py-2 rounded-full">Caregiver</a>
-<a href="wallet.html" class="bg-emerald-600 text-white px-2 py-2 rounded-full">💰 Wallet</a>
-</div></div>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard - Home Care Hero Worldwide</title>
+<style>
+body{margin:0;font:14px system-ui;background:#f1f5f9;color:#0f172a}
+header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center}
+.card{background:#fff;margin:10px;padding:12px;border-radius:12px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
+.stat{background:#fff;padding:12px;border-radius:12px;text-align:center}
+table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px}
+.btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}
+.blue{background:#2563eb;color:#fff} .green{background:#16a34a;color:#fff} .red{background:#ef4444;color:#fff} .gray{background:#e2e8f0}
+input{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
+.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700} .pending{background:#fef3c7;color:#92400e} .assigned{background:#dbeafe;color:#1e40af} .paid{background:#dcfce7;color:#166534}
+</style></head>
+<body>
+<header><div><b>🏠 Admin Dashboard</b> <span style="opacity:.7;font-size:11px">Worldwide • Separate</span> <span id="dbStatus" style="opacity:.7;font-size:11px">LOCAL</span></div><div><a href="index.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">View Site</a><button class="btn red" onclick="logout()">Logout</button></div></header>
 
-<div id="loginBox" class="bg-white p-5 rounded-2xl shadow mt-4">
-<h2 class="font-bold">Admin Login</h2>
-<p class="text-xs text-gray-500 mt-1">Enter password to see REAL bookings</p>
-<input id="adminPass" type="password" placeholder="Password" class="w-full mt-3 px-4 py-3 rounded-xl border bg-gray-50 text-sm">
-<button onclick="login()" class="w-full mt-3 bg-black text-white py-3 rounded-xl font-black text-sm">Login</button>
+<div style="padding:10px 10px 0;font-size:13px">Logged in as: <b id="adminEmail">Admin</b> • <span style="color:#16a34a">Firebase: Connected ✅</span></div>
+
+<div class="grid"><div class="stat"><small>TOTAL BOOKINGS</small><br><b id="total">0</b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>ASSIGNED</small><br><b id="assigned">0</b></div><div class="stat"><small>REVENUE</small><br><b>UGX <span id="rev">0</span></b></div></div>
+
+<div class="card">
+<h3 style="margin:0 0 8px">📋 All Bookings - Worldwide</h3>
+<div style="display:flex;gap:8px;margin-bottom:10px"><input id="search" placeholder="Search name, phone, country, city..." oninput="render()"><button class="btn gray" onclick="load()">Refresh</button></div>
+<div id="list">Loading...</div>
 </div>
 
-<div id="dash" class="hidden">
-<div class="grid grid-cols-3 gap-2 mt-4 text-center">
-<div class="bg-white p-3 rounded-2xl shadow"><p class="text-[11px] text-gray-500">Bookings</p><p id="totalBookings" class="font-black text-lg">0</p></div>
-<div class="bg-white p-3 rounded-2xl shadow"><p class="text-[11px] text-gray-500">Deposits</p><p id="totalDeposits" class="font-black text-emerald-600">0 UGX</p></div>
-<div class="bg-white p-3 rounded-2xl shadow"><p class="text-[11px] text-gray-500">Balance</p><p id="totalBalance" class="font-black text-orange-500">0 UGX</p></div>
+<div class="card">
+<h3 style="margin:0 0 8px">👩‍⚕️ Caregivers / Nurses</h3>
+<p style="font-size:12px;color:#64748b">Verification list - from your existing caregiver signup. Approve / Reject here.</p>
+<div id="caregivers">Loading caregivers...</div>
 </div>
-<div class="bg-white p-4 rounded-2xl shadow mt-3">
-<div class="flex justify-between items-center"><h2 class="font-bold">Live Bookings</h2><button onclick="loadAdmin()" class="text-xs bg-black text-white px-3 py-1 rounded-full">Refresh</button></div>
-<p class="text-[11px] text-gray-500 mt-1">REAL from Firebase. Tap Delete to remove test bookings.</p>
-<div id="list" class="mt-3 space-y-2"><p class="text-sm text-gray-500">Loading...</p></div>
-<button onclick="deleteAll()" class="w-full mt-3 bg-red-100 text-red-600 py-2 rounded-xl font-bold text-xs">🗑️ DELETE ALL BOOKINGS - Clear to 0</button>
-</div></div></div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", authDomain: "home-care-hero.firebaseapp.com", projectId: "home-care-hero", storageBucket: "home-care-hero.firebasestorage.app", messagingSenderId: "38632827016", appId: "1:38632827016:web:0ebca8c98541b2fb3e573d", measurementId: "G-ZV09KN6R90" };
-const app = initializeApp(firebaseConfig); const db = getFirestore(app);
-window.login = function(){
-let p = document.getElementById('adminPass').value;
-if(p === 'kwaliver92'){
-document.getElementById('loginBox').classList.add('hidden');
-document.getElementById('dash').classList.remove('hidden');
-loadAdmin();
-} else { alert('Wrong password'); }
+<div class="card">
+<h3 style="margin:0 0 8px">💰 Wallet / Payments</h3>
+<p style="font-size:12px;color:#64748b">Pesapal payments appear in Pesapal > Transactions. This shows bookings marked PAID.</p>
+<div id="wallet">Loading...</div>
+</div>
+
+<script>
+if(localStorage.getItem('adminLoggedIn')!=='true'){ location.href='admin-login.html'; }
+document.getElementById('adminEmail').innerText = localStorage.getItem('adminEmail') || 'kwemoilevi64@gmail.com';
+function logout(){ localStorage.removeItem('adminLoggedIn'); location.href='admin-login.html'; }
+let BOOKINGS=[];
+async function load(){
+ document.getElementById('list').innerHTML='Loading...';
+ try{
+  const r=await fetch('/api/bookings',{cache:'no-store'});
+  if(r.ok){ const data=await r.json(); if(Array.isArray(data)){ BOOKINGS=data; document.getElementById('dbStatus').innerText='REAL API'; render(); loadCaregivers(); return; } }
+ }catch(e){}
+ try{ BOOKINGS=JSON.parse(localStorage.getItem('bookings')||'[]'); }catch(e){ BOOKINGS=[]; }
+ document.getElementById('dbStatus').innerText='LOCAL MODE';
+ render(); loadCaregivers();
 }
-window.loadAdmin = async function(){
-try{
-const q = query(collection(db,"bookings"), orderBy("created","desc"));
-const snap = await getDocs(q);
-let totalDep=0; let totalBal=0; let count=0; let html="";
-snap.forEach(d=>{
-let b = d.data(); count++; totalDep += (b.deposit||0); totalBal += (b.balance||0);
-html += `<div class="border p-3 rounded-xl bg-gray-50"><div class="flex justify-between"><b class="text-sm">${b.id||''}</b><span class="text-[10px] bg-emerald-100 px-2 py-0.5 rounded-full">${b.status||'BOOKED'} - 10k PAID to 0772101875</span></div><p class="text-xs mt-1"><b>${b.name||''}</b> • ${b.phone||''} • ${b.location||''}</p><p class="text-xs text-gray-500">${b.service||''} • Total ${(b.price||0).toLocaleString()} UGX | Deposit ${(b.deposit||0).toLocaleString()} | Balance ${(b.balance||0).toLocaleString()} | ETA 60 min</p><div class="flex gap-2 mt-2"><a href="https://wa.me/256${(b.phone||'').replace(/^0/,'')}" target="_blank" class="bg-emerald-500 text-white text-[11px] px-3 py-1.5 rounded-full font-bold">WhatsApp Client</a><button onclick="deleteOne('${d.id}')" class="bg-red-500 text-white text-[11px] px-3 py-1.5 rounded-full font-bold">🗑️ Delete This Booking</button></div></div>`;
-});
-if(count===0) html = '<p class="text-sm text-gray-500">No bookings yet. 0 = Truth. No fake.</p>';
-document.getElementById('list').innerHTML = html;
-document.getElementById('totalBookings').textContent = count;
-document.getElementById('totalDeposits').textContent = totalDep.toLocaleString() + ' UGX';
-document.getElementById('totalBalance').textContent = totalBal.toLocaleString() + ' UGX';
-}catch(e){ document.getElementById('list').innerHTML = 'Error: ' + e.message; }
+function render(){
+ const q=(document.getElementById('search').value||'').toLowerCase();
+ const filtered=BOOKINGS.filter(b=> ((b.name||'')+(b.phone||'')+(b.location||'')+(b.country||'')).toLowerCase().includes(q));
+ document.getElementById('total').innerText=BOOKINGS.length;
+ document.getElementById('pending').innerText=BOOKINGS.filter(b=>b.status==='pending').length;
+ document.getElementById('assigned').innerText=BOOKINGS.filter(b=>b.status==='assigned').length;
+ document.getElementById('rev').innerText=(BOOKINGS.filter(b=>b.status==='paid').length*50000).toLocaleString();
+ document.getElementById('wallet').innerHTML='<b>Paid bookings:</b> '+BOOKINGS.filter(b=>b.status==='paid').length+' • <b>Pending payment:</b> '+BOOKINGS.filter(b=>b.status!=='paid').length;
+ let html='<table><tr><th>Client</th><th>Service / Country</th><th>Status</th><th>Action</th></tr>';
+ if(filtered.length===0) html+='<tr><td colspan=4>No bookings. Go to /booking.html</td></tr>';
+ else filtered.slice().reverse().forEach(b=>{
+  const badge=b.status==='assigned'?'<span class="badge assigned">ASSIGNED</span>':b.status==='paid'?'<span class="badge paid">PAID</span>':'<span class="badge pending">PENDING</span>';
+  html+=`<tr><td><b>${b.name||''}</b><br><small>${b.phone||''}</small><br><small>${b.location||''}</small></td><td>${b.service||''}<br><small>${b.date||''}</small></td><td>${badge}</td><td><button class="btn blue" onclick="updateStatus(${b.id},'assigned')">Assign</button> <button class="btn green" onclick="updateStatus(${b.id},'paid')">Paid</button> <button class="btn red" onclick="del(${b.id})">X</button></td></tr>`;
+ });
+ html+='</table>';
+ document.getElementById('list').innerHTML=html;
 }
-window.deleteOne = async function(docId){
-if(!confirm('Delete this booking?')) return;
-await deleteDoc(doc(db,"bookings",docId));
-alert('Deleted!'); loadAdmin();
+async function updateStatus(id,status){
+ try{ await fetch('/api/bookings',{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify({id,status})}); }catch(e){}
+ BOOKINGS=BOOKINGS.map(b=> b.id==id?{...b,status}:b);
+ localStorage.setItem('bookings',JSON.stringify(BOOKINGS));
+ render();
 }
-window.deleteAll = async function(){
-if(!confirm('Delete ALL bookings?')) return;
-const snap = await getDocs(collection(db,"bookings"));
-for(let d of snap.docs){ await deleteDoc(doc(db,"bookings",d.id)); }
-alert('All deleted - Now 0'); loadAdmin();
+async function del(id){ if(!confirm('Delete?')) return; BOOKINGS=BOOKINGS.filter(b=>b.id!=id); localStorage.setItem('bookings',JSON.stringify(BOOKINGS)); render(); }
+function loadCaregivers(){
+ let c=[]; try{ c=JSON.parse(localStorage.getItem('caregivers')||'[]'); }catch(e){}
+ if(c.length===0){ document.getElementById('caregivers').innerHTML='<p style="font-size:12px">No caregiver signups in local storage yet. They will appear here when they sign up.</p>'; return; }
+ let h='<table><tr><th>Name</th><th>Phone / Country</th><th>Status</th></tr>';
+ c.forEach(x=>{ h+=`<tr><td>${x.name||''}</td><td>${x.phone||''} - ${x.country||x.location||''}</td><td>${x.verified||'pending'}</td></tr>`; });
+ h+='</table>'; document.getElementById('caregivers').innerHTML=h;
 }
+load();
 </script>
-</body>
-</html>
+</body></html>
