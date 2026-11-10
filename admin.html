@@ -1,4 +1,6 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard - Home Care Hero Worldwide</title>
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin Dashboard - Home Care Hero</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
 body{margin:0;font:14px system-ui;background:#f1f5f9;color:#0f172a}
 header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
@@ -6,69 +8,40 @@ header{background:#0f172a;color:#fff;padding:12px 14px;display:flex;justify-cont
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
 .stat{background:#fff;padding:12px;border-radius:12px;text-align:center}
 table{width:100%;border-collapse:collapse} th,td{padding:8px;border-bottom:1px solid #eee;text-align:left;font-size:13px;vertical-align:top}
-.btn{padding:6px 10px;border:0;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}
-.blue{background:#2563eb;color:#fff} .green{background:#16a34a;color:#fff} .red{background:#ef4444;color:#fff} .gray{background:#e2e8f0} .yellow{background:#f59e0b;color:#fff}
-input{width:100%;padding:8px;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
-.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700;white-space:nowrap} .pending{background:#fef3c7;color:#92400e} .assigned{background:#dbeafe;color:#1e40af} .paid{background:#dcfce7;color:#166534} .active{background:#dcfce7;color:#166534}
-.tab{padding:8px 12px;border:0;border-radius:20px;font-weight:700;cursor:pointer;font-size:13px;background:#e2e8f0}
-.tab.on{background:#0f172a;color:#fff}
+.btn{padding:8px 12px;border:0;border-radius:8px;font-weight:700;cursor:pointer;font-size:13px} .blue{background:#2563eb;color:#fff} .green{background:#16a34a;color:#fff} .red{background:#ef4444;color:#fff} .gray{background:#e2e8f0} .yellow{background:#f59e0b;color:#fff} .dark{background:#0f172a;color:#fff} .purple{background:#7c3aed;color:#fff}
+input,select{width:100%;padding:10px;margin:6px 0;border:1px solid #ddd;border-radius:8px;box-sizing:border-box}
+.badge{padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700} .pending{background:#fef3c7;color:#92400e} .assigned{background:#dbeafe;color:#1e40af} .paid{background:#dcfce7;color:#166534} .active{background:#dcfce7;color:#166534}
+.tab{padding:8px 12px;border:0;border-radius:20px;font-weight:700;cursor:pointer;background:#e2e8f0} .tab.on{background:#0f172a;color:#fff}
+.hidden{display:none}
+.walletBox{background:#0f172a;color:#fff;padding:16px;border-radius:12px;margin:10px}
+.walletBtns{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.walletBtns button{flex:1;padding:12px;border:0;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px}
 </style></head>
 <body>
-<header><div><b>🏠 Admin Dashboard</b> <span style="opacity:.7;font-size:11px">Worldwide • Separate</span> <span id="dbStatus" style="opacity:.7;font-size:11px">LOCAL</span></div><div><a href="index.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">View Site</a><a href="nurse-join.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">Nurse Join Link</a><button class="btn red" onclick="logout()">Logout</button></div></header>
+<header><div><b>🏠 Admin Dashboard</b> <span style="opacity:.7;font-size:11px">Worldwide • Inside App</span> <span id="dbStatus" style="opacity:.7;font-size:11px">FIREBASE</span></div><div><a href="index.html" style="color:#60a5fa;text-decoration:none;font-size:13px;margin-right:8px">View App</a><button class="btn red" onclick="logout()">Logout</button></div></header>
+<div style="padding:10px 10px 0;font-size:13px">Logged in as: <b id="adminEmail">Admin</b> • <span style="color:#16a34a">Firebase: Connected ✅</span> • <a href="https://store.pesapal.com" target="_blank" style="color:#2563eb">Check Pesapal →</a></div>
 
-<div style="padding:10px 10px 0;font-size:13px">Logged in as: <b id="adminEmail">Admin</b> • <span style="color:#16a34a">Firebase: Connected ✅</span> • <a href="https://store.pesapal.com" target="_blank" style="color:#2563eb">Check Pesapal Payments →</a></div>
-
-<div class="grid"><div class="stat"><small>TOTAL BOOKINGS</small><br><b id="total">0</b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>NURSES</small><br><b id="nurseCount">0</b></div><div class="stat"><small>PAID BOOKINGS</small><br><b id="paidCount">0</b></div></div>
-
-<div style="padding:0 10px;display:flex;gap:6px;flex-wrap:wrap">
-<button class="tab on" id="tab1Btn" onclick="showTab('bookings')">📋 Bookings</button>
-<button class="tab" id="tab2Btn" onclick="showTab('nurses')">👩‍⚕️ Nurses / Subscription</button>
-<button class="tab" id="tab3Btn" onclick="showTab('featured')">⭐ Featured</button>
-<button class="tab" id="tab4Btn" onclick="showTab('wallet')">💰 Wallet</button>
+<!-- WALLET WITH WITHDRAW + DEPOSIT - INSIDE APP -->
+<div class="walletBox">
+<div style="display:flex;justify-content:space-between;align-items:center"><span>💰 Admin Wallet - REAL Firebase</span><span id="walletStatus" style="font-size:12px;opacity:.8">Loading...</span></div>
+<div style="font-size:28px;font-weight:800;margin-top:8px" id="walletBalance">Loading...</div>
+<div style="font-size:12px;opacity:.8">This is count from Firebase transactions. Real money is in Pesapal / PayPal. Check there to confirm before Withdraw.</div>
+<div class="walletBtns">
+<button style="background:#16a34a;color:#fff" onclick="showWalletForm('deposit')">⬇️ Deposit</button>
+<button style="background:#ef4444;color:#fff" onclick="showWalletForm('withdraw')">⬆️ Withdraw</button>
+<button style="background:#fff;color:#000" onclick="showTab('wallet')">📜 History</button>
 </div>
-
-<!-- TAB 1: BOOKINGS -->
-<div id="tab-bookings" class="card">
-<h3 style="margin:0 0 8px">📋 All Bookings - Worldwide</h3>
-<div style="display:flex;gap:8px;margin-bottom:10px"><input id="search" placeholder="Search name, phone, country, city..." oninput="render()"><button class="btn gray" onclick="load()">Refresh</button></div>
-<div id="list">Loading...</div>
-</div>
-
-<!-- TAB 2: NURSES -->
-<div id="tab-nurses" class="card" style="display:none">
-<h3 style="margin:0 0 8px">👩‍⚕️ Nurses / Caregivers - Subscription</h3>
-<p style="font-size:12px;color:#64748b">Nurses who joined via <b>nurse-join.html</b>. Check Pesapal for payment, then tap Activate. Monthly 20,000 UGX / $5 • Yearly 150,000 UGX / $35</p>
-<div id="caregivers">Loading caregivers...</div>
-<div style="margin-top:10px"><button class="btn blue" onclick="loadCaregivers()">Refresh Nurses</button> <button class="btn gray" onclick="localStorage.removeItem('caregivers');loadCaregivers()">Clear Local Test</button></div>
-</div>
-
-<!-- TAB 3: FEATURED -->
-<div id="tab-featured" class="card" style="display:none">
-<h3 style="margin:0 0 8px">⭐ Featured Requests - 10,000 UGX / $3 for 7 Days</h3>
-<p style="font-size:12px;color:#64748b">Nurses who requested Featured via <b>featured.html</b>. Check Pesapal, then tap Approve to put on top.</p>
-<div id="featuredList">Loading...</div>
-<div style="margin-top:10px"><button class="btn blue" onclick="loadFeatured()">Refresh Featured</button></div>
-</div>
-
-<!-- TAB 4: WALLET -->
-<div id="tab-wallet" class="card" style="display:none">
-<h3 style="margin:0 0 8px">💰 Wallet / Payments - REAL MONEY ONLY</h3>
-<p style="font-size:12px;color:#64748b">This site does NOT pay you. Only Pesapal pays you. Views / Taps = $0. Check real money in Pesapal > Transactions.</p>
-<div id="wallet" style="font-size:13px;line-height:1.8">Loading...</div>
-<a href="https://store.pesapal.com/shop/72vf28-homecarehero" target="_blank" style="display:inline-block;margin-top:10px;background:#e4002b;color:#fff;padding:10px 14px;border-radius:8px;font-weight:700;text-decoration:none">Open My Pesapal Shop →</a>
-<div style="margin-top:12px;background:#f8fafc;padding:10px;border-radius:8px;font-size:12px">
-<b>How you earn:</b><br>
-1. Booking commission - Customer pays Pesapal<br>
-2. Nurse Subscription - 20,000 UGX / $5 monthly<br>
-3. Featured - 10,000 UGX / $3 for 7 days<br>
-4. AdSense - Later, after 1000+ visitors/day
+<div id="walletForm" class="hidden" style="background:#fff;color:#000;padding:12px;border-radius:10px;margin-top:12px">
+<h3 id="walletFormTitle" style="margin:0 0 8px">Deposit</h3>
+<select id="wMethod"><option value="pesapal">Pesapal - MTN / Airtel / Visa</option><option value="paypal">PayPal - Worldwide</option><option value="mtn">MTN MoMo - Direct</option><option value="airtel">Airtel Money - Direct</option><option value="bank">Bank Transfer</option></select>
+<input id="wAmount" placeholder="Amount - Enter amount">
+<input id="wPhone" placeholder="Phone / PayPal Email / Account - e.g. +256 700 000 000">
+<input id="wNote" placeholder="Note - e.g. Withdraw earnings / Deposit for ads">
+<button class="btn green" id="wSubmitBtn" onclick="submitWallet()">Confirm Deposit</button>
+<button class="btn gray" onclick="document.getElementById('walletForm').classList.add('hidden')">Cancel</button>
+<p id="wMsg" style="font-size:13px"></p>
+<p class="small" style="font-size:11px;color:#64748b">Deposit = Add money to wallet. Withdraw = Take money out to your MTN / PayPal / Bank. Request is saved to Firebase `wallet_requests`. You then complete it in Pesapal / PayPal / MTN app.</p>
 </div>
 </div>
 
-<script>
-if(localStorage.getItem('adminLoggedIn')!=='true'){ location.href='admin-login.html'; }
-document.getElementById('adminEmail').innerText = localStorage.getItem('adminEmail') || 'Admin';
-function logout(){ localStorage.removeItem('adminLoggedIn'); location.href='admin-login.html'; }
-function showTab(t){
- ['bookings','nurses','featured','wallet'].forEach(x=>{
-  document.getElementById('tab-'+x).style.display = (x===t?'block':'none');
+<div class="grid"><div class="stat"><small>TOTAL BOOKINGS</small><br><b id="total">0</b></div><div class="stat"><small>PENDING</small><br><b id="pending">0</b></div><div class="stat"><small>NURSES</small><br><b
