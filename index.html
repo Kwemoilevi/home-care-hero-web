@@ -64,13 +64,42 @@
 
 <div id="pharmacySection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">💊 Pharmacy - Advertise With Hom Care Hero 🌍</h3><p class="text-xs text-gray-600">Pay inside app to advertise. Your pharmacy shows on Home for all clients worldwide.</p><input id="pharmName" placeholder="Pharmacy Name" class="w-full p-3 border rounded-xl mt-3"><input id="pharmPhone" placeholder="Pharmacy Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2"><input id="pharmLocation" placeholder="Location / City e.g. Kampala" class="w-full p-3 border rounded-xl mt-2"><input id="pharmCountry" placeholder="Country e.g. Uganda" class="w-full p-3 border rounded-xl mt-2"><input id="pharmOffer" placeholder="What do you sell? e.g. Drugs, Delivery, 24hrs" class="w-full p-3 border rounded-xl mt-2"><button onclick="applyPharmacy()" class="w-full p-3 bg-orange-600 text-white rounded-xl font-bold mt-3">Submit Pharmacy Advert - Pay Inside App</button><p class="text-xs text-red-600 font-bold mt-2">After submit, Top Up Wallet with Pesapal inside app, SUPER will approve your advert.</p><div id="pharmMsg" class="text-sm mt-2"></div></div></div>
 
-<div id="nurseSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold">👩‍⚕️ Apply As Nurse - Anywhere</h3>
-<input id="nurseName" placeholder="Full Name" class="w-full p-3 border rounded-xl mt-3">
-<input id="nursePhone" placeholder="Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSkill" placeholder="Skill e.g. General Nursing" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseArea" placeholder="Your City / Area" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseCountry" placeholder="Your Country" class="w-full p-3 border rounded-xl mt-2">
-<button onclick="joinNurse()" class="w-full p-3 bg-pink-600 text-white rounded-xl font-bold mt-3">Submit Application</button><div id="nurseMsg" class="text-sm mt-2"></div></div></div>
+<div id="nurseSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">👩‍⚕️ Apply As Nurse - Proper Form - Anywhere 🌍</h3><p class="text-xs text-gray-600">Fill ALL fields. JOY will check your qualifications before approving.</p>
+<p class="font-bold mt-4">1. Personal Details</p>
+<input id="nurseName" placeholder="Full Name *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nursePhone" placeholder="Phone e.g. +256772101875 *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseEmail" placeholder="Email e.g. joy@email.com" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseDOB" type="date" class="w-full p-3 border rounded-xl mt-2">
+<select id="nurseGender" class="w-full p-3 border rounded-xl mt-2"><option value="">Select Gender *</option><option>Female</option><option>Male</option><option>Other</option></select>
+<input id="nurseID" placeholder="National ID / Passport Number *" class="w-full p-3 border rounded-xl mt-2">
+<p class="font-bold mt-4">2. Location</p>
+<input id="nurseCountry" placeholder="Your Country e.g. Uganda *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseArea" placeholder="Your City / Area e.g. Kampala *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseAddress" placeholder="Full Address / Village / Street" class="w-full p-3 border rounded-xl mt-2">
+<p class="font-bold mt-4">3. Education & Qualifications *</p>
+<select id="nurseEdu" class="w-full p-3 border rounded-xl mt-2"><option value="">Highest Education Level *</option><option>Certificate in Nursing</option><option>Diploma in Nursing</option><option>Bachelor Degree in Nursing (BScN)</option><option>Master Degree in Nursing</option><option>Midwifery</option><option>Enrolled Nurse</option><option>Registered Nurse</option><option>Other Medical Qualification</option></select>
+<input id="nurseQual" placeholder="Qualification Name e.g. Diploma in Nursing / BSc Nursing *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSchool" placeholder="School / College / University Name *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseGradYear" type="number" placeholder="Year Graduated e.g. 2022 *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseCertNo" placeholder="Certificate Number" class="w-full p-3 border rounded-xl mt-2">
+<p class="font-bold mt-4">4. Licence / Registration</p>
+<input id="nurseLicence" placeholder="Nursing Council Licence / Registration Number *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseLicenceExp" type="date" class="w-full p-3 border rounded-xl mt-2">
+<p class="text-[11px] text-gray-500">Licence Expiry Date ^</p>
+<select id="nurseCouncil" class="w-full p-3 border rounded-xl mt-2"><option value="">Nursing Council / Body</option><option>Uganda Nurses & Midwives Council</option><option>Nursing Council of Kenya</option><option>Other Country Council</option></select>
+<p class="font-bold mt-4">5. Experience & Skills</p>
+<input id="nurseExp" type="number" placeholder="Years of Experience e.g. 3 *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSkill" placeholder="Main Skill e.g. General Nursing *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSkills2" placeholder="Other Skills e.g. Elderly, Post-Surgery, Physiotherapy, Baby Care" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseLang" placeholder="Languages You Speak e.g. English, Luganda, Swahili" class="w-full p-3 border rounded-xl mt-2">
+<input id="nursePrevWork" placeholder="Previous Hospital / Home Where You Worked" class="w-full p-3 border rounded-xl mt-2">
+<p class="font-bold mt-4">6. Availability & Documents</p>
+<select id="nurseAvail" class="w-full p-3 border rounded-xl mt-2"><option value="">Availability *</option><option>Full Time - Live In</option><option>Full Time - Day Only</option><option>Part Time</option><option>Night Shift Only</option><option>Weekends Only</option></select>
+<select id="nurseWorkType" class="w-full p-3 border rounded-xl mt-2"><option value="">Willing To Work</option><option>Home Care Only</option><option>Hospital Only</option><option>Both Home & Hospital</option></select>
+<input id="nurseRef" placeholder="Reference Name & Phone e.g. Dr. John - +256..." class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseDocLink" placeholder="Link to CV / Certificate Photo (Google Drive / WhatsApp link) - Optional" class="w-full p-3 border rounded-xl mt-2">
+<label class="text-xs mt-2 block"><input id="nurseAgree" type="checkbox"> I confirm all information is true. I agree JOY can verify my qualifications.</label>
+<button onclick="joinNurse()" class="w-full p-3 bg-pink-600 text-white rounded-xl font-bold mt-3">Submit Full Application - With Qualifications</button><div id="nurseMsg" class="text-sm mt-2"></div></div></div>
 </div>
 
 <div id="adminApp" class="hidden p-3">
@@ -94,7 +123,7 @@
 <div id="jabethOnlyBox" class="hidden bg-yellow-50 p-3 rounded-xl mt-3 border"><p class="text-sm font-bold">📅 JABETH - Your Job: Bookings + GPS</p><p class="text-xs">You see Bookings + GPS + ONLY Your Own Share. You do NOT see JOY or SUPER shares.</p></div>
 <div id="walletDashboardBox" class="bg-white p-3 rounded-xl mt-3 card-shadow"><h3 class="font-bold">💰 Wallet Dashboard - REAL - All Transactions Inside App</h3><p class="text-sm">Total In All Wallets: <b id="totalWallets">0 UGX</b></p><p class="text-sm">Total Top-Ups Approved: <b id="totalTopups">0 UGX</b></p><p class="text-sm">Pending Top-Ups: <b id="pendingCount">0</b></p><button onclick="loadAdminWallets();loadAdminTopups()" class="bg-teal-600 text-white px-4 py-2 rounded-full mt-2">🔄 Refresh</button></div>
 <div class="flex gap-2 mt-3 flex-wrap"><button id="tabBtnNurses" onclick="showAdminTab('nurses')" class="bg-blue-500 text-white px-4 py-2 rounded-full">Nurses</button><button id="tabBtnWallet" onclick="showAdminTab('wallet')" class="bg-slate-900 text-white px-4 py-2 rounded-full">Wallet</button><button id="tabBtnBookings" onclick="showAdminTab('bookings')" class="bg-pink-500 text-white px-4 py-2 rounded-full">Bookings</button><button id="tabBtnGps" onclick="showAdminTab('gps')" class="bg-red-500 text-white px-4 py-2 rounded-full">GPS / Track</button><button id="tabBtnPharmacy" onclick="showAdminTab('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full">Pharmacy Ads</button></div>
-<div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses - Worldwide (JOY + SUPER)</h3><div id="adminNurseList" class="mt-2"></div></div>
+<div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses - Worldwide (JOY + SUPER) - Full Qualifications</h3><div id="adminNurseList" class="mt-2"></div></div>
 <div id="walletTab" class="mt-3 hidden"><h3 class="font-bold">Wallet - All Wallets (SUPER ONLY)</h3><div id="adminWalletList" class="mt-2"></div><h3 class="font-bold mt-4">Top-Ups - Verify Transaction ID in Pesapal First</h3><div id="adminTopupList" class="mt-2"></div></div>
 <div id="bookingsTab" class="mt-3 hidden"><h3 class="font-bold">Bookings - Worldwide (JABETH + SUPER)</h3><div id="adminBookingList" class="mt-2"></div><h3 class="font-bold mt-4">📍 Track - Search By Phone</h3><input id="adminTrackPhone" placeholder="Phone - Any country" class="w-full p-3 border rounded-xl mt-2"><button onclick="adminTrack()" class="w-full p-3 bg-purple-600 text-white rounded-xl font-bold mt-2">Track This Booking</button><div id="adminTrackResult" class="mt-2 text-sm"></div></div>
 <div id="gpsTab" class="mt-3 hidden"><h3 class="font-bold">📍 GPS Tracker - ALL ADMINS - Worldwide</h3><button onclick="loadGPS()" class="bg-red-500 text-white px-3 py-1 rounded-full text-xs mt-1">🔄 Refresh GPS</button><div id="gpsList" class="mt-2"></div></div>
@@ -157,10 +186,44 @@ function showAdminTab(t){ let role=getRole(); if(role==='JOY' && !['nurses','gps
 async function tapService(s){ if(!db){ alert('Not connected - Check Firebase Keys'); return; } try{ await db.collection('stats').doc('taps').set({count: firebase.firestore.FieldValue.increment(1)},{merge:true}); loadStats(); }catch(e){ alert('Firebase error: '+e.message); } }
 async function countView(){ if(!db) return; try{ await db.collection('stats').doc('views').set({count: firebase.firestore.FieldValue.increment(1)},{merge:true}); }catch(e){} loadStats(); }
 async function loadStats(){ if(!db) return; try{ let v=await db.collection('stats').doc('views').get(); if(v.exists) document.getElementById('viewCount').innerText=v.data().count||0; let t=await db.collection('stats').doc('taps').get(); if(t.exists) document.getElementById('tapCount').innerText=t.data().count||0; }catch(e){} }
-async function loadNurses(){ if(!db) return; try{ let snap=await db.collection('caregivers').where('status','==','approved').get(); let html=''; snap.forEach(d=>{ let n=d.data(); html+=`<div class="bg-gray-50 p-3 rounded-xl mt-2 flex justify-between"><div><b>${n.name||''}</b><br><span class="text-xs">${n.skill||''} - ${n.phone||''} - ${n.area||''} ${n.country||''}</span></div><button onclick="selectNurse('${n.name||''}')" class="bg-teal-600 text-white px-3 py-1 rounded-full text-xs">Book</button></div>`; }); document.getElementById('nurseList').innerHTML=html||'No approved nurses yet - Be the first to apply!'; }catch(e){ document.getElementById('nurseList').innerHTML='Check Firebase connection'; } }
+async function loadNurses(){ if(!db) return; try{ let snap=await db.collection('caregivers').where('status','==','approved').get(); let html=''; snap.forEach(d=>{ let n=d.data(); html+=`<div class="bg-gray-50 p-3 rounded-xl mt-2 flex justify-between"><div><b>${n.name||''}</b><br><span class="text-xs">${n.qualification||n.skill||''} - ${n.experience||''} yrs - ${n.phone||''} - ${n.area||''} ${n.country||''}</span></div><button onclick="selectNurse('${n.name||''}')" class="bg-teal-600 text-white px-3 py-1 rounded-full text-xs">Book</button></div>`; }); document.getElementById('nurseList').innerHTML=html||'No approved nurses yet - Be the first to apply!'; }catch(e){ document.getElementById('nurseList').innerHTML='Check Firebase connection'; } }
 function selectNurse(n){ document.getElementById('bookNurse').value=n; showSection('book'); }
-async function joinNurse(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let name=document.getElementById('nurseName').value.trim(); let phone=cleanPhone(document.getElementById('nursePhone').value); let skill=document.getElementById('nurseSkill').value.trim(); let area=document.getElementById('nurseArea').value.trim(); let country=document.getElementById('nurseCountry').value.trim(); if(!name||!phone){alert('Enter name and phone');return;} try{ await db.collection('caregivers').add({name,phone,skill,area,country,location:area,status:'pending',createdAt:new Date()}); document.getElementById('nurseMsg').innerText='✅ Application SENT LIVE. JOY will approve.'; }catch(e){ alert('Firebase error: '+e.message); } }
-async function loadNursesAdmin(){ if(!db) return; let snap=await db.collection('caregivers').orderBy('createdAt','desc').limit(50).get(); let html=''; snap.forEach(d=>{ let n=d.data(); html+=`<div class="bg-white p-3 rounded-xl mt-2 border"><b>${n.name||''}</b> - ${n.phone||''} - ${n.skill||''} - ${n.area||''} - ${n.country||''} - ${n.status||''}<br><button onclick="approveNurse('${d.id}')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">Approve</button> <button onclick="rejectNurse('${d.id}')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button></div>`; }); document.getElementById('adminNurseList').innerHTML=html||'No nurses'; }
+async function joinNurse(){
+  if(!db){alert('Not connected - Check Firebase Keys');return;}
+  let name=document.getElementById('nurseName').value.trim();
+  let phone=cleanPhone(document.getElementById('nursePhone').value);
+  let email=document.getElementById('nurseEmail').value.trim();
+  let dob=document.getElementById('nurseDOB').value;
+  let gender=document.getElementById('nurseGender').value;
+  let nid=document.getElementById('nurseID').value.trim();
+  let country=document.getElementById('nurseCountry').value.trim();
+  let area=document.getElementById('nurseArea').value.trim();
+  let address=document.getElementById('nurseAddress').value.trim();
+  let edu=document.getElementById('nurseEdu').value;
+  let qual=document.getElementById('nurseQual').value.trim();
+  let school=document.getElementById('nurseSchool').value.trim();
+  let gradYear=document.getElementById('nurseGradYear').value.trim();
+  let certNo=document.getElementById('nurseCertNo').value.trim();
+  let licence=document.getElementById('nurseLicence').value.trim();
+  let licenceExp=document.getElementById('nurseLicenceExp').value;
+  let council=document.getElementById('nurseCouncil').value;
+  let exp=document.getElementById('nurseExp').value.trim();
+  let skill=document.getElementById('nurseSkill').value.trim();
+  let skills2=document.getElementById('nurseSkills2').value.trim();
+  let lang=document.getElementById('nurseLang').value.trim();
+  let prevWork=document.getElementById('nursePrevWork').value.trim();
+  let avail=document.getElementById('nurseAvail').value;
+  let workType=document.getElementById('nurseWorkType').value;
+  let ref=document.getElementById('nurseRef').value.trim();
+  let docLink=document.getElementById('nurseDocLink').value.trim();
+  if(!name||!phone||!gender||!nid||!country||!area||!edu||!qual||!school||!gradYear||!licence||!exp||!skill||!avail){ alert('Please fill ALL * fields - Name, Phone, Gender, ID, Country, City, Education, Qualification, School, Grad Year, Licence, Experience, Skill, Availability'); return; }
+  if(!document.getElementById('nurseAgree').checked){ alert('Please tick - I confirm all information is true'); return; }
+  try{
+    await db.collection('caregivers').add({name,phone,email,dob,gender,nationalId:nid,country,area,address,education:edu,qualification:qual,school,gradYear,certNo,licence,licenceExp,council,experience:exp,skill,skills2,lang,prevWork,avail,workType,ref,docLink,location:area,status:'pending',createdAt:new Date()});
+    document.getElementById('nurseMsg').innerText='✅ FULL Application SENT with Qualifications. JOY will verify your Licence & Certificate and approve.';
+  }catch(e){ alert('Firebase error: '+e.message); }
+}
+async function loadNursesAdmin(){ if(!db) return; let snap=await db.collection('caregivers').orderBy('createdAt','desc').limit(50).get(); let html=''; snap.forEach(d=>{ let n=d.data(); html+=`<div class="bg-white p-3 rounded-xl mt-2 border text-sm"><b>${n.name||''}</b> - ${n.phone||''} - ${n.status||''}<br><span class="text-xs">Gender: ${n.gender||''} | DOB: ${n.dob||''} | ID: ${n.nationalId||''} | Email: ${n.email||''}</span><br><span class="text-xs">Location: ${n.area||''}, ${n.country||''} | Address: ${n.address||''}</span><br><span class="text-xs"><b>Education:</b> ${n.education||''} | <b>Qualification:</b> ${n.qualification||''} | <b>School:</b> ${n.school||''} | Grad: ${n.gradYear||''} | Cert No: ${n.certNo||''}</span><br><span class="text-xs"><b>Licence:</b> ${n.licence||''} | Exp: ${n.licenceExp||''} | Council: ${n.council||''}</span><br><span class="text-xs"><b>Experience:</b> ${n.experience||''} yrs | <b>Skill:</b> ${n.skill||''} | Other: ${n.skills2||''} | Lang: ${n.lang||''}</span><br><span class="text-xs">Prev Work: ${n.prevWork||''} | Avail: ${n.avail||''} | Work Type: ${n.workType||''} | Ref: ${n.ref||''}</span><br>${n.docLink?`<a href="${n.docLink}" target="_blank" class="text-blue-600 underline text-xs">📄 View CV / Certificate</a><br>`:''}<button onclick="approveNurse('${d.id}')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">Approve</button> <button onclick="rejectNurse('${d.id}')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button></div>`; }); document.getElementById('adminNurseList').innerHTML=html||'No nurses'; }
 async function approveNurse(id){ await db.collection('caregivers').doc(id).update({status:'approved'}); loadNursesAdmin(); loadNurses(); }
 async function rejectNurse(id){ await db.collection('caregivers').doc(id).update({status:'rejected'}); loadNursesAdmin(); }
 async function applyPharmacy(){ if(!db){alert('Not connected');return;} let name=document.getElementById('pharmName').value.trim(); let phone=cleanPhone(document.getElementById('pharmPhone').value); let loc=document.getElementById('pharmLocation').value.trim(); let country=document.getElementById('pharmCountry').value.trim(); let offer=document.getElementById('pharmOffer').value.trim(); if(!name||!phone){alert('Enter pharmacy name and phone');return;} try{ await db.collection('pharmacies').add({name,phone,location:loc,country,offer,status:'pending',createdAt:new Date()}); document.getElementById('pharmMsg').innerText='✅ Pharmacy advert SENT. SUPER will approve after you pay inside app.'; }catch(e){ alert('Firebase error: '+e.message); } }
