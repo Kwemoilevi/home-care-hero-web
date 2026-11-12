@@ -47,7 +47,7 @@
 </div>
 </div>
 
-<!-- ===== ADMIN DASHBOARD - GPS FOR ALL THREE ===== -->
+<!-- ===== ADMIN DASHBOARD ===== -->
 <div id="adminApp" class="hidden p-4">
   <div class="flex justify-between items-center"><div><h1 class="text-2xl font-bold">👑 Admin</h1><p id="welcome">Welcome</p></div><button onclick="closeAdmin()" class="bg-gray-600 text-white px-3 py-2 rounded text-sm">← Back to App</button></div>
   <div id="gateBox" class="bg-white p-4 rounded-xl mt-3 text-center"><h2 class="font-bold">🔐 Admin Login</h2><input id="gatePass" type="password" placeholder="Admin Password" class="w-full border p-3 rounded mt-2 text-center"><button onclick="enterGate()" class="w-full bg-slate-900 text-white p-3 rounded-lg mt-2 font-bold">Enter Admin</button><p id="gateErr" class="text-red-500 text-sm"></p></div>
@@ -57,17 +57,25 @@
     <div class="bg-white p-2 rounded-xl mt-3 text-center border"><p class="text-[10px] text-gray-400">ADVERTISEMENT</p><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-PASTE_YOUR_ADSENSE_ID" data-ad-slot="PASTE_YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
     <div class="bg-green-100 p-4 rounded-xl mt-3"><h2 class="font-bold">💰 My Earnings</h2><div id="joyEarnings" class="hidden"><p class="text-2xl font-bold text-green-700" id="joyTotal">0 UGX</p><p class="text-sm">Your share 10% - JOY - 0775761052</p></div><div id="jabethEarnings" class="hidden"><p class="text-2xl font-bold text-green-700" id="jabethTotal">0 UGX</p><p class="text-sm">Your share 10% - JABETH - 0770848127</p></div><div id="ownerEarnings" class="hidden"><p>Total: <b id="totalProfit">0 UGX</b></p><p>JOY: <b id="joyTotalOwner">0 UGX</b></p><p>JABETH: <b id="jabethTotalOwner">0 UGX</b></p><p>YOU: <b id="yourTotal">0 UGX</b></p></div></div>
 
-    <!-- ===== SHARE BAR - ALL USERS - ALL TABS ===== -->
+    <!-- ===== SHARE BAR - NURSE LINK HAS CLASS nurseLinkOnly - HIDDEN FOR JABETH ===== -->
     <div class="bg-slate-900 text-white p-3 rounded-xl mt-3">
-      <h3 class="font-bold text-sm">📤 Share Links - For ALL Admins</h3>
-      <div class="grid grid-cols-1 gap-2 mt-2">
-        <div class="bg-white text-black p-2 rounded"><p class="text-xs font-bold">👩‍⚕️ NURSE FORM LINK</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p><div class="flex gap-2 mt-1"><button onclick="shareNurseForm()" class="flex-1 bg-green-600 text-white p-2 rounded text-xs font-bold">📤 Share Nurse Link</button><button onclick="copyNurseLink()" class="flex-1 bg-slate-800 text-white p-2 rounded text-xs">📋 Copy</button></div></div>
-        <div class="bg-white text-black p-2 rounded"><p class="text-xs font-bold">🏠 CLIENT / APP LINK</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/</p><div class="flex gap-2 mt-1"><button onclick="shareMainApp()" class="flex-1 bg-blue-600 text-white p-2 rounded text-xs font-bold">📤 Share Client Link</button><button onclick="copyClientLink()" class="flex-1 bg-slate-800 text-white p-2 rounded text-xs">📋 Copy</button></div></div>
+      <h3 class="font-bold text-sm" id="shareBarTitle">📤 Share Links</h3>
+      <!-- NURSE LINK BOX - HIDDEN FOR JABETH -->
+      <div id="nurseShareBox" class="nurseLinkOnly bg-white text-black p-2 rounded mt-2">
+        <p class="text-xs font-bold">👩‍⚕️ NURSE FORM LINK - Send To Nurses</p>
+        <p class="text-xs break-all">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p>
+        <div class="flex gap-2 mt-1"><button onclick="shareNurseForm()" class="flex-1 bg-green-600 text-white p-2 rounded text-xs font-bold">📤 Share Nurse Link</button><button onclick="copyNurseLink()" class="flex-1 bg-slate-800 text-white p-2 rounded text-xs">📋 Copy</button></div>
+      </div>
+      <!-- CLIENT LINK BOX - SHOWS FOR ALL THREE INCLUDING JABETH -->
+      <div id="clientShareBox" class="bg-white text-black p-2 rounded mt-2">
+        <p class="text-xs font-bold">🏠 CLIENT / APP LINK - Send To Patients / Clients</p>
+        <p class="text-xs break-all">https://home-care-hero-web.vercel.app/</p>
+        <div class="flex gap-2 mt-1"><button onclick="shareMainApp()" class="flex-1 bg-blue-600 text-white p-2 rounded text-xs font-bold">📤 Share Client Link</button><button onclick="copyClientLink()" class="flex-1 bg-slate-800 text-white p-2 rounded text-xs">📋 Copy</button></div>
       </div>
       <p id="copyMsgTop" class="text-xs text-green-300 mt-1"></p>
     </div>
 
-    <!-- ===== GPS MINI BAR - FOR ALL THREE - ALWAYS VISIBLE ===== -->
+    <!-- GPS MINI BAR - FOR ALL THREE -->
     <div class="bg-red-100 border border-red-300 p-3 rounded-xl mt-3">
       <h3 class="font-bold text-sm">📍 GPS Tracker - For ALL THREE Admins</h3>
       <p class="text-xs">ME + JOY + JABETH - All can see nurses location + share own location.</p>
@@ -77,10 +85,10 @@
       <div id="gpsMiniList" class="mt-2"></div>
     </div>
 
-    <!-- ADMIN TABS - GPS NOW FOR ALL THREE - NO HIDING -->
+    <!-- ADMIN TABS -->
     <div class="flex gap-2 mt-4 flex-wrap">
       <button id="nursesBtn" onclick="showAdminTab('nurses')" class="bg-blue-600 text-white px-4 py-2 rounded">Nurses</button>
-      <button id="nurseFormBtn" onclick="showAdminTab('nurseForm')" class="bg-green-600 text-white px-4 py-2 rounded font-bold">📝 Nurse Form</button>
+      <button id="nurseFormBtn" onclick="showAdminTab('nurseForm')" class="nurseLinkOnly bg-green-600 text-white px-4 py-2 rounded font-bold">📝 Nurse Form</button>
       <button id="shareBtn" onclick="showAdminTab('share')" class="bg-purple-600 text-white px-4 py-2 rounded font-bold">📤 Share</button>
       <button id="bookingsBtn" onclick="showAdminTab('bookings')" class="bg-purple-600 text-white px-4 py-2 rounded">Bookings</button>
       <button id="assistantsBtn" onclick="showAdminTab('assistants')" class="bg-orange-600 text-white px-4 py-2 rounded">Assistants</button>
@@ -91,12 +99,13 @@
       <h3 class="font-bold">Nurses - Applications</h3>
       <div class="flex gap-2 mt-2"><button onclick="filterNurses('all')" class="bg-slate-800 text-white px-3 py-1 rounded text-sm">All</button><button onclick="filterNurses('pending')" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Pending</button><button onclick="filterNurses('approved')" class="bg-green-600 text-white px-3 py-1 rounded text-sm">Approved</button></div>
       <div id="nurseListAdmin" class="mt-2">Loading...</div>
-      <div class="bg-green-100 p-3 rounded mt-3"><p class="font-bold text-sm">👩‍⚕️ Nurse Link Also Here</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p><button onclick="shareNurseForm()" class="w-full bg-green-600 text-white p-2 rounded mt-2 font-bold text-sm">📤 Share Nurse Link</button></div>
+      <!-- NURSE LINK IN NURSES TAB - HIDDEN FOR JABETH -->
+      <div class="nurseLinkOnly bg-green-100 p-3 rounded mt-3"><p class="font-bold text-sm">👩‍⚕️ Nurse Link Also Here</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p><button onclick="shareNurseForm()" class="w-full bg-green-600 text-white p-2 rounded mt-2 font-bold text-sm">📤 Share Nurse Link</button></div>
     </div>
 
     <div id="nurseFormTab" class="mt-4 hidden">
       <h3 class="font-bold">📝 Nurse Application Form - Inside Admin</h3>
-      <div class="bg-purple-100 p-3 rounded mt-2"><p class="font-bold text-sm">📤 Nurse Form Link - In Both Tabs</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p><button onclick="shareNurseForm()" class="w-full bg-purple-600 text-white p-2 rounded mt-2 font-bold text-sm">📤 Share Nurse Link</button><p class="text-xs mt-2 font-bold">🏠 Client Link:</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/</p><button onclick="shareMainApp()" class="w-full bg-blue-600 text-white p-2 rounded mt-2 font-bold text-sm">📤 Share Client Link</button></div>
+      <div class="nurseLinkOnly bg-purple-100 p-3 rounded mt-2"><p class="font-bold text-sm">📤 Nurse Form Link</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p><button onclick="shareNurseForm()" class="w-full bg-purple-600 text-white p-2 rounded mt-2 font-bold text-sm">📤 Share Nurse Link</button><p class="text-xs mt-2 font-bold">🏠 Client Link:</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/</p><button onclick="shareMainApp()" class="w-full bg-blue-600 text-white p-2 rounded mt-2 font-bold text-sm">📤 Share Client Link</button></div>
       <div class="bg-white p-3 rounded mt-3">
         <label class="text-sm font-bold">Full Name *</label><input id="adminNurseName" placeholder="e.g. CHELANGAT JOY" class="w-full border p-3 rounded mt-1">
         <label class="text-sm font-bold">Phone *</label><input id="adminNursePhone" placeholder="077..." class="w-full border p-3 rounded mt-1">
@@ -110,31 +119,21 @@
       </div>
     </div>
 
+    <!-- SHARE TAB - NURSE BOX HIDDEN FOR JABETH, CLIENT BOX SHOWS FOR ALL -->
     <div id="shareTab" class="mt-4 hidden">
       <h3 class="font-bold">📤 Share - All Links</h3>
-      <div class="bg-purple-100 p-4 rounded-xl mt-3"><h4 class="font-bold">👩‍⚕️ Nurse Form Link</h4><p class="text-xs break-all bg-white p-2 rounded mt-1 font-bold">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p><button onclick="shareNurseForm()" class="w-full bg-green-600 text-white p-3 rounded-lg mt-2 font-bold">📤 Share Nurse Link</button></div>
-      <div class="bg-blue-100 p-4 rounded-xl mt-3"><h4 class="font-bold">🏠 Client / App Link</h4><p class="text-xs break-all bg-white p-2 rounded mt-1 font-bold">https://home-care-hero-web.vercel.app/</p><button onclick="shareMainApp()" class="w-full bg-blue-600 text-white p-3 rounded-lg mt-2 font-bold">📤 Share Client Link</button></div>
+      <div class="nurseLinkOnly bg-purple-100 p-4 rounded-xl mt-3"><h4 class="font-bold">👩‍⚕️ 1. Nurse Form Link</h4><p class="text-xs break-all bg-white p-2 rounded mt-1 font-bold">https://home-care-hero-web.vercel.app/index.html?apply=nurse</p><button onclick="shareNurseForm()" class="w-full bg-green-600 text-white p-3 rounded-lg mt-2 font-bold">📤 Share Nurse Link On WhatsApp</button></div>
+      <div class="bg-blue-100 p-4 rounded-xl mt-3"><h4 class="font-bold">🏠 Client / App Link</h4><p class="text-xs break-all bg-white p-2 rounded mt-1 font-bold">https://home-care-hero-web.vercel.app/</p><button onclick="shareMainApp()" class="w-full bg-blue-600 text-white p-3 rounded-lg mt-2 font-bold">📤 Share Client Link On WhatsApp</button><button onclick="copyClientLink()" class="w-full bg-slate-800 text-white p-2 rounded mt-2 text-sm">📋 Copy Client Link</button></div>
       <p id="copyMsg" class="text-xs text-green-600 mt-2"></p><p id="copyMsg2" class="text-xs text-green-600"></p>
     </div>
 
     <div id="bookingsTab" class="mt-4 hidden"><h3 class="font-bold">Bookings</h3><div id="bookingList">Loading...</div><div class="bg-blue-100 p-3 rounded mt-3"><p class="font-bold text-sm">🏠 Client Link - Also In Bookings</p><p class="text-xs break-all">https://home-care-hero-web.vercel.app/</p><button onclick="shareMainApp()" class="w-full bg-blue-600 text-white p-2 rounded mt-2 font-bold text-sm">📤 Share Client Link</button></div></div>
-    <div id="assistantsTab" class="mt-4 hidden"><div class="bg-white p-3 rounded"><p><b>CHELANGAT JOY</b> - 0775761052 - 10% - PIN 1111 - GPS: ✅ YES</p><p><b>KIMTAI JABETH</b> - 0770848127 - 10% - PIN 2222 - GPS: ✅ YES</p><p><b>YOU</b> - 80% - PIN 9999 - GPS: ✅ YES</p><p class="text-sm">Gate: Hero2026 - All 3 have GPS Tracker</p></div><div class="bg-red-100 p-3 rounded mt-3"><p class="font-bold text-sm">📍 GPS - Also In Assistants</p><button onclick="showAdminTab('gps')" class="w-full bg-red-600 text-white p-2 rounded mt-2 font-bold text-sm">📍 Open GPS Tracker</button></div></div>
-
-    <!-- ===== GPS TRACKER - FULL - FOR ALL THREE ===== -->
+    <div id="assistantsTab" class="mt-4 hidden"><div class="bg-white p-3 rounded"><p><b>CHELANGAT JOY</b> - 0775761052 - 10% - PIN 1111 - Nurse Link: ✅ YES - GPS: ✅ YES</p><p><b>KIMTAI JABETH</b> - 0770848127 - 10% - PIN 2222 - Nurse Link: ❌ NO - Only Client Link - GPS: ✅ YES</p><p><b>YOU</b> - 80% - PIN 9999 - Nurse Link: ✅ YES - GPS: ✅ YES</p></div><div class="bg-red-100 p-3 rounded mt-3"><p class="font-bold text-sm">📍 GPS - Also In Assistants</p><button onclick="showAdminTab('gps')" class="w-full bg-red-600 text-white p-2 rounded mt-2 font-bold text-sm">📍 Open GPS Tracker</button></div></div>
     <div id="gpsTab" class="mt-4 hidden">
       <h3 class="font-bold">📍 GPS Tracker - For ALL THREE Admins</h3>
-      <p class="text-sm text-gray-600">ME (SUPER ADMIN) + JOY + JABETH - All see same live locations. All can share own location.</p>
-      <div class="bg-white p-3 rounded mt-2">
-        <p class="font-bold text-sm">📍 Share MY Location As <span id="gpsMyName">Admin</span></p>
-        <p class="text-xs">Tap below, allow Location, your location will show for other admins too.</p>
-        <button onclick="shareMyLocation()" class="w-full bg-green-600 text-white p-3 rounded-lg mt-2 font-bold">📍 Share MY Location Now</button>
-        <button onclick="loadGPS()" class="w-full bg-red-600 text-white p-3 rounded-lg mt-2 font-bold">🔄 Refresh Locations</button>
-        <button onclick="startLiveGPS()" class="w-full bg-slate-800 text-white p-2 rounded mt-2 text-sm">▶️ Start Live Tracking (Every 30s)</button>
-        <button onclick="stopLiveGPS()" class="w-full bg-gray-500 text-white p-2 rounded mt-2 text-sm">⏹️ Stop Live Tracking</button>
-        <p id="liveGpsMsg" class="text-xs text-green-600 mt-1"></p>
-      </div>
-      <div class="bg-yellow-100 p-3 rounded mt-2"><p class="text-sm font-bold">How Nurses Share Location:</p><p class="text-xs">Nurse opens Home page > 📍 Share My Location With Admin > Enters Name > Tap Share. It appears below instantly.</p></div>
-      <div id="gpsList" class="mt-2">No locations yet - Ask nurses to share.</div>
+      <p class="text-sm text-gray-600">ME + JOY + JABETH - All see same live locations.</p>
+      <div class="bg-white p-3 rounded mt-2"><p class="font-bold text-sm">📍 Share MY Location As <span id="gpsMyName">Admin</span></p><button onclick="shareMyLocation()" class="w-full bg-green-600 text-white p-3 rounded-lg mt-2 font-bold">📍 Share MY Location Now</button><button onclick="loadGPS()" class="w-full bg-red-600 text-white p-3 rounded-lg mt-2 font-bold">🔄 Refresh Locations</button><button onclick="startLiveGPS()" class="w-full bg-slate-800 text-white p-2 rounded mt-2 text-sm">▶️ Start Live Tracking (Every 30s)</button><button onclick="stopLiveGPS()" class="w-full bg-gray-500 text-white p-2 rounded mt-2 text-sm">⏹️ Stop Live Tracking</button><p id="liveGpsMsg" class="text-xs text-green-600 mt-1"></p></div>
+      <div id="gpsList" class="mt-2">No locations yet</div>
     </div>
   </div>
 </div>
@@ -157,54 +156,54 @@ function closeAdmin(){ document.getElementById('adminApp').classList.add('hidden
 function enterGate(){ var p=document.getElementById('gatePass').value.trim(); if(p==='Hero2026'||p.toLowerCase()==='hero2026'){ localStorage.setItem('adminGate','yes'); document.getElementById('gateBox').classList.add('hidden'); document.getElementById('whoBox').classList.remove('hidden'); } else { document.getElementById('gateErr').innerText='Wrong password - Try Hero2026'; } }
 let selectedUser=null, selectedRole=null, selectedPin=null, selectedJob=null, nurseFilter='all';
 function pickUser(name,role,pin,job){ selectedUser=name; selectedRole=role; selectedPin=pin; selectedJob=job; document.getElementById('pinErr').innerText='You picked: '+name+' - Enter PIN'; document.getElementById('myPin').focus(); }
+
+// ===== HIDE / SHOW NURSE LINK BY USER =====
+function applyUserPermissions(){
+  var isJabeth = (selectedUser === 'KIMTAI JABETH');
+  // All elements with class nurseLinkOnly = Nurse Link boxes + Nurse Form button
+  var els = document.querySelectorAll('.nurseLinkOnly');
+  els.forEach(function(el){
+    if(isJabeth){ el.style.display = 'none'; }
+    else { el.style.display = ''; }
+  });
+  // Share bar title changes for Jabeth
+  try{ document.getElementById('shareBarTitle').innerText = isJabeth ? '📤 Share Links - Client Link Only' : '📤 Share Links'; }catch(e){}
+  // If Jabeth somehow on Nurse Form tab, kick him to Bookings
+  if(isJabeth){
+    var nf = document.getElementById('nurseFormTab');
+    if(nf && !nf.classList.contains('hidden')){ showAdminTab('bookings'); }
+  }
+}
 function checkPin(){
   const entered=document.getElementById('myPin').value.trim(); if(!selectedUser){ document.getElementById('pinErr').innerText='Tap your name first'; return; } if(entered!==selectedPin){ document.getElementById('pinErr').innerText='Wrong PIN'; return; }
   localStorage.setItem('adminName',selectedUser); document.getElementById('whoBox').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); document.getElementById('welcome').innerText='Welcome, '+selectedUser;
   try{ document.getElementById('gpsMyName').innerText = selectedUser; }catch(e){}
-  // ===== GPS FOR ALL THREE - NO HIDING ANYMORE =====
-  // ME sees ALL, JOY sees ALL, JABETH sees ALL - Including GPS, Share, Nurse Form
-  // Only difference is earnings view, not tabs
+  // ===== PERMISSIONS =====
+  // ME: All - Nurse Link YES, Client YES, Nurse Form YES, GPS YES
+  // JOY: Nurse Link YES, Client YES, Nurse Form YES, GPS YES, Nurses YES
+  // JABETH: Nurse Link NO, Client YES, Nurse Form NO, GPS YES, Bookings YES
+  applyUserPermissions();
   if(selectedUser==='CHELANGAT JOY'){ showAdminTab('nurses'); }
   else if(selectedUser==='KIMTAI JABETH'){ showAdminTab('bookings'); }
   else { showAdminTab('nurses'); }
   loadNursesAdmin(); loadBookings(); loadEarnings(); loadGPS();
 }
-function showAdminTab(t){ ['nurses','nurseForm','share','bookings','assistants','gps'].forEach(x=> document.getElementById(x+'Tab').classList.add('hidden')); document.getElementById(t+'Tab').classList.remove('hidden'); if(t==='gps') loadGPS(); if(t==='nurses') loadNursesAdmin(); }
+function showAdminTab(t){
+  // BLOCK JABETH FROM NURSE FORM TAB EVEN IF HE TRIES
+  if(t==='nurseForm' && selectedUser==='KIMTAI JABETH'){ alert('JABETH: Nurse Form is not for you. You share only Client Link.'); showAdminTab('bookings'); return; }
+  ['nurses','nurseForm','share','bookings','assistants','gps'].forEach(x=> document.getElementById(x+'Tab').classList.add('hidden')); document.getElementById(t+'Tab').classList.remove('hidden'); if(t==='gps') loadGPS(); if(t==='nurses') loadNursesAdmin();
+}
 function filterNurses(f){ nurseFilter=f; loadNursesAdmin(); }
 async function loadNursesAdmin(){ if(!db){ document.getElementById('nurseListAdmin').innerText='Firebase not set'; return; } let q=db.collection('caregivers'); if(nurseFilter!=='all') q=q.where('status','==',nurseFilter); const snap=await q.get(); let html=''; snap.forEach(d=>{ const n=d.data(); const s=n.status||'pending'; html+=`<div class="bg-white p-3 rounded mt-2"><b>${n.name||''}</b> - ${s}<br>📞 ${n.phone||'-'}<br>📍 ${n.location||'-'}<br>🎓 ${n.experience||'-'}<br>🆔 ${n.nationalId||'-'}<br>💼 ${n.service||''}<br><button onclick="approveNurse('${d.id}')" class="bg-green-600 text-white px-3 py-1 rounded text-sm mt-1">✅ Approve</button> <button onclick="rejectNurse('${d.id}')" class="bg-red-500 text-white px-3 py-1 rounded text-sm mt-1">❌ Reject</button> <a href="tel:${n.phone||''}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">📞 Call</a> <button onclick="showAdminTab('gps')" class="bg-red-600 text-white px-3 py-1 rounded text-sm mt-1">📍 See On GPS</button></div>`; }); document.getElementById('nurseListAdmin').innerHTML=html||'No nurses in '+nurseFilter; }
 async function approveNurse(id){ await db.collection('caregivers').doc(id).update({status:'approved'}); alert('Approved!'); loadNursesAdmin(); loadNurses(); }
 async function rejectNurse(id){ await db.collection('caregivers').doc(id).update({status:'rejected'}); loadNursesAdmin(); }
 async function loadBookings(){ if(!db) return; const snap=await db.collection('bookings').get(); let html=''; snap.forEach(d=>{ const b=d.data(); html+=`<div class="bg-white p-3 rounded mt-2">${b.patientName||''} -> ${b.nurseName||''} - ${b.status||''}</div>`; }); document.getElementById('bookingList').innerHTML=html||'No bookings yet'; }
 async function loadEarnings(){ if(!db) return; const snap=await db.collection('earnings').get(); let total=0; snap.forEach(d=>{ total+=d.data().profit||0; }); const joy=Math.round(total*0.10), jab=Math.round(total*0.10), you=Math.round(total*0.80); const who=localStorage.getItem('adminName'); document.getElementById('joyEarnings').classList.add('hidden'); document.getElementById('jabethEarnings').classList.add('hidden'); document.getElementById('ownerEarnings').classList.add('hidden'); if(who==='CHELANGAT JOY'){ document.getElementById('joyEarnings').classList.remove('hidden'); document.getElementById('joyTotal').innerText=joy+' UGX'; } if(who==='KIMTAI JABETH'){ document.getElementById('jabethEarnings').classList.remove('hidden'); document.getElementById('jabethTotal').innerText=jab+' UGX'; } if(who==='SUPER ADMIN'){ document.getElementById('ownerEarnings').classList.remove('hidden'); document.getElementById('totalProfit').innerText=total+' UGX'; document.getElementById('joyTotalOwner').innerText=joy+' UGX'; document.getElementById('jabethTotalOwner').innerText=jab+' UGX'; document.getElementById('yourTotal').innerText=you+' UGX'; } }
-
-// ===== GPS TRACKER - FOR ALL THREE ADMINS =====
 let liveGpsTimer = null;
-function shareMyLocation(){
-  if(!navigator.geolocation){ alert('GPS not supported on this phone'); return; }
-  document.getElementById('myGpsMsg').innerText = 'Getting location... Allow permission...';
-  navigator.geolocation.getCurrentPosition(async function(pos){
-    const name = localStorage.getItem('adminName') || selectedUser || 'Admin';
-    await db.collection('gps_locations').doc(name).set({name:name, lat:pos.coords.latitude, lng:pos.coords.longitude, time:new Date().toLocaleString(), timestamp:Date.now(), role:'admin'});
-    document.getElementById('myGpsMsg').innerText = '✅ Your location shared! Other admins can see you now.';
-    try{ document.getElementById('liveGpsMsg').innerText = '✅ Location shared at ' + new Date().toLocaleTimeString(); }catch(e){}
-    alert('✅ Location shared!'); loadGPS();
-  }, function(err){ alert('Allow Location permission: ' + err.message); document.getElementById('myGpsMsg').innerText = '❌ Allow Location in phone settings'; });
-}
-function startLiveGPS(){
-  if(liveGpsTimer) clearInterval(liveGpsTimer);
-  shareMyLocation();
-  liveGpsTimer = setInterval(function(){ shareMyLocation(); }, 30000);
-  document.getElementById('liveGpsMsg').innerText = '▶️ Live tracking ON - Sharing every 30 seconds';
-}
-function stopLiveGPS(){ if(liveGpsTimer) clearInterval(liveGpsTimer); liveGpsTimer=null; document.getElementById('liveGpsMsg').innerText = '⏹️ Live tracking OFF'; }
-async function loadGPS(){
-  if(!db) return; const snap=await db.collection('gps_locations').orderBy('timestamp','desc').get();
-  let html=''; let mini=''; let count=0;
-  snap.forEach(d=>{ const g=d.data(); count++; html+=`<div class="bg-white p-3 rounded mt-2"><b>📍 ${g.name}</b> ${g.role==='admin' ? '(Admin)' : '(Nurse)'}<br>📍 ${g.lat.toFixed(5)}, ${g.lng.toFixed(5)}<br>🕒 ${g.time}<br><a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded text-sm inline-block mt-1">🗺️ Open In Google Maps</a> <a href="tel:" class="bg-green-600 text-white px-3 py-1 rounded text-sm inline-block mt-1">📞 Call</a></div>`; if(count<=3) mini+=`<div class="bg-white p-2 rounded mt-1 text-xs"><b>📍 ${g.name}</b> - ${g.time} - <a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" class="text-blue-600 underline">Open Maps</a></div>`; });
-  document.getElementById('gpsList').innerHTML = html || 'No locations yet - Ask nurses to share.';
-  try{ document.getElementById('gpsCount').innerText = count; }catch(e){}
-  try{ document.getElementById('gpsMiniList').innerHTML = mini || '<p class="text-xs">No locations yet</p>'; }catch(e){}
-}
+function shareMyLocation(){ if(!navigator.geolocation){ alert('GPS not supported'); return; } document.getElementById('myGpsMsg').innerText='Getting location...'; navigator.geolocation.getCurrentPosition(async function(pos){ const name=localStorage.getItem('adminName')||selectedUser||'Admin'; await db.collection('gps_locations').doc(name).set({name:name,lat:pos.coords.latitude,lng:pos.coords.longitude,time:new Date().toLocaleString(),timestamp:Date.now(),role:'admin'}); document.getElementById('myGpsMsg').innerText='✅ Your location shared!'; alert('✅ Location shared!'); loadGPS(); }, function(err){ alert('Allow Location: '+err.message); }); }
+function startLiveGPS(){ if(liveGpsTimer) clearInterval(liveGpsTimer); shareMyLocation(); liveGpsTimer=setInterval(function(){ shareMyLocation(); },30000); document.getElementById('liveGpsMsg').innerText='▶️ Live tracking ON - Every 30s'; }
+function stopLiveGPS(){ if(liveGpsTimer) clearInterval(liveGpsTimer); liveGpsTimer=null; document.getElementById('liveGpsMsg').innerText='⏹️ Live tracking OFF'; }
+async function loadGPS(){ if(!db) return; const snap=await db.collection('gps_locations').orderBy('timestamp','desc').get(); let html=''; let mini=''; let count=0; snap.forEach(d=>{ const g=d.data(); count++; html+=`<div class="bg-white p-3 rounded mt-2"><b>📍 ${g.name}</b> ${g.role==='admin' ? '(Admin)' : '(Nurse)'}<br>📍 ${g.lat.toFixed(5)}, ${g.lng.toFixed(5)}<br>🕒 ${g.time}<br><a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded text-sm inline-block mt-1">🗺️ Open In Google Maps</a></div>`; if(count<=3) mini+=`<div class="bg-white p-2 rounded mt-1 text-xs"><b>📍 ${g.name}</b> - ${g.time} - <a href="https://www.google.com/maps?q=${g.lat},${g.lng}" target="_blank" class="text-blue-600 underline">Open Maps</a></div>`; }); document.getElementById('gpsList').innerHTML=html||'No locations yet'; try{ document.getElementById('gpsCount').innerText=count; }catch(e){} try{ document.getElementById('gpsMiniList').innerHTML=mini||'<p class="text-xs">No locations yet</p>'; }catch(e){} }
 function showSection(s){ ['home','wallet','book','track','nurse'].forEach(x=> document.getElementById(x+'Section').classList.add('hidden')); document.getElementById(s+'Section').classList.remove('hidden'); window.scrollTo(0,0); }
 async function countView(){ if(!db) return; try{ await db.collection('stats').doc('views').set({count: firebase.firestore.FieldValue.increment(1)}, {merge:true}); }catch(e){} }
 async function loadStats(){ if(!db) return; try{ const v=await db.collection('stats').doc('views').get(); if(v.exists) document.getElementById('viewCount').innerText=v.data().count||1; const t=await db.collection('stats').doc('taps').get(); if(t.exists) document.getElementById('tapCount').innerText=t.data().count||6; const b=await db.collection('bookings').get(); document.getElementById('bookCount').innerText=b.size||2; }catch(e){} }
