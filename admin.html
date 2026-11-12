@@ -3,6 +3,8 @@
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home Care Hero - Admin</title>
+<!-- GOOGLE ADSENSE - DO NOT REMOVE -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-PASTE_YOUR_ADSENSE_ID" crossorigin="anonymous"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -15,7 +17,7 @@
     <h1 class="font-bold text-xl">🔐 Admin Login</h1>
     <p class="text-sm text-gray-500">Home Care Hero<br>One password for all admins</p>
     <input id="gatePass" type="password" placeholder="Admin Password" class="w-full border p-3 rounded mt-4 text-center text-lg">
-    <button id="enterBtn" type="button" onclick="enterGate()" class="w-full bg-slate-900 text-white p-3 rounded-lg mt-4 font-bold">Enter Admin</button>
+    <button type="button" onclick="enterGate()" class="w-full bg-slate-900 text-white p-3 rounded-lg mt-4 font-bold">Enter Admin</button>
     <p id="gateErr" class="text-red-500 text-sm mt-2"></p>
     <a href="index.html" class="text-sm underline">← Back to App</a>
   </div>
@@ -48,7 +50,15 @@
     <button onclick="logoutAll()" class="bg-red-500 text-white px-3 py-2 rounded text-sm">Logout</button>
   </div>
 
-  <div class="bg-green-100 p-4 rounded-xl mt-4">
+  <!-- ADSENSE BANNER - ADMIN - VISIBLE NOW -->
+  <div class="bg-white p-2 rounded-xl mt-3 text-center border">
+    <p class="text-[10px] text-gray-400">ADVERTISEMENT</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-PASTE_YOUR_ADSENSE_ID" data-ad-slot="PASTE_YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- EARNINGS - PRIVATE -->
+  <div class="bg-green-100 p-4 rounded-xl mt-3">
     <h2 class="font-bold text-lg">💰 My Earnings - This Month</h2>
     <div id="joyEarnings" class="hidden">
       <p class="text-2xl font-bold text-green-700" id="joyTotal">0 UGX</p>
@@ -69,7 +79,7 @@
     </div>
   </div>
 
-  <!-- TABS - GPS IS HERE -->
+  <!-- TABS -->
   <div class="flex gap-2 mt-4 flex-wrap">
     <button id="nursesBtn" onclick="showTab('nurses')" class="bg-blue-600 text-white px-4 py-2 rounded">Nurses</button>
     <button id="bookingsBtn" onclick="showTab('bookings')" class="bg-purple-600 text-white px-4 py-2 rounded">Bookings</button>
@@ -77,16 +87,34 @@
     <button id="gpsBtn" onclick="showTab('gps')" class="bg-red-600 text-white px-4 py-2 rounded">📍 GPS Tracker</button>
   </div>
 
+  <!-- NURSES TAB - FULL APPLICATION FORM NOW -->
   <div id="nursesTab" class="mt-4">
-    <h3 class="font-bold">Nurses - Approve Here</h3>
-    <p class="text-sm text-gray-500">Joy manages this</p>
-    <div id="nurseList">Loading...</div>
+    <h3 class="font-bold">Nurses - Applications To Approve</h3>
+    <p class="text-sm text-gray-500">Joy manages this - Full form from nurse app shows here</p>
+    <div class="flex gap-2 mt-2">
+      <button onclick="filterNurses('all')" class="bg-slate-800 text-white px-3 py-1 rounded text-sm">All</button>
+      <button onclick="filterNurses('pending')" class="bg-yellow-500 text-white px-3 py-1 rounded text-sm">Pending</button>
+      <button onclick="filterNurses('approved')" class="bg-green-600 text-white px-3 py-1 rounded text-sm">Approved</button>
+      <button onclick="filterNurses('rejected')" class="bg-red-500 text-white px-3 py-1 rounded text-sm">Rejected</button>
+    </div>
+    <!-- ADD NURSE MANUALLY - OWNER / JOY -->
+    <div class="bg-white p-3 rounded mt-3">
+      <h4 class="font-bold text-sm">➕ Add Nurse Application Manually</h4>
+      <input id="addNurseName" placeholder="Full Name" class="w-full border p-2 rounded mt-1">
+      <input id="addNursePhone" placeholder="Phone 077..." class="w-full border p-2 rounded mt-1">
+      <input id="addNurseLoc" placeholder="Village / Location" class="w-full border p-2 rounded mt-1">
+      <input id="addNurseExp" placeholder="Experience e.g. 3 years, Certificate" class="w-full border p-2 rounded mt-1">
+      <button onclick="addNurseManual()" class="w-full bg-blue-600 text-white p-2 rounded mt-2 font-bold text-sm">Add Application</button>
+    </div>
+    <div id="nurseList" class="mt-2">Loading...</div>
   </div>
+
   <div id="bookingsTab" class="mt-4 hidden">
     <h3 class="font-bold">Bookings</h3>
     <p class="text-sm text-gray-500">Jabeth manages this</p>
     <div id="bookingList">Loading...</div>
   </div>
+
   <div id="assistantsTab" class="mt-4 hidden">
     <h3 class="font-bold">Assistants - Only Owner Sees This</h3>
     <div class="bg-white p-3 rounded mt-2">
@@ -97,13 +125,20 @@
     </div>
   </div>
 
-  <!-- GPS TRACKER TAB - ONLY OWNER -->
+  <!-- GPS -->
   <div id="gpsTab" class="mt-4 hidden">
     <h3 class="font-bold">📍 GPS Tracker - Live Locations</h3>
-    <p class="text-sm text-gray-500">Only Owner sees this. Nurses must tap Share Location in their app.</p>
+    <p class="text-sm text-gray-500">Only Owner sees this.</p>
     <button onclick="loadGPS()" class="bg-red-600 text-white px-3 py-2 rounded mt-2 text-sm">🔄 Refresh Locations</button>
     <button onclick="shareMyLocation()" class="bg-green-600 text-white px-3 py-2 rounded mt-2 text-sm">📍 Share MY Location (Test)</button>
-    <div id="gpsList" class="mt-2">No locations yet - Ask nurse to share location</div>
+    <div id="gpsList" class="mt-2">No locations yet</div>
+  </div>
+
+  <!-- ADSENSE BANNER 2 - BOTTOM -->
+  <div class="bg-white p-2 rounded-xl mt-4 text-center border">
+    <p class="text-[10px] text-gray-400">ADVERTISEMENT</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-PASTE_YOUR_ADSENSE_ID" data-ad-slot="PASTE_YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </div>
 
@@ -114,23 +149,19 @@ function enterGate(){
     localStorage.setItem('adminGate', 'yes');
     document.getElementById('gateBox').style.display = 'none';
     document.getElementById('whoBox').classList.remove('hidden');
-  } else {
-    document.getElementById('gateErr').innerText = 'Wrong admin password - Try Hero2026';
-  }
+  } else { document.getElementById('gateErr').innerText = 'Wrong admin password - Try Hero2026'; }
 }
 document.getElementById('gatePass').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ enterGate(); } });
 document.getElementById('myPin').addEventListener('keydown', function(e){ if(e.key === 'Enter'){ checkPin(); } });
 function logoutAll(){ localStorage.removeItem('adminGate'); localStorage.removeItem('adminName'); location.reload(); }
-if(localStorage.getItem('adminGate') === 'yes'){
-  document.getElementById('gateBox').style.display = 'none';
-  document.getElementById('whoBox').classList.remove('hidden');
-}
+if(localStorage.getItem('adminGate') === 'yes'){ document.getElementById('gateBox').style.display = 'none'; document.getElementById('whoBox').classList.remove('hidden'); }
 
 const firebaseConfig = { apiKey: "PASTE_YOURS", authDomain: "PASTE_YOURS", projectId: "PASTE_YOURS" };
 let db = null;
-try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){ console.log('Firebase not set', e); }
+try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){ console.log(e); }
 
 let selectedUser = null, selectedRole = null, selectedPin = null, selectedJob = null;
+let nurseFilter = 'all';
 function pickUser(name, role, pin, job){
   selectedUser = name; selectedRole = role; selectedPin = pin; selectedJob = job;
   document.getElementById('pinErr').innerText = 'You picked: ' + name + ' - Now enter PIN';
@@ -174,23 +205,59 @@ function showTab(t){
   const el = document.getElementById(t+'Tab');
   if(el) el.classList.remove('hidden');
   if(t==='gps') loadGPS();
+  if(t==='nurses') loadNurses();
 }
+function filterNurses(f){ nurseFilter = f; loadNurses(); }
+
+// ===== NURSES - FULL APPLICATION FORM =====
 async function loadNurses(){
-  if(!db) return;
+  if(!db){ document.getElementById('nurseList').innerText = 'Firebase not set - Paste your config'; return; }
   try{
-    const snap = await db.collection('caregivers').get();
+    let query = db.collection('caregivers');
+    if(nurseFilter !== 'all') query = query.where('status','==',nurseFilter);
+    const snap = await query.get();
     let html='';
-    snap.forEach(d=>{ const n=d.data(); html+=`<div class="bg-white p-3 rounded mt-2"><b>${n.name||''}</b> - ${n.location||''} - ${n.status||'pending'} <button onclick="approveNurse('${d.id}')" class="bg-green-500 text-white px-2 py-1 rounded ml-2">Approve</button></div>`; });
-    document.getElementById('nurseList').innerHTML = html || 'No nurses yet';
+    snap.forEach(d=>{
+      const n = d.data();
+      const status = n.status || 'pending';
+      const color = status==='approved' ? 'bg-green-100' : status==='rejected' ? 'bg-red-100' : 'bg-yellow-100';
+      html += `<div class="bg-white border p-3 rounded mt-2 ${color}">
+        <div class="flex justify-between"><b>👩‍⚕️ ${n.name||'No Name'}</b><span class="text-xs px-2 py-1 rounded bg-white">${status.toUpperCase()}</span></div>
+        <p class="text-sm">📞 Phone: <b>${n.phone||n.phoneNumber||'-'}</b></p>
+        <p class="text-sm">📍 Location / Village: ${n.location||n.village||'-'}</p>
+        <p class="text-sm">🎓 Experience / Certificate: ${n.experience||n.qualification||n.certificate||'-'}</p>
+        <p class="text-sm">🆔 ID / NIN: ${n.nationalId||n.idNumber||'-'}</p>
+        <p class="text-sm">💼 Service: ${n.service||n.category||'General Nursing'}</p>
+        <p class="text-xs text-gray-500">Applied: ${n.time||''}</p>
+        <div class="flex gap-2 mt-2 flex-wrap">
+          <button onclick="approveNurse('${d.id}')" class="bg-green-600 text-white px-3 py-1 rounded text-sm">✅ Approve</button>
+          <button onclick="rejectNurse('${d.id}')" class="bg-red-500 text-white px-3 py-1 rounded text-sm">❌ Reject</button>
+          <a href="tel:${n.phone||''}" class="bg-blue-600 text-white px-3 py-1 rounded text-sm">📞 Call</a>
+          <a href="https://wa.me/256${(n.phone||'').replace(/^0/,'')}" target="_blank" class="bg-green-500 text-white px-3 py-1 rounded text-sm">💬 WhatsApp</a>
+        </div>
+      </div>`;
+    });
+    document.getElementById('nurseList').innerHTML = html || 'No nurses in ' + nurseFilter + ' - Ask nurse to apply in app > Nurse tab';
   }catch(e){ document.getElementById('nurseList').innerText = 'Error: ' + e.message; }
 }
-async function approveNurse(id){ await db.collection('caregivers').doc(id).update({status:'approved'}); alert('Approved!'); loadNurses(); }
+async function approveNurse(id){ if(!db) return; await db.collection('caregivers').doc(id).update({status:'approved'}); alert('Approved! Nurse now shows on Home page.'); loadNurses(); }
+async function rejectNurse(id){ if(!db) return; await db.collection('caregivers').doc(id).update({status:'rejected'}); alert('Rejected'); loadNurses(); }
+async function addNurseManual(){
+  const name = document.getElementById('addNurseName').value.trim();
+  const phone = document.getElementById('addNursePhone').value.trim();
+  const loc = document.getElementById('addNurseLoc').value.trim();
+  const exp = document.getElementById('addNurseExp').value.trim();
+  if(!name || !phone){ alert('Enter Name + Phone'); return; }
+  if(!db){ alert('Firebase not set'); return; }
+  await db.collection('caregivers').add({name:name, phone:phone, location:loc, experience:exp, status:'pending', time:new Date().toLocaleString(), timestamp:Date.now()});
+  alert('Application added!'); loadNurses();
+}
 async function loadBookings(){
   if(!db) return;
   try{
     const snap = await db.collection('bookings').get();
     let html='';
-    snap.forEach(d=>{ const b=d.data(); html+=`<div class="bg-white p-3 rounded mt-2">${b.patientName||''} -> ${b.nurseName||''} - ${b.status||''}</div>`; });
+    snap.forEach(d=>{ const b=d.data(); html+=`<div class="bg-white p-3 rounded mt-2">${b.patientName||''} -> ${b.nurseName||''} - ${b.status||''} - ${b.phone||''}</div>`; });
     document.getElementById('bookingList').innerHTML = html || 'No bookings yet';
   }catch(e){ document.getElementById('bookingList').innerText = 'Error: ' + e.message; }
 }
@@ -198,11 +265,8 @@ async function loadEarnings(){
   if(!db) return;
   try{
     const snap = await db.collection('earnings').get();
-    let total=0;
-    snap.forEach(d=>{ total += d.data().profit || 0; });
-    let joyShare = Math.round(total*0.10);
-    let jabethShare = Math.round(total*0.10);
-    let yourShare = Math.round(total*0.80);
+    let total=0; snap.forEach(d=>{ total += d.data().profit || 0; });
+    let joyShare = Math.round(total*0.10); let jabethShare = Math.round(total*0.10); let yourShare = Math.round(total*0.80);
     const who = localStorage.getItem('adminName');
     document.getElementById('joyEarnings').classList.add('hidden');
     document.getElementById('jabethEarnings').classList.add('hidden');
@@ -213,46 +277,24 @@ async function loadEarnings(){
   }catch(e){}
 }
 function paySunday(){ alert('Pay Sunday: Joy 10% + Jabeth 10% - Take MoMo screenshot!'); }
-
-// ===== GPS TRACKER =====
 function shareMyLocation(){
-  if(!navigator.geolocation){ alert('GPS not supported on this phone'); return; }
+  if(!navigator.geolocation){ alert('GPS not supported'); return; }
   navigator.geolocation.getCurrentPosition(async function(pos){
-    const lat = pos.coords.latitude;
-    const lng = pos.coords.longitude;
     const name = localStorage.getItem('adminName') || 'Unknown';
-    if(!db){ alert('Firebase not set - Location: ' + lat + ', ' + lng); return; }
-    await db.collection('gps_locations').doc(name).set({
-      name: name,
-      lat: lat,
-      lng: lng,
-      time: new Date().toLocaleString(),
-      timestamp: Date.now()
-    });
-    alert('Location shared! Lat: ' + lat.toFixed(5) + ', Lng: ' + lng.toFixed(5));
-    loadGPS();
-  }, function(err){ alert('Allow Location permission - ' + err.message); });
+    if(!db){ alert('Location: ' + pos.coords.latitude + ', ' + pos.coords.longitude); return; }
+    await db.collection('gps_locations').doc(name).set({name:name, lat:pos.coords.latitude, lng:pos.coords.longitude, time:new Date().toLocaleString(), timestamp:Date.now()});
+    alert('Location shared!'); loadGPS();
+  }, function(err){ alert('Allow Location - ' + err.message); });
 }
 async function loadGPS(){
   if(!db){ document.getElementById('gpsList').innerText = 'Firebase not set yet'; return; }
   try{
     const snap = await db.collection('gps_locations').orderBy('timestamp','desc').get();
     let html='';
-    snap.forEach(d=>{
-      const g = d.data();
-      const mapsLink = 'https://www.google.com/maps?q=' + g.lat + ',' + g.lng;
-      html += `<div class="bg-white p-3 rounded mt-2">
-        <b>📍 ${g.name}</b><br>
-        <span class="text-sm">Lat: ${g.lat.toFixed(5)} - Lng: ${g.lng.toFixed(5)}</span><br>
-        <span class="text-xs text-gray-500">Last seen: ${g.time}</span><br>
-        <a href="${mapsLink}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded text-sm inline-block mt-2">🗺️ Open in Google Maps</a>
-        <a href="tel:${g.name === 'CHELANGAT JOY' ? '0775761052' : g.name === 'KIMTAI JABETH' ? '0770848127' : ''}" class="bg-green-600 text-white px-3 py-1 rounded text-sm inline-block mt-2 ml-1">📞 Call</a>
-      </div>`;
-    });
+    snap.forEach(d=>{ const g=d.data(); const mapsLink='https://www.google.com/maps?q='+g.lat+','+g.lng; html+=`<div class="bg-white p-3 rounded mt-2"><b>📍 ${g.name}</b><br><span class="text-sm">Lat: ${g.lat.toFixed(5)} - Lng: ${g.lng.toFixed(5)}</span><br><span class="text-xs text-gray-500">Last seen: ${g.time}</span><br><a href="${mapsLink}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded text-sm inline-block mt-2">🗺️ Open in Google Maps</a></div>`; });
     document.getElementById('gpsList').innerHTML = html || 'No locations yet';
   }catch(e){ document.getElementById('gpsList').innerText = 'Error: ' + e.message; }
 }
-// Auto refresh GPS every 30 seconds when on GPS tab
 setInterval(()=>{ if(!document.getElementById('gpsTab').classList.contains('hidden')) loadGPS(); }, 30000);
 </script>
 </body>
