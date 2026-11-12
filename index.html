@@ -8,6 +8,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>body{background:#FFF7ED} .card-shadow{box-shadow:0 4px 14px rgba(0,0,0,0.10)}</style>
+<audio id="bookingAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
 </head>
 <body>
 <div id="mainApp">
@@ -117,6 +118,7 @@
 
 <div id="adminApp" class="hidden p-3">
 <div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Hom Care Hero 🌍 - Admin</h1><button onclick="closeAdmin()" class="bg-black text-white px-3 py-1 rounded-full text-xs">Close</button></div>
+<div class="bg-yellow-100 p-3 rounded-xl mt-3 border text-center"><p class="font-bold text-sm">🚨 ALARM IS ON - New bookings will RING + VIBRATE here</p><p class="text-xs">Keep this Admin page open. Tap <b>Enable Alarm</b> once to allow sound.</p><button onclick="enableAlarm()" class="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mt-2">🔔 Enable Alarm - Tap Here</button><p id="alarmStatus" class="text-xs font-bold mt-1"></p></div>
 <div id="gateBox" class="bg-white p-4 rounded-xl mt-3 text-center card-shadow"><p class="font-bold">Enter Admin Gate Password</p><input id="gatePass" type="password" placeholder="Password" class="w-full p-3 border rounded-xl mt-2 text-center"><button onclick="togglePass('gatePass',this)" class="text-xs text-blue-600 mt-1">👁️ Show Password</button><button onclick="enterGate()" class="w-full p-3 bg-teal-700 text-white rounded-xl font-bold mt-2">Enter</button><p id="gateError" class="text-red-600 text-sm mt-2"></p></div>
 <div id="whoBox" class="bg-white p-4 rounded-xl mt-3 hidden card-shadow"><p class="font-bold">Who Are You? - Hom Care Hero 🌍</p><p class="text-[11px] text-gray-500">Private - Only admins see this.</p><div class="flex gap-2 mt-2 flex-wrap">
 <button onclick="pickUser('JOY','JOY2026')" class="bg-pink-500 text-white px-4 py-2 rounded-full">JOY</button>
@@ -281,6 +283,47 @@ async function loadAdminTopups(){ if(!db) return; let snap=await db.collection('
 async function approveTopup(id, amount, phone){ if(!db) return; if(!confirm('Did you check this Transaction ID in Pesapal > Transactions and see '+amount+' UGX? Only approve if YES.')) return; let amt=Number(amount||0); await db.collection('topups').doc(id).update({status:'approved'}); let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let oldBal = snap.exists ? Number(snap.data().balance||0) : 0; await ref.set({balance: oldBal+amt, phone: phone, updatedAt:new Date()},{merge:true}); await db.collection('earnings').add({phone, amount:amt, joy: Math.round(amt*0.10), jabeth: Math.round(amt*0.10), super: Math.round(amt*0.80), type:'topup', createdAt:new Date()}); alert('✅ Approved LIVE. '+amt+' added to '+phone); loadAdminWallets(); loadAdminTopups(); loadMyShare(); }
 async function rejectTopup(id){ await db.collection('topups').doc(id).update({status:'rejected'}); loadAdminTopups(); }
 async function loadGPS(){ if(!db) return; try{ let snap=await db.collection('gps_locations').orderBy('createdAt','desc').limit(20).get(); let html=''; snap.forEach(d=>{ let g=d.data(); html+=`<div class="bg-white p-2 rounded mt-2 border text-xs">${g.nurse||''} - ${g.lat}, ${g.lng}</div>`; }); document.getElementById('gpsList').innerHTML=html||'No GPS yet'; }catch(e){} }
+// --- ALARM SYSTEM ---
+function enableAlarm(){
+  try{ let a=document.getElementById('bookingAlarm'); a.play().then(()=>{ a.pause(); a.currentTime=0; document.getElementById('alarmStatus').innerText='✅ ALARM ENABLED - You will hear it when booking comes'; }).catch(()=>{ document.getElementById('alarmStatus').innerText='✅ ALARM ENABLED - Tap again if no sound'; }); }catch(e){}
+  if('Notification' in window && Notification.permission==='default'){ Notification.requestPermission(); }
+  try{ if(navigator.vibrate) navigator.vibrate(200); }catch(e){}
+}
+function triggerAlarm(b){
+  try{ document.getElementById('bookingAlarm').play(); }catch(e){}
+  try{ if(navigator.vibrate) navigator.vibrate([500,200,500,200,500,200,500]); }catch(e){}
+  alert('🚨 NEW BOOKING! 🚨\n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX');
+  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('🚨 NEW BOOKING - Hom Care Hero', {body: (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'')}); }catch(e){} }
+}
+let lastBookingCount = 0;
+let lastTopupCount = 0;
+async function checkNewBookingsAlarm(){
+  if(!db) return;
+  try{
+    let snap = await db.collection('bookings').orderBy('createdAt','desc').limit(1).get();
+    let countSnap = await db.collection('bookings').get();
+    let total = countSnap.size;
+    if(lastBookingCount === 0){ lastBookingCount = total; }
+    else if(total > lastBookingCount){
+      lastBookingCount = total;
+      let b = snap.docs[0].data();
+      triggerAlarm(b);
+      try{ loadBookings(); loadMyShare(); }catch(e){}
+    }
+    let tSnap = await db.collection('topups').where('status','==','pending').get();
+    let tTotal = tSnap.size;
+    if(lastTopupCount === 0){ lastTopupCount = tTotal; }
+    else if(tTotal > lastTopupCount){
+      lastTopupCount = tTotal;
+      try{ document.getElementById('bookingAlarm').play(); }catch(e){}
+      try{ if(navigator.vibrate) navigator.vibrate([500,200,500]); }catch(e){}
+      alert('💰 NEW TOP-UP PENDING! Check Wallet tab to Approve.');
+      try{ loadAdminTopups(); }catch(e){}
+    }
+  }catch(e){}
+}
+if('Notification' in window && Notification.permission === 'default'){ Notification.requestPermission(); }
+setInterval(checkNewBookingsAlarm, 20000);
 countView(); loadStats(); loadNurses(); loadPharmacyAds();
 </script>
 </body>
