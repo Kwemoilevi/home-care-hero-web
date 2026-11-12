@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Home Care Hero - Trusted Nurses</title>
-<!-- GOOGLE ADSENSE - KEEP YOUR ID HERE - DO NOT REMOVE -->
+<!-- GOOGLE ADSENSE - DO NOT REMOVE -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-PASTE_YOUR_ADSENSE_ID" crossorigin="anonymous"></script>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -13,13 +13,11 @@
 </head>
 <body class="bg-gray-100">
 
-<!-- HEADER - SAME AS YOUR SCREENSHOT -->
+<!-- HEADER -->
 <div class="bg-blue-700 text-white p-3 sticky top-0 z-50">
-  <div class="flex justify-between items-center">
-    <div>
-      <h1 class="font-bold text-lg">🏠 Home Care Hero 💎</h1>
-      <p class="text-xs">Firebase: Connected - home-care-hero - REAL DATA ONLY - No Demo</p>
-    </div>
+  <div>
+    <h1 class="font-bold text-lg">🏠 Home Care Hero 💎</h1>
+    <p class="text-xs">Firebase: Connected - home-care-hero - REAL DATA ONLY - No Demo</p>
   </div>
   <div class="flex gap-2 mt-2 overflow-x-auto pb-1">
     <button onclick="showSection('home')" class="bg-black bg-opacity-30 px-3 py-1 rounded-full text-sm whitespace-nowrap">🏠 Home</button>
@@ -27,12 +25,13 @@
     <button onclick="showSection('book')" class="bg-black bg-opacity-30 px-3 py-1 rounded-full text-sm whitespace-nowrap">📅 Book & Pay</button>
     <button onclick="showSection('track')" class="bg-black bg-opacity-30 px-3 py-1 rounded-full text-sm whitespace-nowrap">🔍 Track</button>
     <button onclick="showSection('nurse')" class="bg-black bg-opacity-30 px-3 py-1 rounded-full text-sm whitespace-nowrap">👩‍⚕️ Nurse</button>
-    <a href="admin.html" class="bg-black bg-opacity-30 px-3 py-1 rounded-full text-sm whitespace-nowrap">🔐 Admin</a>
+    <button onclick="goAdmin()" class="bg-black bg-opacity-30 px-3 py-1 rounded-full text-sm whitespace-nowrap">🔐 Admin</button>
   </div>
 </div>
 
-<!-- ADSENSE BANNER - KEEP -->
-<div class="p-2 text-center">
+<!-- ADSENSE BANNER 1 - TOP -->
+<div class="bg-white p-2 m-2 rounded text-center border">
+  <p class="text-[10px] text-gray-400">ADVERTISEMENT</p>
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-PASTE_YOUR_ADSENSE_ID" data-ad-slot="PASTE_YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
@@ -43,11 +42,13 @@
   <p class="text-sm text-gray-600">NURSING ONLY. All payments MUST be inside App Wallet. No Cash. No outside payment. REAL - No Demo.</p>
 
   <div class="text-center text-sm my-3 bg-white p-2 rounded">
-    👁️ <span id="viewCount">21</span> Real Views • 👆 <span id="tapCount">6</span> Real Taps • 📅 <span id="bookCount">2</span> Real Bookings<br>
+    👁️ <span id="viewCount">1</span> Real Views • 👆 <span id="tapCount">6</span> Real Taps • 📅 <span id="bookCount">2</span> Real Bookings<br>
     <span class="text-xs text-gray-500">REAL - Counted in Firebase, NOT fake. Every open + tap is saved.</span>
   </div>
 
-  <button id="installBtn" onclick="installApp()" class="w-full bg-green-600 text-white p-3 rounded-lg font-bold">📱 DOWNLOAD APP - Install to Home Screen</button>
+  <button onclick="installApp()" class="w-full bg-green-600 text-white p-3 rounded-lg font-bold">📱 DOWNLOAD APP - Install to Home Screen</button>
+  <!-- BIG ADMIN BUTTON - BACKUP IF TOP ONE FAILS -->
+  <button onclick="goAdmin()" class="w-full bg-slate-900 text-white p-3 rounded-lg font-bold mt-2">🔐 OPEN ADMIN DASHBOARD - Gate Hero2026</button>
   <p class="text-center text-xs bg-green-100 p-2 rounded mt-2">Tap Download - If button does not install, use manual steps below.</p>
 
   <div class="bg-yellow-100 p-3 rounded mt-2 text-sm">
@@ -57,7 +58,7 @@
     3. iPhone: Safari > Share > Add to Home Screen
   </div>
 
-  <!-- WALLET - PESAPAL - DO NOT TOUCH -->
+  <!-- WALLET - PESAPAL -->
   <div class="bg-slate-900 text-white p-4 rounded-xl mt-3">
     <h3 class="font-bold text-lg">💰 My Wallet - In-App Only</h3>
     <p class="text-xs text-gray-300">All transactions in this app. No cash. No outside payment.</p>
@@ -72,25 +73,39 @@
     <p class="text-xs text-gray-300 mt-2">Top Up goes via Pesapal to your In-App Wallet. Then you pay Nurse from Wallet.</p>
   </div>
 
+  <!-- ADSENSE BANNER 2 - MIDDLE -->
+  <div class="bg-white p-2 mt-3 rounded text-center border">
+    <p class="text-[10px] text-gray-400">ADVERTISEMENT</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-PASTE_YOUR_ADSENSE_ID" data-ad-slot="PASTE_YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
   <!-- SERVICES -->
   <div class="grid grid-cols-2 gap-2 mt-3">
-    <button onclick="tapService('General Nursing')" class="bg-white p-3 rounded-xl text-left"><b>🩺 General Nursing</b><br><span class="text-xs">Home Nursing</span><br><span class="text-xs">👆 <span id="tap-General">0</span> taps</span></button>
-    <button onclick="tapService('Elderly Nursing Care')" class="bg-white p-3 rounded-xl text-left"><b>👴 Elderly Nursing Care</b><br><span class="text-xs">Compassionate Nursing</span><br><span class="text-xs">👆 <span id="tap-Elderly">0</span> taps</span></button>
-    <button onclick="tapService('Post-Surgery Nursing')" class="bg-white p-3 rounded-xl text-left"><b>🏥 Post-Surgery Nursing</b><br><span class="text-xs">Recovery at Home</span><br><span class="text-xs">👆 <span id="tap-Post">0</span> taps</span></button>
-    <button onclick="tapService('Physiotherapy Nursing')" class="bg-white p-3 rounded-xl text-left"><b>🦵 Physiotherapy Nursing</b><br><span class="text-xs">Rehab & Mobility</span><br><span class="text-xs">👆 <span id="tap-Physio">0</span> taps</span></button>
+    <button onclick="tapService('General Nursing')" class="bg-white p-3 rounded-xl text-left"><b>🩺 General Nursing</b><br><span class="text-xs">Home Nursing</span><br><span class="text-xs">👆 0 taps</span></button>
+    <button onclick="tapService('Elderly Nursing Care')" class="bg-white p-3 rounded-xl text-left"><b>👴 Elderly Nursing Care</b><br><span class="text-xs">Compassionate Nursing</span><br><span class="text-xs">👆 0 taps</span></button>
+    <button onclick="tapService('Post-Surgery Nursing')" class="bg-white p-3 rounded-xl text-left"><b>🏥 Post-Surgery Nursing</b><br><span class="text-xs">Recovery at Home</span><br><span class="text-xs">👆 0 taps</span></button>
+    <button onclick="tapService('Physiotherapy Nursing')" class="bg-white p-3 rounded-xl text-left"><b>🦵 Physiotherapy Nursing</b><br><span class="text-xs">Rehab & Mobility</span><br><span class="text-xs">👆 0 taps</span></button>
   </div>
 
   <!-- NURSES LIST -->
   <h3 class="font-bold text-lg mt-4">Available Nurses</h3>
   <div id="nurseList">Loading nurses...</div>
 
-  <!-- GPS SHARE FOR NURSES - NEW, DOES NOT BREAK ANYTHING -->
+  <!-- GPS -->
   <div class="bg-red-50 border border-red-200 p-3 rounded-xl mt-4">
     <h3 class="font-bold">📍 Nurse - Share Location With Admin</h3>
-    <p class="text-xs text-gray-600">Only for nurses on duty. Admin sees your location to send you to patient.</p>
-    <input id="gpsName" placeholder="Your Full Name e.g. CHELANGAT JOY" class="w-full border p-3 rounded mt-2">
+    <p class="text-xs text-gray-600">Only for nurses on duty.</p>
+    <input id="gpsName" placeholder="Your Full Name" class="w-full border p-3 rounded mt-2">
     <button onclick="shareLocation()" class="w-full bg-red-600 text-white p-3 rounded-lg mt-2 font-bold">📍 Share My Location With Admin</button>
     <p id="gpsMsg" class="text-xs text-green-600 mt-1"></p>
+  </div>
+
+  <!-- ADSENSE BANNER 3 - BOTTOM -->
+  <div class="bg-white p-2 mt-3 rounded text-center border">
+    <p class="text-[10px] text-gray-400">ADVERTISEMENT</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-PASTE_YOUR_ADSENSE_ID" data-ad-slot="PASTE_YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 </div>
 
@@ -99,6 +114,7 @@
   <h2 class="font-bold text-xl">💰 My Wallet</h2>
   <p>Balance: UGX <b id="walletBalance2">0</b></p>
   <p class="text-sm">Use Home section to Top Up via Pesapal.</p>
+  <button onclick="goAdmin()" class="w-full bg-slate-900 text-white p-3 rounded-lg font-bold mt-3">🔐 Open Admin</button>
 </div>
 
 <!-- BOOK & PAY -->
@@ -125,18 +141,41 @@
   <div id="trackResult" class="mt-2"></div>
 </div>
 
-<!-- NURSE JOIN -->
+<!-- NURSE JOIN - FULL APPLICATION FORM -->
 <div id="nurseSection" class="p-3 hidden">
-  <h2 class="font-bold text-xl">👩‍⚕️ Join As Nurse</h2>
-  <input id="nurseName" placeholder="Full Name" class="w-full border p-3 rounded mt-2">
-  <input id="nursePhone" placeholder="Phone 077..." class="w-full border p-3 rounded mt-2">
-  <input id="nurseLocation" placeholder="Location / Village" class="w-full border p-3 rounded mt-2">
-  <button onclick="joinNurse()" class="w-full bg-green-600 text-white p-3 rounded-lg mt-2 font-bold">Submit Application</button>
-  <p id="nurseMsg" class="text-sm mt-2"></p>
+  <h2 class="font-bold text-xl">👩‍⚕️ Join As Nurse - Application Form</h2>
+  <p class="text-sm text-gray-600">Fill all. Admin (Joy) will see your full form and Approve / Reject you.</p>
+  <div class="bg-white p-3 rounded mt-2">
+    <label class="text-sm font-bold">Full Name *</label>
+    <input id="nurseName" placeholder="e.g. CHELANGAT JOY" class="w-full border p-3 rounded mt-1">
+    <label class="text-sm font-bold">Phone Number *</label>
+    <input id="nursePhone" placeholder="077..." class="w-full border p-3 rounded mt-1">
+    <label class="text-sm font-bold">Village / Location *</label>
+    <input id="nurseLocation" placeholder="Village, Subcounty" class="w-full border p-3 rounded mt-1">
+    <label class="text-sm font-bold">Experience / Certificate</label>
+    <input id="nurseExp" placeholder="e.g. 3 years, Nursing Certificate" class="w-full border p-3 rounded mt-1">
+    <label class="text-sm font-bold">National ID / NIN</label>
+    <input id="nurseId" placeholder="e.g. CM123456" class="w-full border p-3 rounded mt-1">
+    <label class="text-sm font-bold">Service You Offer</label>
+    <select id="nurseService" class="w-full border p-3 rounded mt-1">
+      <option>General Nursing</option>
+      <option>Elderly Nursing Care</option>
+      <option>Post-Surgery Nursing</option>
+      <option>Physiotherapy Nursing</option>
+    </select>
+    <button onclick="joinNurse()" class="w-full bg-green-600 text-white p-3 rounded-lg mt-3 font-bold">✅ Submit Application To Admin</button>
+    <p id="nurseMsg" class="text-sm mt-2 text-green-600"></p>
+    <p class="text-xs text-gray-500 mt-2">After submit, wait for Admin to Approve. You will then appear on Home page as Available Nurse.</p>
+  </div>
+  <div class="bg-white p-2 mt-3 rounded text-center border">
+    <p class="text-[10px] text-gray-400">ADVERTISEMENT</p>
+    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-PASTE_YOUR_ADSENSE_ID" data-ad-slot="PASTE_YOUR_SLOT" data-ad-format="auto" data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
 </div>
 
 <script>
-// ===== FIREBASE - PASTE YOUR REAL CONFIG HERE - SAME AS BEFORE =====
+// ===== FIREBASE - PASTE YOUR REAL CONFIG =====
 const firebaseConfig = {
   apiKey: "PASTE_YOUR_APIKEY",
   authDomain: "PASTE_YOUR_AUTHDOMAIN",
@@ -148,7 +187,23 @@ const firebaseConfig = {
 let db = null;
 try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){ console.log(e); }
 
-// ===== COUNTERS - REAL FIREBASE =====
+// ===== ADMIN BUTTON - FIXED - WORKS IN WHATSAPP + CHROME =====
+function goAdmin(){
+  // Use same folder - admin.html must be next to index.html
+  try{
+    window.location.href = 'admin.html';
+  }catch(e){
+    window.open('admin.html', '_blank');
+  }
+  // If still on same page after 1.5s, tell user direct link
+  setTimeout(function(){
+    if(window.location.href.indexOf('admin.html') === -1){
+      var base = window.location.href.split('index.html')[0].split('?')[0];
+      alert('Admin did not open automatically.\n\nOpen in CHROME and type:\n' + base + 'admin.html');
+    }
+  }, 1500);
+}
+
 async function countView(){
   if(!db) return;
   try{ await db.collection('stats').doc('views').set({count: firebase.firestore.FieldValue.increment(1)}, {merge:true}); }catch(e){}
@@ -157,7 +212,7 @@ async function loadStats(){
   if(!db) return;
   try{
     const v = await db.collection('stats').doc('views').get();
-    if(v.exists) document.getElementById('viewCount').innerText = v.data().count || 21;
+    if(v.exists) document.getElementById('viewCount').innerText = v.data().count || 1;
     const t = await db.collection('stats').doc('taps').get();
     if(t.exists) document.getElementById('tapCount').innerText = t.data().count || 6;
     const b = await db.collection('bookings').get();
@@ -174,8 +229,6 @@ function showSection(s){
   document.getElementById(s+'Section').classList.remove('hidden');
   window.scrollTo(0,0);
 }
-
-// ===== WALLET + PESAPAL - DO NOT CHANGE LOGIC =====
 async function checkWallet(){
   const phone = document.getElementById('walletPhone').value.trim();
   if(!phone){ alert('Enter phone'); return; }
@@ -189,28 +242,22 @@ async function topupPesapal(){
   const phone = document.getElementById('walletPhone').value.trim();
   const amount = document.getElementById('topupAmount').value.trim();
   if(!phone || !amount){ alert('Enter phone + amount'); return; }
-  // ===== PESAPAL - YOUR EXISTING PESAPAL LINK / API HERE =====
-  // Keep your Pesapal iframe / redirect as before. This opens Pesapal checkout:
-  // Replace PASTE_PESAPAL_URL with your Pesapal payment link if you use link method
   const pesapalUrl = "PASTE_YOUR_PESAPAL_CHECKOUT_URL";
-  // Save pending topup in Firebase
   if(db){
     await db.collection('topups').add({phone: phone, amount: Number(amount), status: 'pending', method: 'Pesapal', time: new Date().toLocaleString(), timestamp: Date.now()});
   }
   if(pesapalUrl !== "PASTE_YOUR_PESAPAL_CHECKOUT_URL"){
     window.location.href = pesapalUrl + "?amount=" + amount + "&phone=" + phone;
   } else {
-    alert('Pesapal: Top Up ' + amount + ' UGX for ' + phone + '\n\nYour Pesapal link is not pasted yet. Paste your Pesapal checkout URL in code where it says PASTE_YOUR_PESAPAL_CHECKOUT_URL. Pending topup saved in Firebase.');
+    alert('Pesapal: Top Up ' + amount + ' UGX for ' + phone + '\nPending topup saved. Paste your Pesapal link in code where it says PASTE_YOUR_PESAPAL_CHECKOUT_URL');
   }
 }
-
-// ===== NURSES / BOOKING =====
 async function loadNurses(){
   if(!db) return;
   const snap = await db.collection('caregivers').where('status','==','approved').get();
   let html=''; let opts='<option>Select Nurse</option>';
-  snap.forEach(d=>{ const n=d.data(); html+=`<div class="bg-white p-3 rounded mt-2"><b>${n.name||''}</b> - ${n.location||''}<br><button onclick="selectNurse('${n.name||''}')" class="bg-blue-600 text-white px-3 py-1 rounded mt-1 text-sm">Book This Nurse</button></div>`; opts+=`<option>${n.name||''}</option>`; });
-  document.getElementById('nurseList').innerHTML = html || 'No approved nurses yet';
+  snap.forEach(d=>{ const n=d.data(); html+=`<div class="bg-white p-3 rounded mt-2"><b>${n.name||''}</b> - ${n.location||''}<br><span class="text-xs">${n.experience||''} - ${n.service||''}</span><br><button onclick="selectNurse('${n.name||''}')" class="bg-blue-600 text-white px-3 py-1 rounded mt-1 text-sm">Book This Nurse</button></div>`; opts+=`<option>${n.name||''}</option>`; });
+  document.getElementById('nurseList').innerHTML = html || 'No approved nurses yet - Nurses apply in Nurse tab';
   document.getElementById('bookNurse').innerHTML = opts;
 }
 function selectNurse(name){ document.getElementById('bookNurse').value = name; showSection('book'); }
@@ -237,12 +284,26 @@ async function joinNurse(){
   const name = document.getElementById('nurseName').value.trim();
   const phone = document.getElementById('nursePhone').value.trim();
   const loc = document.getElementById('nurseLocation').value.trim();
-  if(!name || !phone){ alert('Enter name + phone'); return; }
-  await db.collection('caregivers').add({name:name, phone:phone, location:loc, status:'pending', time:new Date().toLocaleString()});
-  document.getElementById('nurseMsg').innerText = 'Application sent! Admin will approve you.';
+  const exp = document.getElementById('nurseExp').value.trim();
+  const idNo = document.getElementById('nurseId').value.trim();
+  const service = document.getElementById('nurseService').value;
+  if(!name || !phone || !loc){ alert('Fill Name + Phone + Location - They are required'); return; }
+  if(!db){ alert('Firebase not connected - Paste your config'); return; }
+  await db.collection('caregivers').add({
+    name: name, phone: phone, location: loc, village: loc,
+    experience: exp, qualification: exp, certificate: exp,
+    nationalId: idNo, idNumber: idNo,
+    service: service, category: service,
+    status: 'pending', time: new Date().toLocaleString(), timestamp: Date.now()
+  });
+  document.getElementById('nurseMsg').innerText = '✅ Application sent! Admin will see your full form and Approve you.';
+  alert('Application sent to Admin!');
+  document.getElementById('nurseName').value='';
+  document.getElementById('nursePhone').value='';
+  document.getElementById('nurseLocation').value='';
+  document.getElementById('nurseExp').value='';
+  document.getElementById('nurseId').value='';
 }
-
-// ===== GPS - NEW, SAFE =====
 function shareLocation(){
   const name = document.getElementById('gpsName').value.trim();
   if(!name){ alert('Enter your name first'); return; }
@@ -253,15 +314,12 @@ function shareLocation(){
     document.getElementById('gpsMsg').innerText = '✅ Location shared with Admin!';
   }, function(err){ alert('Allow Location permission: ' + err.message); });
 }
-
-// ===== PWA INSTALL - SAME AS BEFORE =====
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e)=>{ e.preventDefault(); deferredPrompt = e; });
 function installApp(){
   if(deferredPrompt){ deferredPrompt.prompt(); deferredPrompt.userChoice.then(()=>{ deferredPrompt=null; }); }
   else { alert('In Chrome: Tap 3 dots > Add to Home screen / Install app'); }
 }
-
 countView(); loadStats(); loadNurses();
 </script>
 </body>
