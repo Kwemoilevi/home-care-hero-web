@@ -6,42 +6,89 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body class="bg-gray-100 p-4">
-<h1 class="text-2xl font-bold">👑 Home Care Hero - Admin</h1>
-<p id="welcome">Checking login...</p>
 
-<!-- EARNINGS BOX - 10% EACH -->
-<div class="bg-green-100 p-4 rounded-xl mt-4">
-  <h2 class="font-bold text-lg">💰 Earnings - This Month</h2>
-  <p>Total Profit: <b id="totalProfit">0 UGX</b></p>
-  <p>JOY CHELANGAT (10%): <b id="joyTotal">0 UGX</b></p>
-  <p>JABETH KIMUTAI (10%): <b id="jabethTotal">0 UGX</b></p>
-  <p>YOU (80%): <b id="yourTotal">0 UGX</b></p>
-  <button onclick="paySunday()" class="bg-green-600 text-white px-3 py-2 rounded mt-2">Pay Sunday - Mark Paid</button>
+<!-- ============ STEP 1: GATE PASSWORD ============ -->
+<div id="gateBox" class="fixed inset-0 bg-slate-100 flex justify-center pt-16 p-4 z-[60]">
+  <div class="bg-white p-6 rounded-xl w-full max-w-sm text-center h-fit">
+    <h1 class="font-bold text-xl">🔐 Admin Login</h1>
+    <p class="text-sm text-gray-500">Home Care Hero - Kapkweno<br>One password for all admins</p>
+    <input id="gatePass" type="password" placeholder="Admin Password" class="w-full border p-3 rounded mt-4 text-center text-lg">
+    <button onclick="enterGate()" class="w-full bg-slate-900 text-white p-3 rounded-lg mt-4 font-bold">Enter Admin</button>
+    <p id="gateErr" class="text-red-500 text-sm mt-2"></p>
+    <a href="index.html" class="text-sm underline">← Back to App</a>
+  </div>
 </div>
 
-<!-- TABS -->
-<div class="flex gap-2 mt-4">
-  <button onclick="showTab('nurses')" class="bg-blue-600 text-white px-4 py-2 rounded">Nurses</button>
-  <button onclick="showTab('bookings')" class="bg-purple-600 text-white px-4 py-2 rounded">Bookings</button>
-  <button onclick="showTab('assistants')" id="assistantsBtn" class="bg-orange-600 text-white px-4 py-2 rounded">Assistants</button>
+<!-- ============ STEP 2: WHO ARE YOU + PIN ============ -->
+<div id="whoBox" class="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center p-4 z-50 hidden">
+  <div class="bg-white p-6 rounded-xl w-full max-w-sm text-center">
+    <h2 class="font-bold text-xl">Who Are You?</h2>
+    <p class="text-sm text-gray-500">Choose your name, enter your PIN</p>
+    <div class="flex gap-2 mt-4">
+      <button onclick="pickUser('SUPER ADMIN','super_admin','9999','owner')" class="flex-1 bg-slate-900 text-white p-3 rounded-lg font-bold">👑 ME<br><span class="text-xs font-normal">Owner</span></button>
+      <button onclick="pickUser('CHELANGAT JOY','assistant','1111','nurse_manager')" class="flex-1 bg-blue-600 text-white p-3 rounded-lg font-bold">JOY<br><span class="text-xs font-normal">Nurses</span></button>
+      <button onclick="pickUser('KIMTAI JABETH','assistant','2222','booking_manager')" class="flex-1 bg-purple-600 text-white p-3 rounded-lg font-bold">JABETH<br><span class="text-xs font-normal">Bookings</span></button>
+    </div>
+    <input id="myPin" type="password" placeholder="Enter Your PIN" class="w-full border p-3 rounded mt-4 text-center text-lg">
+    <button onclick="checkPin()" class="w-full bg-green-600 text-white p-3 rounded-lg mt-3 font-bold">Unlock My Dashboard</button>
+    <p id="pinErr" class="text-red-500 text-sm mt-2"></p>
+    <button onclick="logoutAll()" class="text-xs underline mt-2">Logout</button>
+  </div>
 </div>
 
-<div id="nursesTab" class="mt-4"><h3 class="font-bold">Nurses - Approve Here</h3><div id="nurseList">Loading...</div></div>
-<div id="bookingsTab" class="mt-4 hidden"><h3 class="font-bold">Bookings</h3><div id="bookingList">Loading...</div></div>
-<div id="assistantsTab" class="mt-4 hidden">
-  <h3 class="font-bold">Assistants</h3>
-  <div class="bg-white p-3 rounded mt-2">
-    <p><b>CHELANGAT JOY</b> - Nurse Manager - 10%</p>
-    <p><b>KIMUTAI JABETH</b> - Bookings Manager - 10%</p>
-    <p class="text-sm text-gray-500">Only Super Admin sees this tab</p>
+<!-- ============ STEP 3: DASHBOARD ============ -->
+<div id="dashboard" class="hidden">
+  <div class="flex justify-between items-center">
+    <div>
+      <h1 class="text-2xl font-bold">👑 Home Care Hero - Admin</h1>
+      <p id="welcome">Welcome</p>
+      <p class="text-sm text-gray-500">Kapkweno - Suam Subcounty</p>
+    </div>
+    <button onclick="logoutAll()" class="bg-red-500 text-white px-3 py-2 rounded text-sm">Logout</button>
+  </div>
+
+  <!-- EARNINGS - 10% EACH -->
+  <div class="bg-green-100 p-4 rounded-xl mt-4">
+    <h2 class="font-bold text-lg">💰 Earnings - This Month</h2>
+    <p>Total Profit: <b id="totalProfit">0 UGX</b></p>
+    <p>CHELANGAT JOY (10%): <b id="joyTotal">0 UGX</b> - 0775761052</p>
+    <p>KIMTAI JABETH (10%): <b id="jabethTotal">0 UGX</b> - 0770848127</p>
+    <p>YOU (80%): <b id="yourTotal">0 UGX</b></p>
+    <button onclick="paySunday()" class="bg-green-600 text-white px-3 py-2 rounded mt-2 text-sm">Pay Sunday - Mark Paid</button>
+  </div>
+
+  <!-- TABS -->
+  <div class="flex gap-2 mt-4">
+    <button id="nursesBtn" onclick="showTab('nurses')" class="bg-blue-600 text-white px-4 py-2 rounded">Nurses</button>
+    <button id="bookingsBtn" onclick="showTab('bookings')" class="bg-purple-600 text-white px-4 py-2 rounded">Bookings</button>
+    <button id="assistantsBtn" onclick="showTab('assistants')" class="bg-orange-600 text-white px-4 py-2 rounded">Assistants</button>
+  </div>
+
+  <div id="nursesTab" class="mt-4">
+    <h3 class="font-bold">Nurses - Approve Here</h3>
+    <p class="text-sm text-gray-500">Joy manages this</p>
+    <div id="nurseList">Loading...</div>
+  </div>
+  <div id="bookingsTab" class="mt-4 hidden">
+    <h3 class="font-bold">Bookings</h3>
+    <p class="text-sm text-gray-500">Jabeth manages this</p>
+    <div id="bookingList">Loading...</div>
+  </div>
+  <div id="assistantsTab" class="mt-4 hidden">
+    <h3 class="font-bold">Assistants - Only Owner Sees This</h3>
+    <div class="bg-white p-3 rounded mt-2">
+      <p><b>CHELANGAT JOY</b> - 0775761052 - Nurse Manager - 10% - PIN 1111</p>
+      <p><b>KIMTAI JABETH</b> - 0770848127 - Bookings Manager - 10% - PIN 2222</p>
+      <p><b>YOU</b> - Super Admin - 80% - PIN 9999</p>
+      <p class="text-sm text-gray-500 mt-2">Gate Password for all: Hero2026</p>
+    </div>
   </div>
 </div>
 
 <script>
-// --- PASTE YOUR FIREBASE CONFIG HERE (from your old admin.html) ---
+// ============ FIREBASE CONFIG - PASTE YOURS HERE ============
 const firebaseConfig = {
   apiKey: "PASTE_YOURS",
   authDomain: "PASTE_YOURS",
@@ -50,54 +97,108 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// --- CHECK WHO IS LOGGED IN ---
-const myEmail = localStorage.getItem('adminEmail');
-if(!myEmail){ window.location.href='admin-login.html'; }
+// ============ GATE ============
+function enterGate(){
+  const p = document.getElementById('gatePass').value.trim();
+  if(p === 'Hero2026'){
+    localStorage.setItem('adminGate', 'yes');
+    document.getElementById('gateBox').style.display = 'none';
+    document.getElementById('whoBox').classList.remove('hidden');
+  } else {
+    document.getElementById('gateErr').innerText = 'Wrong admin password';
+  }
+}
+function logoutAll(){
+  localStorage.removeItem('adminGate');
+  localStorage.removeItem('adminName');
+  location.reload();
+}
+// If already passed gate before, skip gate
+if(localStorage.getItem('adminGate') === 'yes'){
+  document.getElementById('gateBox').style.display = 'none';
+  document.getElementById('whoBox').classList.remove('hidden');
+}
 
-async function loadAdmin(){
-  const doc = await db.collection('admins').doc(myEmail).get();
-  if(!doc.exists){ alert('Not an admin'); window.location.href='index.html'; return; }
-  const data = doc.data();
-  document.getElementById('welcome').innerText = 'Welcome, ' + data.name + ' - ' + data.role;
+// ============ WHO ARE YOU + PIN ============
+let selectedUser = null, selectedRole = null, selectedPin = null, selectedJob = null;
+function pickUser(name, role, pin, job){
+  selectedUser = name; selectedRole = role; selectedPin = pin; selectedJob = job;
+  document.getElementById('pinErr').innerText = 'You picked: ' + name + ' - Now enter PIN';
+  document.getElementById('myPin').focus();
+}
+function checkPin(){
+  const entered = document.getElementById('myPin').value.trim();
+  if(!selectedUser){ document.getElementById('pinErr').innerText = 'First tap your name above'; return; }
+  if(entered !== selectedPin){ document.getElementById('pinErr').innerText = 'Wrong PIN for ' + selectedUser; return; }
 
-  // JOY only sees Nurses, JABETH only sees Bookings
-  if(data.job === 'nurse_manager'){ document.getElementById('bookingsTab').style.display='none'; }
-  if(data.job === 'booking_manager'){ document.getElementById('nursesTab').style.display='none'; }
-  // Assistants cannot see Assistants tab
-  if(data.role === 'assistant'){ document.getElementById('assistantsBtn').style.display='none'; document.getElementById('assistantsTab').style.display='none'; }
+  localStorage.setItem('adminName', selectedUser);
+  localStorage.setItem('adminRole', selectedRole);
+  document.getElementById('whoBox').style.display = 'none';
+  document.getElementById('dashboard').classList.remove('hidden');
+  document.getElementById('welcome').innerText = 'Welcome, ' + selectedUser + ' - ' + selectedJob;
 
+  // PERMISSIONS
+  if(selectedUser === 'CHELANGAT JOY'){
+    // Joy only Nurses
+    document.getElementById('bookingsBtn').style.display = 'none';
+    document.getElementById('assistantsBtn').style.display = 'none';
+    document.getElementById('bookingsTab').style.display = 'none';
+    document.getElementById('assistantsTab').style.display = 'none';
+    showTab('nurses');
+  }
+  if(selectedUser === 'KIMTAI JABETH'){
+    // Jabeth only Bookings
+    document.getElementById('nursesBtn').style.display = 'none';
+    document.getElementById('assistantsBtn').style.display = 'none';
+    document.getElementById('nursesTab').style.display = 'none';
+    document.getElementById('assistantsTab').style.display = 'none';
+    showTab('bookings');
+  }
+  if(selectedRole === 'super_admin'){
+    showTab('nurses');
+  }
   loadNurses(); loadBookings(); loadEarnings();
 }
+
+// ============ TABS ============
 function showTab(t){
   document.getElementById('nursesTab').classList.add('hidden');
   document.getElementById('bookingsTab').classList.add('hidden');
   document.getElementById('assistantsTab').classList.add('hidden');
-  document.getElementById(t+'Tab').classList.remove('hidden');
+  const el = document.getElementById(t+'Tab');
+  if(el) el.classList.remove('hidden');
 }
+
+// ============ LOAD DATA ============
 async function loadNurses(){
-  const snap = await db.collection('caregivers').get();
-  let html='';
-  snap.forEach(d=>{ const n=d.data(); html+=`<div class="bg-white p-3 rounded mt-2"><b>${n.name||''}</b> - ${n.location||''} - ${n.status||'pending'} <button onclick="approveNurse('${d.id}')" class="bg-green-500 text-white px-2 py-1 rounded ml-2">Approve</button></div>`; });
-  document.getElementById('nurseList').innerHTML=html||'No nurses yet';
+  try{
+    const snap = await db.collection('caregivers').get();
+    let html='';
+    snap.forEach(d=>{ const n=d.data(); html+=`<div class="bg-white p-3 rounded mt-2"><b>${n.name||''}</b> - ${n.location||''} - ${n.status||'pending'} <button onclick="approveNurse('${d.id}')" class="bg-green-500 text-white px-2 py-1 rounded ml-2">Approve</button></div>`; });
+    document.getElementById('nurseList').innerHTML = html || 'No nurses yet';
+  }catch(e){ document.getElementById('nurseList').innerText = 'Error: ' + e.message; }
 }
 async function approveNurse(id){ await db.collection('caregivers').doc(id).update({status:'approved'}); alert('Approved!'); loadNurses(); }
 async function loadBookings(){
-  const snap = await db.collection('bookings').get();
-  let html='';
-  snap.forEach(d=>{ const b=d.data(); html+=`<div class="bg-white p-3 rounded mt-2">${b.patientName||''} -> ${b.nurseName||''} - ${b.status||''}</div>`; });
-  document.getElementById('bookingList').innerHTML=html||'No bookings yet';
+  try{
+    const snap = await db.collection('bookings').get();
+    let html='';
+    snap.forEach(d=>{ const b=d.data(); html+=`<div class="bg-white p-3 rounded mt-2">${b.patientName||''} -> ${b.nurseName||''} - ${b.status||''}</div>`; });
+    document.getElementById('bookingList').innerHTML = html || 'No bookings yet';
+  }catch(e){ document.getElementById('bookingList').innerText = 'Error: ' + e.message; }
 }
 async function loadEarnings(){
-  const snap = await db.collection('earnings').get();
-  let total=0;
-  snap.forEach(d=>{ total+= d.data().profit||0; });
-  document.getElementById('totalProfit').innerText = total + ' UGX';
-  document.getElementById('joyTotal').innerText = Math.round(total*0.10) + ' UGX';
-  document.getElementById('jabethTotal').innerText = Math.round(total*0.10) + ' UGX';
-  document.getElementById('yourTotal').innerText = Math.round(total*0.80) + ' UGX';
+  try{
+    const snap = await db.collection('earnings').get();
+    let total=0;
+    snap.forEach(d=>{ total += d.data().profit || 0; });
+    document.getElementById('totalProfit').innerText = total + ' UGX';
+    document.getElementById('joyTotal').innerText = Math.round(total*0.10) + ' UGX';
+    document.getElementById('jabethTotal').innerText = Math.round(total*0.10) + ' UGX';
+    document.getElementById('yourTotal').innerText = Math.round(total*0.80) + ' UGX';
+  }catch(e){ /* no earnings collection yet = 0 */ }
 }
-function paySunday(){ alert('Paid Sunday: Joy 10% + Jabeth 10% - Take MoMo screenshot!'); }
-loadAdmin();
+function paySunday(){ alert('Pay Sunday: Joy 10% + Jabeth 10% - Take MoMo screenshot!'); }
 </script>
 </body>
 </html>
