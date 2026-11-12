@@ -25,12 +25,21 @@
 
 <div id="homeSection" class="p-3">
 <div class="bg-white p-4 rounded-xl text-center border card-shadow"><p class="font-bold text-lg">Hom Care Hero 🌍 - Trusted Nurses To Your Home</p><p class="text-sm text-gray-600">🌍 Worldwide • Real Nurses • Pay Inside App Only • Pesapal</p><p class="text-xs mt-2">Views: <span id="viewCount">0</span> | Taps: <span id="tapCount">0</span></p><p class="text-[11px] text-green-700 font-bold mt-1">✅ LIVE - REAL - Firebase Connected</p><p id="liveStatus" class="text-[11px] font-bold mt-1">Checking connection...</p><p class="text-[11px] text-red-600 font-bold mt-1">🚫 NO CASH OUTSIDE APP - All Transactions Inside App Only</p></div>
+
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">💙 Choose Service - Tap To Book</h3><div class="grid grid-cols-2 gap-2 mt-2">
 <button onclick="tapService('General Nursing');goBook('General Nursing')" class="p-3 rounded-xl bg-teal-100 font-bold">General Nursing</button>
 <button onclick="tapService('Elderly Nursing Care');goBook('Elderly Nursing Care')" class="p-3 rounded-xl bg-orange-100 font-bold">Elderly Care</button>
 <button onclick="tapService('Post-Surgery Nursing');goBook('Post-Surgery Nursing')" class="p-3 rounded-xl bg-blue-100 font-bold">Post-Surgery</button>
 <button onclick="tapService('Physiotherapy Nursing');goBook('Physiotherapy Nursing')" class="p-3 rounded-xl bg-green-100 font-bold">Physiotherapy</button>
 </div></div>
+
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">❤️ Our Nurses Caring For Patients At Home - Real Care</h3><p class="text-xs text-gray-600">Trusted nurses attending patients at home - Worldwide</p><div class="grid grid-cols-2 gap-2 mt-3">
+<div><img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80'"><p class="text-[11px] font-bold mt-1">👩‍⚕️ Nurse Checking Elderly Patient At Home</p></div>
+<div><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80'"><p class="text-[11px] font-bold mt-1">💙 Nurse Caring For Patient In Bed</p></div>
+<div><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🩺 Nurse Checking Blood Pressure At Home</p></div>
+<div><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🤲 Nurse Helping Patient To Walk - Physiotherapy</p></div>
+</div><button onclick="showSection('book')" class="w-full p-3 bg-teal-600 text-white rounded-xl font-bold mt-3">Book A Nurse Like This - Tap Here</button></div>
+
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">⭐ Available Nurses - Worldwide</h3><div id="nurseList">Loading nurses...</div></div>
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #F97316"><h3 class="font-bold text-lg">💊 Pharmacies - Advertise Here - Worldwide</h3><p class="text-xs text-gray-600">Pharmacies pay inside app to advertise here. Clients tap to call / order.</p><div id="pharmacyAdsList">Loading pharmacy ads...</div><button onclick="showSection('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm mt-2">💊 Advertise Your Pharmacy Here</button></div>
 <p class="text-center text-[11px] text-gray-400 mt-4">Hom Care Hero 🌍 • Worldwide • All Payments Inside App</p></div>
