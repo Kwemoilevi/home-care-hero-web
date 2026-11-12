@@ -49,14 +49,34 @@
     <button onclick="logoutAll()" class="bg-red-500 text-white px-3 py-2 rounded text-sm">Logout</button>
   </div>
 
-  <!-- EARNINGS - 10% EACH -->
+  <!-- EARNINGS - PRIVATE - EACH SEES ONLY THEIRS -->
   <div class="bg-green-100 p-4 rounded-xl mt-4">
-    <h2 class="font-bold text-lg">💰 Earnings - This Month</h2>
-    <p>Total Profit: <b id="totalProfit">0 UGX</b></p>
-    <p>CHELANGAT JOY (10%): <b id="joyTotal">0 UGX</b> - 0775761052</p>
-    <p>KIMTAI JABETH (10%): <b id="jabethTotal">0 UGX</b> - 0770848127</p>
-    <p>YOU (80%): <b id="yourTotal">0 UGX</b></p>
-    <button onclick="paySunday()" class="bg-green-600 text-white px-3 py-2 rounded mt-2 text-sm">Pay Sunday - Mark Paid</button>
+    <h2 class="font-bold text-lg">💰 My Earnings - This Month</h2>
+
+    <!-- JOY SEES ONLY THIS -->
+    <div id="joyEarnings" class="hidden">
+      <p class="text-2xl font-bold text-green-700" id="joyTotal">0 UGX</p>
+      <p class="text-sm text-gray-600">Your share - 10% - CHELANGAT JOY</p>
+      <p class="text-sm text-gray-600">Phone: 0775761052</p>
+      <p class="text-xs text-gray-500 mt-1">Paid every Sunday to MoMo</p>
+    </div>
+
+    <!-- JABETH SEES ONLY THIS -->
+    <div id="jabethEarnings" class="hidden">
+      <p class="text-2xl font-bold text-green-700" id="jabethTotal">0 UGX</p>
+      <p class="text-sm text-gray-600">Your share - 10% - KIMTAI JABETH</p>
+      <p class="text-sm text-gray-600">Phone: 0770848127</p>
+      <p class="text-xs text-gray-500 mt-1">Paid every Sunday to MoMo</p>
+    </div>
+
+    <!-- YOU - OWNER - SEES EVERYTHING -->
+    <div id="ownerEarnings" class="hidden">
+      <p>Total Profit: <b id="totalProfit">0 UGX</b></p>
+      <p>CHELANGAT JOY (10%): <b id="joyTotalOwner">0 UGX</b> - 0775761052</p>
+      <p>KIMTAI JABETH (10%): <b id="jabethTotalOwner">0 UGX</b> - 0770848127</p>
+      <p>YOU (80%): <b id="yourTotal">0 UGX</b></p>
+      <button onclick="paySunday()" class="bg-green-600 text-white px-3 py-2 rounded mt-2 text-sm">Pay Sunday - Mark Paid</button>
+    </div>
   </div>
 
   <!-- TABS -->
@@ -113,7 +133,6 @@ function logoutAll(){
   localStorage.removeItem('adminName');
   location.reload();
 }
-// If already passed gate before, skip gate
 if(localStorage.getItem('adminGate') === 'yes'){
   document.getElementById('gateBox').style.display = 'none';
   document.getElementById('whoBox').classList.remove('hidden');
@@ -137,9 +156,7 @@ function checkPin(){
   document.getElementById('dashboard').classList.remove('hidden');
   document.getElementById('welcome').innerText = 'Welcome, ' + selectedUser + ' - ' + selectedJob;
 
-  // PERMISSIONS
   if(selectedUser === 'CHELANGAT JOY'){
-    // Joy only Nurses
     document.getElementById('bookingsBtn').style.display = 'none';
     document.getElementById('assistantsBtn').style.display = 'none';
     document.getElementById('bookingsTab').style.display = 'none';
@@ -147,7 +164,6 @@ function checkPin(){
     showTab('nurses');
   }
   if(selectedUser === 'KIMTAI JABETH'){
-    // Jabeth only Bookings
     document.getElementById('nursesBtn').style.display = 'none';
     document.getElementById('assistantsBtn').style.display = 'none';
     document.getElementById('nursesTab').style.display = 'none';
@@ -187,16 +203,38 @@ async function loadBookings(){
     document.getElementById('bookingList').innerHTML = html || 'No bookings yet';
   }catch(e){ document.getElementById('bookingList').innerText = 'Error: ' + e.message; }
 }
+
+// ============ EARNINGS - PRIVATE ============
 async function loadEarnings(){
   try{
     const snap = await db.collection('earnings').get();
     let total=0;
     snap.forEach(d=>{ total += d.data().profit || 0; });
-    document.getElementById('totalProfit').innerText = total + ' UGX';
-    document.getElementById('joyTotal').innerText = Math.round(total*0.10) + ' UGX';
-    document.getElementById('jabethTotal').innerText = Math.round(total*0.10) + ' UGX';
-    document.getElementById('yourTotal').innerText = Math.round(total*0.80) + ' UGX';
-  }catch(e){ /* no earnings collection yet = 0 */ }
+    let joyShare = Math.round(total*0.10);
+    let jabethShare = Math.round(total*0.10);
+    let yourShare = Math.round(total*0.80);
+
+    const who = localStorage.getItem('adminName');
+    document.getElementById('joyEarnings').classList.add('hidden');
+    document.getElementById('jabethEarnings').classList.add('hidden');
+    document.getElementById('ownerEarnings').classList.add('hidden');
+
+    if(who === 'CHELANGAT JOY'){
+      document.getElementById('joyEarnings').classList.remove('hidden');
+      document.getElementById('joyTotal').innerText = joyShare + ' UGX';
+    }
+    if(who === 'KIMTAI JABETH'){
+      document.getElementById('jabethEarnings').classList.remove('hidden');
+      document.getElementById('jabethTotal').innerText = jabethShare + ' UGX';
+    }
+    if(who === 'SUPER ADMIN'){
+      document.getElementById('ownerEarnings').classList.remove('hidden');
+      document.getElementById('totalProfit').innerText = total + ' UGX';
+      document.getElementById('joyTotalOwner').innerText = joyShare + ' UGX';
+      document.getElementById('jabethTotalOwner').innerText = jabethShare + ' UGX';
+      document.getElementById('yourTotal').innerText = yourShare + ' UGX';
+    }
+  }catch(e){}
 }
 function paySunday(){ alert('Pay Sunday: Joy 10% + Jabeth 10% - Take MoMo screenshot!'); }
 </script>
