@@ -9,6 +9,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>body{background:#FFF7ED} .card-shadow{box-shadow:0 4px 14px rgba(0,0,0,0.10)}</style>
 <audio id="bookingAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+<audio id="nurseAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
 </head>
 <body>
 <div id="mainApp">
@@ -21,12 +22,12 @@
 <button onclick="showSection('book')" class="bg-green-300 text-black px-3 py-1 rounded-full text-sm font-bold">Book</button>
 <button onclick="showSection('track')" class="bg-purple-300 text-black px-3 py-1 rounded-full text-sm font-bold">Track</button>
 <button onclick="showSection('nurse')" class="bg-pink-300 text-black px-3 py-1 rounded-full text-sm font-bold">Nurse</button>
+<button onclick="showSection('nurseAlarmSec')" class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">🔔 Nurse Alarm</button>
 <button onclick="showSection('pharmacy')" class="bg-orange-300 text-black px-3 py-1 rounded-full text-sm font-bold">Pharmacy</button>
 </div></div>
 
 <div id="homeSection" class="p-3">
 <div class="bg-white p-4 rounded-xl text-center border card-shadow"><p class="font-bold text-lg">Hom Care Hero 🌍 - Trusted Nurses To Your Home</p><p class="text-sm text-gray-600">🌍 Worldwide • Real Nurses • Pay Inside App Only • Pesapal</p><p class="text-xs mt-2">Views: <span id="viewCount">0</span> | Taps: <span id="tapCount">0</span></p><p class="text-[11px] text-green-700 font-bold mt-1">✅ LIVE - REAL - Firebase Connected</p><p id="liveStatus" class="text-[11px] font-bold mt-1">Checking connection...</p><p class="text-[11px] text-red-600 font-bold mt-1">🚫 NO CASH OUTSIDE APP - All Transactions Inside App Only</p></div>
-
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">💙 Choose Service - Tap To Book</h3><div class="grid grid-cols-2 gap-2 mt-2">
 <button onclick="tapService('General Nursing');goBook('General Nursing')" class="p-3 rounded-xl bg-teal-100 font-bold">General Nursing</button>
 <button onclick="tapService('Elderly Nursing Care');goBook('Elderly Nursing Care')" class="p-3 rounded-xl bg-orange-100 font-bold">Elderly Care</button>
@@ -35,18 +36,16 @@
 <button onclick="tapService('Wound Care');goBook('Wound Care')" class="p-3 rounded-xl bg-red-100 font-bold">🩹 Wound Care</button>
 <button onclick="tapService('Broken Bones - Fracture Care');goBook('Broken Bones - Fracture Care')" class="p-3 rounded-xl bg-yellow-100 font-bold">🦴 Broken Bones</button>
 </div><p class="text-[11px] text-gray-600 mt-2">🩹 Wound Care = Cleaning wounds, dressing, infection care at home<br>🦴 Broken Bones = Cast care, fracture care, help to walk, physiotherapy after broken leg/arm</p></div>
-
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">❤️ Our Nurses Caring For Patients At Home - Real Care</h3><p class="text-xs text-gray-600">Trusted nurses attending patients at home - Worldwide</p><div class="grid grid-cols-2 gap-2 mt-3">
-<div><img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80'"><p class="text-[11px] font-bold mt-1">👩‍⚕️ Nurse Checking Elderly Patient At Home</p></div>
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">❤️ Our Nurses Caring For Patients At Home</h3><div class="grid grid-cols-2 gap-2 mt-3">
+<div><img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80'"><p class="text-[11px] font-bold mt-1">👩‍⚕️ Nurse Checking Elderly Patient</p></div>
 <div><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80'"><p class="text-[11px] font-bold mt-1">💙 Nurse Caring For Patient In Bed</p></div>
-<div><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🩺 Nurse Checking Blood Pressure At Home</p></div>
-<div><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🤲 Nurse Helping Patient To Walk - Physiotherapy</p></div>
-<div><img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80" class="w-full h-32 object-cover rounded-xl"><p class="text-[11px] font-bold mt-1">🩹 Nurse Doing Wound Dressing At Home</p></div>
-<div><img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🦴 Nurse Caring For Broken Leg / Cast</p></div>
+<div><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🩺 Nurse Checking Blood Pressure</p></div>
+<div><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🤲 Nurse Helping Patient To Walk</p></div>
+<div><img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80" class="w-full h-32 object-cover rounded-xl"><p class="text-[11px] font-bold mt-1">🩹 Nurse Doing Wound Dressing</p></div>
+<div><img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🦴 Nurse Caring For Broken Leg</p></div>
 </div><button onclick="showSection('book')" class="w-full p-3 bg-teal-600 text-white rounded-xl font-bold mt-3">Book A Nurse Like This - Tap Here</button></div>
-
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">⭐ Available Nurses - Worldwide</h3><div id="nurseList">Loading nurses...</div></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #F97316"><h3 class="font-bold text-lg">💊 Pharmacies - Advertise Here - Worldwide</h3><p class="text-xs text-gray-600">Pharmacies pay inside app to advertise here. Clients tap to call / order.</p><div id="pharmacyAdsList">Loading pharmacy ads...</div><button onclick="showSection('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm mt-2">💊 Advertise Your Pharmacy Here</button></div>
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #F97316"><h3 class="font-bold text-lg">💊 Pharmacies - Advertise Here - Worldwide</h3><div id="pharmacyAdsList">Loading pharmacy ads...</div><button onclick="showSection('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm mt-2">💊 Advertise Your Pharmacy Here</button></div>
 <p class="text-center text-[11px] text-gray-400 mt-4">Hom Care Hero 🌍 • Worldwide • All Payments Inside App</p></div>
 
 <div id="walletSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
@@ -75,6 +74,19 @@
 <div id="trackSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold">📍 Track Booking</h3>
 <input id="trackPhone" placeholder="Enter phone used to book" class="w-full p-3 border rounded-xl mt-3">
 <button onclick="trackBooking()" class="w-full p-3 bg-purple-600 text-white rounded-xl font-bold mt-2">Track</button><div id="trackResult" class="mt-3 text-sm"></div></div></div>
+
+<div id="nurseAlarmSecSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow" style="border:2px solid #DC2626">
+<h3 class="font-bold text-lg">🔔 Nurse Alarm - Get Alert When Client Books - YOUR JOB 🚨</h3>
+<p class="text-xs text-gray-600 mt-1">Nurses: Fill this and keep this page OPEN. When a client books in your area / skill, your phone will RING + VIBRATE + POP-UP. You must answer fast - It's your job!</p>
+<input id="nurseAlarmName" placeholder="Your Name e.g. Joy Nurse" class="w-full p-3 border rounded-xl mt-3">
+<input id="nurseAlarmPhone" placeholder="Your Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseAlarmArea" placeholder="Your Area e.g. Kampala - Leave empty for ALL areas" class="w-full p-3 border rounded-xl mt-2">
+<select id="nurseAlarmSkill" class="w-full p-3 border rounded-xl mt-2"><option value="">All Skills - Ring for any booking</option><option>General Nursing</option><option>Elderly Nursing Care</option><option>Post-Surgery Nursing</option><option>Physiotherapy Nursing</option><option>Wound Care</option><option>Broken Bones - Fracture Care</option></select>
+<button onclick="enableNurseAlarm()" class="w-full p-3 rounded-xl bg-red-600 text-white font-bold mt-3">🔔 ENABLE NURSE ALARM - Tap Here</button>
+<p id="nurseAlarmStatus" class="text-sm font-bold mt-2 text-center"></p>
+<div id="nurseAlarmJobs" class="mt-3"></div>
+<p class="text-xs text-gray-500 mt-3">⚠️ Keep this page open. Do not close app. Keep phone volume ON. If you close page, alarm stops. JOY + JABETH + SUPER also get alarm at same time.</p>
+</div></div>
 
 <div id="pharmacySection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">💊 Pharmacy - Advertise With Hom Care Hero 🌍</h3><p class="text-xs text-gray-600">Pay inside app to advertise. Your pharmacy shows on Home for all clients worldwide.</p><input id="pharmName" placeholder="Pharmacy Name" class="w-full p-3 border rounded-xl mt-3"><input id="pharmPhone" placeholder="Pharmacy Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2"><input id="pharmLocation" placeholder="Location / City e.g. Kampala" class="w-full p-3 border rounded-xl mt-2"><input id="pharmCountry" placeholder="Country e.g. Uganda" class="w-full p-3 border rounded-xl mt-2"><input id="pharmOffer" placeholder="What do you sell? e.g. Drugs, Delivery, 24hrs" class="w-full p-3 border rounded-xl mt-2"><button onclick="applyPharmacy()" class="w-full p-3 bg-orange-600 text-white rounded-xl font-bold mt-3">Submit Pharmacy Advert - Pay Inside App</button><p class="text-xs text-red-600 font-bold mt-2">After submit, Top Up Wallet with Pesapal inside app, SUPER will approve your advert.</p><div id="pharmMsg" class="text-sm mt-2"></div></div></div>
 
@@ -132,7 +144,7 @@
 <div id="superOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EAB308">
 <h3 class="font-bold">👑 SUPER ADMIN ONLY - All Percentages For All Admins</h3><p class="text-xs text-gray-600">Only SUPER sees this box. JOY and JABETH do NOT see this.</p>
 <p class="text-sm mt-2">💖 JOY 10%: <b id="joyTotal">0 UGX</b></p><p class="text-sm">💛 JABETH 10%: <b id="jabethTotal">0 UGX</b></p><p class="text-sm">👑 SUPER 80%: <b id="superTotal">0 UGX</b></p></div>
-<div id="superLinksBox" class="hidden bg-blue-50 p-4 rounded-xl mt-3 border card-shadow"><h3 class="font-bold text-lg">🔗 SUPER - Links - Worldwide</h3><div class="mt-3"><p class="font-bold text-sm">1. Client Booking:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Book</p><button onclick="copyLink('client')" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Client Link</button><button onclick="shareWhatsApp('client')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">2. Nurse Application:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Nurse</p><button onclick="copyLink('nurse')" class="bg-pink-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Nurse Link</button><button onclick="shareWhatsApp('nurse')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">3. Wallet Top-Up:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Wallet</p><button onclick="copyLink('wallet')" class="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm mt-1">📋 Copy Wallet Link</button><button onclick="shareWhatsApp('wallet')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">4. Pharmacy Advertise:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Pharmacy</p><button onclick="copyLink('pharmacy')" class="bg-orange-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Pharmacy Link</button><button onclick="shareWhatsApp('pharmacy')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><p id="linkCopiedMsg" class="text-green-600 text-sm font-bold mt-2"></p></div>
+<div id="superLinksBox" class="hidden bg-blue-50 p-4 rounded-xl mt-3 border card-shadow"><h3 class="font-bold text-lg">🔗 SUPER - Links - Worldwide</h3><div class="mt-3"><p class="font-bold text-sm">1. Client Booking:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Book</p><button onclick="copyLink('client')" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Client Link</button><button onclick="shareWhatsApp('client')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">2. Nurse Application:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Nurse</p><button onclick="copyLink('nurse')" class="bg-pink-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Nurse Link</button><button onclick="shareWhatsApp('nurse')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">3. Wallet Top-Up:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Wallet</p><button onclick="copyLink('wallet')" class="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm mt-1">📋 Copy Wallet Link</button><button onclick="shareWhatsApp('wallet')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">4. Pharmacy Advertise:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Pharmacy</p><button onclick="copyLink('pharmacy')" class="bg-orange-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Pharmacy Link</button><button onclick="shareWhatsApp('pharmacy')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">5. Nurse Alarm - Send To Nurses:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap 🔔 Nurse Alarm</p><button onclick="copyLink('nurseAlarm')" class="bg-red-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Nurse Alarm Link</button><button onclick="shareWhatsApp('nurseAlarm')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><p id="linkCopiedMsg" class="text-green-600 text-sm font-bold mt-2"></p></div>
 <div id="joyOnlyBox" class="hidden bg-pink-50 p-3 rounded-xl mt-3 border"><p class="text-sm font-bold">👩‍⚕️ JOY - Your Job: Nurses + GPS</p><p class="text-xs">You see Nurses + GPS + ONLY Your Own Share. You do NOT see JABETH or SUPER shares.</p></div>
 <div id="joyShareBox" class="hidden bg-pink-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EC4899"><h3 class="font-bold text-lg">🔗 JOY - Your Nurses Form Link - Share This</h3><p class="text-xs bg-white p-2 rounded border break-all mt-2">https://home-care-hero-web.vercel.app - Tap Nurse</p><p class="text-xs mt-2">Tell nurses: Tap <b>Nurse</b> > Fill Name, Phone, Skill, City, Country > Submit. You will approve them in Nurses tab.</p><button onclick="copyLink('nurse')" class="bg-pink-600 text-white px-4 py-2 rounded-full text-sm mt-2">📋 Copy Nurse Link</button><button onclick="shareWhatsApp('nurse')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-2">💬 Share on WhatsApp</button></div>
 <div id="jabethOnlyBox" class="hidden bg-yellow-50 p-3 rounded-xl mt-3 border"><p class="text-sm font-bold">📅 JABETH - Your Job: Bookings + GPS</p><p class="text-xs">You see Bookings + GPS + ONLY Your Own Share. You do NOT see JOY or SUPER shares.</p></div>
@@ -165,7 +177,7 @@ const GATE_PASSWORD = "Hero2026";
 let selectedUser = null; let selectedPassword = null;
 function cleanPhone(raw){ return String(raw||'').trim().replace(/\s/g,''); }
 function togglePass(id,btn){ let el=document.getElementById(id); if(el.type==='password'){ el.type='text'; btn.innerText='🙈 Hide Password'; } else { el.type='password'; btn.innerText='👁️ Show Password'; } }
-function showSection(s){ ['home','wallet','book','track','nurse','pharmacy'].forEach(x=>document.getElementById(x+'Section').classList.add('hidden')); document.getElementById(s+'Section').classList.remove('hidden'); }
+function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>document.getElementById(x+'Section').classList.add('hidden')); document.getElementById(s+'Section').classList.remove('hidden'); }
 function goBook(service){ document.getElementById('bookService').value = service; showSection('book'); }
 function openAdmin(){ document.getElementById('mainApp').classList.add('hidden'); document.getElementById('adminApp').classList.remove('hidden'); }
 function closeAdmin(){ document.getElementById('adminApp').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); }
@@ -182,8 +194,8 @@ function applyRole(){
   else if(role==='JABETH'){ document.getElementById('jabethOnlyBox').classList.remove('hidden'); document.getElementById('tabBtnBookings').classList.remove('hidden'); document.getElementById('tabBtnGps').classList.remove('hidden'); document.getElementById('bookingsTab').classList.remove('hidden'); loadBookings(); loadGPS(); }
   else { document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('superLinksBox').classList.remove('hidden'); document.getElementById('walletDashboardBox').classList.remove('hidden'); ['tabBtnNurses','tabBtnWallet','tabBtnBookings','tabBtnGps','tabBtnPharmacy'].forEach(id=>document.getElementById(id).classList.remove('hidden')); document.getElementById('nursesTab').classList.remove('hidden'); loadAdminWallets(); loadAdminTopups(); loadNursesAdmin(); loadBookings(); loadGPS(); loadPharmacyAdmin(); }
 }
-function copyLink(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. JOY will approve you.' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; navigator.clipboard.writeText(text).then(()=>{ document.getElementById('linkCopiedMsg').innerText='✅ Copied! Now paste in WhatsApp.'; }); }
-function shareWhatsApp(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. JOY will approve you.' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
+function copyLink(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. JOY will approve you.' : type==='nurseAlarm' ? '🔔 NURSES - ENABLE YOUR ALARM - '+APP_NAME+': '+APP_LINK+' - Tap 🔔 Nurse Alarm, type your name, phone, area, skill, tap Enable Alarm. When client books in your area, YOUR phone will RING! It is your job - Do not miss booking!' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; navigator.clipboard.writeText(text).then(()=>{ document.getElementById('linkCopiedMsg').innerText='✅ Copied! Now paste in WhatsApp.'; }); }
+function shareWhatsApp(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. JOY will approve you.' : type==='nurseAlarm' ? '🔔 NURSES - ENABLE YOUR ALARM - '+APP_NAME+': '+APP_LINK+' - Tap 🔔 Nurse Alarm, type your name, phone, area, skill, tap Enable Alarm. When client books in your area, YOUR phone will RING! It is your job - Do not miss booking!' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
 async function loadMyShare(){
   if(!db || !selectedUser) return;
   let snap = await db.collection('earnings').get();
@@ -283,7 +295,7 @@ async function loadAdminTopups(){ if(!db) return; let snap=await db.collection('
 async function approveTopup(id, amount, phone){ if(!db) return; if(!confirm('Did you check this Transaction ID in Pesapal > Transactions and see '+amount+' UGX? Only approve if YES.')) return; let amt=Number(amount||0); await db.collection('topups').doc(id).update({status:'approved'}); let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let oldBal = snap.exists ? Number(snap.data().balance||0) : 0; await ref.set({balance: oldBal+amt, phone: phone, updatedAt:new Date()},{merge:true}); await db.collection('earnings').add({phone, amount:amt, joy: Math.round(amt*0.10), jabeth: Math.round(amt*0.10), super: Math.round(amt*0.80), type:'topup', createdAt:new Date()}); alert('✅ Approved LIVE. '+amt+' added to '+phone); loadAdminWallets(); loadAdminTopups(); loadMyShare(); }
 async function rejectTopup(id){ await db.collection('topups').doc(id).update({status:'rejected'}); loadAdminTopups(); }
 async function loadGPS(){ if(!db) return; try{ let snap=await db.collection('gps_locations').orderBy('createdAt','desc').limit(20).get(); let html=''; snap.forEach(d=>{ let g=d.data(); html+=`<div class="bg-white p-2 rounded mt-2 border text-xs">${g.nurse||''} - ${g.lat}, ${g.lng}</div>`; }); document.getElementById('gpsList').innerHTML=html||'No GPS yet'; }catch(e){} }
-// --- ALARM SYSTEM ---
+// --- ADMIN ALARM ---
 function enableAlarm(){
   try{ let a=document.getElementById('bookingAlarm'); a.play().then(()=>{ a.pause(); a.currentTime=0; document.getElementById('alarmStatus').innerText='✅ ALARM ENABLED - You will hear it when booking comes'; }).catch(()=>{ document.getElementById('alarmStatus').innerText='✅ ALARM ENABLED - Tap again if no sound'; }); }catch(e){}
   if('Notification' in window && Notification.permission==='default'){ Notification.requestPermission(); }
@@ -295,6 +307,47 @@ function triggerAlarm(b){
   alert('🚨 NEW BOOKING! 🚨\n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX');
   if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('🚨 NEW BOOKING - Hom Care Hero', {body: (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'')}); }catch(e){} }
 }
+// --- NURSE ALARM - IT IS THEIR JOB ---
+let nurseAlarmOn = false;
+let nurseAlarmArea = "";
+let nurseAlarmSkill = "";
+let nurseAlarmLastCount = 0;
+let nurseAlarmLastBookingId = "";
+function enableNurseAlarm(){
+  let name = document.getElementById('nurseAlarmName').value.trim();
+  let phone = cleanPhone(document.getElementById('nurseAlarmPhone').value);
+  nurseAlarmArea = document.getElementById('nurseAlarmArea').value.trim().toLowerCase();
+  nurseAlarmSkill = document.getElementById('nurseAlarmSkill').value.trim();
+  if(!name || !phone){ alert('Enter your Name and Phone first'); return; }
+  nurseAlarmOn = true;
+  try{ let a=document.getElementById('nurseAlarm'); a.play().then(()=>{ a.pause(); a.currentTime=0; }).catch(()=>{}); }catch(e){}
+  if('Notification' in window && Notification.permission==='default'){ Notification.requestPermission(); }
+  try{ if(navigator.vibrate) navigator.vibrate(300); }catch(e){}
+  document.getElementById('nurseAlarmStatus').innerHTML = '✅ NURSE ALARM ON - ' + name + ' - Area: ' + (nurseAlarmArea || 'ALL AREAS') + ' - Skill: ' + (nurseAlarmSkill || 'ALL SKILLS') + '<br>Keep this page OPEN. Your phone will RING when client books in your area!';
+  document.getElementById('nurseAlarmJobs').innerHTML = '<p class="text-sm font-bold">Waiting for jobs in your area... Do not close this page.</p>';
+  // Save nurse is online
+  if(db){ db.collection('nurse_online').doc(phone).set({name, phone, area: nurseAlarmArea, skill: nurseAlarmSkill, onlineAt: new Date()}, {merge:true}).catch(()=>{}); }
+  alert('✅ NURSE ALARM ON - ' + name + '\nYour phone will RING when a client books in ' + (nurseAlarmArea || 'ANY AREA') + ' - ' + (nurseAlarmSkill || 'ANY SKILL') + '\nKeep this page OPEN!');
+}
+function triggerNurseAlarm(b){
+  if(!nurseAlarmOn) return;
+  // Check if booking matches nurse area / skill
+  let loc = String((b.location||'') + ' ' + (b.country||'')).toLowerCase();
+  let svc = String(b.service||'');
+  // If nurse set area, must match location. If empty, all areas match.
+  if(nurseAlarmArea && !loc.includes(nurseAlarmArea) && !nurseAlarmArea.includes(loc.split(' ')[0])){ return; }
+  // If nurse set skill, must match service. If empty, all skills match.
+  if(nurseAlarmSkill && svc !== nurseAlarmSkill){ 
+    // Also allow partial match for Wound / Broken
+    if(!svc.toLowerCase().includes(nurseAlarmSkill.toLowerCase().split(' ')[0].toLowerCase())){ return; }
+  }
+  // If booking was for a specific nurse name and not this nurse, skip - but if nurse name is empty, all nurses ring
+  try{ document.getElementById('nurseAlarm').play(); }catch(e){}
+  try{ if(navigator.vibrate) navigator.vibrate([600,200,600,200,600,200,600]); }catch(e){}
+  document.getElementById('nurseAlarmJobs').innerHTML = '<div class="bg-red-50 p-3 rounded-xl border" style="border:2px solid red"><p class="font-bold text-red-700">🚨 NEW JOB FOR YOU!</p><p class="text-sm"><b>' + (b.service||'') + '</b> - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX</p><p class="text-xs mt-1">Call client NOW. Also call JOY / JABETH to confirm you will take this job.</p><a href="tel:' + (b.phone||'') + '" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm inline-block mt-2">📞 Call Client Now</a> <a href="https://wa.me/' + String(b.phone||'').replace('+','') + '" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm inline-block mt-2">💬 WhatsApp Client</a></div>';
+  alert('🚨 NEW JOB FOR YOU NURSE! 🚨\n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX\nCALL CLIENT NOW - It is your job!');
+  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('🚨 NEW JOB FOR YOU - Hom Care Hero', {body: (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'')}); }catch(e){} }
+}
 let lastBookingCount = 0;
 let lastTopupCount = 0;
 async function checkNewBookingsAlarm(){
@@ -303,11 +356,14 @@ async function checkNewBookingsAlarm(){
     let snap = await db.collection('bookings').orderBy('createdAt','desc').limit(1).get();
     let countSnap = await db.collection('bookings').get();
     let total = countSnap.size;
-    if(lastBookingCount === 0){ lastBookingCount = total; }
+    if(lastBookingCount === 0){ lastBookingCount = total; if(!snap.empty) nurseAlarmLastBookingId = snap.docs[0].id; }
     else if(total > lastBookingCount){
       lastBookingCount = total;
       let b = snap.docs[0].data();
+      // Admin alarm - always rings for admins
       triggerAlarm(b);
+      // Nurse alarm - rings only if matches nurse area/skill
+      triggerNurseAlarm(b);
       try{ loadBookings(); loadMyShare(); }catch(e){}
     }
     let tSnap = await db.collection('topups').where('status','==','pending').get();
