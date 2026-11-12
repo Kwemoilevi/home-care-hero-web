@@ -31,13 +31,17 @@
 <button onclick="tapService('Elderly Nursing Care');goBook('Elderly Nursing Care')" class="p-3 rounded-xl bg-orange-100 font-bold">Elderly Care</button>
 <button onclick="tapService('Post-Surgery Nursing');goBook('Post-Surgery Nursing')" class="p-3 rounded-xl bg-blue-100 font-bold">Post-Surgery</button>
 <button onclick="tapService('Physiotherapy Nursing');goBook('Physiotherapy Nursing')" class="p-3 rounded-xl bg-green-100 font-bold">Physiotherapy</button>
-</div></div>
+<button onclick="tapService('Wound Care');goBook('Wound Care')" class="p-3 rounded-xl bg-red-100 font-bold">🩹 Wound Care</button>
+<button onclick="tapService('Broken Bones - Fracture Care');goBook('Broken Bones - Fracture Care')" class="p-3 rounded-xl bg-yellow-100 font-bold">🦴 Broken Bones</button>
+</div><p class="text-[11px] text-gray-600 mt-2">🩹 Wound Care = Cleaning wounds, dressing, infection care at home<br>🦴 Broken Bones = Cast care, fracture care, help to walk, physiotherapy after broken leg/arm</p></div>
 
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">❤️ Our Nurses Caring For Patients At Home - Real Care</h3><p class="text-xs text-gray-600">Trusted nurses attending patients at home - Worldwide</p><div class="grid grid-cols-2 gap-2 mt-3">
 <div><img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80'"><p class="text-[11px] font-bold mt-1">👩‍⚕️ Nurse Checking Elderly Patient At Home</p></div>
 <div><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80'"><p class="text-[11px] font-bold mt-1">💙 Nurse Caring For Patient In Bed</p></div>
 <div><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🩺 Nurse Checking Blood Pressure At Home</p></div>
 <div><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🤲 Nurse Helping Patient To Walk - Physiotherapy</p></div>
+<div><img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80" class="w-full h-32 object-cover rounded-xl"><p class="text-[11px] font-bold mt-1">🩹 Nurse Doing Wound Dressing At Home</p></div>
+<div><img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🦴 Nurse Caring For Broken Leg / Cast</p></div>
 </div><button onclick="showSection('book')" class="w-full p-3 bg-teal-600 text-white rounded-xl font-bold mt-3">Book A Nurse Like This - Tap Here</button></div>
 
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">⭐ Available Nurses - Worldwide</h3><div id="nurseList">Loading nurses...</div></div>
@@ -73,7 +77,7 @@
 
 <div id="pharmacySection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">💊 Pharmacy - Advertise With Hom Care Hero 🌍</h3><p class="text-xs text-gray-600">Pay inside app to advertise. Your pharmacy shows on Home for all clients worldwide.</p><input id="pharmName" placeholder="Pharmacy Name" class="w-full p-3 border rounded-xl mt-3"><input id="pharmPhone" placeholder="Pharmacy Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2"><input id="pharmLocation" placeholder="Location / City e.g. Kampala" class="w-full p-3 border rounded-xl mt-2"><input id="pharmCountry" placeholder="Country e.g. Uganda" class="w-full p-3 border rounded-xl mt-2"><input id="pharmOffer" placeholder="What do you sell? e.g. Drugs, Delivery, 24hrs" class="w-full p-3 border rounded-xl mt-2"><button onclick="applyPharmacy()" class="w-full p-3 bg-orange-600 text-white rounded-xl font-bold mt-3">Submit Pharmacy Advert - Pay Inside App</button><p class="text-xs text-red-600 font-bold mt-2">After submit, Top Up Wallet with Pesapal inside app, SUPER will approve your advert.</p><div id="pharmMsg" class="text-sm mt-2"></div></div></div>
 
-<div id="nurseSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">👩‍⚕️ Apply As Nurse - Proper Form - Anywhere 🌍</h3><p class="text-xs text-gray-600">Fill ALL fields. JOY will check your qualifications before approving.</p>
+<div id="nurseSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">👩‍⚕️ Apply As Nurse - Proper Form - Anywhere 🌍</h3><p class="text-xs text-gray-600">Fill ALL fields. JOY will check your qualifications before approving. Wound Care & Broken Bones nurses are needed!</p>
 <p class="font-bold mt-4">1. Personal Details</p>
 <input id="nurseName" placeholder="Full Name *" class="w-full p-3 border rounded-xl mt-2">
 <input id="nursePhone" placeholder="Phone e.g. +256772101875 *" class="w-full p-3 border rounded-xl mt-2">
@@ -98,8 +102,8 @@
 <select id="nurseCouncil" class="w-full p-3 border rounded-xl mt-2"><option value="">Nursing Council / Body</option><option>Uganda Nurses & Midwives Council</option><option>Nursing Council of Kenya</option><option>Other Country Council</option></select>
 <p class="font-bold mt-4">5. Experience & Skills</p>
 <input id="nurseExp" type="number" placeholder="Years of Experience e.g. 3 *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSkill" placeholder="Main Skill e.g. General Nursing *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSkills2" placeholder="Other Skills e.g. Elderly, Post-Surgery, Physiotherapy, Baby Care" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSkill" placeholder="Main Skill e.g. Wound Care / Broken Bones / General Nursing *" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSkills2" placeholder="Other Skills e.g. Wound Care, Broken Bones, Elderly, Post-Surgery, Physiotherapy, Baby Care" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseLang" placeholder="Languages You Speak e.g. English, Luganda, Swahili" class="w-full p-3 border rounded-xl mt-2">
 <input id="nursePrevWork" placeholder="Previous Hospital / Home Where You Worked" class="w-full p-3 border rounded-xl mt-2">
 <p class="font-bold mt-4">6. Availability & Documents</p>
