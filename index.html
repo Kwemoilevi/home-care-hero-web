@@ -31,12 +31,24 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .gallery img{width:100%;height:130px;object-fit:cover;border-radius:10px}
 .gallery p{font-size:12px;margin:4px 0 10px;font-weight:bold}
 .adminBox{border:2px solid #16a34a;padding:12px;border-radius:12px;margin:10px 0}
+#gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
+#gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body>
+<div id="gate"><div id="gateBox">
+<div style="font-size:48px">💚</div>
+<h2>Hom Care Hero 🌍</h2>
+<p><b>ENTER GATE PASSWORD</b><br><span class="small">Only people with password can enter.<br>Ask admin for password.</span></p>
+<input id="gatePass" type="password" placeholder="Enter Gate Password">
+<button class="btn" onclick="checkGate()">🔓 OPEN APP</button>
+<p id="gateMsg" class="msg"></p>
+<p class="small">Gate: HERO2026<br>Admins inside still have their own passwords.</p>
+</div></div>
+
 <div class="header">Hom Care Hero 🌍<div class="sub">🌍 Worldwide • Any Country • Any City • All Payments Inside App Only • No Cash Outside</div></div>
 <div class="nav">
 <button onclick="show('home')" style="background:#fff;border:1px solid #ddd">Home</button>
@@ -176,7 +188,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <p id="adminLoginMsg" class="msg"></p>
 </div>
 <button class="btn hidden" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin</button>
-
 <div id="superDash" class="adminBox hidden">
 <h2>👑 SUPER ADMIN Dashboard - 80%</h2>
 <p><b>You control ALL payments</b></p>
@@ -186,24 +197,29 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <h3>All Payments</h3><div id="superPays"></div>
 <h3>All Ratings</h3><div id="superRatings"></div>
 </div>
-
 <div id="joyDash" class="adminBox hidden">
 <h2>💙 JOY CHELANGAT Dashboard - 10%</h2>
-<p>Your Job: Approve Nurses ONLY. You cannot see payments of others.</p>
+<p>Your Job: Approve Nurses ONLY.</p>
 <div class="stat"><div><b id="jTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jNurseCount">0</b>Nurses To Approve</div></div>
 <h3>Nurses Waiting For Your Approval</h3><div id="joyNurses"></div>
-<p class="small">Tap Approve to allow nurse to work. Tap Reject to remove.</p>
 </div>
-
 <div id="jabethDash" class="adminBox hidden">
 <h2>💛 JABETH KIMTAI Dashboard - 10%</h2>
-<p>Your Job: Client Bookings ONLY. Approve / Confirm bookings.</p>
+<p>Your Job: Client Bookings ONLY.</p>
 <div class="stat"><div><b id="jbTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jbBookCount">0</b>Client Bookings</div></div>
 <h3>Client Bookings - Approve Them</h3><div id="jabethBookings"></div>
 </div>
 </div>
 
 <script>
+const GATE_PASSWORD = "HERO2026";
+function checkGate(){
+  let p=document.getElementById('gatePass').value.trim();
+  if(p===GATE_PASSWORD){ document.getElementById('gate').style.display='none'; sessionStorage.setItem('hero_gate','open'); }
+  else { document.getElementById('gateMsg').innerText='❌ Wrong Gate Password. Try again.'; document.getElementById('gatePass').value=''; }
+}
+if(sessionStorage.getItem('hero_gate')==='open'){ document.getElementById('gate').style.display='none'; }
+document.getElementById('gatePass').addEventListener('keydown',function(e){ if(e.key==='Enter') checkGate(); });
 const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "38632827016",appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId: "G-ZV09KN6R90"};
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 let db=null, auth=null, currentStars=0, currentAdmin=null;
@@ -260,9 +276,7 @@ function updateBal(){
   document.getElementById('bal').innerText='UGX '+getBal().toLocaleString();
   document.getElementById('ratingList').innerHTML = ratings.length ? ratings.slice(-5).reverse().map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b><br>'+(r.comment||'')+'</div>').join('') : 'No ratings yet. Be first!';
   if(db){
-    db.collection('bookings').limit(30).get().then(snap=>{ snap.forEach(d=>{let b=d.data();}); });
     db.collection('ratings').orderBy('createdAt','desc').limit(20).get().then(snap=>{ let h=''; snap.forEach(d=>{let r=d.data(); h+='<div class="item">⭐ '+(r.stars||'')+'/5 - <b>'+(r.name||'')+'</b><br>'+(r.comment||'')+'<br>'+(r.date||'')+'</div>';}); if(h) document.getElementById('ratingList').innerHTML=h; });
-    db.collection('nurses').orderBy('createdAt','desc').limit(20).get().then(snap=>{ let h=''; snap.forEach(d=>{let n=d.data(); if(n.name) h+='<div class="item"><b>'+n.name+'</b> - '+(n.phone||'')+'</div>';}); if(h && currentAdmin==='JOY') document.getElementById('joyNurses').innerHTML=h; });
   }
   if(currentAdmin) updateAdmin();
 }
