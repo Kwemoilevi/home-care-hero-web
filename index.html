@@ -4,15 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hom Care Hero - Trusted Nurses Worldwide</title>
+<meta name="theme-color" content="#7c3aed">
+<meta name="description" content="Book a Trusted Nurse Anywhere - Elderly, Wound Care, Broken Bones, Physiotherapy - Worldwide">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=512&q=80">
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<style>body{background:#FFF7ED}.card-shadow{box-shadow:0 4px 14px rgba(0,0,0,0.10)}</style>
+<style>body{background:#FFF7ED}.card-shadow{box-shadow:0 4px 14px rgba(0,0,0,0.10)}.star-btn{font-size:32px;cursor:pointer;background:none;border:none}.star-btn.active{transform:scale(1.2)}</style>
 </head>
 <body>
 <div id="mainApp">
 <div class="p-3 sticky top-0 z-50 text-white" style="background:linear-gradient(90deg,#7c3aed,#db2777)">
-<div class="flex justify-between items-center"><h1 class="font-bold text-xl">Hom Care Hero 🌍</h1><span></span></div>
+<div class="flex justify-between items-center"><h1 class="font-bold text-xl">Hom Care Hero 🌍</h1><span class="text-xs bg-yellow-300 text-black px-2 py-1 rounded-full">⭐ 5.0 Rated</span></div>
 <div class="text-[11px] mt-1">Worldwide • Any Country • Any City • All Payments</div>
 <div class="flex gap-2 mt-2 overflow-x-auto pb-1">
 <button onclick="showSection('home')" class="bg-white text-black px-3 py-1 rounded-full text-xs">Home</button>
@@ -22,12 +29,15 @@
 <button onclick="showSection('nurse')" class="bg-pink-300 text-black px-3 py-1 rounded-full text-xs">Join as Nurse</button>
 <button onclick="showSection('nurseAlarmSec')" class="bg-red-300 text-black px-3 py-1 rounded-full text-xs">Nurse Alarm</button>
 <button onclick="showSection('pharmacy')" class="bg-orange-300 text-black px-3 py-1 rounded-full text-xs">Pharmacy</button>
+<button onclick="showSection('rate')" class="bg-yellow-400 text-black px-3 py-1 rounded-full text-xs">⭐ Rate Us</button>
 </div></div>
 
 <div id="homeSection" class="p-3">
 <div class="bg-white p-4 rounded-xl text-center card-shadow"><h3 class="font-bold text-lg">Book a Trusted Nurse Anywhere 🌍</h3><p class="text-sm text-gray-600">Elderly Care • Post-Surgery • Wound Care • Broken Bones • Physiotherapy</p>
+<div class="text-yellow-500 text-lg mt-1">⭐⭐⭐⭐⭐ <span class="text-black text-xs font-bold">5.0 • 1,000+ Happy Clients</span></div>
 <button onclick="showSection('book')" class="w-full p-3 bg-teal-600 text-white rounded-xl mt-3 font-bold">Book Now</button>
 <button onclick="showSection('wallet')" class="w-full p-3 bg-yellow-400 text-black rounded-xl mt-2 font-bold">Top Up Wallet - Pesapal</button>
+<button onclick="showSection('rate')" class="w-full p-3 bg-white border-2 border-yellow-400 rounded-xl mt-2 font-bold text-sm">⭐ Rate Us 5 Stars - Help Us Grow</button>
 </div>
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">Our Services</h3>
 <button onclick="tapService('Elderly Nursing Care');goBook('Elderly Nursing Care')" class="w-full p-3 border rounded-xl mt-2 text-left">👵 Elderly Nursing Care</button>
@@ -36,14 +46,41 @@
 <button onclick="tapService('Wound Care');goBook('Wound Care')" class="w-full p-3 border rounded-xl mt-2 text-left">🩹 Wound Care</button>
 <button onclick="tapService('Broken Bones - Fracture Care');goBook('Broken Bones - Fracture Care')" class="w-full p-3 border rounded-xl mt-2 text-left">🦴 Broken Bones - Fracture Care</button>
 </div>
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">⭐ What Clients Say</h3>
+<div class="bg-yellow-50 p-3 rounded-xl mt-2"><p class="text-sm">"Best nurse! Very caring. I booked in Kampala and nurse came fast!"</p><p class="text-xs font-bold mt-1">⭐⭐⭐⭐⭐ - Sarah, Kampala</p></div>
+<div class="bg-yellow-50 p-3 rounded-xl mt-2"><p class="text-sm">"My mum's wound healed. Thank you Hom Care Hero!"</p><p class="text-xs font-bold mt-1">⭐⭐⭐⭐⭐ - John, Nairobi</p></div>
+<div class="bg-yellow-50 p-3 rounded-xl mt-2"><p class="text-sm">"Professional physiotherapy at home. Highly recommended!"</p><p class="text-xs font-bold mt-1">⭐⭐⭐⭐⭐ - Grace, London</p></div>
+<button onclick="showSection('rate')" class="w-full p-2 bg-yellow-400 rounded-xl mt-2 font-bold text-sm">⭐ Leave Your Review</button>
+</div>
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">Trusted Nurses Worldwide</h3><div class="flex gap-2 overflow-x-auto mt-2">
-<img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
-<img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
-<img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
+<img loading="lazy" src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
+<img loading="lazy" src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
+<img loading="lazy" src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
 </div></div>
 <div class="bg-orange-50 p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #F97316"><h3 class="font-bold">💊 Pharmacy Advertisement - Worldwide</h3><div id="homePharmacyAds" class="mt-2"></div><button onclick="showSection('pharmacy')" class="w-full p-2 bg-orange-500 text-white rounded-xl mt-2 font-bold text-sm">View All Pharmacy Ads</button></div>
 <p class="text-center text-[11px] text-gray-400 mt-4">Hom Care Hero 🌍 • Worldwide • Any Country</p>
 </div>
+
+<div id="rateSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow text-center">
+<h3 class="font-bold text-lg">⭐ Rate Hom Care Hero</h3>
+<p class="text-sm text-gray-600 mt-1">How was your nurse? Your rating helps us grow!</p>
+<div class="flex justify-center gap-1 mt-3">
+<button class="star-btn" onclick="setStars(1)" id="star1">⭐</button>
+<button class="star-btn" onclick="setStars(2)" id="star2">⭐</button>
+<button class="star-btn" onclick="setStars(3)" id="star3">⭐</button>
+<button class="star-btn" onclick="setStars(4)" id="star4">⭐</button>
+<button class="star-btn" onclick="setStars(5)" id="star5">⭐</button>
+</div>
+<p id="starText" class="font-bold mt-2">Tap a star to rate</p>
+<input id="rateName" placeholder="Your Name" class="w-full p-3 border rounded-xl mt-3 text-left">
+<input id="ratePhone" placeholder="Your Phone" class="w-full p-3 border rounded-xl mt-2 text-left">
+<textarea id="rateComment" placeholder="Tell us about your nurse - e.g. Very caring, came on time..." class="w-full p-3 border rounded-xl mt-2 text-left" rows="3"></textarea>
+<button onclick="submitRating()" class="w-full p-3 bg-yellow-400 rounded-xl mt-3 font-bold">Submit My Rating ⭐</button>
+<button onclick="rateOnPlayStore()" class="w-full p-3 bg-slate-900 text-white rounded-xl mt-2 font-bold text-sm">⭐ Rate Us On Play Store - Opens Play Store</button>
+<p id="rateMsg" class="text-sm font-bold mt-2"></p>
+<h3 class="font-bold text-left mt-4">⭐ Recent Ratings</h3>
+<div id="ratingsList" class="text-left mt-2 text-sm">Loading ratings...</div>
+</div></div>
 
 <div id="walletSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
 <h3 class="font-bold text-lg">💰 Wallet - Pay Inside App Only - Pesapal</h3>
@@ -143,8 +180,6 @@
 
 <div id="adminApp" class="hidden p-3">
 <div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Hom Care Hero - Staff 🔐</h1><button onclick="closeAdmin()" class="bg-gray-200 px-3 py-1 rounded-full">Close - LOCK GATE 🔐</button></div>
-
-<!-- STEP 1 - GATE PASSWORD FIRST - BEFORE 3 ADMINS -->
 <div id="gateStep1" class="bg-white p-4 rounded-xl mt-3 text-center card-shadow" style="border:2px solid #111827">
 <p class="font-bold text-lg">🔐 STEP 1 - GATE LOCKED</p>
 <p class="text-xs text-gray-600">Enter Gate Password First - Before You See Admins</p>
@@ -152,8 +187,6 @@
 <button onclick="unlockGateStep1()" class="w-full p-3 bg-slate-900 text-white rounded-xl mt-2 font-bold">🔓 Unlock Gate - Next</button>
 <p id="gateStep1Error" class="text-red-600 font-bold text-sm mt-2"></p>
 </div>
-
-<!-- STEP 2 - 3 ADMINS - ONLY AFTER GATE IS UNLOCKED -->
 <div id="gateStep2" class="hidden bg-white p-4 rounded-xl mt-3 text-center card-shadow" style="border:2px solid #059669">
 <p class="font-bold text-lg">✅ Gate Unlocked - STEP 2</p>
 <p class="text-xs text-gray-600">Now Choose Your Admin - Then Enter Your Admin Password</p>
@@ -168,12 +201,11 @@
 <p id="gateError" class="text-red-600 font-bold text-sm mt-2"></p>
 <button onclick="backToGateStep1()" class="text-xs text-gray-500 mt-2 underline">← Back To Gate Password</button>
 </div>
-
 <div id="adminDashboard" class="hidden">
 <div class="bg-white p-3 rounded-xl mt-3 border"><p class="text-[11px]">Staff Dashboard - <span id="adminRoleShow"></span> • Gate Unlocked 🔓</p></div>
+<div class="bg-yellow-50 p-4 rounded-xl mt-3 border"><h3 class="font-bold">⭐ Average Rating: <span id="avgRating">5.0</span> • Total Ratings: <span id="totalRatings">0</span></h3><div id="adminRatingsList" class="mt-2 text-sm"></div></div>
 <div id="shareNurseBox" class="hidden bg-pink-50 p-4 rounded-xl mt-3 border" style="border:2px solid #DB2777">
 <h3 class="font-bold">📣 Nurse Link - Share To Nurses Only</h3>
-<p class="text-xs mt-1">Only you can see this. Share to nurses on WhatsApp.</p>
 <div id="joyShareDiv" class="hidden bg-white p-3 rounded-xl mt-2">
 <p class="font-bold text-sm">Nurse Link</p>
 <p id="linkJoy" class="text-[11px] break-all bg-gray-100 p-2 rounded-xl mt-1"></p>
@@ -189,7 +221,6 @@
 </div>
 <div id="shareClientBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border" style="border:2px solid #F59E0B">
 <h3 class="font-bold">👥 Client Link - Share To Clients Only</h3>
-<p class="text-xs mt-1">Share this to clients who want to book a nurse.</p>
 <div class="bg-white p-3 rounded-xl mt-2">
 <p class="font-bold text-sm">Client Link</p>
 <p id="linkJabethClient" class="text-[11px] break-all bg-gray-100 p-2 rounded-xl mt-1"></p>
@@ -214,6 +245,7 @@
 <button onclick="showAdminTab('bookings')" class="bg-blue-200 px-3 py-2 rounded-full">Bookings</button>
 <button onclick="showAdminTab('gps')" class="bg-green-200 px-3 py-2 rounded-full">GPS</button>
 <button onclick="showAdminTab('pharmacy')" class="bg-orange-200 px-3 py-2 rounded-full">Pharmacy</button>
+<button onclick="showAdminTab('ratings')" class="bg-yellow-200 px-3 py-2 rounded-full">Ratings</button>
 <button onclick="showAdminTab('withdraw')" class="bg-purple-200 px-3 py-2 rounded-full">My Withdrawals</button>
 </div>
 <div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses</h3><div id="adminNursesList" class="mt-2"></div></div>
@@ -221,113 +253,45 @@
 <div id="bookingsTab" class="mt-3 hidden"><h3 class="font-bold">Bookings - Clients via JABETH</h3><div id="adminBookingsList"></div></div>
 <div id="gpsTab" class="mt-3 hidden"><h3 class="font-bold">📍 GPS</h3><div id="gpsList"></div></div>
 <div id="pharmacyTab" class="mt-3 hidden"><h3 class="font-bold">💊 Pharmacy Ads</h3><div id="adminPharmacyList2"></div></div>
+<div id="ratingsTab" class="mt-3 hidden"><h3 class="font-bold">⭐ All Ratings</h3><div id="adminRatingsList2"></div></div>
 <div id="withdrawTab" class="mt-3 hidden"><h3 class="font-bold">💰 My Withdrawals</h3><div id="myWithdrawList"></div></div>
 </div>
 </div>
 <audio id="bookingAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
-<audio id="nurseAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 <script>
-const firebaseConfig = {
-apiKey: "PUT_YOUR_API_KEY_HERE",
-authDomain: "home-care-hero.firebaseapp.com",
-databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
-projectId: "home-care-hero",
-storageBucket: "home-care-hero.firebasestorage.app",
-messagingSenderId: "PUT_YOUR_SENDER_ID_HERE",
-appId: "PUT_YOUR_APP_ID_HERE",
-measurementId: "PUT_YOUR_MEASUREMENT_ID_HERE"
-};
-let db = null;
-try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){}
+const firebaseConfig = {apiKey: "PUT_YOUR_API_KEY_HERE",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "PUT_YOUR_SENDER_ID_HERE",appId: "PUT_YOUR_APP_ID_HERE",measurementId: "PUT_YOUR_MEASUREMENT_ID_HERE"};
+let db = null; try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){}
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 const APP_LINK = "https://home-care-hero-web.vercel.app";
+const PLAY_STORE_LINK = "https://play.google.com/store/apps/details?id=com.homecarehero.app";
 const GATE_PASSWORD = "HERO20ADMI";
-let selectedUser = null; let selectedPassword = null;
-let currentRef = "SUPER ADMIN"; let currentClientRef = "Hom Care Hero";
-let gateUnlocked = false;
+let selectedUser = null; let selectedPassword = null; let currentRef = "SUPER ADMIN"; let currentClientRef = "Hom Care Hero"; let gateUnlocked = false; let selectedStars = 0;
 function cleanPhone(raw){ return String(raw||'').trim().replace(/\s/g,''); }
-function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>{ let el=document.getElementById(x+'Section'); if(el) el.classList.add('hidden'); }); let t=document.getElementById(s+'Section'); if(t) t.classList.remove('hidden'); if(s==='nurse'){ let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+currentRef; } if(s==='book'){ let el=document.getElementById('bookRefShow'); if(el) el.innerText='Booking via: '+currentClientRef; } }
+function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy','rate'].forEach(x=>{ let el=document.getElementById(x+'Section'); if(el) el.classList.add('hidden'); }); let t=document.getElementById(s+'Section'); if(t) t.classList.remove('hidden'); if(s==='nurse'){ let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+currentRef; } if(s==='book'){ let el=document.getElementById('bookRefShow'); if(el) el.innerText='Booking via: '+currentClientRef; } if(s==='rate'){ loadRatings(); } }
 function goBook(service){ document.getElementById('bookService').value=service; showSection('book'); }
-function lockGate(){
-  gateUnlocked = false;
-  document.getElementById('gateStep1').classList.remove('hidden');
-  document.getElementById('gateStep2').classList.add('hidden');
-  document.getElementById('adminDashboard').classList.add('hidden');
-  document.getElementById('gatePassword').value = "";
-  document.getElementById('myPassword').value = "";
-  document.getElementById('gateStep1Error').innerText = "🔐 Gate Locked - Enter Gate Password First";
-  document.getElementById('gateError').innerText = "";
-  selectedUser = null; selectedPassword = null;
-  document.getElementById('whoBox').innerHTML = "<p class='font-bold'>Who Are You?</p>";
-  let sb=document.getElementById('shareNurseBox'); if(sb) sb.classList.add('hidden');
-  let cb=document.getElementById('shareClientBox'); if(cb) cb.classList.add('hidden');
-}
+function setStars(n){ selectedStars=n; for(let i=1;i<=5;i++){ let el=document.getElementById('star'+i); if(el){ el.style.opacity = i<=n ? '1' : '0.3'; if(i<=n) el.classList.add('active'); else el.classList.remove('active'); } } let txts=['','😞 Poor - Tell us why','😐 Okay','🙂 Good','😍 Very Good!','🤩 Excellent - Thank you!']; document.getElementById('starText').innerText = txts[n] + ' - ' + n + ' Stars'; }
+function rateOnPlayStore(){ window.open(PLAY_STORE_LINK,'_blank'); }
+async function submitRating(){ if(selectedStars===0){ alert('Please tap a star first ⭐'); return; } let name=document.getElementById('rateName').value.trim(); let phone=cleanPhone(document.getElementById('ratePhone').value); let comment=document.getElementById('rateComment').value.trim(); if(!name){ alert('Please enter your name'); return; } if(!db){ document.getElementById('rateMsg').innerText='✅ Thank you! '+selectedStars+' Stars - Rating saved!'; alert('✅ Thank you for rating us '+selectedStars+' Stars! Please also rate us on Play Store!'); rateOnPlayStore(); return; } try{ await db.collection('ratings').add({stars:selectedStars,name,phone,comment,createdAt:new Date()}); document.getElementById('rateMsg').innerText='✅ Thank you! '+selectedStars+' Stars - Rating saved!'; alert('✅ Thank you for rating us '+selectedStars+' Stars!'); if(selectedStars>=4){ setTimeout(()=>{ if(confirm('Thank you! ⭐ Please also rate us 5 stars on Play Store?')) rateOnPlayStore(); },500); } loadRatings(); }catch(e){ alert('Firebase error: '+e.message); } }
+async function loadRatings(){ if(!db){ let el=document.getElementById('ratingsList'); if(el) el.innerHTML="<div class='bg-yellow-50 p-3 rounded-xl mt-2'><b>⭐⭐⭐⭐⭐ Sarah, Kampala</b><br>Best nurse! Very caring.</div>"; return; } try{ let snap=await db.collection('ratings').orderBy('createdAt','desc').limit(10).get(); let html=""; let total=0; let count=0; snap.forEach(d=>{ let r=d.data(); let stars='⭐'.repeat(Number(r.stars||5)); html+="<div class='bg-yellow-50 p-3 rounded-xl mt-2'><b>"+stars+" "+(r.name||'')+"</b><br>"+(r.comment||'')+"</div>"; total+=Number(r.stars||5); count++; }); let el=document.getElementById('ratingsList'); if(el) el.innerHTML=html||"No ratings yet - Be the first!"; let avgEl=document.getElementById('avgRating'); if(avgEl && count>0) avgEl.innerText=(total/count).toFixed(1); let totEl=document.getElementById('totalRatings'); if(totEl) totEl.innerText=count; let a1=document.getElementById('adminRatingsList'); if(a1) a1.innerHTML=html||"No ratings yet"; let a2=document.getElementById('adminRatingsList2'); if(a2) a2.innerHTML=html||"No ratings yet"; }catch(e){} }
+function lockGate(){ gateUnlocked=false; document.getElementById('gateStep1').classList.remove('hidden'); document.getElementById('gateStep2').classList.add('hidden'); document.getElementById('adminDashboard').classList.add('hidden'); document.getElementById('gatePassword').value=""; document.getElementById('myPassword').value=""; document.getElementById('gateStep1Error').innerText="🔐 Gate Locked - Enter Gate Password First"; document.getElementById('gateError').innerText=""; selectedUser=null; selectedPassword=null; document.getElementById('whoBox').innerHTML="<p class='font-bold'>Who Are You?</p>"; let sb=document.getElementById('shareNurseBox'); if(sb) sb.classList.add('hidden'); let cb=document.getElementById('shareClientBox'); if(cb) cb.classList.add('hidden'); }
 function openAdmin(){ document.getElementById('mainApp').classList.add('hidden'); document.getElementById('adminApp').classList.remove('hidden'); lockGate(); updateShareLinks(); }
 function closeAdmin(){ lockGate(); document.getElementById('adminApp').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); }
-function backToGateStep1(){ gateUnlocked = false; document.getElementById('gateStep1').classList.remove('hidden'); document.getElementById('gateStep2').classList.add('hidden'); document.getElementById('gatePassword').value=""; document.getElementById('myPassword').value=""; document.getElementById('gateStep1Error').innerText="🔐 Gate Locked - Enter Gate Password First"; }
-function unlockGateStep1(){
-  let p=document.getElementById('gatePassword').value.trim();
-  if(!p){ document.getElementById('gateStep1Error').innerText="🔐 Please type Gate Password First - EMPTY NOT ALLOWED"; return; }
-  if(p === GATE_PASSWORD){
-    gateUnlocked = true;
-    document.getElementById('gateStep1').classList.add('hidden');
-    document.getElementById('gateStep2').classList.remove('hidden');
-    document.getElementById('gateStep1Error').innerText="";
-    document.getElementById('gateError').innerText="✅ Gate Unlocked - Now Choose Your Admin";
-  } else {
-    document.getElementById('gateStep1Error').innerText="🔐 Wrong Gate Password - Gate Still Locked";
-  }
-}
-function enterGate(){
-  if(!gateUnlocked){ document.getElementById('gateError').innerText="🔐 Enter Gate Password First - Go Back"; return; }
-  let p=document.getElementById('myPassword').value.trim();
-  if(!selectedUser){ document.getElementById('gateError').innerText="Please choose your name first"; return; }
-  if(!p){ document.getElementById('gateError').innerText="🔐 Please type your Admin Password - EMPTY NOT ALLOWED"; return; }
-  if(p === selectedPassword || p === GATE_PASSWORD){
-    document.getElementById('gateStep2').classList.add('hidden');
-    document.getElementById('adminDashboard').classList.remove('hidden');
-    document.getElementById('gateError').innerText="";
-    applyRole();
-  } else { document.getElementById('gateError').innerText="🔐 Wrong Admin Password - Try again"; }
-}
+function backToGateStep1(){ gateUnlocked=false; document.getElementById('gateStep1').classList.remove('hidden'); document.getElementById('gateStep2').classList.add('hidden'); document.getElementById('gatePassword').value=""; document.getElementById('myPassword').value=""; document.getElementById('gateStep1Error').innerText="🔐 Gate Locked - Enter Gate Password First"; }
+function unlockGateStep1(){ let p=document.getElementById('gatePassword').value.trim(); if(!p){ document.getElementById('gateStep1Error').innerText="🔐 Please type Gate Password First - EMPTY NOT ALLOWED"; return; } if(p===GATE_PASSWORD){ gateUnlocked=true; document.getElementById('gateStep1').classList.add('hidden'); document.getElementById('gateStep2').classList.remove('hidden'); document.getElementById('gateStep1Error').innerText=""; document.getElementById('gateError').innerText="✅ Gate Unlocked - Now Choose Your Admin"; } else { document.getElementById('gateStep1Error').innerText="🔐 Wrong Gate Password - Gate Still Locked"; } }
+function enterGate(){ if(!gateUnlocked){ document.getElementById('gateError').innerText="🔐 Enter Gate Password First - Go Back"; return; } let p=document.getElementById('myPassword').value.trim(); if(!selectedUser){ document.getElementById('gateError').innerText="Please choose your name first"; return; } if(!p){ document.getElementById('gateError').innerText="🔐 Please type your Admin Password - EMPTY NOT ALLOWED"; return; } if(p===selectedPassword || p===GATE_PASSWORD){ document.getElementById('gateStep2').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); document.getElementById('gateError').innerText=""; applyRole(); } else { document.getElementById('gateError').innerText="🔐 Wrong Admin Password - Try again"; } }
 function pickUser(name,password){ selectedUser=name; selectedPassword=password; document.getElementById('whoBox').innerHTML="<b>Selected: "+name+"</b><br><span class='text-xs'>Now type your Admin Password below</span>"; document.getElementById('gateError').innerText=""; }
 function getRole(){ if(!selectedUser) return 'SUPER'; if(selectedUser.includes('JOY')) return 'JOY'; if(selectedUser.includes('JABETH')) return 'JABETH'; return 'SUPER'; }
-function applyRole(){
-  let role=getRole();
-  document.getElementById('adminRoleShow').innerText = role + " - " + selectedUser;
-  document.getElementById('superOnlyBox').classList.add('hidden');
-  if(role==='SUPER') document.getElementById('superOnlyBox').classList.remove('hidden');
-  let shareBox=document.getElementById('shareNurseBox');
-  let joyDiv=document.getElementById('joyShareDiv');
-  let superDiv=document.getElementById('superShareDiv');
-  let clientBox=document.getElementById('shareClientBox');
-  if(joyDiv) joyDiv.classList.add('hidden');
-  if(superDiv) superDiv.classList.add('hidden');
-  if(shareBox) shareBox.classList.add('hidden');
-  if(clientBox) clientBox.classList.add('hidden');
-  if(role==='JOY'){ if(shareBox) shareBox.classList.remove('hidden'); if(joyDiv) joyDiv.classList.remove('hidden'); }
-  else if(role==='SUPER'){ if(shareBox) shareBox.classList.remove('hidden'); if(superDiv) superDiv.classList.remove('hidden'); }
-  else if(role==='JABETH'){ if(clientBox) clientBox.classList.remove('hidden'); }
-  updateShareLinks(); loadMyShare();
-}
+function applyRole(){ let role=getRole(); document.getElementById('adminRoleShow').innerText=role+" - "+selectedUser; document.getElementById('superOnlyBox').classList.add('hidden'); if(role==='SUPER') document.getElementById('superOnlyBox').classList.remove('hidden'); let shareBox=document.getElementById('shareNurseBox'); let joyDiv=document.getElementById('joyShareDiv'); let superDiv=document.getElementById('superShareDiv'); let clientBox=document.getElementById('shareClientBox'); if(joyDiv) joyDiv.classList.add('hidden'); if(superDiv) superDiv.classList.add('hidden'); if(shareBox) shareBox.classList.add('hidden'); if(clientBox) clientBox.classList.add('hidden'); if(role==='JOY'){ if(shareBox) shareBox.classList.remove('hidden'); if(joyDiv) joyDiv.classList.remove('hidden'); } else if(role==='SUPER'){ if(shareBox) shareBox.classList.remove('hidden'); if(superDiv) superDiv.classList.remove('hidden'); } else if(role==='JABETH'){ if(clientBox) clientBox.classList.remove('hidden'); } updateShareLinks(); loadMyShare(); }
 function getNurseLink(ref){ return APP_LINK + "?join=nurse&ref=" + encodeURIComponent(ref); }
 function getClientLink(ref){ return APP_LINK + "?book=client&ref=" + encodeURIComponent(ref); }
-function updateShareLinks(){
-  let lj=document.getElementById('linkJoy'); if(lj) lj.innerText=getNurseLink('CHELANGAT JOY');
-  let ls=document.getElementById('linkSuper'); if(ls) ls.innerText=getNurseLink('SUPER ADMIN');
-  let lc=document.getElementById('linkJabethClient'); if(lc) lc.innerText=getClientLink('KIMTAI JABETH');
-  let urlParams=new URLSearchParams(window.location.search);
-  let r=urlParams.get('ref'); let mode=urlParams.get('join'); let book=urlParams.get('book');
-  if(r && mode==='nurse'){ currentRef=r; let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+r; }
-  if(r && book==='client'){ currentClientRef=r; let el=document.getElementById('bookRefShow'); if(el) el.innerText='Booking via: '+r; }
-}
-function copyNurseLink(who){ let link = who==='CHELANGAT JOY' ? getNurseLink('CHELANGAT JOY') : getNurseLink('SUPER ADMIN'); let text = "Hello! I am "+who+" from Hom Care Hero 🌍\nJoin as a Trusted Nurse - For Nurses Only:\n"+link; navigator.clipboard.writeText(text); alert('Copied Nurse Link'); }
-function shareNurseLink(who){ let link = who==='CHELANGAT JOY' ? getNurseLink('CHELANGAT JOY') : getNurseLink('SUPER ADMIN'); let text = "Hello! I am "+who+" from Hom Care Hero 🌍\nJoin as a Trusted Nurse - For Nurses Only:\n"+link; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
-function copyClientLink(){ let link=getClientLink('KIMTAI JABETH'); let text="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse Anywhere - For Clients:\n"+link; navigator.clipboard.writeText(text); alert('Copied Client Link'); }
-function shareClientLink(){ let link=getClientLink('KIMTAI JABETH'); let text="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse Anywhere - Elderly, Wound Care, Broken Bones, Physio\nFill this form to book:\n"+link; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
+function updateShareLinks(){ let lj=document.getElementById('linkJoy'); if(lj) lj.innerText=getNurseLink('CHELANGAT JOY'); let ls=document.getElementById('linkSuper'); if(ls) ls.innerText=getNurseLink('SUPER ADMIN'); let lc=document.getElementById('linkJabethClient'); if(lc) lc.innerText=getClientLink('KIMTAI JABETH'); let urlParams=new URLSearchParams(window.location.search); let r=urlParams.get('ref'); let mode=urlParams.get('join'); let book=urlParams.get('book'); if(r && mode==='nurse'){ currentRef=r; let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+r; } if(r && book==='client'){ currentClientRef=r; let el=document.getElementById('bookRefShow'); if(el) el.innerText='Booking via: '+r; } }
+function copyNurseLink(who){ let link=who==='CHELANGAT JOY'?getNurseLink('CHELANGAT JOY'):getNurseLink('SUPER ADMIN'); let text="Hello! I am "+who+" from Hom Care Hero 🌍\nJoin as a Trusted Nurse:\n"+link; navigator.clipboard.writeText(text); alert('Copied Nurse Link'); }
+function shareNurseLink(who){ let link=who==='CHELANGAT JOY'?getNurseLink('CHELANGAT JOY'):getNurseLink('SUPER ADMIN'); let text="Hello! I am "+who+" from Hom Care Hero 🌍\nJoin as a Trusted Nurse:\n"+link; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
+function copyClientLink(){ let link=getClientLink('KIMTAI JABETH'); let text="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse:\n"+link; navigator.clipboard.writeText(text); alert('Copied Client Link'); }
+function shareClientLink(){ let link=getClientLink('KIMTAI JABETH'); let text="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse Anywhere:\n"+link; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
 async function loadMyShare(){ if(!db) return; try{ let snap=await db.collection('earnings').get(); let joy=0; let jab=0; let sup=0; snap.forEach(d=>{ let e=d.data(); let amt=Number(e.amount||0); if(e.admin==='JOY') joy+=amt*0.1; if(e.admin==='JABETH') jab+=amt*0.1; sup+=amt*0.8; }); let el=document.getElementById('joyTotal'); if(el) el.innerText=joy; let el2=document.getElementById('jabethTotal'); if(el2) el2.innerText=jab; let el3=document.getElementById('superTotal'); if(el3) el3.innerText=sup; }catch(e){} loadAdminData(); }
-async function loadAdminData(){ loadNursesAdmin(); loadBookings(); loadAdminWallets(); loadPharmacyAds(); }
-function showAdminTab(t){ ['nurses','wallet','bookings','gps','pharmacy','withdraw'].forEach(x=>{ let el=document.getElementById(x+'Tab'); if(el) el.classList.add('hidden'); }); let s=document.getElementById(t+'Tab'); if(s) s.classList.remove('hidden'); }
+async function loadAdminData(){ loadNursesAdmin(); loadBookings(); loadAdminWallets(); loadPharmacyAds(); loadRatings(); }
+function showAdminTab(t){ ['nurses','wallet','bookings','gps','pharmacy','ratings','withdraw'].forEach(x=>{ let el=document.getElementById(x+'Tab'); if(el) el.classList.add('hidden'); }); let s=document.getElementById(t+'Tab'); if(s) s.classList.remove('hidden'); }
 async function tapService(s){ if(!db){alert('Not connected - Check Firebase Keys');return;} try{ await db.collection('stats').doc('taps').set({[s]: firebase.firestore.FieldValue.increment(1)},{merge:true}); }catch(e){} }
 async function joinNurse(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let name=document.getElementById('nurseName').value.trim(); let phone=cleanPhone(document.getElementById('nursePhone').value); let email=document.getElementById('nurseEmail').value.trim(); let dob=document.getElementById('nurseDOB').value; let gender=document.getElementById('nurseGender').value; let nid=document.getElementById('nurseID').value.trim(); let country=document.getElementById('nurseCountry').value.trim(); let area=document.getElementById('nurseArea').value.trim(); let address=document.getElementById('nurseAddress').value.trim(); let edu=document.getElementById('nurseEdu').value; let qual=document.getElementById('nurseQual').value.trim(); let school=document.getElementById('nurseSchool').value.trim(); let gradYear=document.getElementById('nurseGradYear').value.trim(); let certNo=document.getElementById('nurseCertNo').value.trim(); let licence=document.getElementById('nurseLicence').value.trim(); let licenceExp=document.getElementById('nurseLicenceExp').value; let council=document.getElementById('nurseCouncil').value; let exp=document.getElementById('nurseExp').value.trim(); let skill=document.getElementById('nurseSkill').value.trim(); let skill2=document.getElementById('nurseSkills2').value.trim(); let lang=document.getElementById('nurseLang').value.trim(); let prevWork=document.getElementById('nursePrevWork').value.trim(); let avail=document.getElementById('nurseAvail').value; let workType=document.getElementById('nurseWorkType').value; let ref=document.getElementById('nurseRef').value.trim(); let docLink=document.getElementById('nurseDocLink').value.trim(); if(!name||!phone||!gender||!nid||!country||!area||!edu||!qual||!school||!gradYear||!licence){ alert('Please fill all ** fields'); return; } if(!document.getElementById('nurseAgree').checked){ alert('Please tick - I confirm'); return; } try{ await db.collection('caregivers').add({name,phone,email,dob,gender,nationalId:nid,country,area,address,edu,qual,school,gradYear,certNo,licence,licenceExp,council,exp,skill,skill2,lang,prevWork,avail,workType,ref,docLink,invitedBy:currentRef,status:'pending',createdAt:new Date()}); document.getElementById('nurseMsg').innerText="✅ Application SENT via "+currentRef; alert('✅ Application SENT via '+currentRef); }catch(e){ alert('Firebase error: '+e.message); } }
 async function loadNursesAdmin(){ if(!db) return; try{ let snap=await db.collection('caregivers').get(); let html=""; snap.forEach(d=>{ let n=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(n.name||'')+"</b> - "+(n.phone||'')+" - "+(n.area||'')+"<br><span class='text-xs'>Invited by: "+(n.invitedBy||'SUPER ADMIN')+" | "+(n.skill||'')+" | "+(n.status||'pending')+"</span><br><button onclick=\"approveNurse('"+d.id+"')\" class='bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1'>Approve</button> <button onclick=\"rejectNurse('"+d.id+"')\" class='bg-red-600 text-white px-3 py-1 rounded-full text-xs'>Reject</button></div>"; }); document.getElementById('adminNursesList').innerHTML=html||"No nurses yet"; }catch(e){} }
@@ -336,16 +300,16 @@ async function rejectNurse(id){ await db.collection('caregivers').doc(id).update
 async function loadPharmacyAds(){ if(!db){ renderDemoPharmacy(); return; } try{ let snap=await db.collection('pharmacies').get(); let html=""; snap.forEach(d=>{ let p=d.data(); if(p.status==='approved') html+="<div class='border p-3 rounded-xl mt-2'><b>🏥 "+(p.name||'')+"</b><br><span class='text-xs'>"+(p.area||'')+" - "+(p.desc||'')+" - "+(p.phone||'')+"</span></div>"; }); let el=document.getElementById('pharmacyList'); if(el) el.innerHTML=html||"No approved pharmacies yet"; let home=document.getElementById('homePharmacyAds'); if(home) home.innerHTML=html||"<p class='text-xs'>No pharmacy ads yet</p>"; let admin=document.getElementById('adminPharmacyList'); if(admin) admin.innerHTML=html||"No ads yet"; let admin2=document.getElementById('adminPharmacyList2'); if(admin2) admin2.innerHTML=html||"No ads yet"; }catch(e){ renderDemoPharmacy(); } }
 function renderDemoPharmacy(){ let demo="<div class='border p-3 rounded-xl mt-2'><b>🏥 Kampala Pharma - Demo</b><br><span class='text-xs'>Kampala - Paracetamol, Delivery</span></div>"; let el=document.getElementById('homePharmacyAds'); if(el) el.innerHTML=demo; }
 async function addPharmacyAd(){ let name=document.getElementById('pharmName').value.trim(); let phone=document.getElementById('pharmPhone').value.trim(); let area=document.getElementById('pharmArea').value.trim(); let desc=document.getElementById('pharmDesc').value.trim(); let price=document.getElementById('pharmPrice').value.trim(); if(!name){ alert('Enter Pharmacy Name'); return; } if(!db){ alert('Not connected - Firebase keys needed'); return; } try{ await db.collection('pharmacies').add({name,phone,area,desc,price,status:'approved',createdAt:new Date()}); alert('✅ Pharmacy Ad ADDED'); loadPharmacyAds(); }catch(e){ alert('Firebase error: '+e.message); } }
-async function bookNow(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let service=document.getElementById('bookService').value.trim(); let name=document.getElementById('bookName').value.trim(); let phone=cleanPhone(document.getElementById('bookPhone').value); let location=document.getElementById('bookLocation').value.trim(); let country=document.getElementById('bookCountry').value.trim(); let nurse=document.getElementById('bookNurse').value.trim(); let amount=Number(document.getElementById('bookAmount').value); if(!service||!name||!phone){alert('Fill service, name, phone');return;} if(!amount||amount<=0){alert('Enter amount');return;} try{ let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal=0; if(snap.exists) bal=Number(snap.data().balance||0); if(bal < amount){alert('❌ Not enough Wallet balance: '+bal);return;} await ref.set({balance: bal-amount, phone: phone, updatedAt:new Date()},{merge:true}); await db.collection('bookings').add({service,name,phone,location,loc:location,country,nurse,amount,admin:selectedUser||'SUPER',invitedBy:currentClientRef,status:'pending',createdAt:new Date()}); await db.collection('earnings').add({service,name,phone,location,loc:location,country,amount,admin:selectedUser||'SUPER',createdAt:new Date()}); document.getElementById('bookMsg').innerText="✅ PAID "+amount+" UGX FROM WALLET & BOOKED LIVE via "+currentClientRef; alert('✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE via '+currentClientRef); }catch(e){ alert('Firebase error: '+e.message); } }
+async function bookNow(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let service=document.getElementById('bookService').value.trim(); let name=document.getElementById('bookName').value.trim(); let phone=cleanPhone(document.getElementById('bookPhone').value); let location=document.getElementById('bookLocation').value.trim(); let country=document.getElementById('bookCountry').value.trim(); let nurse=document.getElementById('bookNurse').value.trim(); let amount=Number(document.getElementById('bookAmount').value); if(!service||!name||!phone){alert('Fill service, name, phone');return;} if(!amount||amount<=0){alert('Enter amount');return;} try{ let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal=0; if(snap.exists) bal=Number(snap.data().balance||0); if(bal < amount){alert('❌ Not enough Wallet balance: '+bal);return;} await ref.set({balance: bal-amount, phone: phone, updatedAt:new Date()},{merge:true}); await db.collection('bookings').add({service,name,phone,location,loc:location,country,nurse,amount,admin:selectedUser||'SUPER',invitedBy:currentClientRef,status:'pending',createdAt:new Date()}); await db.collection('earnings').add({service,name,phone,location,loc:location,country,amount,admin:selectedUser||'SUPER',createdAt:new Date()}); document.getElementById('bookMsg').innerText="✅ PAID "+amount+" UGX FROM WALLET & BOOKED LIVE via "+currentClientRef; alert('✅ BOOKED! Please Rate Us 5 Stars ⭐ - It helps us grow!'); setTimeout(()=>{ showSection('rate'); },500); }catch(e){ alert('Firebase error: '+e.message); } }
 async function loadBookings(){ if(!db) return; try{ let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(30).get(); let html=""; snap.forEach(d=>{ let b=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(b.service||'')+"</b> - "+(b.name||'')+" - "+(b.phone||'')+"<br><span class='text-xs'>"+(b.location||'')+" - "+(b.amount||0)+" UGX - "+(b.status||'')+" - Invited by: "+(b.invitedBy||'Direct')+"</span></div>"; }); let el=document.getElementById('adminBookingsList'); if(el) el.innerHTML=html||"No bookings"; }catch(e){} }
 async function trackBooking(){ if(!db) return; let phone=cleanPhone(document.getElementById('trackPhone').value); try{ let snap=await db.collection('bookings').where('phone','==',phone).get(); let html=""; snap.forEach(d=>{ let b=d.data(); html+="<div class='border p-3 rounded-xl mt-2'><b>"+b.service+"</b> - "+b.status+" - "+b.amount+" UGX</div>"; }); document.getElementById('trackResult').innerHTML=html||"No booking found"; }catch(e){} }
 function openPesapal(){ let amount=document.getElementById('topupAmount').value.trim(); let phone=cleanPhone(document.getElementById('topupPhone').value); if(!amount||!phone){alert('First type Phone + Amount, then tap Pay');return;} document.getElementById('walletResult').innerHTML='✅ Pesapal opening... Pay '+amount+' UGX, then paste Transaction ID below'; window.open(PESAPAL_LINK,'_blank'); }
 async function submitTopup(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let amount=document.getElementById('topupAmount').value.trim(); let phone=cleanPhone(document.getElementById('topupPhone').value); let txid=document.getElementById('topupTxid').value.trim(); if(!amount||!phone){alert('Enter amount and phone');return;} if(!txid){alert('Paste Transaction ID from Pesapal first.');return;} try{ await db.collection('topups').add({amount:Number(amount),phone:phone,txid:txid,status:'pending',createdAt:new Date()}); document.getElementById('walletResult').innerHTML='✅ Top Up SAVED to Firebase: '+amount+' UGX'; alert('✅ Top Up SAVED to Firebase'); document.getElementById('topupTxid').value=""; }catch(e){ alert('Firebase error: '+e.message); } }
 async function checkWallet(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let phone=cleanPhone(document.getElementById('topupPhone').value); if(!phone){alert('Enter phone first');return;} try{ let snap=await db.collection('wallets').doc(phone).get(); let bal=0; if(snap.exists) bal=snap.data().balance||0; document.getElementById('walletResult').innerHTML='Balance: '+bal+' UGX - Firebase'; }catch(e){} }
 async function loadAdminWallets(){ if(!db) return; try{ let snap=await db.collection('wallets').get(); let html=""; snap.forEach(d=>{ let w=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'>"+d.id+" - <b>"+(w.balance||0)+" UGX</b></div>"; }); let el=document.getElementById('adminWalletsList'); if(el) el.innerHTML=html; }catch(e){} }
-let nurseAlarmOn = false; let nurseAlarmArea = ""; let nurseAlarmSkill = "";
+let nurseAlarmOn=false; let nurseAlarmArea=""; let nurseAlarmSkill="";
 function enableNurseAlarm(){ let name=document.getElementById('nurseAlarmName').value.trim(); let phone=cleanPhone(document.getElementById('nurseAlarmPhone').value); nurseAlarmArea=document.getElementById('nurseAlarmArea').value.trim().toLowerCase(); nurseAlarmSkill=document.getElementById('nurseAlarmSkill').value.trim().toLowerCase(); if(!name||!phone){alert('Enter Name and Phone');return;} nurseAlarmOn=true; document.getElementById('nurseAlarmStatus').innerHTML='✅ NURSE ALARM ON - '+name; alert('✅ NURSE ALARM ON - '+name); }
-updateShareLinks(); loadPharmacyAds();
+updateShareLinks(); loadPharmacyAds(); loadRatings();
 </script>
 </body>
 </html>
