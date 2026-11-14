@@ -52,10 +52,14 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="gate"><div id="gateBox">
 <div style="font-size:48px">💚</div>
 <h2>Hom Care Hero 🌍</h2>
-<p><b>ENTER GATE PASSWORD</b><br><span class="small">Only people with password can enter.<br>Ask admin for password.</span></p>
-<input id="gatePass" type="password" placeholder="Enter Gate Password">
-<button class="btn" onclick="checkGate()">🔓 OPEN APP</button>
+<p><b>Welcome! Who Are You?</b><br><span class="small">Clients enter FREE - No password needed<br>Admins need Gate Password</span></p>
+<button class="btn" style="background:#2563eb;font-size:18px;padding:16px" onclick="enterAsClient()">💙 ENTER AS CLIENT - FREE<br><span style="font-size:12px;font-weight:normal">Book Nurse • Pay • Track • Rate</span></button>
+<hr>
+<p><b>ARE YOU ADMIN?</b><br><span class="small">SUPER / JOY / JABETH - Enter Gate Password below</span></p>
+<input id="gatePass" type="password" placeholder="Admin Gate Password">
+<button class="btn" style="background:#dc2626" onclick="checkGate()">🔓 OPEN AS ADMIN</button>
 <p id="gateMsg" class="msg"></p>
+<p class="small">Nurses: Enter as Client first, then go to Nurse page to share GPS</p>
 </div></div>
 
 <div class="header">Hom Care Hero 🌍<div class="sub">🌍 Worldwide • Any Country • Any City • All Payments Inside App Only • No Cash Outside</div></div>
@@ -277,6 +281,7 @@ let gpsList = JSON.parse(localStorage.getItem('hc_gps')||'[]');
 let bookGps = null;
 let nurseWatchId = null;
 let nurseSharing = false;
+let userType = sessionStorage.getItem('hero_user_type')||'';
 function formatGps(g){ if(!g) return 'No GPS yet'; return '<div class="item"><span class="liveDot">● LIVE</span> <b>'+(g.name||'User')+'</b> - '+(g.type||'')+'<br>Lat: '+(g.lat||'').toString().slice(0,9)+', Lng: '+(g.lng||'').toString().slice(0,9)+'<br>Time: '+(g.time||'')+'<br><a href="https://www.google.com/maps?q='+g.lat+','+g.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">📍 View On Google Maps</a> <a href="https://www.google.com/maps/dir/?api=1&destination='+g.lat+','+g.lng+'" target="_blank" style="background:#16a34a;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">🧭 Navigate To Them</a></div>'; }
 function refreshGpsList(){
   let html = gpsList.length ? gpsList.slice(-10).reverse().map(formatGps).join('') : 'No live nurse yet. Nurse must tap Share Location.';
@@ -290,7 +295,6 @@ function getMyLocation(elId){
   navigator.geolocation.getCurrentPosition(pos=>{
     let lat=pos.coords.latitude, lng=pos.coords.longitude;
     el.innerText='📍 You are at Lat: '+lat.toFixed(6)+', Lng: '+lng.toFixed(6)+' - Accuracy: '+Math.round(pos.coords.accuracy)+'m';
-    let linkEl=document.getElementById(elId==='homeGps'?'homeGpsLink':elId==='trackGpsText'?'trackGpsText':elId);
     if(elId==='homeGps'){ document.getElementById('homeGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+lat+','+lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View Me On Google Maps</a>'; }
   },err=>{ el.innerText='❌ GPS Failed: '+err.message+' - Turn ON Location in phone Settings > Location > ON, and Allow Chrome to use Location.'; });
 }
@@ -336,6 +340,10 @@ function toggleNurseGps(){
     document.getElementById('nurseGpsBtn').style.background='#16a34a';
   }
 }
+function enterAsClient(){
+  userType='client'; sessionStorage.setItem('hero_user_type','client'); sessionStorage.setItem('hero_gate','open');
+  document.getElementById('gate').style.display='none';
+}
 function getPasswords(){
   let d = JSON.parse(localStorage.getItem('hc_passwords')||'{}');
   if(!d.GATE) d.GATE='HERO2026';
@@ -348,8 +356,8 @@ function savePasswords(d){ localStorage.setItem('hc_passwords',JSON.stringify(d)
 function checkGate(){
   let p=document.getElementById('gatePass').value.trim();
   let pw=getPasswords();
-  if(p===pw.GATE){ document.getElementById('gate').style.display='none'; sessionStorage.setItem('hero_gate','open'); }
-  else { document.getElementById('gateMsg').innerText='❌ Wrong Gate Password. Try again.'; document.getElementById('gatePass').value=''; }
+  if(p===pw.GATE){ userType='admin'; sessionStorage.setItem('hero_user_type','admin'); sessionStorage.setItem('hero_gate','open'); document.getElementById('gate').style.display='none'; }
+  else { document.getElementById('gateMsg').innerText='❌ Wrong Admin Gate Password. Clients tap BLUE button above - No password needed.'; document.getElementById('gatePass').value=''; }
 }
 if(sessionStorage.getItem('hero_gate')==='open'){ document.getElementById('gate').style.display='none'; }
 document.getElementById('gatePass').addEventListener('keydown',function(e){ if(e.key==='Enter') checkGate(); });
@@ -357,7 +365,7 @@ function changeGatePass(){
   let np=document.getElementById('newGatePass').value.trim();
   if(np.length<4){ document.getElementById('gateChangeMsg').innerText='❌ New Gate Password must be at least 4 letters'; return; }
   let pw=getPasswords(); pw.GATE=np; savePasswords(pw);
-  document.getElementById('gateChangeMsg').innerText='✅ GATE Password Changed! Tell everyone new Gate Password privately.';
+  document.getElementById('gateChangeMsg').innerText='✅ GATE Password Changed! Tell other admins privately.';
   document.getElementById('newGatePass').value='';
 }
 function changeMyPass(role){
@@ -438,7 +446,18 @@ function updateBal(){
   }
   if(currentAdmin) updateAdmin();
 }
-function show(id){['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');}); document.getElementById(id).classList.remove('hidden'); if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');} if(id==='admin' && currentAdmin) updateAdmin(); if(id==='track') refreshGpsList(); updateBal();}
+function show(id){
+  if(id==='admin' && sessionStorage.getItem('hero_user_type')!=='admin' && !currentAdmin){
+    alert('⚠️ Admins only! You entered as Client. Close app and reopen, then enter Admin Gate Password to see Admin.');
+    return;
+  }
+  ['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
+  document.getElementById(id).classList.remove('hidden');
+  if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');}
+  if(id==='admin' && currentAdmin) updateAdmin();
+  if(id==='track') refreshGpsList();
+  updateBal();
+}
 function bookService(s){ document.getElementById('bookService').value=s; show('book'); }
 function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.gps ? '📍 Your GPS: <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View On Map</a>' : 'No GPS saved')+'</div>').join('') : 'No booking found for '+ph; refreshGpsList(); }
 function joinNurse(){ let n=document.getElementById('nurseName').value; if(!n){document.getElementById('nurseMsg').innerText='Enter name';return;} let data={name:n,phone:document.getElementById('nursePhone').value,exp:document.getElementById('nurseExp').value,status:'Waiting for JOY Approval',date:new Date().toLocaleString(),createdAt:new Date()}; nursesList.push(data); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add(data); document.getElementById('nurseMsg').innerText='✅ Application saved! JOY will approve you.'; }
