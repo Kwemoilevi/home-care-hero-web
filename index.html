@@ -143,60 +143,60 @@
 
 <div id="adminApp" class="hidden p-3">
 <div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Hom Care Hero - Staff 🔐</h1><button onclick="closeAdmin()" class="bg-gray-200 px-3 py-1 rounded-full">Close - LOCK GATE 🔐</button></div>
-<div id="gateBox" class="bg-white p-4 rounded-xl mt-3 text-center card-shadow" style="border:2px solid #111827">
-<p class="font-bold text-lg">🔐 GATE LOCKED</p>
-<p class="text-xs text-gray-600">Staff Only - Enter Password To Unlock</p>
+
+<!-- STEP 1 - GATE PASSWORD FIRST - BEFORE 3 ADMINS -->
+<div id="gateStep1" class="bg-white p-4 rounded-xl mt-3 text-center card-shadow" style="border:2px solid #111827">
+<p class="font-bold text-lg">🔐 STEP 1 - GATE LOCKED</p>
+<p class="text-xs text-gray-600">Enter Gate Password First - Before You See Admins</p>
+<input id="gatePassword" type="password" placeholder="🔐 Enter Gate Password First" class="w-full p-3 border rounded-xl mt-3 text-center">
+<button onclick="unlockGateStep1()" class="w-full p-3 bg-slate-900 text-white rounded-xl mt-2 font-bold">🔓 Unlock Gate - Next</button>
+<p id="gateStep1Error" class="text-red-600 font-bold text-sm mt-2"></p>
+</div>
+
+<!-- STEP 2 - 3 ADMINS - ONLY AFTER GATE IS UNLOCKED -->
+<div id="gateStep2" class="hidden bg-white p-4 rounded-xl mt-3 text-center card-shadow" style="border:2px solid #059669">
+<p class="font-bold text-lg">✅ Gate Unlocked - STEP 2</p>
+<p class="text-xs text-gray-600">Now Choose Your Admin - Then Enter Your Admin Password</p>
 <div id="whoBox" class="bg-yellow-100 p-3 rounded-xl mt-3 border text-center"><p class="font-bold">Who Are You?</p></div>
 <div class="flex gap-2 justify-center mt-3 flex-wrap">
 <button onclick="pickUser('CHELANGAT JOY','JOY2026')" class="bg-pink-500 text-white px-4 py-2 rounded-full">CHELANGAT JOY</button>
 <button onclick="pickUser('KIMTAI JABETH','JABETH2026')" class="bg-yellow-500 text-white px-4 py-2 rounded-full">KIMTAI JABETH</button>
 <button onclick="pickUser('SUPER ADMIN','2215')" class="bg-slate-900 text-white px-4 py-2 rounded-full">SUPER ADMIN</button>
 </div>
-<input id="myPassword" type="password" placeholder="🔐 Enter your password" class="w-full p-3 border rounded-xl mt-3 text-center">
-<button onclick="enterGate()" class="w-full p-3 bg-green-600 text-white rounded-xl mt-2 font-bold">🔓 Unlock Gate</button>
+<input id="myPassword" type="password" placeholder="🔐 Enter Your Admin Password" class="w-full p-3 border rounded-xl mt-3 text-center">
+<button onclick="enterGate()" class="w-full p-3 bg-green-600 text-white rounded-xl mt-2 font-bold">🔓 Enter Dashboard</button>
 <p id="gateError" class="text-red-600 font-bold text-sm mt-2"></p>
-<p class="text-[11px] text-gray-400 mt-2">GATE = HERO20ADMI 🔐 • SUPER = 2215 • CHELANGAT JOY = JOY2026 • JABETH = JABETH2026</p>
+<button onclick="backToGateStep1()" class="text-xs text-gray-500 mt-2 underline">← Back To Gate Password</button>
 </div>
+
 <div id="adminDashboard" class="hidden">
 <div class="bg-white p-3 rounded-xl mt-3 border"><p class="text-[11px]">Staff Dashboard - <span id="adminRoleShow"></span> • Gate Unlocked 🔓</p></div>
-
-<!-- JOY + SUPER - NURSE FORM ONLY -->
 <div id="shareNurseBox" class="hidden bg-pink-50 p-4 rounded-xl mt-3 border" style="border:2px solid #DB2777">
-<h3 class="font-bold">📣 MY Nurse Join Link - Share To Nurses Only - PRIVATE</h3>
-<p class="text-xs mt-1">Only YOU can see this. Share to nurses on WhatsApp.</p>
+<h3 class="font-bold">📣 Nurse Link - Share To Nurses Only</h3>
+<p class="text-xs mt-1">Only you can see this. Share to nurses on WhatsApp.</p>
 <div id="joyShareDiv" class="hidden bg-white p-3 rounded-xl mt-2">
-<p class="font-bold text-sm">👩 CHELANGAT JOY - MY Nurse Form</p>
-<p class="text-xs">Hello! I am CHELANGAT JOY from Hom Care Hero 🌍 Join as Nurse - Fill this form:</p>
+<p class="font-bold text-sm">Nurse Link</p>
 <p id="linkJoy" class="text-[11px] break-all bg-gray-100 p-2 rounded-xl mt-1"></p>
-<button onclick="copyNurseLink('CHELANGAT JOY')" class="w-full p-2 bg-pink-600 text-white rounded-xl mt-2 font-bold text-sm">Copy MY Nurse Form - CHELANGAT JOY</button>
-<button onclick="shareNurseLink('CHELANGAT JOY')" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share MY Form on WhatsApp - To Nurses</button>
+<button onclick="copyNurseLink('CHELANGAT JOY')" class="w-full p-2 bg-pink-600 text-white rounded-xl mt-2 font-bold text-sm">Copy Nurse Link</button>
+<button onclick="shareNurseLink('CHELANGAT JOY')" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share Nurse Link</button>
 </div>
 <div id="superShareDiv" class="hidden bg-white p-3 rounded-xl mt-2">
-<p class="font-bold text-sm">👑 SUPER ADMIN - MY Nurse Form</p>
-<p class="text-xs">Hello! I am SUPER ADMIN from Hom Care Hero 🌍 Join as Nurse - Fill this form:</p>
+<p class="font-bold text-sm">Nurse Link</p>
 <p id="linkSuper" class="text-[11px] break-all bg-gray-100 p-2 rounded-xl mt-1"></p>
-<button onclick="copyNurseLink('SUPER ADMIN')" class="w-full p-2 bg-slate-900 text-white rounded-xl mt-2 font-bold text-sm">Copy MY Nurse Form - SUPER ADMIN</button>
-<button onclick="shareNurseLink('SUPER ADMIN')" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share MY Form on WhatsApp - To Nurses</button>
+<button onclick="copyNurseLink('SUPER ADMIN')" class="w-full p-2 bg-slate-900 text-white rounded-xl mt-2 font-bold text-sm">Copy Nurse Link</button>
+<button onclick="shareNurseLink('SUPER ADMIN')" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share Nurse Link</button>
 </div>
 </div>
-
-<!-- JABETH - CLIENT FORM ONLY -->
 <div id="shareClientBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border" style="border:2px solid #F59E0B">
-<h3 class="font-bold">👥 MY Client Link - Share To Clients Only - PRIVATE</h3>
-<p class="text-xs mt-1">JABETH - Share this to CLIENTS who want to BOOK a nurse. Not for nurses.</p>
+<h3 class="font-bold">👥 Client Link - Share To Clients Only</h3>
+<p class="text-xs mt-1">Share this to clients who want to book a nurse.</p>
 <div class="bg-white p-3 rounded-xl mt-2">
-<p class="font-bold text-sm">👩 KIMTAI JABETH - MY Client Booking Form</p>
-<p class="text-xs">Hello! I am KIMTAI JABETH from Hom Care Hero 🌍 Book a Trusted Nurse Anywhere - Fill this form:</p>
+<p class="font-bold text-sm">Client Link</p>
 <p id="linkJabethClient" class="text-[11px] break-all bg-gray-100 p-2 rounded-xl mt-1"></p>
-<textarea id="formJabethClient" class="w-full p-2 border rounded-xl mt-2 text-xs" rows="4">Hello! I am KIMTAI JABETH from Hom Care Hero 🌍
-Book a Trusted Nurse Anywhere - Elderly, Wound Care, Broken Bones, Physio
-Fill this form to book: </textarea>
-<button onclick="copyClientLink()" class="w-full p-2 bg-yellow-500 text-black rounded-xl mt-2 font-bold text-sm">Copy MY Client Form - JABETH</button>
-<button onclick="shareClientLink()" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share MY Form on WhatsApp - To Clients</button>
+<button onclick="copyClientLink()" class="w-full p-2 bg-yellow-500 text-black rounded-xl mt-2 font-bold text-sm">Copy Client Link</button>
+<button onclick="shareClientLink()" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share Client Link</button>
 </div>
-<p class="text-[11px] text-red-600 font-bold mt-2">⚠️ PRIVATE - Only for clients you invite to book.</p>
 </div>
-
 <div class="bg-orange-50 p-4 rounded-xl mt-3 border" style="border:2px solid #F97316">
 <h3 class="font-bold">💊 ADD Pharmacy Advertisement - Staff</h3>
 <input id="pharmName" placeholder="Pharmacy Name e.g. Kampala Pharma" class="w-full p-3 border rounded-xl mt-2">
@@ -227,7 +227,6 @@ Fill this form to book: </textarea>
 <audio id="bookingAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 <audio id="nurseAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 <script>
-// ===== FIREBASE - DO NOT DELETE =====
 const firebaseConfig = {
 apiKey: "PUT_YOUR_API_KEY_HERE",
 authDomain: "home-care-hero.firebaseapp.com",
@@ -240,21 +239,58 @@ measurementId: "PUT_YOUR_MEASUREMENT_ID_HERE"
 };
 let db = null;
 try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){}
-// ===== PESAPAL - DO NOT DELETE =====
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 const APP_LINK = "https://home-care-hero-web.vercel.app";
-// ===== GATE LOCKED - MASTER PASSWORD =====
 const GATE_PASSWORD = "HERO20ADMI";
 let selectedUser = null; let selectedPassword = null;
 let currentRef = "SUPER ADMIN"; let currentClientRef = "Hom Care Hero";
+let gateUnlocked = false;
 function cleanPhone(raw){ return String(raw||'').trim().replace(/\s/g,''); }
 function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>{ let el=document.getElementById(x+'Section'); if(el) el.classList.add('hidden'); }); let t=document.getElementById(s+'Section'); if(t) t.classList.remove('hidden'); if(s==='nurse'){ let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+currentRef; } if(s==='book'){ let el=document.getElementById('bookRefShow'); if(el) el.innerText='Booking via: '+currentClientRef; } }
 function goBook(service){ document.getElementById('bookService').value=service; showSection('book'); }
-function lockGate(){ document.getElementById('gateBox').classList.remove('hidden'); document.getElementById('adminDashboard').classList.add('hidden'); document.getElementById('myPassword').value = ""; document.getElementById('gateError').innerText = "🔐 Gate Locked - Enter Password"; selectedUser = null; selectedPassword = null; document.getElementById('whoBox').innerHTML = "<p class='font-bold'>Who Are You?</p>"; let sb=document.getElementById('shareNurseBox'); if(sb) sb.classList.add('hidden'); let cb=document.getElementById('shareClientBox'); if(cb) cb.classList.add('hidden'); }
+function lockGate(){
+  gateUnlocked = false;
+  document.getElementById('gateStep1').classList.remove('hidden');
+  document.getElementById('gateStep2').classList.add('hidden');
+  document.getElementById('adminDashboard').classList.add('hidden');
+  document.getElementById('gatePassword').value = "";
+  document.getElementById('myPassword').value = "";
+  document.getElementById('gateStep1Error').innerText = "🔐 Gate Locked - Enter Gate Password First";
+  document.getElementById('gateError').innerText = "";
+  selectedUser = null; selectedPassword = null;
+  document.getElementById('whoBox').innerHTML = "<p class='font-bold'>Who Are You?</p>";
+  let sb=document.getElementById('shareNurseBox'); if(sb) sb.classList.add('hidden');
+  let cb=document.getElementById('shareClientBox'); if(cb) cb.classList.add('hidden');
+}
 function openAdmin(){ document.getElementById('mainApp').classList.add('hidden'); document.getElementById('adminApp').classList.remove('hidden'); lockGate(); updateShareLinks(); }
 function closeAdmin(){ lockGate(); document.getElementById('adminApp').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); }
-function enterGate(){ let p=document.getElementById('myPassword').value.trim(); if(!selectedUser){ document.getElementById('gateError').innerText="🔐 Please choose your name first - Gate Locked"; return; } if(!p){ document.getElementById('gateError').innerText="🔐 Please type your password - EMPTY NOT ALLOWED - Gate Locked"; return; } if(p === selectedPassword || p === GATE_PASSWORD){ document.getElementById('gateBox').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); document.getElementById('gateError').innerText=""; applyRole(); } else { document.getElementById('gateError').innerText="🔐 Wrong password - Gate Still Locked - Try again"; } }
-function pickUser(name,password){ selectedUser=name; selectedPassword=password; document.getElementById('whoBox').innerHTML="<b>Selected: "+name+"</b><br><span class='text-xs'>Now type your password below</span>"; document.getElementById('gateError').innerText="🔐 Gate Locked - Type password"; }
+function backToGateStep1(){ gateUnlocked = false; document.getElementById('gateStep1').classList.remove('hidden'); document.getElementById('gateStep2').classList.add('hidden'); document.getElementById('gatePassword').value=""; document.getElementById('myPassword').value=""; document.getElementById('gateStep1Error').innerText="🔐 Gate Locked - Enter Gate Password First"; }
+function unlockGateStep1(){
+  let p=document.getElementById('gatePassword').value.trim();
+  if(!p){ document.getElementById('gateStep1Error').innerText="🔐 Please type Gate Password First - EMPTY NOT ALLOWED"; return; }
+  if(p === GATE_PASSWORD){
+    gateUnlocked = true;
+    document.getElementById('gateStep1').classList.add('hidden');
+    document.getElementById('gateStep2').classList.remove('hidden');
+    document.getElementById('gateStep1Error').innerText="";
+    document.getElementById('gateError').innerText="✅ Gate Unlocked - Now Choose Your Admin";
+  } else {
+    document.getElementById('gateStep1Error').innerText="🔐 Wrong Gate Password - Gate Still Locked";
+  }
+}
+function enterGate(){
+  if(!gateUnlocked){ document.getElementById('gateError').innerText="🔐 Enter Gate Password First - Go Back"; return; }
+  let p=document.getElementById('myPassword').value.trim();
+  if(!selectedUser){ document.getElementById('gateError').innerText="Please choose your name first"; return; }
+  if(!p){ document.getElementById('gateError').innerText="🔐 Please type your Admin Password - EMPTY NOT ALLOWED"; return; }
+  if(p === selectedPassword || p === GATE_PASSWORD){
+    document.getElementById('gateStep2').classList.add('hidden');
+    document.getElementById('adminDashboard').classList.remove('hidden');
+    document.getElementById('gateError').innerText="";
+    applyRole();
+  } else { document.getElementById('gateError').innerText="🔐 Wrong Admin Password - Try again"; }
+}
+function pickUser(name,password){ selectedUser=name; selectedPassword=password; document.getElementById('whoBox').innerHTML="<b>Selected: "+name+"</b><br><span class='text-xs'>Now type your Admin Password below</span>"; document.getElementById('gateError').innerText=""; }
 function getRole(){ if(!selectedUser) return 'SUPER'; if(selectedUser.includes('JOY')) return 'JOY'; if(selectedUser.includes('JABETH')) return 'JABETH'; return 'SUPER'; }
 function applyRole(){
   let role=getRole();
@@ -280,15 +316,14 @@ function updateShareLinks(){
   let lj=document.getElementById('linkJoy'); if(lj) lj.innerText=getNurseLink('CHELANGAT JOY');
   let ls=document.getElementById('linkSuper'); if(ls) ls.innerText=getNurseLink('SUPER ADMIN');
   let lc=document.getElementById('linkJabethClient'); if(lc) lc.innerText=getClientLink('KIMTAI JABETH');
-  let fc=document.getElementById('formJabethClient'); if(fc) fc.value="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse Anywhere - Elderly, Wound Care, Broken Bones, Physio\nFill this form to book: "+getClientLink('KIMTAI JABETH');
   let urlParams=new URLSearchParams(window.location.search);
   let r=urlParams.get('ref'); let mode=urlParams.get('join'); let book=urlParams.get('book');
   if(r && mode==='nurse'){ currentRef=r; let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+r; }
   if(r && book==='client'){ currentClientRef=r; let el=document.getElementById('bookRefShow'); if(el) el.innerText='Booking via: '+r; }
 }
-function copyNurseLink(who){ let link = who==='CHELANGAT JOY' ? getNurseLink('CHELANGAT JOY') : getNurseLink('SUPER ADMIN'); let text = "Hello! I am "+who+" from Hom Care Hero 🌍\nJoin as a Trusted Nurse - For Nurses Only:\n"+link; navigator.clipboard.writeText(text); alert('Copied MY Nurse Form - '+who); }
+function copyNurseLink(who){ let link = who==='CHELANGAT JOY' ? getNurseLink('CHELANGAT JOY') : getNurseLink('SUPER ADMIN'); let text = "Hello! I am "+who+" from Hom Care Hero 🌍\nJoin as a Trusted Nurse - For Nurses Only:\n"+link; navigator.clipboard.writeText(text); alert('Copied Nurse Link'); }
 function shareNurseLink(who){ let link = who==='CHELANGAT JOY' ? getNurseLink('CHELANGAT JOY') : getNurseLink('SUPER ADMIN'); let text = "Hello! I am "+who+" from Hom Care Hero 🌍\nJoin as a Trusted Nurse - For Nurses Only:\n"+link; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
-function copyClientLink(){ let link=getClientLink('KIMTAI JABETH'); let text="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse Anywhere - For Clients - Fill this form to book:\n"+link; navigator.clipboard.writeText(text); alert('Copied MY Client Form - JABETH\nShare to clients only'); }
+function copyClientLink(){ let link=getClientLink('KIMTAI JABETH'); let text="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse Anywhere - For Clients:\n"+link; navigator.clipboard.writeText(text); alert('Copied Client Link'); }
 function shareClientLink(){ let link=getClientLink('KIMTAI JABETH'); let text="Hello! I am KIMTAI JABETH from Hom Care Hero 🌍\nBook a Trusted Nurse Anywhere - Elderly, Wound Care, Broken Bones, Physio\nFill this form to book:\n"+link; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
 async function loadMyShare(){ if(!db) return; try{ let snap=await db.collection('earnings').get(); let joy=0; let jab=0; let sup=0; snap.forEach(d=>{ let e=d.data(); let amt=Number(e.amount||0); if(e.admin==='JOY') joy+=amt*0.1; if(e.admin==='JABETH') jab+=amt*0.1; sup+=amt*0.8; }); let el=document.getElementById('joyTotal'); if(el) el.innerText=joy; let el2=document.getElementById('jabethTotal'); if(el2) el2.innerText=jab; let el3=document.getElementById('superTotal'); if(el3) el3.innerText=sup; }catch(e){} loadAdminData(); }
 async function loadAdminData(){ loadNursesAdmin(); loadBookings(); loadAdminWallets(); loadPharmacyAds(); }
