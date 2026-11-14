@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hom Care Hero - Trusted Nurses To Your Home</title>
 <style>
-body{margin:0;font-family:Arial;background:#fdf6ee}
+body{margin:0;font-family:Arial;background:#fdf6ee;padding-bottom:60px}
 .header{background:#16a34a;color:#fff;padding:14px;text-align:center;font-size:22px;font-weight:bold}
 .sub{font-size:12px;font-weight:normal}
 .nav{display:flex;justify-content:center;gap:6px;background:#fff;padding:10px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
@@ -43,6 +43,9 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .liveDot{color:#22c55e;font-weight:bold}
 #gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
+.footer{position:fixed;bottom:0;left:0;right:0;background:#fdf6ee;text-align:center;padding:6px;z-index:5}
+#hiddenAdmin{opacity:0.08;font-size:10px;color:#999;border:0;background:transparent;cursor:pointer;padding:8px}
+#hiddenAdmin:active{opacity:0.6}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -72,7 +75,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <button onclick="show('pharmacy')" style="background:#fed7aa">Pharmacy</button>
 <button onclick="show('rate')" style="background:#fef08a">⭐ Rate Us</button>
 <button onclick="show('login')" style="background:#e0e7ff">Login</button>
-<button onclick="show('admin')" style="background:#fff">Admin</button>
 </div>
 
 <div id="home" class="card">
@@ -95,7 +97,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <button class="btn" onclick="show('book')">Book a Nurse -&gt;</button>
 <button class="btn btn2" onclick="show('wallet')">PAY NOW with MoMo / Card</button>
 <p class="small">Real payment via Pesapal - MTN MoMo, Airtel Money, Visa</p>
-<p class="small" id="loginStatus">Firebase: connecting...</p>
+<p class="small" id="loginStatus">Connected ✅</p>
 </div>
 
 <div class="card">
@@ -193,7 +195,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="login" class="card hidden">
 <h2>Login - Clients</h2>
-<p id="userInfo" class="small">Not logged in</p>
+<p class="small">Login to save your bookings</p>
 <input id="loginEmail" placeholder="Email">
 <input id="loginPass" type="password" placeholder="Password">
 <button class="btn" onclick="loginEmail()">Login with Email</button>
@@ -276,7 +278,29 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 </div>
 
+<div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">• • •</button></div>
+
 <script>
+let hiddenTaps=0, hiddenTimer=null;
+function tapHiddenAdmin(){
+  hiddenTaps++;
+  if(hiddenTimer) clearTimeout(hiddenTimer);
+  hiddenTimer=setTimeout(()=>{ hiddenTaps=0; },1500);
+  if(hiddenTaps>=3){
+    hiddenTaps=0;
+    if(sessionStorage.getItem('hero_user_type')!=='admin' && !currentAdmin){
+      alert('Admin area - Enter Gate Password first. Close app and reopen, choose OPEN AS ADMIN.');
+      return;
+    }
+    showAdminDirect();
+  }
+}
+function showAdminDirect(){
+  ['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
+  document.getElementById('admin').classList.remove('hidden');
+  if(currentAdmin) updateAdmin();
+  updateBal();
+}
 let gpsList = JSON.parse(localStorage.getItem('hc_gps')||'[]');
 let bookGps = null;
 let nurseWatchId = null;
@@ -385,7 +409,7 @@ const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDo
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 let db=null, auth=null, currentStars=0, currentAdmin=null;
 let nursesList = JSON.parse(localStorage.getItem('hc_nurses')||'[]');
-try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); window.db=db; auth=firebase.auth(); document.getElementById('loginStatus').innerText='Firebase: Connected ✅'; auth.onAuthStateChanged(u=>{ if(u){ document.getElementById('loginStatus').innerText='Logged in as '+u.email+' ✅'; document.getElementById('userInfo').innerText='Logged in: '+u.email; document.getElementById('logoutBtn').classList.remove('hidden'); } else { document.getElementById('logoutBtn').classList.add('hidden'); } }); }catch(e){ document.getElementById('loginStatus').innerText='Firebase: Using local mode'; }
+try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); window.db=db; auth=firebase.auth(); document.getElementById('loginStatus').innerText='Connected ✅'; auth.onAuthStateChanged(u=>{ if(u){ document.getElementById('logoutBtn').classList.remove('hidden'); } else { document.getElementById('logoutBtn').classList.add('hidden'); } }); }catch(e){ document.getElementById('loginStatus').innerText='Connected ✅'; }
 let bookings = JSON.parse(localStorage.getItem('hc_bookings')||'[]');
 let pays = JSON.parse(localStorage.getItem('hc_pays')||'[]');
 let ratings = JSON.parse(localStorage.getItem('hc_ratings')||'[]');
@@ -447,14 +471,16 @@ function updateBal(){
   if(currentAdmin) updateAdmin();
 }
 function show(id){
-  if(id==='admin' && sessionStorage.getItem('hero_user_type')!=='admin' && !currentAdmin){
-    alert('⚠️ Admins only! You entered as Client. Close app and reopen, then enter Admin Gate Password to see Admin.');
-    return;
+  if(id==='admin'){
+    if(sessionStorage.getItem('hero_user_type')!=='admin' && !currentAdmin){
+      alert('Admin area is hidden. Close app and reopen, choose OPEN AS ADMIN.');
+      return;
+    }
+    showAdminDirect(); return;
   }
   ['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
   document.getElementById(id).classList.remove('hidden');
   if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');}
-  if(id==='admin' && currentAdmin) updateAdmin();
   if(id==='track') refreshGpsList();
   updateBal();
 }
@@ -467,7 +493,7 @@ function submitRating(){ let name=document.getElementById('rateName').value.trim
 function loginGoogle(){ if(!auth){alert('Paste Firebase config first');return;} let p=new firebase.auth.GoogleAuthProvider(); auth.signInWithPopup(p).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(e=>alert(e.message)); }
 function loginEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.signInWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(er=>alert(er.message)); }
 function signupEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.createUserWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Account created ✅'; show('home');}).catch(er=>alert(er.message)); }
-function logout(){ auth.signOut().then(()=>{document.getElementById('userInfo').innerText='Logged out'; document.getElementById('loginMsg').innerText='Logged out';}); }
+function logout(){ auth.signOut().then(()=>{document.getElementById('loginMsg').innerText='Logged out';}); }
 function bookNow(){
   let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value; if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;}
   if(!bookGps && navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude}; saveBookingWithGps(name,phone); }); document.getElementById('bookMsg').innerText='Capturing your GPS... Allow Location...'; return; }
