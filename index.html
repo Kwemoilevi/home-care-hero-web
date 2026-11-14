@@ -149,7 +149,7 @@
 <div class="flex gap-2 justify-center mt-3 flex-wrap">
 <button onclick="pickUser('JOY','JOY2026')" class="bg-pink-500 text-white px-4 py-2 rounded-full">JOY</button>
 <button onclick="pickUser('KIMTAI JABETH','JABETH2026')" class="bg-yellow-500 text-white px-4 py-2 rounded-full">KIMTAI JABETH</button>
-<button onclick="pickUser('SUPER ADMIN','HEROADMIN')" class="bg-slate-900 text-white px-4 py-2 rounded-full">SUPER ADMIN</button>
+<button onclick="pickUser('SUPER ADMIN','2215')" class="bg-slate-900 text-white px-4 py-2 rounded-full">SUPER ADMIN</button>
 </div>
 <input id="myPassword" type="password" placeholder="Enter your password" class="w-full p-3 border rounded-xl mt-3 text-center">
 <button onclick="enterGate()" class="w-full p-3 bg-green-600 text-white rounded-xl mt-2 font-bold">Enter</button>
@@ -205,11 +205,22 @@ function cleanPhone(raw){ return String(raw||'').trim().replace(/\s/g,''); }
 function togglePass(id,btn){ let el=document.getElementById(id); if(el.type==="password"){el.type="text";}else{el.type="password";} }
 function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>{ let el=document.getElementById(x+'Section'); if(el) el.classList.add('hidden'); }); let t=document.getElementById(s+'Section'); if(t) t.classList.remove('hidden'); }
 function goBook(service){ document.getElementById('bookService').value=service; showSection('book'); }
-function openAdmin(){ document.getElementById('mainApp').classList.add('hidden'); document.getElementById('adminApp').classList.remove('hidden'); }
+function openAdmin(){
+  document.getElementById('mainApp').classList.add('hidden');
+  document.getElementById('adminApp').classList.remove('hidden');
+  document.getElementById('gateBox').classList.remove('hidden');
+  document.getElementById('adminDashboard').classList.add('hidden');
+  document.getElementById('myPassword').value = "";
+  document.getElementById('gateError').innerText = "";
+  selectedUser = null;
+  selectedPassword = null;
+  document.getElementById('whoBox').innerHTML = "<p class='font-bold'>Who Are You?</p>";
+}
 function closeAdmin(){ document.getElementById('adminApp').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); }
 function enterGate(){
   let p=document.getElementById('myPassword').value.trim();
   if(!selectedUser){ document.getElementById('gateError').innerText="Please choose your name first"; return; }
+  if(!p){ document.getElementById('gateError').innerText="Please type your password"; return; }
   if(p === selectedPassword || p === GATE_PASSWORD){
     document.getElementById('gateBox').classList.add('hidden');
     document.getElementById('adminDashboard').classList.remove('hidden');
