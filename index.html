@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Hom Care Hero - Trusted Nurses To Your Home</title>
 <style>
-body{margin:0;font-family:Arial;background:#fdf6ee;padding-bottom:60px}
+body{margin:0;font-family:Arial;background:#fdf6ee;padding-bottom:80px}
 .header{background:#16a34a;color:#fff;padding:14px;text-align:center;font-size:22px;font-weight:bold}
 .sub{font-size:12px;font-weight:normal}
 .nav{display:flex;justify-content:center;gap:6px;background:#fff;padding:10px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
@@ -50,8 +50,9 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .shareLinkBox{background:#f0fdf4;border:2px solid #16a34a;padding:14px;border-radius:12px;margin:12px 0;text-align:center}
 #gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
-.footer{position:fixed;bottom:0;left:0;right:0;background:#fdf6ee;text-align:center;padding:6px;z-index:5}
-#hiddenAdmin{opacity:0.08;font-size:10px;color:#999;border:0;background:transparent;cursor:pointer;padding:8px}
+.footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;text-align:center;padding:8px;z-index:5}
+#hiddenAdmin{opacity:0.35;font-size:12px;color:#666;border:1px solid #ddd;background:#f9f9f9;border-radius:20px;cursor:pointer;padding:8px 16px}
+.howToAdmin{background:#fff3cd;border:2px solid #f59e0b;padding:12px;border-radius:12px;margin:12px 0;text-align:center}
 label{font-weight:bold;font-size:14px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -165,7 +166,7 @@ label{font-weight:bold;font-size:14px}
 
 <div id="nurse" class="card hidden">
 <h2>👩‍⚕️ For Nurses - Qualification Form</h2>
-<p class="small">Fill ALL fields honestly. JOY will check your qualifications before approving you. Fake qualifications = Rejected.</p>
+<p class="small">Fill ALL fields honestly. JOY will check your qualifications before approving you.</p>
 <div id="nurseAlarm"></div>
 <button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM - Tap To Hear How It Sounds</button>
 <hr>
@@ -187,18 +188,18 @@ label{font-weight:bold;font-size:14px}
 </select>
 <label>5. Nursing Council License / Registration Number *</label><input id="nurseLicense" placeholder="e.g. UNMC 12345 - Must be real">
 <label>6. Years of Experience *</label><select id="nurseExp"><option value="">-- Select --</option><option>Less than 1 year</option><option>1-2 years</option><option>3-5 years</option><option>5-10 years</option><option>10+ years</option></select>
-<label>7. Specialization / Skills (Tick all you can do)</label>
+<label>7. Specialization / Skills</label>
 <select id="nurseSpec"><option>General Nursing</option><option>Elderly Care</option><option>Midwifery / Mother & Baby</option><option>Wound Care / Dressing</option><option>Broken Bones / Fracture Care</option><option>Physiotherapy / Help to Walk</option><option>Post-Surgery Care</option><option>Diabetes / Hypertension Care</option><option>Home Nursing - All</option></select>
 <label>8. Where Did You Study? School / University</label><input id="nurseSchool" placeholder="e.g. Mulago School of Nursing">
 <label>9. Year You Finished Study</label><input id="nurseYear" placeholder="e.g. 2020">
 <label>10. Your Location / District *</label><input id="nurseLocation" placeholder="e.g. Ntinda, Kampala">
-<label>11. Do You Have Transport? Can You Travel To Patients?</label><select id="nurseTransport"><option>Yes - I have boda / transport</option><option>Yes - I can use taxi / boda</option><option>No - Patient must be near me</option></select>
-<label>12. Tell Us About Yourself - Why Should We Approve You?</label><textarea id="nurseAbout" placeholder="e.g. I am kind, experienced, I have cared for elderly for 5 years..."></textarea>
+<label>11. Do You Have Transport?</label><select id="nurseTransport"><option>Yes - I have boda / transport</option><option>Yes - I can use taxi / boda</option><option>No - Patient must be near me</option></select>
+<label>12. Tell Us About Yourself</label><textarea id="nurseAbout" placeholder="e.g. I am kind, experienced..."></textarea>
 <button class="btn" onclick="joinNurse()">✅ Submit Qualification Form - Send To JOY</button>
 <p id="nurseMsg" class="msg"></p>
 <div class="shareLinkBox">
 <h3>📤 Share This Nurse Form</h3>
-<p class="small">Send this app link to other nurses - They will fill same form</p>
+<p class="small">Send this app link to other nurses</p>
 <input id="shareLinkInput" readonly value="">
 <button class="btn btnBlue" onclick="copyShareLink()">📋 Copy Nurse Form Link</button>
 <button class="btn btnGreen" onclick="shareViaWhatsApp()">💬 Share Via WhatsApp</button>
@@ -206,8 +207,7 @@ label{font-weight:bold;font-size:14px}
 </div>
 <hr>
 <div class="gpsBox" style="border-color:#16a34a;background:#f0fdf4">
-<h3>📍 NURSE LIVE GPS - Share Your Location</h3>
-<p class="small">When you are going to patient, tap START. Admins + Client will see you moving live. Tap STOP when you arrive.</p>
+<h3>📍 NURSE LIVE GPS</h3>
 <p id="nurseGpsStatus">Status: <b>Not Sharing</b></p>
 <p id="nurseGpsText">Your location will show here</p>
 <button class="btn" id="nurseGpsBtn" onclick="toggleNurseGps()">📍 START Sharing My Live Location</button>
@@ -247,9 +247,11 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" onclick="loginGoogle()">Login with Google</button>
 <button class="btn btnRed hidden" id="logoutBtn" onclick="logout()">Logout</button>
 <p id="loginMsg" class="msg"></p>
+<div class="howToAdmin"><b>Are you Staff / Admin?</b><br><span class="small">Close app, reopen, choose OPEN AS ADMIN, then tap Admin button at very bottom</span><br><button class="btn" style="background:#333" onclick="tapHiddenAdmin()">🔐 Go To Admin Login</button></div>
 </div>
 
 <div id="admin" class="card hidden">
+<div class="howToAdmin"><b>✅ You found Admin Dashboard!</b><br><span class="small">This page is hidden from clients. Only SUPER / JOY / JABETH with password can see it.</span></div>
 <h2>Admin Login</h2>
 <p class="small">Choose your name, enter phone + password</p>
 <div id="adminLoginBox">
@@ -272,7 +274,7 @@ label{font-weight:bold;font-size:14px}
 <button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
 <div class="shareLinkBox">
 <h3>📤 SHARE LINK - For JOY & SUPER</h3>
-<p class="small">Share Nurse Qualification Form + App Link to JOY, to Nurses, to anyone.<br><b>JOY Link:</b> Send to JOY on WhatsApp - She opens Admin to approve nurses<br><b>SUPER Link:</b> Same app link - SUPER opens Admin to see all</p>
+<p class="small">Share App Link to JOY, to Nurses, to anyone.</p>
 <input id="superShareLink" readonly value="">
 <button class="btn btnGreen" onclick="shareLinkWhatsApp('SUPER')">💬 Share App Link Via WhatsApp - To JOY / SUPER</button>
 <button class="btn btnBlue" onclick="copySuperLink()">📋 Copy App Link</button>
@@ -308,7 +310,7 @@ label{font-weight:bold;font-size:14px}
 <button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
 <div class="shareLinkBox">
 <h3>📤 SHARE LINK - JOY</h3>
-<p class="small">JOY - Share Nurse Form to nurses you know. They fill qualifications, you approve here.</p>
+<p class="small">JOY - Share Nurse Form to nurses you know.</p>
 <input id="joyShareLink" readonly value="">
 <button class="btn btnGreen" onclick="shareLinkWhatsApp('JOY')">💬 Share Nurse Form Via WhatsApp</button>
 <button class="btn btnBlue" onclick="copyJoyLink()">📋 Copy Link</button>
@@ -348,7 +350,7 @@ label{font-weight:bold;font-size:14px}
 </div>
 </div>
 
-<div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">• • •</button></div>
+<div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">🔐 Admin • Staff Only - Tap Here</button></div>
 
 <script>
 function getAppLink(){ return window.location.href.split('?')[0].split('#')[0] || 'https://home-care-hero.web.app'; }
@@ -379,8 +381,8 @@ function shareViaWhatsApp(){
 function shareLinkWhatsApp(who){
   let link=getAppLink();
   let text='';
-  if(who==='JOY') text=encodeURIComponent('💙 Hi JOY! This is Hom Care Hero App Link: '+link+' - Open it, tap faint dots at bottom 3 times, enter Gate Password, then login as JOY to approve nurses. Share this link to nurses to fill Qualification Form. Thank you!');
-  else text=encodeURIComponent('👑 Hi SUPER! This is Hom Care Hero App Link: '+link+' - Open it, tap faint dots at bottom 3 times, enter Gate Password, then login as SUPER to see all payments, nurses, GPS, alarms. Share Nurse Form link to nurses. Thank you!');
+  if(who==='JOY') text=encodeURIComponent('💙 Hi JOY! This is Hom Care Hero App Link: '+link+' - Open it, tap Admin button at bottom, enter Gate Password, then login as JOY to approve nurses. Share this link to nurses to fill Qualification Form. Thank you!');
+  else text=encodeURIComponent('👑 Hi SUPER! This is Hom Care Hero App Link: '+link+' - Open it, tap Admin button at bottom, enter Gate Password, then login as SUPER to see all payments, nurses, GPS, alarms. Share Nurse Form link to nurses. Thank you!');
   window.open('https://wa.me/?text='+text,'_blank');
 }
 function shareNurseFormWhatsApp(){
@@ -459,17 +461,11 @@ function renderAlarms(){
 }
 let hiddenTaps=0, hiddenTimer=null;
 function tapHiddenAdmin(){
-  hiddenTaps++;
-  if(hiddenTimer) clearTimeout(hiddenTimer);
-  hiddenTimer=setTimeout(()=>{ hiddenTaps=0; },1500);
-  if(hiddenTaps>=3){
-    hiddenTaps=0;
-    if(sessionStorage.getItem('hero_user_type')!=='admin' && !currentAdmin){
-      alert('Admin area - Enter Gate Password first. Close app and reopen, choose OPEN AS ADMIN.');
-      return;
-    }
-    showAdminDirect();
+  if(sessionStorage.getItem('hero_user_type')!=='admin' && !currentAdmin){
+    alert('⚠️ You entered as CLIENT. To see Admin: Close app completely, reopen, choose OPEN AS ADMIN with Gate Password, then tap Admin at bottom again.');
+    return;
   }
+  showAdminDirect();
 }
 function showAdminDirect(){
   ['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
