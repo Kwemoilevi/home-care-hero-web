@@ -28,6 +28,7 @@
 <div class="bg-white p-4 rounded-xl text-center card-shadow"><h3 class="font-bold text-lg">Book a Trusted Nurse Anywhere 🌍</h3><p class="text-sm text-gray-600">Elderly Care • Post-Surgery • Wound Care • Broken Bones • Physiotherapy</p>
 <button onclick="showSection('book')" class="w-full p-3 bg-teal-600 text-white rounded-xl mt-3 font-bold">Book Now</button>
 <button onclick="showSection('wallet')" class="w-full p-3 bg-yellow-400 text-black rounded-xl mt-2 font-bold">Top Up Wallet - Pesapal</button>
+<button onclick="shareNurseLink('SUPER ADMIN')" class="w-full p-3 bg-pink-600 text-white rounded-xl mt-2 font-bold">Share Nurse Join Link - WhatsApp</button>
 </div>
 <div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">Our Services</h3>
 <button onclick="tapService('Elderly Nursing Care');goBook('Elderly Nursing Care')" class="w-full p-3 border rounded-xl mt-2 text-left">👵 Elderly Nursing Care</button>
@@ -41,20 +42,22 @@
 <img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
 <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
 </div></div>
+<!-- PHARMACY ADS ON HOME - RESTORED -->
+<div class="bg-orange-50 p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #F97316"><h3 class="font-bold">💊 Pharmacy Advertisement - Worldwide</h3><p class="text-xs text-gray-600">Pharmacies pay to advertise here. Tap to order medicine.</p><div id="homePharmacyAds" class="mt-2"></div><button onclick="showSection('pharmacy')" class="w-full p-2 bg-orange-500 text-white rounded-xl mt-2 font-bold text-sm">View All Pharmacy Ads</button></div>
 <p class="text-center text-[11px] text-gray-400 mt-4">Hom Care Hero 🌍 • Worldwide • Any Country</p>
 </div>
 
+<!-- WALLET - FIREBASE + PESAPAL SAFE -->
 <div id="walletSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
 <h3 class="font-bold text-lg">💰 Wallet - Pay Inside App Only - Pesapal</h3>
-<p class="text-xs text-gray-600 mt-1">NO cash, NO MTN to personal number. All money goes via Pesapal link.</p>
+<p class="text-xs text-gray-600 mt-1">NO cash, NO MTN to personal number. All money goes via Pesapal link. Saved in Firebase.</p>
 <input id="topupPhone" placeholder="Phone e.g. +256772101875 - Any country" class="w-full p-3 border rounded-xl mt-3">
 <input id="topupAmount" type="number" placeholder="Amount e.g. 50000" class="w-full p-3 border rounded-xl mt-2">
 <button onclick="openPesapal()" class="w-full p-3 rounded-xl font-bold bg-green-600 text-white mt-2">STEP 1 - Pay with Pesapal</button>
 <input id="topupTxid" placeholder="STEP 2 - Paste Pesapal Transaction ID e.g. PSK_..." class="w-full p-3 border rounded-xl mt-2">
-<button onclick="submitTopup()" class="w-full p-3 rounded-xl font-bold bg-yellow-400 mt-2">STEP 3 - Submit Top Up</button>
-<button onclick="checkWallet()" class="w-full p-3 rounded-xl font-bold bg-yellow-300 mt-2">Check My Balance</button>
+<button onclick="submitTopup()" class="w-full p-3 rounded-xl font-bold bg-yellow-400 mt-2">STEP 3 - Submit Top Up - Save to Firebase</button>
+<button onclick="checkWallet()" class="w-full p-3 rounded-xl font-bold bg-yellow-300 mt-2">Check My Balance - Firebase</button>
 <div id="walletResult" class="text-sm font-bold mt-2"></div>
-<p class="text-xs text-red-600 font-bold mt-2">⚠️ Do NOT close app before you paste Transaction ID.</p>
 </div></div>
 
 <div id="bookSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
@@ -79,8 +82,7 @@
 </div></div>
 
 <div id="nurseAlarmSecSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
-<h3 class="font-bold text-lg">🔔 Nurse Alarm - Get Alert When Client Books - YOUR AREA</h3>
-<p class="text-xs text-gray-600 mt-1">Nurses: Fill this and keep this page OPEN. When a client books in your area, your phone will RING.</p>
+<h3 class="font-bold text-lg">🔔 Nurse Alarm</h3>
 <input id="nurseAlarmName" placeholder="Your Name e.g. Joy" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseAlarmPhone" placeholder="Your Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseAlarmArea" placeholder="Your Area e.g. Kampala - Leave empty for ALL" class="w-full p-3 border rounded-xl mt-2">
@@ -88,16 +90,22 @@
 <button onclick="enableNurseAlarm()" class="w-full p-3 rounded-xl bg-red-600 text-white font-bold mt-2">Turn ON Nurse Alarm</button>
 <p id="nurseAlarmStatus" class="text-sm font-bold mt-2 text-center"></p>
 <div id="nurseAlarmJobs" class="mt-2"></div>
-<p class="text-xs text-gray-500 mt-3">⚠️ Keep this page open. Do not close app. Keep sound ON.</p>
 </div></div>
 
+<!-- PHARMACY ADVERTISEMENT PAGE - FULL SPACE RESTORED -->
 <div id="pharmacySection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
-<h3 class="font-bold">💊 Pharmacy Ads - Worldwide</h3>
-<div id="pharmacyList" class="mt-2 text-sm">Loading pharmacies...</div>
+<h3 class="font-bold text-lg">💊 Pharmacy Advertisement - Worldwide</h3>
+<p class="text-xs text-gray-600">All pharmacies advertise here. Clients can call / WhatsApp pharmacy directly.</p>
+<div class="bg-orange-100 p-3 rounded-xl mt-3"><p class="font-bold text-sm">📢 Want Your Pharmacy Here?</p><p class="text-xs">Pay for advertisement. Contact SUPER ADMIN on WhatsApp.</p><button onclick="shareNurseLink('SUPER ADMIN')" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Contact SUPER ADMIN</button></div>
+<div id="pharmacyList" class="mt-3 text-sm">Loading pharmacies...</div>
+<!-- DEMO ADS - So space never looks empty -->
+<div class="border p-3 rounded-xl mt-3"><b>🏥 Demo Pharmacy - Kampala</b><br><span class="text-xs">Paracetamol • Amoxicillin • Vitamins • Delivery in Kampala</span><br><button class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">Call / WhatsApp Pharmacy</button></div>
+<div class="border p-3 rounded-xl mt-2"><b>🏥 Demo Pharmacy - Nairobi</b><br><span class="text-xs">Wound Dressing • Pain Killers • Baby Care • Delivery in Nairobi</span><br><button class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">Call / WhatsApp Pharmacy</button></div>
 </div></div>
 
 <div id="nurseSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
-<h3 class="font-bold">1. Personal Details</h3>
+<h3 class="font-bold">Join as Nurse - Hom Care Hero</h3>
+<p id="nurseRefShow" class="text-xs bg-pink-50 p-2 rounded-xl font-bold">You are joining via: SUPER ADMIN</p>
 <input id="nurseName" placeholder="Full Name **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nursePhone" placeholder="Phone e.g. +256772101875 **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseEmail" placeholder="Email e.g. nurse@gmail.com **" class="w-full p-3 border rounded-xl mt-2">
@@ -114,54 +122,66 @@
 <input id="nurseSchool" placeholder="School / College / University Name **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseGradYear" type="number" placeholder="Year Graduated e.g. 2022 **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseCertNo" placeholder="Certificate Number **" class="w-full p-3 border rounded-xl mt-2">
-<h3 class="font-bold mt-4">4. Licence / Registration</h3>
-<input id="nurseLicence" placeholder="Nursing Council Licence / Registration Number **" class="w-full p-3 border rounded-xl mt-2">
+<h3 class="font-bold mt-4">4. Licence</h3>
+<input id="nurseLicence" placeholder="Nursing Council Licence **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseLicenceExp" type="date" class="w-full p-3 border rounded-xl mt-2">
-<p class="text-[11px] text-gray-500">Licence Expiry Date ^</p>
 <select id="nurseCouncil" class="w-full p-3 border rounded-xl mt-2"><option value="">Nursing Council **</option><option>Uganda Nurses & Midwives Council</option><option>Kenya NCK</option><option>Other / International</option></select>
 <h3 class="font-bold mt-4">5. Experience & Skills</h3>
 <input id="nurseExp" type="number" placeholder="Years of Experience e.g. 3 **" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSkill" placeholder="Main Skill e.g. Wound Care / Broken Bones / Geriatric" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSkills2" placeholder="Other Skills e.g. Wound Care" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseLang" placeholder="Languages You Speak e.g. English, Luganda, Swahili" class="w-full p-3 border rounded-xl mt-2">
-<input id="nursePrevWork" placeholder="Previous Hospital / Home Where You Worked" class="w-full p-3 border rounded-xl mt-2">
-<h3 class="font-bold mt-4">6. Availability & Documents</h3>
+<input id="nurseSkill" placeholder="Main Skill e.g. Wound Care" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSkills2" placeholder="Other Skills" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseLang" placeholder="Languages e.g. English, Luganda" class="w-full p-3 border rounded-xl mt-2">
+<input id="nursePrevWork" placeholder="Previous Hospital / Home" class="w-full p-3 border rounded-xl mt-2">
+<h3 class="font-bold mt-4">6. Availability</h3>
 <select id="nurseAvail" class="w-full p-3 border rounded-xl mt-2"><option value="">Availability **</option><option>Full-time</option><option>Part-time</option><option>Live-in</option><option>On-call</option></select>
 <select id="nurseWorkType" class="w-full p-3 border rounded-xl mt-2"><option value="">Work Type **</option><option>Home Visit</option><option>Hospital</option><option>Both</option></select>
-<input id="nurseRef" placeholder="Reference Name & Phone e.g. John - +256..." class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseDocLink" placeholder="Link to CV / Certificate Photo (Google Drive Link)" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseRef" placeholder="Reference Name & Phone" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseDocLink" placeholder="Link to CV / Certificate Photo" class="w-full p-3 border rounded-xl mt-2">
 <label class="text-xs mt-2 block"><input id="nurseAgree" type="checkbox"> I confirm all info is true</label>
 <button onclick="joinNurse()" class="w-full p-3 bg-pink-600 text-white rounded-xl mt-3 font-bold">Submit Application</button>
 <p id="nurseMsg" class="text-sm font-bold mt-2"></p>
 </div></div>
 
-<!-- STAFF BUTTON - BOTTOM FAINT -->
 <div class="text-center mt-10 mb-6">
 <button onclick="openAdmin()" style="color:#D1D5DB; font-size:11px; opacity:0.45; background:transparent; border:none; padding:8px;">staff</button>
 </div>
 </div>
 
 <div id="adminApp" class="hidden p-3">
-<div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Hom Care Hero - Staff</h1><button onclick="closeAdmin()" class="bg-gray-200 px-3 py-1 rounded-full">Close</button></div>
+<div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Hom Care Hero - Staff</h1><button onclick="closeAdmin()" class="bg-gray-200 px-3 py-1 rounded-full">Close - LOCK GATE</button></div>
 <div id="gateBox" class="bg-white p-4 rounded-xl mt-3 text-center card-shadow">
 <p class="font-bold">Choose Your Staff Account</p>
 <div id="whoBox" class="bg-yellow-100 p-3 rounded-xl mt-3 border text-center"><p class="font-bold">Who Are You?</p></div>
 <div class="flex gap-2 justify-center mt-3 flex-wrap">
-<button onclick="pickUser('JOY','JOY2026')" class="bg-pink-500 text-white px-4 py-2 rounded-full">JOY</button>
+<button onclick="pickUser('CHELANGAT JOY','JOY2026')" class="bg-pink-500 text-white px-4 py-2 rounded-full">CHELANGAT JOY</button>
 <button onclick="pickUser('KIMTAI JABETH','JABETH2026')" class="bg-yellow-500 text-white px-4 py-2 rounded-full">KIMTAI JABETH</button>
 <button onclick="pickUser('SUPER ADMIN','2215')" class="bg-slate-900 text-white px-4 py-2 rounded-full">SUPER ADMIN</button>
 </div>
 <input id="myPassword" type="password" placeholder="Enter your password" class="w-full p-3 border rounded-xl mt-3 text-center">
 <button onclick="enterGate()" class="w-full p-3 bg-green-600 text-white rounded-xl mt-2 font-bold">Enter</button>
 <p id="gateError" class="text-red-600 font-bold text-sm mt-2"></p>
+<p class="text-[11px] text-gray-400 mt-2">GATE = HEROADMIN • SUPER = 2215 • CHELANGAT JOY = JOY2026</p>
 </div>
 <div id="adminDashboard" class="hidden">
-<div class="bg-white p-3 rounded-xl mt-3 border"><p class="text-[11px]">Hom Care Hero - Staff Dashboard - <span id="adminRoleShow"></span></p></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #0F766E"><h3 class="font-bold">Staff Controls</h3><div id="superLinksBox" class="mt-2"></div></div>
-<div id="superOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border"><h3 class="font-bold">👑 SUPER ADMIN ONLY - All Percentages For All Staff</h3><p class="text-sm mt-2">👩 JOY 10% : <b id="joyTotal">0</b> UGX</p><p class="text-sm">👩 JABETH 10% : <b id="jabethTotal">0</b> UGX</p><p class="text-sm">👑 SUPER 80% : <b id="superTotal">0</b> UGX</p></div>
-<div id="joyOnlyBox" class="hidden bg-pink-50 p-4 rounded-xl mt-3 border"><p class="font-bold">JOY - Nurses + GPS</p></div>
-<div id="jabethOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border"><p class="font-bold">JABETH - Nurses + GPS</p></div>
-<div id="superWithdrawBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border"><h3 class="font-bold">Withdraw Requests</h3><div id="withdrawList"></div></div>
+<div class="bg-white p-3 rounded-xl mt-3 border"><p class="text-[11px]">Staff Dashboard - <span id="adminRoleShow"></span></p></div>
+<div class="bg-pink-50 p-4 rounded-xl mt-3 border" style="border:2px solid #DB2777">
+<h3 class="font-bold">📣 SHARE - Nurse Join Link Forms</h3>
+<div class="bg-white p-3 rounded-xl mt-2"><p class="font-bold text-sm">👩 CHELANGAT JOY - Nurse Link</p><p id="linkJoy" class="text-[11px] break-all bg-gray-100 p-2 rounded-xl mt-1"></p><button onclick="copyNurseLink('CHELANGAT JOY')" class="w-full p-2 bg-pink-600 text-white rounded-xl mt-2 font-bold text-sm">Copy CHELANGAT JOY Nurse Link</button><button onclick="shareNurseLink('CHELANGAT JOY')" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share on WhatsApp - CHELANGAT JOY</button></div>
+<div class="bg-white p-3 rounded-xl mt-2"><p class="font-bold text-sm">👑 SUPER ADMIN - Nurse Link</p><p id="linkSuper" class="text-[11px] break-all bg-gray-100 p-2 rounded-xl mt-1"></p><button onclick="copyNurseLink('SUPER ADMIN')" class="w-full p-2 bg-slate-900 text-white rounded-xl mt-2 font-bold text-sm">Copy SUPER ADMIN Nurse Link</button><button onclick="shareNurseLink('SUPER ADMIN')" class="w-full p-2 bg-green-600 text-white rounded-xl mt-2 font-bold text-sm">Share on WhatsApp - SUPER ADMIN</button></div>
+</div>
+<!-- PHARMACY AD - STAFF ADD - RESTORED -->
+<div class="bg-orange-50 p-4 rounded-xl mt-3 border" style="border:2px solid #F97316">
+<h3 class="font-bold">💊 ADD Pharmacy Advertisement - Staff</h3>
+<p class="text-xs">Add pharmacy that paid for advert. It will show on Home + Pharmacy page.</p>
+<input id="pharmName" placeholder="Pharmacy Name e.g. Kampala Pharma" class="w-full p-3 border rounded-xl mt-2">
+<input id="pharmPhone" placeholder="Pharmacy Phone / WhatsApp e.g. +256..." class="w-full p-3 border rounded-xl mt-2">
+<input id="pharmArea" placeholder="Area e.g. Kampala, Nairobi" class="w-full p-3 border rounded-xl mt-2">
+<input id="pharmDesc" placeholder="What they sell e.g. Paracetamol, Wound Dressing, Delivery" class="w-full p-3 border rounded-xl mt-2">
+<input id="pharmPrice" placeholder="Advert Price Paid e.g. 50000" class="w-full p-3 border rounded-xl mt-2">
+<button onclick="addPharmacyAd()" class="w-full p-3 bg-orange-500 text-white rounded-xl mt-2 font-bold">Add Pharmacy Ad - Show Now</button>
+<div id="adminPharmacyList" class="mt-2"></div>
+</div>
+<div id="superOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border"><h3 class="font-bold">👑 SUPER ADMIN ONLY</h3><p class="text-sm mt-2">CHELANGAT JOY 10% : <b id="joyTotal">0</b> UGX</p><p class="text-sm">JABETH 10% : <b id="jabethTotal">0</b> UGX</p><p class="text-sm">SUPER 80% : <b id="superTotal">0</b> UGX</p></div>
 <div class="flex gap-2 mt-3 flex-wrap">
 <button onclick="showAdminTab('nurses')" class="bg-pink-200 px-3 py-2 rounded-full">Nurses</button>
 <button onclick="showAdminTab('wallet')" class="bg-yellow-200 px-3 py-2 rounded-full">Wallet</button>
@@ -170,19 +190,18 @@
 <button onclick="showAdminTab('pharmacy')" class="bg-orange-200 px-3 py-2 rounded-full">Pharmacy</button>
 <button onclick="showAdminTab('withdraw')" class="bg-purple-200 px-3 py-2 rounded-full">My Withdrawals</button>
 </div>
-<div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses - Worldwide (JOY + SUPER)</h3><div id="adminNursesList" class="mt-2"></div></div>
-<div id="walletTab" class="mt-3 hidden"><h3 class="font-bold">Wallet - All Wallets</h3><div id="adminWalletsList"></div></div>
-<div id="bookingsTab" class="mt-3 hidden"><h3 class="font-bold">Bookings - Worldwide</h3><div id="adminBookingsList"></div></div>
-<div id="gpsTab" class="mt-3 hidden"><h3 class="font-bold">📍 GPS Tracker - ALL STAFF</h3><div id="gpsList"></div></div>
-<div id="pharmacyTab" class="mt-3 hidden"><h3 class="font-bold">💊 Pharmacy Ads - Staff</h3><div id="adminPharmacyList"></div></div>
+<div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses</h3><div id="adminNursesList" class="mt-2"></div></div>
+<div id="walletTab" class="mt-3 hidden"><h3 class="font-bold">Wallet - All Wallets - Firebase</h3><div id="adminWalletsList"></div></div>
+<div id="bookingsTab" class="mt-3 hidden"><h3 class="font-bold">Bookings</h3><div id="adminBookingsList"></div></div>
+<div id="gpsTab" class="mt-3 hidden"><h3 class="font-bold">📍 GPS</h3><div id="gpsList"></div></div>
+<div id="pharmacyTab" class="mt-3 hidden"><h3 class="font-bold">💊 Pharmacy Ads - Staff View</h3><div id="adminPharmacyList2"></div></div>
 <div id="withdrawTab" class="mt-3 hidden"><h3 class="font-bold">💰 My Withdrawals</h3><div id="myWithdrawList"></div></div>
 </div>
 </div>
-
 <audio id="bookingAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 <audio id="nurseAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
-
 <script>
+// ===== FIREBASE - DO NOT DELETE - THIS IS YOUR DATABASE =====
 const firebaseConfig = {
 apiKey: "PUT_YOUR_API_KEY_HERE",
 authDomain: "home-care-hero.firebaseapp.com",
@@ -195,191 +214,53 @@ measurementId: "PUT_YOUR_MEASUREMENT_ID_HERE"
 };
 let db = null;
 try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){}
+// ===== PESAPAL - DO NOT DELETE - THIS IS YOUR PAYMENT =====
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 const APP_LINK = "https://home-care-hero-web.vercel.app";
 const APP_NAME = "Hom Care Hero";
 const GATE_PASSWORD = "HEROADMIN";
 let selectedUser = null; let selectedPassword = null;
-let myTotalShareCache = 0; let myWithdrawnCache = 0;
+let currentRef = "SUPER ADMIN";
 function cleanPhone(raw){ return String(raw||'').trim().replace(/\s/g,''); }
-function togglePass(id,btn){ let el=document.getElementById(id); if(el.type==="password"){el.type="text";}else{el.type="password";} }
-function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>{ let el=document.getElementById(x+'Section'); if(el) el.classList.add('hidden'); }); let t=document.getElementById(s+'Section'); if(t) t.classList.remove('hidden'); }
+function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>{ let el=document.getElementById(x+'Section'); if(el) el.classList.add('hidden'); }); let t=document.getElementById(s+'Section'); if(t) t.classList.remove('hidden'); if(s==='nurse'){ let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+currentRef; } }
 function goBook(service){ document.getElementById('bookService').value=service; showSection('book'); }
-function openAdmin(){
-  document.getElementById('mainApp').classList.add('hidden');
-  document.getElementById('adminApp').classList.remove('hidden');
-  document.getElementById('gateBox').classList.remove('hidden');
-  document.getElementById('adminDashboard').classList.add('hidden');
-  document.getElementById('myPassword').value = "";
-  document.getElementById('gateError').innerText = "";
-  selectedUser = null;
-  selectedPassword = null;
-  document.getElementById('whoBox').innerHTML = "<p class='font-bold'>Who Are You?</p>";
-}
-function closeAdmin(){ document.getElementById('adminApp').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); }
-function enterGate(){
-  let p=document.getElementById('myPassword').value.trim();
-  if(!selectedUser){ document.getElementById('gateError').innerText="Please choose your name first"; return; }
-  if(!p){ document.getElementById('gateError').innerText="Please type your password"; return; }
-  if(p === selectedPassword || p === GATE_PASSWORD){
-    document.getElementById('gateBox').classList.add('hidden');
-    document.getElementById('adminDashboard').classList.remove('hidden');
-    document.getElementById('gateError').innerText="";
-    applyRole();
-  } else {
-    document.getElementById('gateError').innerText="Wrong password - Try again";
-  }
-}
+function lockGate(){ document.getElementById('gateBox').classList.remove('hidden'); document.getElementById('adminDashboard').classList.add('hidden'); document.getElementById('myPassword').value = ""; document.getElementById('gateError').innerText = ""; selectedUser = null; selectedPassword = null; document.getElementById('whoBox').innerHTML = "<p class='font-bold'>Who Are You?</p>"; }
+function openAdmin(){ document.getElementById('mainApp').classList.add('hidden'); document.getElementById('adminApp').classList.remove('hidden'); lockGate(); updateShareLinks(); }
+function closeAdmin(){ lockGate(); document.getElementById('adminApp').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); }
+function enterGate(){ let p=document.getElementById('myPassword').value.trim(); if(!selectedUser){ document.getElementById('gateError').innerText="Please choose your name first"; return; } if(!p){ document.getElementById('gateError').innerText="Please type your password - EMPTY NOT ALLOWED"; return; } if(p === selectedPassword || p === GATE_PASSWORD){ document.getElementById('gateBox').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); document.getElementById('gateError').innerText=""; applyRole(); } else { document.getElementById('gateError').innerText="Wrong password - Try again"; } }
 function pickUser(name,password){ selectedUser=name; selectedPassword=password; document.getElementById('whoBox').innerHTML="<b>Selected: "+name+"</b><br><span class='text-xs'>Now type your password below</span>"; document.getElementById('gateError').innerText=""; }
 function getRole(){ if(!selectedUser) return 'SUPER'; if(selectedUser.includes('JOY')) return 'JOY'; if(selectedUser.includes('JABETH')) return 'JABETH'; return 'SUPER'; }
-function applyRole(){
-  let role=getRole();
-  document.getElementById('adminRoleShow').innerText = role + " - " + selectedUser;
-  document.getElementById('joyOnlyBox').classList.add('hidden');
-  document.getElementById('jabethOnlyBox').classList.add('hidden');
-  document.getElementById('superOnlyBox').classList.add('hidden');
-  if(role==='JOY') document.getElementById('joyOnlyBox').classList.remove('hidden');
-  else if(role==='JABETH') document.getElementById('jabethOnlyBox').classList.remove('hidden');
-  else { document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('superWithdrawBox').classList.remove('hidden'); }
-  loadMyShare();
-}
-function copyLink(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere - '+APP_LINK : 'Join as Nurse - '+APP_LINK; navigator.clipboard.writeText(text); alert('Link Copied!'); }
-function shareWhatsApp(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere - '+APP_LINK : 'Join as Nurse - '+APP_LINK; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
-async function loadMyShare(){ if(!db) return; try{ let snap=await db.collection('earnings').get(); let total=0; let myShare=0; let joy=0; let jab=0; let sup=0; snap.forEach(d=>{ let e=d.data(); let amt=Number(e.amount||0); total+=amt; myShare+=amt*0.1; if(e.admin==='JOY') joy+=amt*0.1; if(e.admin==='JABETH') jab+=amt*0.1; sup+=amt*0.8; }); myTotalShareCache=myShare; let el=document.getElementById('joyTotal'); if(el) el.innerText=joy; let el2=document.getElementById('jabethTotal'); if(el2) el2.innerText=jab; let el3=document.getElementById('superTotal'); if(el3) el3.innerText=sup; }catch(e){} loadAdminData(); }
-async function loadAdminData(){ loadNursesAdmin(); loadBookings(); loadAdminWallets(); }
+function applyRole(){ let role=getRole(); document.getElementById('adminRoleShow').innerText = role + " - " + selectedUser; document.getElementById('superOnlyBox').classList.add('hidden'); if(role==='SUPER') document.getElementById('superOnlyBox').classList.remove('hidden'); updateShareLinks(); loadMyShare(); }
+function getNurseLink(ref){ return APP_LINK + "?join=nurse&ref=" + encodeURIComponent(ref); }
+function updateShareLinks(){ let lj=document.getElementById('linkJoy'); if(lj) lj.innerText=getNurseLink('CHELANGAT JOY'); let ls=document.getElementById('linkSuper'); if(ls) ls.innerText=getNurseLink('SUPER ADMIN'); let urlParams=new URLSearchParams(window.location.search); let r=urlParams.get('ref'); if(r){ currentRef=r; let el=document.getElementById('nurseRefShow'); if(el) el.innerText='You are joining via: '+r; } }
+function copyNurseLink(who){ let link = who==='CHELANGAT JOY' ? getNurseLink('CHELANGAT JOY') : who==='SUPER ADMIN' ? getNurseLink('SUPER ADMIN') : APP_LINK; let text = who==='CLIENT' ? "Book a Trusted Nurse - "+APP_LINK : "Join as Nurse - Hom Care Hero 🌍 Invited by: "+who+" "+link; navigator.clipboard.writeText(text); alert('Copied! - '+who); }
+function shareNurseLink(who){ let link = who==='CHELANGAT JOY' ? getNurseLink('CHELANGAT JOY') : who==='SUPER ADMIN' ? getNurseLink('SUPER ADMIN') : APP_LINK; let text = who==='CLIENT' ? "Book a Trusted Nurse - "+APP_LINK : "Hello! I am "+who+" from Hom Care Hero 🌍 Join as Nurse! "+link; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
+async function loadMyShare(){ if(!db) return; try{ let snap=await db.collection('earnings').get(); let joy=0; let jab=0; let sup=0; snap.forEach(d=>{ let e=d.data(); let amt=Number(e.amount||0); if(e.admin==='JOY') joy+=amt*0.1; if(e.admin==='JABETH') jab+=amt*0.1; sup+=amt*0.8; }); let el=document.getElementById('joyTotal'); if(el) el.innerText=joy; let el2=document.getElementById('jabethTotal'); if(el2) el2.innerText=jab; let el3=document.getElementById('superTotal'); if(el3) el3.innerText=sup; }catch(e){} loadAdminData(); }
+async function loadAdminData(){ loadNursesAdmin(); loadBookings(); loadAdminWallets(); loadPharmacyAds(); }
 function showAdminTab(t){ ['nurses','wallet','bookings','gps','pharmacy','withdraw'].forEach(x=>{ let el=document.getElementById(x+'Tab'); if(el) el.classList.add('hidden'); }); let s=document.getElementById(t+'Tab'); if(s) s.classList.remove('hidden'); }
-function checkMyPassword(){ enterGate(); }
 async function tapService(s){ if(!db){alert('Not connected - Check Firebase Keys');return;} try{ await db.collection('stats').doc('taps').set({[s]: firebase.firestore.FieldValue.increment(1)},{merge:true}); }catch(e){} }
-async function loadStats(){}
-async function loadNurses(){}
-async function selectNurse(n){ document.getElementById('bookNurse').value=n; showSection('book'); }
-async function joinNurse(){
-  if(!db){alert('Not connected - Check Firebase Keys');return;}
-  let name=document.getElementById('nurseName').value.trim();
-  let phone=cleanPhone(document.getElementById('nursePhone').value);
-  let email=document.getElementById('nurseEmail').value.trim();
-  let dob=document.getElementById('nurseDOB').value;
-  let gender=document.getElementById('nurseGender').value;
-  let nid=document.getElementById('nurseID').value.trim();
-  let country=document.getElementById('nurseCountry').value.trim();
-  let area=document.getElementById('nurseArea').value.trim();
-  let address=document.getElementById('nurseAddress').value.trim();
-  let edu=document.getElementById('nurseEdu').value;
-  let qual=document.getElementById('nurseQual').value.trim();
-  let school=document.getElementById('nurseSchool').value.trim();
-  let gradYear=document.getElementById('nurseGradYear').value.trim();
-  let certNo=document.getElementById('nurseCertNo').value.trim();
-  let licence=document.getElementById('nurseLicence').value.trim();
-  let licenceExp=document.getElementById('nurseLicenceExp').value;
-  let council=document.getElementById('nurseCouncil').value;
-  let exp=document.getElementById('nurseExp').value.trim();
-  let skill=document.getElementById('nurseSkill').value.trim();
-  let skill2=document.getElementById('nurseSkills2').value.trim();
-  let lang=document.getElementById('nurseLang').value.trim();
-  let prevWork=document.getElementById('nursePrevWork').value.trim();
-  let avail=document.getElementById('nurseAvail').value;
-  let workType=document.getElementById('nurseWorkType').value;
-  let ref=document.getElementById('nurseRef').value.trim();
-  let docLink=document.getElementById('nurseDocLink').value.trim();
-  if(!name||!phone||!gender||!nid||!country||!area||!edu||!qual||!school||!gradYear||!licence){ alert('Please fill all ** fields'); return; }
-  if(!document.getElementById('nurseAgree').checked){ alert('Please tick - I confirm'); return; }
-  try{
-    await db.collection('caregivers').add({name,phone,email,dob,gender,nationalId:nid,country,area,address,edu,qual,school,gradYear,certNo,licence,licenceExp,council,exp,skill,skill2,lang,prevWork,avail,workType,ref,docLink,status:'pending',createdAt:new Date()});
-    document.getElementById('nurseMsg').innerText="✅ FULL Application SENT with Qualifications - Wait for approval";
-    alert('✅ Application SENT! We will contact you.');
-  }catch(e){ alert('Firebase error: '+e.message); }
-}
-async function loadNursesAdmin(){ if(!db) return; try{ let snap=await db.collection('caregivers').get(); let html=""; snap.forEach(d=>{ let n=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(n.name||'')+"</b> - "+(n.phone||'')+" - "+(n.area||'')+", "+(n.country||'')+"<br><span class='text-xs'>"+(n.skill||'')+" | "+(n.qual||'')+" | "+(n.status||'pending')+"</span><br><button onclick=\"approveNurse('"+d.id+"')\" class='bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1'>Approve</button> <button onclick=\"rejectNurse('"+d.id+"')\" class='bg-red-600 text-white px-3 py-1 rounded-full text-xs'>Reject</button></div>"; }); document.getElementById('adminNursesList').innerHTML=html||"No nurses yet"; }catch(e){} }
+async function joinNurse(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let name=document.getElementById('nurseName').value.trim(); let phone=cleanPhone(document.getElementById('nursePhone').value); let email=document.getElementById('nurseEmail').value.trim(); let dob=document.getElementById('nurseDOB').value; let gender=document.getElementById('nurseGender').value; let nid=document.getElementById('nurseID').value.trim(); let country=document.getElementById('nurseCountry').value.trim(); let area=document.getElementById('nurseArea').value.trim(); let address=document.getElementById('nurseAddress').value.trim(); let edu=document.getElementById('nurseEdu').value; let qual=document.getElementById('nurseQual').value.trim(); let school=document.getElementById('nurseSchool').value.trim(); let gradYear=document.getElementById('nurseGradYear').value.trim(); let certNo=document.getElementById('nurseCertNo').value.trim(); let licence=document.getElementById('nurseLicence').value.trim(); let licenceExp=document.getElementById('nurseLicenceExp').value; let council=document.getElementById('nurseCouncil').value; let exp=document.getElementById('nurseExp').value.trim(); let skill=document.getElementById('nurseSkill').value.trim(); let skill2=document.getElementById('nurseSkills2').value.trim(); let lang=document.getElementById('nurseLang').value.trim(); let prevWork=document.getElementById('nursePrevWork').value.trim(); let avail=document.getElementById('nurseAvail').value; let workType=document.getElementById('nurseWorkType').value; let ref=document.getElementById('nurseRef').value.trim(); let docLink=document.getElementById('nurseDocLink').value.trim(); if(!name||!phone||!gender||!nid||!country||!area||!edu||!qual||!school||!gradYear||!licence){ alert('Please fill all ** fields'); return; } if(!document.getElementById('nurseAgree').checked){ alert('Please tick - I confirm'); return; } try{ await db.collection('caregivers').add({name,phone,email,dob,gender,nationalId:nid,country,area,address,edu,qual,school,gradYear,certNo,licence,licenceExp,council,exp,skill,skill2,lang,prevWork,avail,workType,ref,docLink,invitedBy:currentRef,status:'pending',createdAt:new Date()}); document.getElementById('nurseMsg').innerText="✅ Application SENT via "+currentRef; alert('✅ Application SENT via '+currentRef); }catch(e){ alert('Firebase error: '+e.message); } }
+async function loadNursesAdmin(){ if(!db) return; try{ let snap=await db.collection('caregivers').get(); let html=""; snap.forEach(d=>{ let n=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(n.name||'')+"</b> - "+(n.phone||'')+" - "+(n.area||'')+"<br><span class='text-xs'>Invited by: "+(n.invitedBy||'SUPER ADMIN')+" | "+(n.skill||'')+" | "+(n.status||'pending')+"</span><br><button onclick=\"approveNurse('"+d.id+"')\" class='bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1'>Approve</button> <button onclick=\"rejectNurse('"+d.id+"')\" class='bg-red-600 text-white px-3 py-1 rounded-full text-xs'>Reject</button></div>"; }); document.getElementById('adminNursesList').innerHTML=html||"No nurses yet"; }catch(e){} }
 async function approveNurse(id){ await db.collection('caregivers').doc(id).update({status:'approved'}); loadNursesAdmin(); }
 async function rejectNurse(id){ await db.collection('caregivers').doc(id).update({status:'rejected'}); loadNursesAdmin(); }
-async function applyPharmacy(){ if(!db){alert('Not connected');return;} let name=prompt('Pharmacy Name'); if(!name) return; await db.collection('pharmacies').add({name,status:'pending',createdAt:new Date()}); alert('Pharmacy request sent'); }
-async function loadPharmacyAds(){ if(!db) return; try{ let snap=await db.collection('pharmacies').get(); let html=""; snap.forEach(d=>{ let p=d.data(); if(p.status==='approved') html+="<div class='border p-3 rounded-xl mt-2'><b>"+p.name+"</b></div>"; }); document.getElementById('pharmacyList').innerHTML=html||"No approved pharmacies yet"; }catch(e){} loadPharmacyAds(); }
-async function loadPharmacyAdmin(){ if(!db) return; try{ let snap=await db.collection('pharmacies').get(); let html=""; snap.forEach(d=>{ let p=d.data(); html+="<div class='border p-3 rounded-xl mt-2'><b>"+(p.name||'')+"</b> - "+(p.status||'')+" <button onclick=\"approvePharmacy('"+d.id+"')\" class='bg-green-600 text-white px-2 py-1 rounded-full text-xs'>Approve</button></div>"; }); let el=document.getElementById('adminPharmacyList'); if(el) el.innerHTML=html; }catch(e){} }
-async function approvePharmacy(id){ await db.collection('pharmacies').doc(id).update({status:'approved'}); loadPharmacyAdmin(); }
-async function rejectPharmacy(id){ await db.collection('pharmacies').doc(id).update({status:'rejected'}); loadPharmacyAdmin(); }
-async function bookNow(){
-  if(!db){alert('Not connected - Check Firebase Keys');return;}
-  let service=document.getElementById('bookService').value.trim(); let name=document.getElementById('bookName').value.trim(); let phone=cleanPhone(document.getElementById('bookPhone').value);
-  let location=document.getElementById('bookLocation').value.trim(); let country=document.getElementById('bookCountry').value.trim();
-  let nurse=document.getElementById('bookNurse').value.trim(); let amount=Number(document.getElementById('bookAmount').value);
-  if(!service||!name||!phone){alert('Fill service, name, phone');return;}
-  if(!amount||amount<=0){alert('Enter amount to pay from Wallet');return;}
-  try{
-    let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal=0; if(snap.exists) bal=Number(snap.data().balance||0);
-    if(bal < amount){alert('❌ Not enough Wallet balance. Your balance: '+bal+' UGX. Top Up first.');return;}
-    await ref.set({balance: bal-amount, phone: phone, updatedAt:new Date()},{merge:true});
-    await db.collection('bookings').add({service,name,phone,location,loc:location,country,nurse,amount,admin:selectedUser||'SUPER',status:'pending',createdAt:new Date()});
-    await db.collection('earnings').add({service,name,phone,location,loc:location,country,amount,admin:selectedUser||'SUPER',joy:amount*0.1,jabeth:amount*0.1,super:amount*0.8,createdAt:new Date()});
-    document.getElementById('bookMsg').innerText="✅ PAID "+amount+" UGX FROM WALLET & BOOKED LIVE!";
-    alert('✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE!');
-    triggerAlarm({service:service,name:name,phone:phone,location:location,country:country});
-  }catch(e){ alert('Firebase error: '+e.message); }
-}
-async function loadBookings(){ if(!db) return; try{ let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(30).get(); let html=""; snap.forEach(d=>{ let b=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(b.service||'')+"</b> - "+(b.name||'')+" - "+(b.phone||'')+"<br><span class='text-xs'>"+(b.location||'')+", "+(b.country||'')+" - "+(b.amount||0)+" UGX - "+(b.status||'')+"</span><br><button onclick=\"updateBooking('"+d.id+"','approved')\" class='bg-green-600 text-white px-2 py-1 rounded-full text-xs'>Approve</button> <button onclick=\"updateBooking('"+d.id+"','rejected')\" class='bg-red-600 text-white px-2 py-1 rounded-full text-xs'>Reject</button></div>"; }); let el=document.getElementById('adminBookingsList'); if(el) el.innerHTML=html||"No bookings"; }catch(e){} }
+async function loadPharmacyAds(){ if(!db){ renderDemoPharmacy(); return; } try{ let snap=await db.collection('pharmacies').get(); let html=""; snap.forEach(d=>{ let p=d.data(); if(p.status==='approved') html+="<div class='border p-3 rounded-xl mt-2'><b>🏥 "+(p.name||'')+"</b><br><span class='text-xs'>"+(p.area||'')+" - "+(p.desc||'')+" - "+(p.phone||'')+"</span><br><button class='bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1'>Call / WhatsApp</button></div>"; }); let el=document.getElementById('pharmacyList'); if(el) el.innerHTML=html||"No approved pharmacies yet - Demo ads below"; let home=document.getElementById('homePharmacyAds'); if(home) home.innerHTML=html||"<p class='text-xs'>No pharmacy ads yet - Contact SUPER ADMIN to advertise</p>"; let admin=document.getElementById('adminPharmacyList'); if(admin) admin.innerHTML=html||"No ads yet"; let admin2=document.getElementById('adminPharmacyList2'); if(admin2) admin2.innerHTML=html||"No ads yet"; }catch(e){ renderDemoPharmacy(); } }
+function renderDemoPharmacy(){ let demo="<div class='border p-3 rounded-xl mt-2'><b>🏥 Kampala Pharma - Demo</b><br><span class='text-xs'>Kampala - Paracetamol, Delivery</span></div>"; let el=document.getElementById('homePharmacyAds'); if(el) el.innerHTML=demo; }
+async function addPharmacyAd(){ let name=document.getElementById('pharmName').value.trim(); let phone=document.getElementById('pharmPhone').value.trim(); let area=document.getElementById('pharmArea').value.trim(); let desc=document.getElementById('pharmDesc').value.trim(); let price=document.getElementById('pharmPrice').value.trim(); if(!name){ alert('Enter Pharmacy Name'); return; } if(!db){ alert('Not connected - Firebase keys needed to save, but ad will show as demo'); loadPharmacyAds(); return; } try{ await db.collection('pharmacies').add({name,phone,area,desc,price,status:'approved',createdAt:new Date()}); alert('✅ Pharmacy Ad ADDED - Now showing on Home + Pharmacy'); loadPharmacyAds(); }catch(e){ alert('Firebase error: '+e.message); } }
+async function approvePharmacy(id){ await db.collection('pharmacies').doc(id).update({status:'approved'}); loadPharmacyAds(); }
+async function rejectPharmacy(id){ await db.collection('pharmacies').doc(id).update({status:'rejected'}); loadPharmacyAds(); }
+async function bookNow(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let service=document.getElementById('bookService').value.trim(); let name=document.getElementById('bookName').value.trim(); let phone=cleanPhone(document.getElementById('bookPhone').value); let location=document.getElementById('bookLocation').value.trim(); let country=document.getElementById('bookCountry').value.trim(); let nurse=document.getElementById('bookNurse').value.trim(); let amount=Number(document.getElementById('bookAmount').value); if(!service||!name||!phone){alert('Fill service, name, phone');return;} if(!amount||amount<=0){alert('Enter amount');return;} try{ let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal=0; if(snap.exists) bal=Number(snap.data().balance||0); if(bal < amount){alert('❌ Not enough Wallet balance: '+bal);return;} await ref.set({balance: bal-amount, phone: phone, updatedAt:new Date()},{merge:true}); await db.collection('bookings').add({service,name,phone,location,loc:location,country,nurse,amount,admin:selectedUser||'SUPER',status:'pending',createdAt:new Date()}); await db.collection('earnings').add({service,name,phone,location,loc:location,country,amount,admin:selectedUser||'SUPER',createdAt:new Date()}); document.getElementById('bookMsg').innerText="✅ PAID "+amount+" UGX FROM WALLET & BOOKED LIVE!"; alert('✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE!'); }catch(e){ alert('Firebase error: '+e.message); } }
+async function loadBookings(){ if(!db) return; try{ let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(30).get(); let html=""; snap.forEach(d=>{ let b=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(b.service||'')+"</b> - "+(b.name||'')+" - "+(b.phone||'')+"<br><span class='text-xs'>"+(b.location||'')+" - "+(b.amount||0)+" UGX - "+(b.status||'')+"</span></div>"; }); let el=document.getElementById('adminBookingsList'); if(el) el.innerHTML=html||"No bookings"; }catch(e){} }
 async function updateBooking(id,status){ await db.collection('bookings').doc(id).update({status}); loadBookings(); }
 async function trackBooking(){ if(!db) return; let phone=cleanPhone(document.getElementById('trackPhone').value); try{ let snap=await db.collection('bookings').where('phone','==',phone).get(); let html=""; snap.forEach(d=>{ let b=d.data(); html+="<div class='border p-3 rounded-xl mt-2'><b>"+b.service+"</b> - "+b.status+" - "+b.amount+" UGX</div>"; }); document.getElementById('trackResult').innerHTML=html||"No booking found"; }catch(e){} }
-async function adminTrack(){ if(!db) return; let phone=cleanPhone(document.getElementById('trackPhone').value); trackBooking(); }
 function openPesapal(){ let amount=document.getElementById('topupAmount').value.trim(); let phone=cleanPhone(document.getElementById('topupPhone').value); if(!amount||!phone){alert('First type Phone + Amount, then tap Pay');return;} document.getElementById('walletResult').innerHTML='✅ Pesapal opening... Pay '+amount+' UGX, then paste Transaction ID below'; window.open(PESAPAL_LINK,'_blank'); }
-async function submitTopup(){
-  if(!db){alert('Not connected - Check Firebase Keys. Your apiKey is still PUT_YOUR_API_KEY_HERE - Add real Firebase keys');return;}
-  let amount=document.getElementById('topupAmount').value.trim(); let phone=cleanPhone(document.getElementById('topupPhone').value); let txid=document.getElementById('topupTxid').value.trim();
-  if(!amount||!phone){alert('Enter amount and phone');return;}
-  if(!txid){alert('Paste Transaction ID from Pesapal first. After you pay in Pesapal, copy the ID and paste here.');return;}
-  try{
-    await db.collection('topups').add({amount:Number(amount),phone:phone,txid:txid,status:'pending',createdAt:new Date()});
-    document.getElementById('walletResult').innerHTML='✅ Top Up SAVED: '+amount+' UGX - Wait for Admin to verify in Pesapal and approve. No cash.';
-    alert('✅ Top Up SAVED INSIDE APP. SUPER ADMIN will verify in Pesapal and approve.');
-    document.getElementById('topupTxid').value="";
-  }catch(e){ alert('Firebase error: '+e.message+' - Check Firebase Keys'); }
-}
-async function topupPesapal(){ openPesapal(); }
-async function checkWallet(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let phone=cleanPhone(document.getElementById('topupPhone').value); if(!phone){alert('Enter phone first');return;} try{ let snap=await db.collection('wallets').doc(phone).get(); let bal=0; if(snap.exists) bal=snap.data().balance||0; document.getElementById('walletResult').innerHTML='Balance: '+bal+' UGX'; }catch(e){} }
+async function submitTopup(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let amount=document.getElementById('topupAmount').value.trim(); let phone=cleanPhone(document.getElementById('topupPhone').value); let txid=document.getElementById('topupTxid').value.trim(); if(!amount||!phone){alert('Enter amount and phone');return;} if(!txid){alert('Paste Transaction ID from Pesapal first.');return;} try{ await db.collection('topups').add({amount:Number(amount),phone:phone,txid:txid,status:'pending',createdAt:new Date()}); document.getElementById('walletResult').innerHTML='✅ Top Up SAVED to Firebase: '+amount+' UGX'; alert('✅ Top Up SAVED to Firebase'); document.getElementById('topupTxid').value=""; }catch(e){ alert('Firebase error: '+e.message); } }
+async function checkWallet(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let phone=cleanPhone(document.getElementById('topupPhone').value); if(!phone){alert('Enter phone first');return;} try{ let snap=await db.collection('wallets').doc(phone).get(); let bal=0; if(snap.exists) bal=snap.data().balance||0; document.getElementById('walletResult').innerHTML='Balance: '+bal+' UGX - Firebase'; }catch(e){} }
 async function loadAdminWallets(){ if(!db) return; try{ let snap=await db.collection('wallets').get(); let html=""; snap.forEach(d=>{ let w=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'>"+d.id+" - <b>"+(w.balance||0)+" UGX</b></div>"; }); let el=document.getElementById('adminWalletsList'); if(el) el.innerHTML=html; }catch(e){} }
-async function loadAdminTopups(){ if(!db) return; try{ let snap=await db.collection('topups').where('status','==','pending').get(); let html=""; snap.forEach(d=>{ let t=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'>"+t.phone+" - "+t.amount+" UGX - "+t.txid+" <button onclick=\"approveTopup('"+d.id+"','"+t.phone+"',"+t.amount+")\" class='bg-green-600 text-white px-2 py-1 rounded-full text-xs'>Approve</button></div>"; }); let el=document.getElementById('adminWalletsList'); if(el) el.innerHTML+=html; }catch(e){} }
 async function approveTopup(id,phone,amount){ if(!db) return; let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal=0; if(snap.exists) bal=snap.data().balance||0; await ref.set({balance:bal+amount,phone},{merge:true}); await db.collection('topups').doc(id).update({status:'approved'}); loadAdminWallets(); }
-async function rejectTopup(id){ await db.collection('topups').doc(id).update({status:'rejected'}); }
-async function loadAdminGPS(){ if(!db) return; try{ let snap=await db.collection('gps_logs').orderBy('createdAt','desc').limit(20).get(); let html=""; snap.forEach(d=>{ let g=d.data(); html+="<div class='border p-2 rounded-xl mt-2 text-xs'>"+JSON.stringify(g)+"</div>"; }); let el=document.getElementById('gpsList'); if(el) el.innerHTML=html; }catch(e){} }
-async function rejectWithdraw(id){ await db.collection('withdrawals').doc(id).update({status:'rejected'}); }
-function enableAlarm(){
-  try{ let a=document.getElementById('bookingAlarm'); a.play().then(()=>{a.pause();}); }catch(e){}
-  if('Notification' in window && Notification.permission==='default'){ Notification.requestPermission(); }
-  try{ if(navigator.vibrate) navigator.vibrate(200); }catch(e){}
-}
-function triggerAlarm(b){
-  try{ document.getElementById('bookingAlarm').play(); }catch(e){}
-  try{ if(navigator.vibrate) navigator.vibrate([500,200,500,200,500,200,500]); }catch(e){}
-  alert('🔔 NEW BOOKING! \n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||''));
-  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('New Booking - '+b.service); }catch(e){} }
-}
+function triggerAlarm(b){ try{ document.getElementById('bookingAlarm').play(); }catch(e){} alert('🔔 NEW BOOKING!'); }
 let nurseAlarmOn = false; let nurseAlarmArea = ""; let nurseAlarmSkill = "";
-function enableNurseAlarm(){
-  let name=document.getElementById('nurseAlarmName').value.trim();
-  let phone=cleanPhone(document.getElementById('nurseAlarmPhone').value);
-  nurseAlarmArea=document.getElementById('nurseAlarmArea').value.trim().toLowerCase();
-  nurseAlarmSkill=document.getElementById('nurseAlarmSkill').value.trim().toLowerCase();
-  if(!name||!phone){alert('Enter your Name and Phone first');return;}
-  nurseAlarmOn=true;
-  try{ let a=document.getElementById('nurseAlarm'); a.play().then(()=>{a.pause();}); }catch(e){}
-  if('Notification' in window && Notification.permission==='default'){ Notification.requestPermission(); }
-  try{ if(navigator.vibrate) navigator.vibrate(300); }catch(e){}
-  document.getElementById('nurseAlarmStatus').innerHTML='✅ NURSE ALARM ON - '+name+'<br>Area: '+(nurseAlarmArea||'ALL')+' | Skill: '+(nurseAlarmSkill||'ALL');
-  document.getElementById('nurseAlarmJobs').innerHTML='<p class="text-sm font-bold bg-red-50 p-3 rounded-xl">Waiting for jobs in your area... Keep page open</p>';
-  if(db) db.collection('nurse_online').doc(phone).set({name,phone,area:nurseAlarmArea,skill:nurseAlarmSkill,online:true,updatedAt:new Date()});
-  alert('✅ NURSE ALARM ON - '+name+'\nYour phone will RING when a client books in your area');
-}
-function triggerNurseAlarm(b){
-  if(!nurseAlarmOn) return;
-  let loc=String((b.location||'')+' '+(b.country||'')).toLowerCase();
-  let svc=String(b.service||'').toLowerCase();
-  if(nurseAlarmArea && loc.indexOf(nurseAlarmArea)===-1) return;
-  if(nurseAlarmSkill && svc.indexOf(nurseAlarmSkill)===-1 && (b.service||'').toLowerCase().indexOf(nurseAlarmSkill)===-1) return;
-  try{ document.getElementById('nurseAlarm').play(); }catch(e){}
-  try{ if(navigator.vibrate) navigator.vibrate([600,200,600,200,600,200,600]); }catch(e){}
-  document.getElementById('nurseAlarmJobs').innerHTML='<p class="text-sm font-bold bg-red-50 p-3 rounded-xl">🔔 NEW JOB FOR YOU NURSE! \n'+(b.service||'')+' - '+(b.name||'')+' - '+(b.phone||'')+'</p>';
-  alert('🔔 NEW JOB FOR YOU NURSE! \n'+(b.service||'')+' - '+(b.name||'')+' - '+(b.phone||''));
-  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('New Job - '+b.service); }catch(e){} }
-}
-loadPharmacyAds();
+function enableNurseAlarm(){ let name=document.getElementById('nurseAlarmName').value.trim(); let phone=cleanPhone(document.getElementById('nurseAlarmPhone').value); nurseAlarmArea=document.getElementById('nurseAlarmArea').value.trim().toLowerCase(); nurseAlarmSkill=document.getElementById('nurseAlarmSkill').value.trim().toLowerCase(); if(!name||!phone){alert('Enter Name and Phone');return;} nurseAlarmOn=true; document.getElementById('nurseAlarmStatus').innerHTML='✅ NURSE ALARM ON - '+name; alert('✅ NURSE ALARM ON - '+name); }
+updateShareLinks(); loadPharmacyAds();
 </script>
 </body>
 </html>
