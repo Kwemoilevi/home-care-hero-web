@@ -36,10 +36,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .passBox{border:2px dashed #f59e0b;padding:12px;border-radius:12px;margin:12px 0;background:#fffbeb}
 .shareBox{background:#dcfce7;border:3px solid #16a34a;padding:16px;border-radius:14px;text-align:center;margin:12px 0}
 .shareBig{font-size:48px;font-weight:bold;color:#16a34a}
-.shareBar{background:#e5e7eb;height:22px;border-radius:20px;overflow:hidden;margin:10px 0}
-.shareFill{background:#16a34a;height:100%;width:10%;color:#fff;font-size:12px;font-weight:bold;line-height:22px;text-align:center}
-.shareFillJoy{background:#2563eb}
-.shareFillJab{background:#f59e0b}
 .gpsBox{background:#eff6ff;border:2px solid #2563eb;padding:12px;border-radius:12px;margin:10px 0}
 .liveDot{color:#22c55e;font-weight:bold}
 .alarmBox{background:#fee2e2;border:3px solid #dc2626;padding:14px;border-radius:14px;margin:12px 0;text-align:center;animation:blink 1s infinite}
@@ -57,7 +53,7 @@ table th{background:#16a34a;color:#fff}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
 .footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;text-align:center;padding:8px;z-index:5}
 #hiddenAdmin{opacity:0.35;font-size:12px;color:#666;border:1px solid #ddd;background:#f9f9f9;border-radius:20px;cursor:pointer;padding:8px 16px}
-.howToAdmin{background:#fff3cd;border:2px solid #f59e0b;padding:12px;border-radius:12px;margin:12px 0;text-align:center}
+.workTitle{background:#16a34a;color:#fff;padding:10px;border-radius:10px;text-align:center;font-size:18px;font-weight:bold;margin:14px 0 8px}
 label{font-weight:bold;font-size:14px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -117,7 +113,7 @@ label{font-weight:bold;font-size:14px}
 <button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Booking Alarm / Notifications</button>
 </div>
 
-<div class="card">
+<div id="homeGallery" class="card">
 <h3>❤️ Our Nurses Caring For Patients At Home - Real Care</h3>
 <p class="small">Trusted nurses attending patients at home - Worldwide</p>
 <div class="gallery">
@@ -173,7 +169,6 @@ label{font-weight:bold;font-size:14px}
 <h2>👩‍⚕️ For Nurses - Qualification Form</h2>
 <p class="small">Fill ALL fields honestly. JOY will check your qualifications before approving you.</p>
 <div id="nurseAlarm"></div>
-<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM - Tap To Hear How It Sounds</button>
 <hr>
 <label>1. Full Name *</label><input id="nurseName" placeholder="e.g. Mary Atim">
 <label>2. Phone / WhatsApp *</label><input id="nursePhone" placeholder="e.g. 0770000000">
@@ -204,7 +199,6 @@ label{font-weight:bold;font-size:14px}
 <p id="nurseMsg" class="msg"></p>
 <div class="shareLinkBox">
 <h3>📤 Share This Nurse Form</h3>
-<p class="small">Send this app link to other nurses</p>
 <input id="shareLinkInput" readonly value="">
 <button class="btn btnBlue" onclick="copyShareLink()">📋 Copy Nurse Form Link</button>
 <button class="btn btnGreen" onclick="shareViaWhatsApp()">💬 Share Via WhatsApp</button>
@@ -252,14 +246,13 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" onclick="loginGoogle()">Login with Google</button>
 <button class="btn btnRed hidden" id="logoutBtn" onclick="logout()">Logout</button>
 <p id="loginMsg" class="msg"></p>
-<div class="howToAdmin"><b>Are you Staff / Admin?</b><br><span class="small">Close app, reopen, choose OPEN AS ADMIN, then tap Admin button at very bottom</span><br><button class="btn" style="background:#333" onclick="tapHiddenAdmin()">🔐 Go To Admin Login</button></div>
 </div>
 
+<!-- ADMIN - SEPARATE PAGE, NOT MIXED WITH HOME -->
 <div id="admin" class="card hidden">
-<div class="howToAdmin"><b>✅ You found Admin Dashboard!</b><br><span class="small">This page is hidden from clients. Only SUPER / JOY / JABETH with password can see it.</span></div>
-<h2>Admin Login</h2>
-<p class="small">Choose your name, enter phone + password</p>
+<h2 style="text-align:center">🔐 Staff Login</h2>
 <div id="adminLoginBox">
+<p class="small">Choose your name, enter phone + password</p>
 <select id="adminRole">
 <option value="SUPER">SUPER ADMIN</option>
 <option value="JOY">JOY CHELANGAT</option>
@@ -271,61 +264,42 @@ label{font-weight:bold;font-size:14px}
 <p id="adminLoginMsg" class="msg"></p>
 </div>
 <button class="btn hidden" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin</button>
+<button class="btn" style="background:#666" onclick="show('home')">← Back To Home</button>
 
+<!-- SUPER - CLEAN -->
 <div id="superDash" class="adminBox hidden">
-<h2>👑 SUPER ADMIN Dashboard - SEE ALL</h2>
+<h2 style="text-align:center">👑 SUPER - Your Work</h2>
 <div id="superAlarm"></div>
-<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
-<button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
-
-<div class="shareBox" style="background:#fffbeb;border-color:#f59e0b">
-<h3 style="margin:0">📊 ALL PERCENTAGES - SUPER SEES EVERYONE</h3>
-<p class="small">Total Collected from all clients via Pesapal</p>
+<div class="workTitle">1. ALL MONEY - ALL PERCENTAGES</div>
 <table>
-<tr><th>Person</th><th>Share</th><th>Earnings</th><th>Withdrawn</th><th>Balance Left</th></tr>
-<tr><td><b>👑 SUPER (You)</b></td><td>80%</td><td id="tblSuperEarn">UGX 0</td><td id="tblSuperWith">UGX 0</td><td id="tblSuperBal">UGX 0</td></tr>
+<tr><th>Person</th><th>Share</th><th>Earnings</th><th>Withdrawn</th><th>Balance</th></tr>
+<tr><td><b>👑 SUPER</b></td><td>80%</td><td id="tblSuperEarn">UGX 0</td><td id="tblSuperWith">UGX 0</td><td id="tblSuperBal">UGX 0</td></tr>
 <tr><td><b>💙 JOY</b></td><td>10%</td><td id="tblJoyEarn">UGX 0</td><td id="tblJoyWith">UGX 0</td><td id="tblJoyBal">UGX 0</td></tr>
 <tr><td><b>💛 JABETH</b></td><td>10%</td><td id="tblJabEarn">UGX 0</td><td id="tblJabWith">UGX 0</td><td id="tblJabBal">UGX 0</td></tr>
 <tr style="background:#dcfce7;font-weight:bold"><td>TOTAL</td><td>100%</td><td id="tblTotalEarn">UGX 0</td><td id="tblTotalWith">UGX 0</td><td id="tblTotalBal">UGX 0</td></tr>
 </table>
-<p class="small">Example: If Total = UGX 100,000, SUPER gets 80,000, JOY 10,000, JABETH 10,000</p>
-</div>
-
+<div class="workTitle">2. MY WITHDRAW - SUPER</div>
 <div class="withdrawBox">
-<h3 style="margin:0">💰 WITHDRAW - SUPER</h3>
 <p>Your Balance: <span id="superWithdrawBal" class="withdrawBig">UGX 0</span></p>
-<p class="small">Withdraw to your MoMo. SUPER withdraws directly, no approval needed.</p>
 <input id="superWithdrawAmt" type="number" placeholder="Amount to Withdraw e.g. 50000">
-<input id="superWithdrawPhone" placeholder="MoMo Number to Receive e.g. 0770000000">
+<input id="superWithdrawPhone" placeholder="MoMo Number e.g. 0770000000">
 <select id="superWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
-<button class="btn" style="background:#d97706" onclick="requestWithdraw('SUPER')">💰 WITHDRAW NOW - SUPER</button>
+<button class="btn" style="background:#d97706" onclick="requestWithdraw('SUPER')">💰 WITHDRAW NOW</button>
 <p id="superWithdrawMsg" class="msg"></p>
-<h3>All Withdraw Requests - From JOY + JABETH + You</h3>
+</div>
+<div class="workTitle">3. WITHDRAW REQUESTS - Pay JOY & JABETH</div>
 <div id="superWithdrawList"></div>
-</div>
-
-<div class="shareLinkBox">
-<h3>📤 SHARE LINK - For JOY & SUPER</h3>
-<input id="superShareLink" readonly value="">
-<button class="btn btnGreen" onclick="shareLinkWhatsApp('SUPER')">💬 Share App Link Via WhatsApp - To JOY / SUPER</button>
-<button class="btn btnBlue" onclick="copySuperLink()">📋 Copy App Link</button>
-<button class="btn btn2" onclick="shareNurseFormWhatsApp()">👩‍⚕️ Share NURSE FORM Only - To Nurses</button>
-<p id="superShareMsg" class="msg"></p>
-</div>
-<div class="stat"><div><b id="sTotal">UGX 0</b>Total Payments</div><div><b id="sSuper">UGX 0</b>Your 80%</div><div><b id="sJoy">UGX 0</b>Joy 10%</div><div><b id="sJabeth">UGX 0</b>Jabeth 10%</div></div>
-<div class="gpsBox"><h3>📍 LIVE GPS - All Nurses + Clients</h3><div id="superGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
-<h3>All Bookings</h3><div id="superBookings"></div>
-<h3>All Nurses - With Qualifications</h3><div id="superNurses"></div>
-<h3>All Payments</h3><div id="superPays"></div>
-<h3>All Ratings</h3><div id="superRatings"></div>
-<div class="passBox">
-<h3>🔐 Change Passwords - SUPER ONLY</h3>
-<p class="small">1. Change GATE password</p>
+<div class="workTitle">4. ALL BOOKINGS</div>
+<div id="superBookings"></div>
+<div class="workTitle">5. ALL NURSES</div>
+<div id="superNurses"></div>
+<div class="workTitle">6. ALL PAYMENTS</div>
+<div id="superPays"></div>
+<p class="small"><a href="#" onclick="togglePassBox('superPassBox');return false;">🔐 Change My Password</a></p>
+<div id="superPassBox" class="passBox hidden">
 <input id="newGatePass" type="password" placeholder="New Gate Password">
 <button class="btn btn2" onclick="changeGatePass()">Change GATE Password</button>
 <p id="gateChangeMsg" class="msg"></p>
-<hr>
-<p class="small">2. Change YOUR OWN Super password</p>
 <input id="oldSuperPass" type="password" placeholder="Your Current Super Password">
 <input id="newSuperPass" type="password" placeholder="New Super Password">
 <button class="btn" onclick="changeMyPass('SUPER')">Change MY Super Password</button>
@@ -333,39 +307,26 @@ label{font-weight:bold;font-size:14px}
 </div>
 </div>
 
+<!-- JOY - CLEAN - ONLY NURSES -->
 <div id="joyDash" class="adminBox hidden">
-<h2>💙 JOY CHELANGAT Dashboard</h2>
+<h2 style="text-align:center">💙 JOY - Your Work: Nurses Only</h2>
 <div id="joyAlarm"></div>
-<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
-<button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
-<div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJoy">10%</div></div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span></p></div>
-
+<div class="workTitle">1. MY MONEY - 10%</div>
+<div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span><br><b>Balance Left:</b> <span id="joyBalanceLeft">UGX 0</span></p></div>
+<div class="workTitle">2. MY WITHDRAW - JOY</div>
 <div class="withdrawBox">
-<h3 style="margin:0">💰 WITHDRAW - JOY</h3>
-<p>Your Earnings: <span id="joyWithdrawBal" class="withdrawBig">UGX 0</span><br><span class="small">Already Withdrawn: <span id="joyWithdrawnTxt">UGX 0</span> | Balance Left: <span id="joyBalanceLeft">UGX 0</span></span></p>
-<p class="small">Request withdraw - SUPER will see it and send to your MoMo, then mark as Paid.</p>
-<input id="joyWithdrawAmt" type="number" placeholder="Amount to Withdraw e.g. 10000">
-<input id="joyWithdrawPhone" placeholder="Your MoMo Number e.g. 0775761052">
+<input id="joyWithdrawAmt" type="number" placeholder="Amount e.g. 10000">
+<input id="joyWithdrawPhone" placeholder="Your MoMo e.g. 0775761052">
 <select id="joyWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
-<button class="btn" style="background:#2563eb" onclick="requestWithdraw('JOY')">💰 REQUEST WITHDRAW - JOY</button>
+<button class="btn" style="background:#2563eb" onclick="requestWithdraw('JOY')">💰 REQUEST WITHDRAW</button>
 <p id="joyWithdrawMsg" class="msg"></p>
-<h3>My Withdraw History</h3>
 <div id="joyWithdrawList"></div>
 </div>
-
-<div class="shareLinkBox">
-<h3>📤 SHARE LINK - JOY</h3>
-<input id="joyShareLink" readonly value="">
-<button class="btn btnGreen" onclick="shareLinkWhatsApp('JOY')">💬 Share Nurse Form Via WhatsApp</button>
-<button class="btn btnBlue" onclick="copyJoyLink()">📋 Copy Link</button>
-<p id="joyShareMsg" class="msg"></p>
-</div>
-<p>Your Job: Approve Nurses ONLY - Check Qualifications Carefully.</p>
-<div class="gpsBox"><h3>📍 LIVE GPS - Nurses You Approve</h3><div id="joyGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
-<div class="stat"><div><b id="jNurseCount">0</b>Nurses To Approve</div><div><b id="jTotal2">UGX 0</b>Your Earnings</div></div>
-<h3>Nurses Waiting For Your Approval - Check Qualifications</h3><div id="joyNurses"></div>
-<div class="passBox">
-<h3>🔐 Change MY Password - JOY</h3>
+<div class="workTitle">3. NURSES TO APPROVE - Check Qualification</div>
+<p class="small">Total Nurses: <span id="jNurseCount">0</span> - Check License + Qualification, then Approve or Reject</p>
+<div id="joyNurses"></div>
+<p class="small"><a href="#" onclick="togglePassBox('joyPassBox');return false;">🔐 Change My Password</a></p>
+<div id="joyPassBox" class="passBox hidden">
 <input id="oldJoyPass" type="password" placeholder="Your Current Password">
 <input id="newJoyPass" type="password" placeholder="New Password">
 <button class="btn" onclick="changeMyPass('JOY')">Change MY Joy Password</button>
@@ -373,32 +334,26 @@ label{font-weight:bold;font-size:14px}
 </div>
 </div>
 
+<!-- JABETH - CLEAN - ONLY BOOKINGS -->
 <div id="jabethDash" class="adminBox hidden">
-<h2>💛 JABETH KIMTAI Dashboard</h2>
+<h2 style="text-align:center">💛 JABETH - Your Work: Bookings Only</h2>
 <div id="jabethAlarm"></div>
-<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
-<button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
-<div class="shareBox" style="border-color:#f59e0b"><p style="margin:0">YOUR SHARE - JABETH</p><div class="shareBig" style="color:#d97706">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJab">10%</div></div><p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span></p></div>
-
+<div class="workTitle">1. MY MONEY - 10%</div>
+<div class="shareBox" style="border-color:#f59e0b"><p style="margin:0">YOUR SHARE - JABETH</p><div class="shareBig" style="color:#d97706">10%</div><p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br><b>Your Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span><br><b>Balance Left:</b> <span id="jabethBalanceLeft">UGX 0</span></p></div>
+<div class="workTitle">2. MY WITHDRAW - JABETH</div>
 <div class="withdrawBox">
-<h3 style="margin:0">💰 WITHDRAW - JABETH</h3>
-<p>Your Earnings: <span id="jabethWithdrawBal" class="withdrawBig">UGX 0</span><br><span class="small">Already Withdrawn: <span id="jabethWithdrawnTxt">UGX 0</span> | Balance Left: <span id="jabethBalanceLeft">UGX 0</span></span></p>
-<p class="small">Request withdraw - SUPER will see it and send to your MoMo, then mark as Paid.</p>
-<input id="jabethWithdrawAmt" type="number" placeholder="Amount to Withdraw e.g. 10000">
-<input id="jabethWithdrawPhone" placeholder="Your MoMo Number e.g. 0780545144">
+<input id="jabethWithdrawAmt" type="number" placeholder="Amount e.g. 10000">
+<input id="jabethWithdrawPhone" placeholder="Your MoMo e.g. 0780545144">
 <select id="jabethWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
-<button class="btn" style="background:#d97706" onclick="requestWithdraw('JABETH')">💰 REQUEST WITHDRAW - JABETH</button>
+<button class="btn" style="background:#d97706" onclick="requestWithdraw('JABETH')">💰 REQUEST WITHDRAW</button>
 <p id="jabethWithdrawMsg" class="msg"></p>
-<h3>My Withdraw History</h3>
 <div id="jabethWithdrawList"></div>
 </div>
-
-<p>Your Job: Client Bookings ONLY.</p>
-<div class="gpsBox"><h3>📍 LIVE GPS - Clients + Nurses On Booking</h3><div id="jabethGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
-<div class="stat"><div><b id="jbBookCount">0</b>Client Bookings</div><div><b id="jbTotal2">UGX 0</b>Your Earnings</div></div>
-<h3>Client Bookings - Approve Them</h3><div id="jabethBookings"></div>
-<div class="passBox">
-<h3>🔐 Change MY Password - JABETH</h3>
+<div class="workTitle">3. BOOKINGS TO APPROVE</div>
+<p class="small">Total Bookings: <span id="jbBookCount">0</span> - Call client, confirm, then Approve</p>
+<div id="jabethBookings"></div>
+<p class="small"><a href="#" onclick="togglePassBox('jabethPassBox');return false;">🔐 Change My Password</a></p>
+<div id="jabethPassBox" class="passBox hidden">
 <input id="oldJabethPass" type="password" placeholder="Your Current Password">
 <input id="newJabethPass" type="password" placeholder="New Password">
 <button class="btn" onclick="changeMyPass('JABETH')">Change MY Jabeth Password</button>
@@ -410,6 +365,7 @@ label{font-weight:bold;font-size:14px}
 <div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">🔐 Admin • Staff Only - Tap Here</button></div>
 
 <script>
+function togglePassBox(id){ let el=document.getElementById(id); el.classList.toggle('hidden'); }
 let withdraws = JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
 function getWithdrawStats(){
   let total=getBal();
@@ -434,7 +390,7 @@ function requestWithdraw(who){
   let w={who:who, amt:amt, phone:phone, method:method, status: who==='SUPER' ? 'Paid ✅ (SUPER - Self Withdraw)' : 'Pending - Waiting for SUPER to Pay', date:new Date().toLocaleString(), createdAt:new Date()};
   withdraws.push(w); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
   if(window.db) window.db.collection('withdraws').add(w).catch(()=>{});
-  document.getElementById(msgId).innerText='✅ Withdraw Request Saved! '+(who==='SUPER' ? 'SUPER - Send money to yourself via MoMo.' : 'SUPER will see it and send to '+phone);
+  document.getElementById(msgId).innerText='✅ Saved! '+(who==='SUPER' ? 'Send money to yourself via MoMo.' : 'SUPER will see it and send to '+phone);
   document.getElementById(amtId).value='';
   if(who!=='SUPER') triggerBookingAlarm({name:'WITHDRAW REQUEST: '+who, service:'Withdraw UGX '+amt, phone:phone, location:method});
   updateWithdrawUI();
@@ -450,25 +406,26 @@ function deleteWithdraw(i){
 }
 function updateWithdrawUI(){
   let stats=getWithdrawStats();
-  let el=document.getElementById('tblSuperEarn'); if(el) el.innerText='UGX '+stats.earns.SUPER.toLocaleString();
-  if(document.getElementById('tblJoyEarn')) document.getElementById('tblJoyEarn').innerText='UGX '+stats.earns.JOY.toLocaleString();
-  if(document.getElementById('tblJabEarn')) document.getElementById('tblJabEarn').innerText='UGX '+stats.earns.JABETH.toLocaleString();
-  if(document.getElementById('tblSuperWith')) document.getElementById('tblSuperWith').innerText='UGX '+stats.withdrawn.SUPER.toLocaleString();
-  if(document.getElementById('tblJoyWith')) document.getElementById('tblJoyWith').innerText='UGX '+stats.withdrawn.JOY.toLocaleString();
-  if(document.getElementById('tblJabWith')) document.getElementById('tblJabWith').innerText='UGX '+stats.withdrawn.JABETH.toLocaleString();
-  if(document.getElementById('tblSuperBal')) document.getElementById('tblSuperBal').innerText='UGX '+stats.balance.SUPER.toLocaleString();
-  if(document.getElementById('tblJoyBal')) document.getElementById('tblJoyBal').innerText='UGX '+stats.balance.JOY.toLocaleString();
-  if(document.getElementById('tblJabBal')) document.getElementById('tblJabBal').innerText='UGX '+stats.balance.JABETH.toLocaleString();
-  if(document.getElementById('tblTotalEarn')) document.getElementById('tblTotalEarn').innerText='UGX '+stats.total.toLocaleString();
-  if(document.getElementById('tblTotalWith')) document.getElementById('tblTotalWith').innerText='UGX '+(stats.withdrawn.SUPER+stats.withdrawn.JOY+stats.withdrawn.JABETH).toLocaleString();
-  if(document.getElementById('tblTotalBal')) document.getElementById('tblTotalBal').innerText='UGX '+(stats.balance.SUPER+stats.balance.JOY+stats.balance.JABETH).toLocaleString();
-  if(document.getElementById('superWithdrawBal')) document.getElementById('superWithdrawBal').innerText='UGX '+stats.balance.SUPER.toLocaleString();
-  if(document.getElementById('joyWithdrawBal')) document.getElementById('joyWithdrawBal').innerText='UGX '+stats.earns.JOY.toLocaleString();
-  if(document.getElementById('joyWithdrawnTxt')) document.getElementById('joyWithdrawnTxt').innerText='UGX '+stats.withdrawn.JOY.toLocaleString();
-  if(document.getElementById('joyBalanceLeft')) document.getElementById('joyBalanceLeft').innerText='UGX '+stats.balance.JOY.toLocaleString();
-  if(document.getElementById('jabethWithdrawBal')) document.getElementById('jabethWithdrawBal').innerText='UGX '+stats.earns.JABETH.toLocaleString();
-  if(document.getElementById('jabethWithdrawnTxt')) document.getElementById('jabethWithdrawnTxt').innerText='UGX '+stats.withdrawn.JABETH.toLocaleString();
-  if(document.getElementById('jabethBalanceLeft')) document.getElementById('jabethBalanceLeft').innerText='UGX '+stats.balance.JABETH.toLocaleString();
+  let set=(id,val)=>{ let e=document.getElementById(id); if(e) e.innerText=val; };
+  set('tblSuperEarn','UGX '+stats.earns.SUPER.toLocaleString());
+  set('tblJoyEarn','UGX '+stats.earns.JOY.toLocaleString());
+  set('tblJabEarn','UGX '+stats.earns.JABETH.toLocaleString());
+  set('tblSuperWith','UGX '+stats.withdrawn.SUPER.toLocaleString());
+  set('tblJoyWith','UGX '+stats.withdrawn.JOY.toLocaleString());
+  set('tblJabWith','UGX '+stats.withdrawn.JABETH.toLocaleString());
+  set('tblSuperBal','UGX '+stats.balance.SUPER.toLocaleString());
+  set('tblJoyBal','UGX '+stats.balance.JOY.toLocaleString());
+  set('tblJabBal','UGX '+stats.balance.JABETH.toLocaleString());
+  set('tblTotalEarn','UGX '+stats.total.toLocaleString());
+  set('tblTotalWith','UGX '+(stats.withdrawn.SUPER+stats.withdrawn.JOY+stats.withdrawn.JABETH).toLocaleString());
+  set('tblTotalBal','UGX '+(stats.balance.SUPER+stats.balance.JOY+stats.balance.JABETH).toLocaleString());
+  set('superWithdrawBal','UGX '+stats.balance.SUPER.toLocaleString());
+  set('joyBalanceLeft','UGX '+stats.balance.JOY.toLocaleString());
+  set('jabethBalanceLeft','UGX '+stats.balance.JABETH.toLocaleString());
+  set('jTotal','UGX '+stats.earns.JOY.toLocaleString());
+  set('jbTotal','UGX '+stats.earns.JABETH.toLocaleString());
+  set('jTotalCollected','UGX '+stats.total.toLocaleString());
+  set('jbTotalCollected','UGX '+stats.total.toLocaleString());
   let superList = withdraws.length ? withdraws.map((w,i)=>'<div class="item"><b>'+w.who+'</b> - UGX '+w.amt.toLocaleString()+' - '+w.method+' to '+w.phone+'<br>Status: '+w.status+'<br>'+w.date+'<br>'+(w.status.includes('Pending') ? '<button onclick="markWithdrawPaid('+i+')">✅ Mark As Paid - I Sent Money</button> ' : '')+'<button onclick="deleteWithdraw('+i+')">Delete</button></div>').join('') : 'No withdraw requests yet';
   if(document.getElementById('superWithdrawList')) document.getElementById('superWithdrawList').innerHTML=superList;
   let joyList = withdraws.filter(w=>w.who==='JOY').length ? withdraws.map((w,i)=> w.who==='JOY' ? '<div class="item">UGX '+w.amt.toLocaleString()+' - '+w.method+' to '+w.phone+'<br>'+w.status+'<br>'+w.date+'</div>' : '').join('') : 'No withdraws yet';
@@ -479,21 +436,11 @@ function updateWithdrawUI(){
 function getAppLink(){ return window.location.href.split('?')[0].split('#')[0] || 'https://home-care-hero.web.app'; }
 function setupShareLinks(){
   let link=getAppLink();
-  ['shareLinkInput','superShareLink','joyShareLink'].forEach(id=>{ let el=document.getElementById(id); if(el) el.value=link; });
+  ['shareLinkInput'].forEach(id=>{ let el=document.getElementById(id); if(el) el.value=link; });
 }
 function copyShareLink(){
   let el=document.getElementById('shareLinkInput'); el.select(); document.execCommand('copy');
   document.getElementById('shareMsg').innerText='✅ Link Copied! Send it to nurses on WhatsApp.';
-  if(navigator.clipboard) navigator.clipboard.writeText(el.value);
-}
-function copySuperLink(){
-  let el=document.getElementById('superShareLink'); el.select(); document.execCommand('copy');
-  document.getElementById('superShareMsg').innerText='✅ App Link Copied! Send to JOY / SUPER.';
-  if(navigator.clipboard) navigator.clipboard.writeText(el.value);
-}
-function copyJoyLink(){
-  let el=document.getElementById('joyShareLink'); el.select(); document.execCommand('copy');
-  document.getElementById('joyShareMsg').innerText='✅ Link Copied! Send to nurses.';
   if(navigator.clipboard) navigator.clipboard.writeText(el.value);
 }
 function shareViaWhatsApp(){
@@ -501,27 +448,15 @@ function shareViaWhatsApp(){
   let text=encodeURIComponent('👩‍⚕️ Hello! Join Hom Care Hero as a Nurse! Fill your Qualification Form here: '+link+' - Tap Nurse, fill Qualification, JOY will approve you. Thank you!');
   window.open('https://wa.me/?text='+text,'_blank');
 }
-function shareLinkWhatsApp(who){
-  let link=getAppLink();
-  let text='';
-  if(who==='JOY') text=encodeURIComponent('💙 Hi JOY! This is Hom Care Hero App Link: '+link+' - Open it, tap Admin button at bottom, enter Gate Password, then login as JOY to approve nurses. Share this link to nurses to fill Qualification Form. Thank you!');
-  else text=encodeURIComponent('👑 Hi SUPER! This is Hom Care Hero App Link: '+link+' - Open it, tap Admin button at bottom, enter Gate Password, then login as SUPER to see all payments, nurses, GPS, alarms. Share Nurse Form link to nurses. Thank you!');
-  window.open('https://wa.me/?text='+text,'_blank');
-}
-function shareNurseFormWhatsApp(){
-  let link=getAppLink();
-  let text=encodeURIComponent('👩‍⚕️ Hello Nurse! Are you qualified? Join Hom Care Hero! Fill Qualification Form here: '+link+' - Tap ENTER AS CLIENT, then Tap NURSE, fill your Qualification, License Number, Experience. JOY will check and approve you. Pay is good, patients worldwide!');
-  window.open('https://wa.me/?text='+text,'_blank');
-}
 let alarmInterval=null, alarmAudioCtx=null;
 let notificationsList = JSON.parse(localStorage.getItem('hc_notifications')||'[]');
 function enableNotifications(){
   if('Notification' in window){
     Notification.requestPermission().then(p=>{
-      if(p==='granted'){ new Notification('Hom Care Hero 🚨', {body:'Alarm ON - You will get notified when client books'}); alert('✅ Notifications ON - Keep app open for alarm'); }
-      else alert('Please Allow Notifications in Chrome settings to get alarm when app is in background');
+      if(p==='granted'){ new Notification('Hom Care Hero 🚨', {body:'Alarm ON - You will get notified when client books'}); alert('✅ Notifications ON'); }
+      else alert('Please Allow Notifications in Chrome settings');
     });
-  } else alert('Notifications not supported on this phone, but alarm sound + vibration will still work when app is open');
+  }
 }
 function playAlarmSound(times){
   try{
@@ -558,11 +493,6 @@ function triggerBookingAlarm(booking){
   alarmInterval=setInterval(()=>{ playAlarmSound(3); if(navigator.vibrate) navigator.vibrate([500,200,500]); },8000);
   renderAlarms();
 }
-function testAlarm(){
-  playAlarmSound(6);
-  if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);
-  alert('🚨 Did you hear alarm? If YES, alarm works. If NO, turn up volume + tap Enable Notifications.');
-}
 function stopAlarm(){
   if(alarmInterval) clearInterval(alarmInterval);
   document.getElementById('alarmBanner').style.display='none';
@@ -590,7 +520,7 @@ function tapHiddenAdmin(){
   showAdminDirect();
 }
 function showAdminDirect(){
-  ['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
+  ['home','homeGallery','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
   document.getElementById('admin').classList.remove('hidden');
   if(currentAdmin) updateAdmin();
   updateBal(); updateWithdrawUI();
@@ -600,30 +530,30 @@ let bookGps = null;
 let nurseWatchId = null;
 let nurseSharing = false;
 let userType = sessionStorage.getItem('hero_user_type')||'';
-function formatGps(g){ if(!g) return 'No GPS yet'; return '<div class="item"><span class="liveDot">● LIVE</span> <b>'+(g.name||'User')+'</b> - '+(g.type||'')+'<br>Lat: '+(g.lat||'').toString().slice(0,9)+', Lng: '+(g.lng||'').toString().slice(0,9)+'<br>Time: '+(g.time||'')+'<br><a href="https://www.google.com/maps?q='+g.lat+','+g.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">📍 View On Google Maps</a> <a href="https://www.google.com/maps/dir/?api=1&destination='+g.lat+','+g.lng+'" target="_blank" style="background:#16a34a;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">🧭 Navigate To Them</a></div>'; }
+function formatGps(g){ if(!g) return 'No GPS yet'; return '<div class="item"><span class="liveDot">● LIVE</span> <b>'+(g.name||'User')+'</b> - '+(g.type||'')+'<br>Lat: '+(g.lat||'').toString().slice(0,9)+', Lng: '+(g.lng||'').toString().slice(0,9)+'<br>Time: '+(g.time||'')+'<br><a href="https://www.google.com/maps?q='+g.lat+','+g.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">📍 View On Google Maps</a></div>'; }
 function refreshGpsList(){
-  let html = gpsList.length ? gpsList.slice(-10).reverse().map(formatGps).join('') : 'No live nurse yet. Nurse must tap Share Location.';
-  ['liveGpsList','superGps','joyGps','jabethGps'].forEach(id=>{ let el=document.getElementById(id); if(el) el.innerHTML=html; });
-  if(window.db){ window.db.collection('gps_live').orderBy('createdAt','desc').limit(10).get().then(snap=>{ let h=''; snap.forEach(d=>{let g=d.data(); if(g.lat) h+=formatGps(g);}); if(h){ ['liveGpsList','superGps','joyGps','jabethGps'].forEach(id=>{ let el=document.getElementById(id); if(el) el.innerHTML=h; }); } }).catch(()=>{}); }
+  let html = gpsList.length ? gpsList.slice(-10).reverse().map(formatGps).join('') : 'No live nurse yet.';
+  ['liveGpsList'].forEach(id=>{ let el=document.getElementById(id); if(el) el.innerHTML=html; });
+  if(window.db){ window.db.collection('gps_live').orderBy('createdAt','desc').limit(10).get().then(snap=>{ let h=''; snap.forEach(d=>{let g=d.data(); if(g.lat) h+=formatGps(g);}); if(h){ let el=document.getElementById('liveGpsList'); if(el) el.innerHTML=h; } }).catch(()=>{}); }
 }
 function getMyLocation(elId){
   let el=document.getElementById(elId); if(!el) return;
-  if(!navigator.geolocation){ el.innerText='GPS not supported on this phone'; return; }
-  el.innerText='Getting GPS... Allow Location when asked...';
+  if(!navigator.geolocation){ el.innerText='GPS not supported'; return; }
+  el.innerText='Getting GPS... Allow Location...';
   navigator.geolocation.getCurrentPosition(pos=>{
     let lat=pos.coords.latitude, lng=pos.coords.longitude;
-    el.innerText='📍 You are at Lat: '+lat.toFixed(6)+', Lng: '+lng.toFixed(6)+' - Accuracy: '+Math.round(pos.coords.accuracy)+'m';
+    el.innerText='📍 You are at Lat: '+lat.toFixed(6)+', Lng: '+lng.toFixed(6);
     if(elId==='homeGps'){ document.getElementById('homeGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+lat+','+lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View Me On Google Maps</a>'; }
-  },err=>{ el.innerText='❌ GPS Failed: '+err.message+' - Turn ON Location in phone Settings > Location > ON, and Allow Chrome to use Location.'; });
+  },err=>{ el.innerText='❌ '+err.message; });
 }
 function captureBookGps(){
   if(!navigator.geolocation){ document.getElementById('bookGpsText').innerText='GPS not supported'; return; }
-  document.getElementById('bookGpsText').innerText='Getting GPS... Allow Location...';
+  document.getElementById('bookGpsText').innerText='Getting GPS...';
   navigator.geolocation.getCurrentPosition(pos=>{
     bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude};
     document.getElementById('bookGpsText').innerText='✅ GPS Captured: '+bookGps.lat.toFixed(6)+', '+bookGps.lng.toFixed(6);
     document.getElementById('bookGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+bookGps.lat+','+bookGps.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View My Location On Map</a>';
-  },err=>{ document.getElementById('bookGpsText').innerText='❌ '+err.message+' - Turn ON Location'; });
+  },err=>{ document.getElementById('bookGpsText').innerText='❌ '+err.message; });
 }
 function saveGps(name,type,lat,lng){
   let g={name:name,type:type,lat:lat,lng:lng,time:new Date().toLocaleString(),createdAt:new Date()};
@@ -637,7 +567,7 @@ function sendOneGps(){
   if(!navigator.geolocation){ document.getElementById('nurseGpsText').innerText='GPS not supported'; return; }
   navigator.geolocation.getCurrentPosition(pos=>{
     saveGps(name,'NURSE',pos.coords.latitude,pos.coords.longitude);
-    document.getElementById('nurseGpsText').innerText='✅ Location Sent: '+pos.coords.latitude.toFixed(6)+', '+pos.coords.longitude.toFixed(6)+' - Admins + Client can see you now!';
+    document.getElementById('nurseGpsText').innerText='✅ Location Sent: '+pos.coords.latitude.toFixed(6)+', '+pos.coords.longitude.toFixed(6);
     document.getElementById('nurseGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+pos.coords.latitude+','+pos.coords.longitude+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View Me On Map</a>';
   },err=>{ document.getElementById('nurseGpsText').innerText='❌ '+err.message; });
 }
@@ -646,14 +576,14 @@ function toggleNurseGps(){
   if(!nurseSharing){
     if(!navigator.geolocation){ alert('GPS not supported'); return; }
     nurseSharing=true;
-    document.getElementById('nurseGpsStatus').innerHTML='Status: <span class="liveDot">● LIVE SHARING ON</span> - Updating every 30 seconds';
+    document.getElementById('nurseGpsStatus').innerHTML='Status: <span class="liveDot">● LIVE SHARING ON</span>';
     document.getElementById('nurseGpsBtn').innerText='🛑 STOP Sharing Location';
     document.getElementById('nurseGpsBtn').style.background='#dc2626';
     sendOneGps();
-    nurseWatchId=setInterval(()=>{ navigator.geolocation.getCurrentPosition(pos=>{ saveGps(name,'NURSE LIVE',pos.coords.latitude,pos.coords.longitude); document.getElementById('nurseGpsText').innerText='🟢 LIVE Updated: '+new Date().toLocaleTimeString()+' - '+pos.coords.latitude.toFixed(6)+', '+pos.coords.longitude.toFixed(6); }); },30000);
+    nurseWatchId=setInterval(()=>{ navigator.geolocation.getCurrentPosition(pos=>{ saveGps(name,'NURSE LIVE',pos.coords.latitude,pos.coords.longitude); document.getElementById('nurseGpsText').innerText='🟢 LIVE Updated: '+new Date().toLocaleTimeString(); }); },30000);
   } else {
     nurseSharing=false; clearInterval(nurseWatchId);
-    document.getElementById('nurseGpsStatus').innerHTML='Status: <b>Not Sharing - Stopped</b>';
+    document.getElementById('nurseGpsStatus').innerHTML='Status: <b>Not Sharing</b>';
     document.getElementById('nurseGpsBtn').innerText='📍 START Sharing My Live Location';
     document.getElementById('nurseGpsBtn').style.background='#16a34a';
   }
@@ -675,15 +605,15 @@ function checkGate(){
   let p=document.getElementById('gatePass').value.trim();
   let pw=getPasswords();
   if(p===pw.GATE){ userType='admin'; sessionStorage.setItem('hero_user_type','admin'); sessionStorage.setItem('hero_gate','open'); document.getElementById('gate').style.display='none'; }
-  else { document.getElementById('gateMsg').innerText='❌ Wrong Admin Gate Password. Clients tap BLUE button above - No password needed.'; document.getElementById('gatePass').value=''; }
+  else { document.getElementById('gateMsg').innerText='❌ Wrong Admin Gate Password. Clients tap BLUE button above.'; document.getElementById('gatePass').value=''; }
 }
 if(sessionStorage.getItem('hero_gate')==='open'){ document.getElementById('gate').style.display='none'; }
 document.getElementById('gatePass').addEventListener('keydown',function(e){ if(e.key==='Enter') checkGate(); });
 function changeGatePass(){
   let np=document.getElementById('newGatePass').value.trim();
-  if(np.length<4){ document.getElementById('gateChangeMsg').innerText='❌ New Gate Password must be at least 4 letters'; return; }
+  if(np.length<4){ document.getElementById('gateChangeMsg').innerText='❌ Must be at least 4 letters'; return; }
   let pw=getPasswords(); pw.GATE=np; savePasswords(pw);
-  document.getElementById('gateChangeMsg').innerText='✅ GATE Password Changed! Tell other admins privately.';
+  document.getElementById('gateChangeMsg').innerText='✅ GATE Password Changed!';
   document.getElementById('newGatePass').value='';
 }
 function changeMyPass(role){
@@ -693,10 +623,10 @@ function changeMyPass(role){
   let oldP=document.getElementById(oldId).value.trim();
   let newP=document.getElementById(newId).value.trim();
   let pw=getPasswords();
-  if(oldP!==pw[role]){ document.getElementById(msgId).innerText='❌ Wrong Current Password. Try again.'; return; }
+  if(oldP!==pw[role]){ document.getElementById(msgId).innerText='❌ Wrong Current Password.'; return; }
   if(newP.length<4){ document.getElementById(msgId).innerText='❌ New Password must be at least 4 letters'; return; }
   pw[role]=newP; savePasswords(pw);
-  document.getElementById(msgId).innerText='✅ Your Password Changed! Next login use NEW password. Remember it, do NOT screenshot it.';
+  document.getElementById(msgId).innerText='✅ Your Password Changed!';
   document.getElementById(oldId).value=''; document.getElementById(newId).value='';
 }
 const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "38632827016",appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId: "G-ZV09KN6R90"};
@@ -717,7 +647,7 @@ function adminLogin(){
   if(role==='SUPER' && pass===pw.SUPER) ok=true;
   if(role==='JOY' && phone==='0775761052' && pass===pw.JOY) ok=true;
   if(role==='JABETH' && phone==='0780545144' && pass===pw.JABETH) ok=true;
-  if(!ok){ document.getElementById('adminLoginMsg').innerText='❌ Wrong Phone or Password. Try again.'; return; }
+  if(!ok){ document.getElementById('adminLoginMsg').innerText='❌ Wrong Phone or Password.'; return; }
   currentAdmin=role;
   document.getElementById('adminLoginMsg').innerText='✅ Welcome '+role+'!';
   document.getElementById('adminLoginBox').classList.add('hidden');
@@ -733,41 +663,31 @@ function adminLogin(){
 function adminLogout(){ currentAdmin=null; document.getElementById('adminLoginBox').classList.remove('hidden'); document.getElementById('adminLogoutBtn').classList.add('hidden'); document.getElementById('superDash').classList.add('hidden'); document.getElementById('joyDash').classList.add('hidden'); document.getElementById('jabethDash').classList.add('hidden'); document.getElementById('adminLoginMsg').innerText='Logged out'; }
 function formatNurse(n,i){
   return '<div class="item"><b>'+(n.name||'')+'</b> - '+(n.phone||'')+'<br>'
-  +'🎓 Qualification: <b>'+(n.qual||n.qualification||'Not given')+'</b><br>'
+  +'🎓 <b>'+(n.qual||n.qualification||'Not given')+'</b><br>'
   +'🪪 License: <b>'+(n.license||'Not given')+'</b> | ID: '+(n.idNo||'Not given')+'<br>'
-  +'📚 School: '+(n.school||'')+' ('+(n.year||'')+')<br>'
-  +'⏰ Experience: '+(n.exp||'')+' | Special: '+(n.spec||'')+'<br>'
-  +'📍 Location: '+(n.location||'')+' | Transport: '+(n.transport||'')+'<br>'
-  +'💬 About: '+(n.about||'')+'<br>'
+  +'📚 '+(n.school||'')+' ('+(n.year||'')+') | ⏰ '+(n.exp||'')+'<br>'
+  +'📍 '+(n.location||'')+'<br>'
   +'Status: '+(n.status||'Waiting')+'<br>'
-  +'<button onclick="approveNurse('+i+')">Approve Nurse ✅</button> <button onclick="rejectNurse('+i+')">Reject</button></div>';
+  +'<button onclick="approveNurse('+i+')">Approve ✅</button> <button onclick="rejectNurse('+i+')">Reject</button></div>';
 }
 function updateAdmin(){
   let total=getBal();
   let superShare=Math.round(total*0.8), joyShare=Math.round(total*0.1), jabShare=Math.round(total*0.1);
-  document.getElementById('sTotal').innerText='UGX '+total.toLocaleString();
-  document.getElementById('sSuper').innerText='UGX '+superShare.toLocaleString();
-  document.getElementById('sJoy').innerText='UGX '+joyShare.toLocaleString();
-  document.getElementById('sJabeth').innerText='UGX '+jabShare.toLocaleString();
-  document.getElementById('jTotal').innerText='UGX '+joyShare.toLocaleString();
-  document.getElementById('jTotal2').innerText='UGX '+joyShare.toLocaleString();
-  document.getElementById('jTotalCollected').innerText='UGX '+total.toLocaleString();
-  document.getElementById('jbTotal').innerText='UGX '+jabShare.toLocaleString();
-  document.getElementById('jbTotal2').innerText='UGX '+jabShare.toLocaleString();
-  document.getElementById('jbTotalCollected').innerText='UGX '+total.toLocaleString();
-  document.getElementById('jNurseCount').innerText=nursesList.length;
-  document.getElementById('jbBookCount').innerText=bookings.length;
-  document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>'+(b.gps ? '📍 GPS: <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View Client On Map</a>' : 'No GPS')+'</div>').join('') : 'No bookings';
-  document.getElementById('jabethBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>Status: '+b.status+'<br>'+(b.gps ? '📍 <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View Client GPS On Map</a>' : 'No GPS')+'<br><button onclick="approveBooking('+i+')">Approve Booking ✅</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No client bookings yet';
-  let nurseHTML = nursesList.length ? nursesList.map((n,i)=>formatNurse(n,i)).join('') : 'No nurses yet';
+  let set=(id,v)=>{let e=document.getElementById(id); if(e) e.innerText=v;};
+  set('sTotal','UGX '+total.toLocaleString()); set('sSuper','UGX '+superShare.toLocaleString()); set('sJoy','UGX '+joyShare.toLocaleString()); set('sJabeth','UGX '+jabShare.toLocaleString());
+  set('jTotal','UGX '+joyShare.toLocaleString()); set('jbTotal','UGX '+jabShare.toLocaleString());
+  set('jTotalCollected','UGX '+total.toLocaleString()); set('jbTotalCollected','UGX '+total.toLocaleString());
+  set('jNurseCount',nursesList.length); set('jbBookCount',bookings.length);
+  document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'</div>').join('') : 'No bookings yet';
+  document.getElementById('jabethBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>Status: '+b.status+'<br><button onclick="approveBooking('+i+')">Approve ✅</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No bookings yet - Wait for client to book';
+  let nurseHTML = nursesList.length ? nursesList.map((n,i)=>formatNurse(n,i)).join('') : 'No nurses yet - Wait for nurse to fill form';
   document.getElementById('joyNurses').innerHTML=nurseHTML;
   document.getElementById('superNurses').innerHTML=nurseHTML;
-  document.getElementById('superPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+' - '+(p.note||'')+'</div>').join('') : 'No payments';
-  document.getElementById('superRatings').innerHTML = ratings.length ? ratings.map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b> - '+(r.comment||'')+'</div>').join('') : 'No ratings';
+  document.getElementById('superPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+'</div>').join('') : 'No payments yet';
   updateWithdrawUI();
 }
 function approveNurse(i){ nursesList[i].status='Approved ✅ by JOY'; localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add({action:'approved',name:nursesList[i].name,date:new Date().toLocaleString()}); updateAdmin(); alert('Nurse Approved ✅'); }
-function rejectNurse(i){ if(confirm('Reject this nurse? Check qualification first.')){ nursesList.splice(i,1); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); updateAdmin(); } }
+function rejectNurse(i){ if(confirm('Reject this nurse?')){ nursesList.splice(i,1); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); updateAdmin(); } }
 function updateBal(){
   document.getElementById('bal').innerText='UGX '+getBal().toLocaleString();
   document.getElementById('ratingList').innerHTML = ratings.length ? ratings.slice(-5).reverse().map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b><br>'+(r.comment||'')+'</div>').join('') : 'No ratings yet. Be first!';
@@ -784,40 +704,40 @@ function show(id){
     }
     showAdminDirect(); return;
   }
-  ['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
+  ['home','homeGallery','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
   document.getElementById(id).classList.remove('hidden');
-  if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');}
+  if(id==='home'){document.getElementById('homeGallery').classList.remove('hidden');}
   if(id==='track') refreshGpsList();
   if(id==='nurse' || id==='home') renderAlarms();
   if(id==='nurse') setupShareLinks();
   updateBal();
 }
 function bookService(s){ document.getElementById('bookService').value=s; show('book'); }
-function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.gps ? '📍 Your GPS: <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View On Map</a>' : 'No GPS saved')+'</div>').join('') : 'No booking found for '+ph; refreshGpsList(); }
+function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'</div>').join('') : 'No booking found for '+ph; refreshGpsList(); }
 function joinNurse(){
   let n=document.getElementById('nurseName').value.trim();
   let ph=document.getElementById('nursePhone').value.trim();
   let qual=document.getElementById('nurseQual').value;
   let lic=document.getElementById('nurseLicense').value.trim();
   if(!n || !ph){document.getElementById('nurseMsg').innerText='❌ Enter Name + Phone';return;}
-  if(!qual){document.getElementById('nurseMsg').innerText='❌ Select Your Qualification - JOY must check it';return;}
-  if(!lic){document.getElementById('nurseMsg').innerText='❌ Enter Nursing Council License Number - Required';return;}
-  let data={name:n,phone:ph,idNo:document.getElementById('nurseID').value,qual:qual,qualification:qual,license:lic,exp:document.getElementById('nurseExp').value,spec:document.getElementById('nurseSpec').value,school:document.getElementById('nurseSchool').value,year:document.getElementById('nurseYear').value,location:document.getElementById('nurseLocation').value,transport:document.getElementById('nurseTransport').value,about:document.getElementById('nurseAbout').value,status:'Waiting for JOY Approval - Check Qualifications',date:new Date().toLocaleString(),createdAt:new Date()};
+  if(!qual){document.getElementById('nurseMsg').innerText='❌ Select Your Qualification';return;}
+  if(!lic){document.getElementById('nurseMsg').innerText='❌ Enter License Number';return;}
+  let data={name:n,phone:ph,idNo:document.getElementById('nurseID').value,qual:qual,qualification:qual,license:lic,exp:document.getElementById('nurseExp').value,spec:document.getElementById('nurseSpec').value,school:document.getElementById('nurseSchool').value,year:document.getElementById('nurseYear').value,location:document.getElementById('nurseLocation').value,transport:document.getElementById('nurseTransport').value,about:document.getElementById('nurseAbout').value,status:'Waiting for JOY Approval',date:new Date().toLocaleString(),createdAt:new Date()};
   nursesList.push(data); localStorage.setItem('hc_nurses',JSON.stringify(nursesList));
   if(db) db.collection('nurses').add(data);
-  document.getElementById('nurseMsg').innerText='✅ Qualification Form Sent! JOY will check your '+qual+' + License '+lic+' and approve you. Thank you!';
+  document.getElementById('nurseMsg').innerText='✅ Sent! JOY will check your '+qual+' and approve you.';
   triggerBookingAlarm({name:'NEW NURSE: '+n, service:'Qualification: '+qual, phone:ph, location:document.getElementById('nurseLocation').value});
 }
 function orderPharmacy(){ let item=document.getElementById('pharmItem').value; if(!item){document.getElementById('pharmMsg').innerText='Enter medicine';return;} document.getElementById('pharmMsg').innerText='Opening Pesapal for '+item+'...'; window.location.href=PESAPAL_LINK; }
 function setStars(n){ currentStars=n; document.getElementById('starText').innerText='You selected '+n+' / 5'; document.querySelectorAll('#starBox span').forEach((s,i)=>{ s.innerText = i<n ? '★' : '☆'; s.style.color = i<n ? '#f59e0b' : '#000'; }); }
-function submitRating(){ let name=document.getElementById('rateName').value.trim(); if(!name){ document.getElementById('rateMsg').innerText='Please enter your name'; return; } if(!currentStars){ document.getElementById('rateMsg').innerText='Please tap stars first'; return; } if(!db){ document.getElementById('rateMsg').innerText='Firebase not connected yet'; return; } let data={name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:new Date().toLocaleString(),createdAt:new Date()}; document.getElementById('rateMsg').innerText='Saving...'; db.collection('ratings').add(data).then(()=>{ ratings.push({name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:data.date}); localStorage.setItem('hc_ratings',JSON.stringify(ratings)); document.getElementById('rateMsg').innerText='✅ Thank you! '+currentStars+' Stars - Rating saved to Firebase!'; updateBal(); }).catch(e=>{ document.getElementById('rateMsg').innerText='Error: '+e.message; }); }
+function submitRating(){ let name=document.getElementById('rateName').value.trim(); if(!name){ document.getElementById('rateMsg').innerText='Please enter your name'; return; } if(!currentStars){ document.getElementById('rateMsg').innerText='Please tap stars first'; return; } if(!db){ document.getElementById('rateMsg').innerText='Firebase not connected yet'; return; } let data={name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:new Date().toLocaleString(),createdAt:new Date()}; document.getElementById('rateMsg').innerText='Saving...'; db.collection('ratings').add(data).then(()=>{ ratings.push({name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:data.date}); localStorage.setItem('hc_ratings',JSON.stringify(ratings)); document.getElementById('rateMsg').innerText='✅ Thank you! '+currentStars+' Stars!'; updateBal(); }).catch(e=>{ document.getElementById('rateMsg').innerText='Error: '+e.message; }); }
 function loginGoogle(){ if(!auth){alert('Paste Firebase config first');return;} let p=new firebase.auth.GoogleAuthProvider(); auth.signInWithPopup(p).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(e=>alert(e.message)); }
 function loginEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.signInWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(er=>alert(er.message)); }
 function signupEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.createUserWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Account created ✅'; show('home');}).catch(er=>alert(er.message)); }
 function logout(){ auth.signOut().then(()=>{document.getElementById('loginMsg').innerText='Logged out';}); }
 function bookNow(){
   let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value; if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;}
-  if(!bookGps && navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude}; saveBookingWithGps(name,phone); }); document.getElementById('bookMsg').innerText='Capturing your GPS... Allow Location...'; return; }
+  if(!bookGps && navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude}; saveBookingWithGps(name,phone); }); document.getElementById('bookMsg').innerText='Capturing your GPS...'; return; }
   saveBookingWithGps(name,phone);
 }
 function saveBookingWithGps(name,phone){
@@ -826,11 +746,11 @@ function saveBookingWithGps(name,phone){
   if(bookGps) saveGps(name,'CLIENT BOOKING',bookGps.lat,bookGps.lng);
   if(db) db.collection('bookings').add(data);
   triggerBookingAlarm(data);
-  document.getElementById('bookMsg').innerText='✅ Booked! 🚨 Alarm sent to Nurses + Admins! Now opening REAL Pesapal...';
+  document.getElementById('bookMsg').innerText='✅ Booked! 🚨 Alarm sent to Nurses + Admins! Opening Pesapal...';
   setTimeout(()=>{ window.location.href=PESAPAL_LINK; },1200);
 }
-function realDeposit(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){document.getElementById('walletMsg').innerText='Enter at least 500';return;} document.getElementById('walletMsg').innerText='Opening REAL Pesapal for UGX '+a.toLocaleString()+'... Pay with MTN MoMo there.'; window.location.href=PESAPAL_LINK; }
-function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - SUPER to verify in Pesapal'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase. SUPER will verify in Pesapal.'; triggerBookingAlarm({name:'PAYMENT: UGX '+a, service:'Payment Confirmed', phone:'', location:''}); }
+function realDeposit(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){document.getElementById('walletMsg').innerText='Enter at least 500';return;} document.getElementById('walletMsg').innerText='Opening REAL Pesapal for UGX '+a.toLocaleString(); window.location.href=PESAPAL_LINK; }
+function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved. SUPER will verify in Pesapal.'; triggerBookingAlarm({name:'PAYMENT: UGX '+a, service:'Payment Confirmed', phone:'', location:''}); }
 function approveBooking(i){ bookings[i].status='Approved ✅ by JABETH'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); }
 function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); } }
 updateBal(); refreshGpsList(); renderAlarms(); setupShareLinks(); updateWithdrawUI();
