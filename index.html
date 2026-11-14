@@ -2,278 +2,246 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Hom Care Hero 🌍 - Trusted Nurses Worldwide</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hom Care Hero - Trusted Nurses Worldwide</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-<style>body{background:#FFF7ED} .card-shadow{box-shadow:0 4px 14px rgba(0,0,0,0.10)}</style>
-<audio id="bookingAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
-<audio id="nurseAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg" preload="auto"></audio>
+<style>body{background:#FFF7ED}.card-shadow{box-shadow:0 4px 14px rgba(0,0,0,0.10)}</style>
 </head>
 <body>
 <div id="mainApp">
-<div class="p-3 sticky top-0 z-50 text-white" style="background:linear-gradient(90deg,#0F766E,#059669)">
-<div class="flex justify-between items-center"><h1 class="font-bold text-xl">Hom Care Hero 🌍</h1><button onclick="openAdmin()" class="bg-white text-black px-3 py-1 rounded-full text-xs font-bold">Admin</button></div>
-<div class="text-[11px] mt-1">🌍 Worldwide • Any Country • Any City • All Payments Inside App Only • No Cash Outside</div>
+<div class="p-3 sticky top-0 z-50 text-white" style="background:linear-gradient(90deg,#7c3aed,#db2777)">
+<div class="flex justify-between items-center"><h1 class="font-bold text-xl">Hom Care Hero 🌍</h1><span></span></div>
+<div class="text-[11px] mt-1">Worldwide • Any Country • Any City • All Payments</div>
 <div class="flex gap-2 mt-2 overflow-x-auto pb-1">
-<button onclick="showSection('home')" class="bg-white text-black px-3 py-1 rounded-full text-sm font-bold">Home</button>
-<button onclick="showSection('wallet')" class="bg-yellow-300 text-black px-3 py-1 rounded-full text-sm font-bold">Wallet</button>
-<button onclick="showSection('book')" class="bg-green-300 text-black px-3 py-1 rounded-full text-sm font-bold">Book</button>
-<button onclick="showSection('track')" class="bg-purple-300 text-black px-3 py-1 rounded-full text-sm font-bold">Track</button>
-<button onclick="showSection('nurse')" class="bg-pink-300 text-black px-3 py-1 rounded-full text-sm font-bold">Nurse</button>
-<button onclick="showSection('nurseAlarmSec')" class="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">🔔 Nurse Alarm</button>
-<button onclick="showSection('pharmacy')" class="bg-orange-300 text-black px-3 py-1 rounded-full text-sm font-bold">Pharmacy</button>
+<button onclick="showSection('home')" class="bg-white text-black px-3 py-1 rounded-full text-xs">Home</button>
+<button onclick="showSection('wallet')" class="bg-yellow-300 text-black px-3 py-1 rounded-full text-xs">Wallet</button>
+<button onclick="showSection('book')" class="bg-green-300 text-black px-3 py-1 rounded-full text-xs">Book</button>
+<button onclick="showSection('track')" class="bg-purple-300 text-black px-3 py-1 rounded-full text-xs">Track</button>
+<button onclick="showSection('nurse')" class="bg-pink-300 text-black px-3 py-1 rounded-full text-xs">Join as Nurse</button>
+<button onclick="showSection('nurseAlarmSec')" class="bg-red-300 text-black px-3 py-1 rounded-full text-xs">Nurse Alarm</button>
+<button onclick="showSection('pharmacy')" class="bg-orange-300 text-black px-3 py-1 rounded-full text-xs">Pharmacy</button>
 </div></div>
 
 <div id="homeSection" class="p-3">
-<div class="bg-white p-4 rounded-xl text-center border card-shadow"><p class="font-bold text-lg">Hom Care Hero 🌍 - Trusted Nurses To Your Home</p><p class="text-sm text-gray-600">🌍 Worldwide • Real Nurses • Pay Inside App Only • Pesapal</p><p class="text-xs mt-2">Views: <span id="viewCount">0</span> | Taps: <span id="tapCount">0</span></p><p class="text-[11px] text-green-700 font-bold mt-1">✅ LIVE - REAL - Firebase Connected</p><p id="liveStatus" class="text-[11px] font-bold mt-1">Checking connection...</p><p class="text-[11px] text-red-600 font-bold mt-1">🚫 NO CASH OUTSIDE APP - All Transactions Inside App Only</p></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">💙 Choose Service - Tap To Book</h3><div class="grid grid-cols-2 gap-2 mt-2">
-<button onclick="tapService('General Nursing');goBook('General Nursing')" class="p-3 rounded-xl bg-teal-100 font-bold">General Nursing</button>
-<button onclick="tapService('Elderly Nursing Care');goBook('Elderly Nursing Care')" class="p-3 rounded-xl bg-orange-100 font-bold">Elderly Care</button>
-<button onclick="tapService('Post-Surgery Nursing');goBook('Post-Surgery Nursing')" class="p-3 rounded-xl bg-blue-100 font-bold">Post-Surgery</button>
-<button onclick="tapService('Physiotherapy Nursing');goBook('Physiotherapy Nursing')" class="p-3 rounded-xl bg-green-100 font-bold">Physiotherapy</button>
-<button onclick="tapService('Wound Care');goBook('Wound Care')" class="p-3 rounded-xl bg-red-100 font-bold">🩹 Wound Care</button>
-<button onclick="tapService('Broken Bones - Fracture Care');goBook('Broken Bones - Fracture Care')" class="p-3 rounded-xl bg-yellow-100 font-bold">🦴 Broken Bones</button>
-</div><p class="text-[11px] text-gray-600 mt-2">🩹 Wound Care = Cleaning wounds, dressing, infection care at home<br>🦴 Broken Bones = Cast care, fracture care, help to walk, physiotherapy after broken leg/arm</p></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold text-lg">❤️ Our Nurses Caring For Patients At Home</h3><div class="grid grid-cols-2 gap-2 mt-3">
-<div><img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80'"><p class="text-[11px] font-bold mt-1">👩‍⚕️ Nurse Checking Elderly Patient</p></div>
-<div><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80'"><p class="text-[11px] font-bold mt-1">💙 Nurse Caring For Patient In Bed</p></div>
-<div><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🩺 Nurse Checking Blood Pressure</p></div>
-<div><img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🤲 Nurse Helping Patient To Walk</p></div>
-<div><img src="https://images.unsplash.com/photo-1584515933487-779824d29309?w=800&q=80" class="w-full h-32 object-cover rounded-xl"><p class="text-[11px] font-bold mt-1">🩹 Nurse Doing Wound Dressing</p></div>
-<div><img src="https://images.unsplash.com/photo-1532938911079-1b06ac7ceec7?w=800&q=80" class="w-full h-32 object-cover rounded-xl" onerror="this.src='https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80'"><p class="text-[11px] font-bold mt-1">🦴 Nurse Caring For Broken Leg</p></div>
-</div><button onclick="showSection('book')" class="w-full p-3 bg-teal-600 text-white rounded-xl font-bold mt-3">Book A Nurse Like This - Tap Here</button></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">⭐ Available Nurses - Worldwide</h3><div id="nurseList">Loading nurses...</div></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #F97316"><h3 class="font-bold text-lg">💊 Pharmacies - Advertise Here - Worldwide</h3><div id="pharmacyAdsList">Loading pharmacy ads...</div><button onclick="showSection('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full text-sm mt-2">💊 Advertise Your Pharmacy Here</button></div>
-<p class="text-center text-[11px] text-gray-400 mt-4">Hom Care Hero 🌍 • Worldwide • All Payments Inside App</p></div>
+<div class="bg-white p-4 rounded-xl text-center card-shadow"><h3 class="font-bold text-lg">Book a Trusted Nurse Anywhere 🌍</h3><p class="text-sm text-gray-600">Elderly Care • Post-Surgery • Wound Care • Broken Bones • Physiotherapy</p>
+<button onclick="showSection('book')" class="w-full p-3 bg-teal-600 text-white rounded-xl mt-3 font-bold">Book Now</button>
+<button onclick="showSection('wallet')" class="w-full p-3 bg-yellow-400 text-black rounded-xl mt-2 font-bold">Top Up Wallet - Pesapal</button>
+</div>
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">Our Services</h3>
+<button onclick="tapService('Elderly Nursing Care');goBook('Elderly Nursing Care')" class="w-full p-3 border rounded-xl mt-2 text-left">👵 Elderly Nursing Care</button>
+<button onclick="tapService('Post-Surgery Nursing');goBook('Post-Surgery Nursing')" class="w-full p-3 border rounded-xl mt-2 text-left">🏥 Post-Surgery Nursing</button>
+<button onclick="tapService('Physiotherapy Nursing');goBook('Physiotherapy Nursing')" class="w-full p-3 border rounded-xl mt-2 text-left">🦵 Physiotherapy Nursing</button>
+<button onclick="tapService('Wound Care');goBook('Wound Care')" class="w-full p-3 border rounded-xl mt-2 text-left">🩹 Wound Care</button>
+<button onclick="tapService('Broken Bones - Fracture Care');goBook('Broken Bones - Fracture Care')" class="w-full p-3 border rounded-xl mt-2 text-left">🦴 Broken Bones - Fracture Care</button>
+</div>
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow"><h3 class="font-bold">Trusted Nurses Worldwide</h3><div class="flex gap-2 overflow-x-auto mt-2">
+<img src="https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
+<img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
+<img src="https://images.unsplash.com/photo-1599757147-3c5d00d3c3c6?w=800&q=80" class="w-32 h-24 object-cover rounded-xl">
+</div></div>
+<p class="text-center text-[11px] text-gray-400 mt-4">Hom Care Hero 🌍 • Worldwide • Any Country</p>
+</div>
 
 <div id="walletSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
 <h3 class="font-bold text-lg">💰 Wallet - Pay Inside App Only - Pesapal</h3>
-<p class="text-xs text-gray-600 mt-1">🚫 NO cash, NO MTN to personal number. All money MUST go through this app.</p>
-<div class="bg-yellow-50 p-3 rounded-xl mt-3 border"><p class="font-bold text-sm">HOW TO PAY - 3 EASY STEPS:</p><p class="text-xs mt-1">1️⃣ Type phone + amount below<br>2️⃣ Tap GREEN button - Pesapal will open in new tab - Pay with MTN / Airtel / Visa<br>3️⃣ Copy Transaction ID from Pesapal - Come back here - Paste it - Tap SUBMIT</p></div>
+<p class="text-xs text-gray-600 mt-1">NO cash, NO MTN to personal number. All money goes via Pesapal link.</p>
 <input id="topupPhone" placeholder="Phone e.g. +256772101875 - Any country" class="w-full p-3 border rounded-xl mt-3">
-<input id="topupAmount" type="number" placeholder="Amount e.g. 5000" class="w-full p-3 border rounded-xl mt-2">
-<button onclick="openPesapal()" class="w-full p-3 rounded-xl font-bold text-white mt-3" style="background:#0F766E">1️⃣ STEP 1 - Tap Here To Pay With Pesapal - MTN / Airtel / Visa</button>
-<input id="topupTxId" placeholder="STEP 2 - Paste Pesapal Transaction ID e.g. PSK_... / Order ID" class="w-full p-3 border rounded-xl mt-3" style="border:2px solid #0F766E">
-<button onclick="submitTopup()" class="w-full p-3 rounded-xl font-bold bg-green-600 text-white mt-2">2️⃣ STEP 2 - SUBMIT Transaction ID - I Have Paid</button>
-<button onclick="checkWallet()" class="w-full p-3 rounded-xl font-bold bg-yellow-300 mt-2">Check My Wallet Balance</button>
-<div id="walletResult" class="mt-3 text-sm font-bold"></div>
-<p class="text-xs text-red-600 font-bold mt-2">⚠️ Do NOT close app before you paste Transaction ID. SUPER will verify in Pesapal and approve in 5 mins.</p>
+<input id="topupAmount" type="number" placeholder="Amount e.g. 50000" class="w-full p-3 border rounded-xl mt-2">
+<button onclick="openPesapal()" class="w-full p-3 rounded-xl font-bold bg-green-600 text-white mt-2">STEP 1 - Pay with Pesapal</button>
+<input id="topupTxid" placeholder="STEP 2 - Paste Pesapal Transaction ID e.g. PSK_..." class="w-full p-3 border rounded-xl mt-2">
+<button onclick="submitTopup()" class="w-full p-3 rounded-xl font-bold bg-yellow-400 mt-2">STEP 3 - Submit Top Up</button>
+<button onclick="checkWallet()" class="w-full p-3 rounded-xl font-bold bg-yellow-300 mt-2">Check My Balance</button>
+<div id="walletResult" class="text-sm font-bold mt-2"></div>
+<p class="text-xs text-red-600 font-bold mt-2">⚠️ Do NOT close app before you paste Transaction ID.</p>
 </div></div>
 
-<div id="bookSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">📅 Book A Nurse - Pay Inside App Only</h3>
-<p class="text-xs text-red-600 font-bold">You must have Wallet balance to book. Top Up Wallet first with Pesapal inside app.</p>
-<input id="bookService" placeholder="Service" class="w-full p-3 border rounded-xl mt-3">
+<div id="bookSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
+<p class="text-xs text-red-600 font-bold">You must have Wallet balance to book. Top Up Wallet first.</p>
+<input id="bookService" placeholder="Service e.g. Wound Care" class="w-full p-3 border rounded-xl mt-2">
 <input id="bookName" placeholder="Your Name" class="w-full p-3 border rounded-xl mt-2">
 <input id="bookPhone" placeholder="Phone e.g. +256772101875 - Any country" class="w-full p-3 border rounded-xl mt-2">
 <input id="bookLocation" placeholder="Location e.g. Kampala, Nairobi, London" class="w-full p-3 border rounded-xl mt-2">
 <input id="bookCountry" placeholder="Country e.g. Uganda, Kenya, UK" class="w-full p-3 border rounded-xl mt-2">
 <input id="bookNurse" placeholder="Nurse Name (optional)" class="w-full p-3 border rounded-xl mt-2">
-<input id="bookAmount" type="number" placeholder="Amount to Pay e.g. 5000 - Paid from Wallet" class="w-full p-3 border rounded-xl mt-2">
-<button onclick="bookNow()" class="w-full p-3 rounded-xl bg-green-600 text-white font-bold mt-3">💳 Pay From Wallet & Book - Inside App Only</button>
-<button onclick="showSection('wallet')" class="w-full p-3 rounded-xl bg-yellow-300 font-bold mt-2">First Top Up Wallet With Pesapal</button>
-<p id="bookMsg" class="text-sm font-bold mt-2"></p></div></div>
-
-<div id="trackSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold">📍 Track Booking</h3>
-<input id="trackPhone" placeholder="Enter phone used to book" class="w-full p-3 border rounded-xl mt-3">
-<button onclick="trackBooking()" class="w-full p-3 bg-purple-600 text-white rounded-xl font-bold mt-2">Track</button><div id="trackResult" class="mt-3 text-sm"></div></div></div>
-
-<div id="nurseAlarmSecSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow" style="border:2px solid #DC2626">
-<h3 class="font-bold text-lg">🔔 Nurse Alarm - Get Alert When Client Books - YOUR JOB 🚨</h3>
-<p class="text-xs text-gray-600 mt-1">Nurses: Fill this and keep this page OPEN. When a client books in your area / skill, your phone will RING + VIBRATE + POP-UP. You must answer fast - It's your job!</p>
-<input id="nurseAlarmName" placeholder="Your Name e.g. Nurse" class="w-full p-3 border rounded-xl mt-3">
-<input id="nurseAlarmPhone" placeholder="Your Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseAlarmArea" placeholder="Your Area e.g. Kampala - Leave empty for ALL areas" class="w-full p-3 border rounded-xl mt-2">
-<select id="nurseAlarmSkill" class="w-full p-3 border rounded-xl mt-2"><option value="">All Skills - Ring for any booking</option><option>General Nursing</option><option>Elderly Nursing Care</option><option>Post-Surgery Nursing</option><option>Physiotherapy Nursing</option><option>Wound Care</option><option>Broken Bones - Fracture Care</option></select>
-<button onclick="enableNurseAlarm()" class="w-full p-3 rounded-xl bg-red-600 text-white font-bold mt-3">🔔 ENABLE NURSE ALARM - Tap Here</button>
-<p id="nurseAlarmStatus" class="text-sm font-bold mt-2 text-center"></p>
-<div id="nurseAlarmJobs" class="mt-3"></div>
-<p class="text-xs text-gray-500 mt-3">⚠️ Keep this page open. Do not close app. Keep phone volume ON. If you close page, alarm stops. Admin also gets alarm at same time.</p>
+<input id="bookAmount" type="number" placeholder="Amount to Pay e.g. 50000 - Paid from Wallet" class="w-full p-3 border rounded-xl mt-2">
+<button onclick="bookNow()" class="w-full p-3 bg-teal-600 text-white rounded-xl mt-2 font-bold">Pay From Wallet & Book LIVE</button>
+<button onclick="showSection('wallet')" class="w-full p-3 bg-yellow-300 rounded-xl mt-2 font-bold">Top Up Wallet</button>
+<p id="bookMsg" class="text-sm font-bold mt-2"></p>
 </div></div>
 
-<div id="pharmacySection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">💊 Pharmacy - Advertise With Hom Care Hero 🌍</h3><p class="text-xs text-gray-600">Pay inside app to advertise. Your pharmacy shows on Home for all clients worldwide.</p><input id="pharmName" placeholder="Pharmacy Name" class="w-full p-3 border rounded-xl mt-3"><input id="pharmPhone" placeholder="Pharmacy Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2"><input id="pharmLocation" placeholder="Location / City e.g. Kampala" class="w-full p-3 border rounded-xl mt-2"><input id="pharmCountry" placeholder="Country e.g. Uganda" class="w-full p-3 border rounded-xl mt-2"><input id="pharmOffer" placeholder="What do you sell? e.g. Drugs, Delivery, 24hrs" class="w-full p-3 border rounded-xl mt-2"><button onclick="applyPharmacy()" class="w-full p-3 bg-orange-600 text-white rounded-xl font-bold mt-3">Submit Pharmacy Advert - Pay Inside App</button><p class="text-xs text-red-600 font-bold mt-2">After submit, Top Up Wallet with Pesapal inside app, SUPER will approve your advert.</p><div id="pharmMsg" class="text-sm mt-2"></div></div></div>
+<div id="trackSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
+<h3 class="font-bold">Track Your Booking</h3>
+<input id="trackPhone" placeholder="Enter phone used to book" class="w-full p-3 border rounded-xl mt-2">
+<button onclick="trackBooking()" class="w-full p-3 bg-purple-600 text-white rounded-xl mt-2 font-bold">Track</button>
+<div id="trackResult" class="mt-2 text-sm"></div>
+</div></div>
 
-<div id="nurseSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">👩‍⚕️ Apply As Nurse - Proper Form - Anywhere 🌍</h3><p class="text-xs text-gray-600">Fill ALL fields. Admin will check your qualifications before approving. Wound Care & Broken Bones nurses are needed!</p>
-<p class="font-bold mt-4">1. Personal Details</p>
-<input id="nurseName" placeholder="Full Name *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nursePhone" placeholder="Phone e.g. +256772101875 *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseEmail" placeholder="Email e.g. nurse@email.com" class="w-full p-3 border rounded-xl mt-2">
+<div id="nurseAlarmSecSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
+<h3 class="font-bold text-lg">🔔 Nurse Alarm - Get Alert When Client Books - YOUR AREA</h3>
+<p class="text-xs text-gray-600 mt-1">Nurses: Fill this and keep this page OPEN. When a client books in your area, your phone will RING.</p>
+<input id="nurseAlarmName" placeholder="Your Name e.g. Joy" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseAlarmPhone" placeholder="Your Phone e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseAlarmArea" placeholder="Your Area e.g. Kampala - Leave empty for ALL" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseAlarmSkill" placeholder="Your Skill e.g. Wound Care" class="w-full p-3 border rounded-xl mt-2">
+<button onclick="enableNurseAlarm()" class="w-full p-3 rounded-xl bg-red-600 text-white font-bold mt-2">Turn ON Nurse Alarm</button>
+<p id="nurseAlarmStatus" class="text-sm font-bold mt-2 text-center"></p>
+<div id="nurseAlarmJobs" class="mt-2"></div>
+<p class="text-xs text-gray-500 mt-3">⚠️ Keep this page open. Do not close app. Keep sound ON.</p>
+</div></div>
+
+<div id="pharmacySection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
+<h3 class="font-bold">💊 Pharmacy Ads - Worldwide</h3>
+<div id="pharmacyList" class="mt-2 text-sm">Loading pharmacies...</div>
+</div></div>
+
+<div id="nurseSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
+<h3 class="font-bold">1. Personal Details</h3>
+<input id="nurseName" placeholder="Full Name **" class="w-full p-3 border rounded-xl mt-2">
+<input id="nursePhone" placeholder="Phone e.g. +256772101875 **" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseEmail" placeholder="Email e.g. nurse@gmail.com **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseDOB" type="date" class="w-full p-3 border rounded-xl mt-2">
-<select id="nurseGender" class="w-full p-3 border rounded-xl mt-2"><option value="">Select Gender *</option><option>Female</option><option>Male</option><option>Other</option></select>
-<input id="nurseID" placeholder="National ID / Passport Number *" class="w-full p-3 border rounded-xl mt-2">
-<p class="font-bold mt-4">2. Location</p>
-<input id="nurseCountry" placeholder="Your Country e.g. Uganda *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseArea" placeholder="Your City / Area e.g. Kampala *" class="w-full p-3 border rounded-xl mt-2">
+<select id="nurseGender" class="w-full p-3 border rounded-xl mt-2"><option value="">Gender **</option><option>Female</option><option>Male</option></select>
+<input id="nurseID" placeholder="National ID / Passport Number **" class="w-full p-3 border rounded-xl mt-2">
+<h3 class="font-bold mt-4">2. Location</h3>
+<input id="nurseCountry" placeholder="Your Country e.g. Uganda **" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseArea" placeholder="Your City / Area e.g. Kampala **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseAddress" placeholder="Full Address / Village / Street" class="w-full p-3 border rounded-xl mt-2">
-<p class="font-bold mt-4">3. Education & Qualifications *</p>
-<select id="nurseEdu" class="w-full p-3 border rounded-xl mt-2"><option value="">Highest Education Level *</option><option>Certificate in Nursing</option><option>Diploma in Nursing</option><option>Bachelor Degree in Nursing (BScN)</option><option>Master Degree in Nursing</option><option>Midwifery</option><option>Enrolled Nurse</option><option>Registered Nurse</option><option>Other Medical Qualification</option></select>
-<input id="nurseQual" placeholder="Qualification Name e.g. Diploma in Nursing / BSc Nursing *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSchool" placeholder="School / College / University Name *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseGradYear" type="number" placeholder="Year Graduated e.g. 2022 *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseCertNo" placeholder="Certificate Number" class="w-full p-3 border rounded-xl mt-2">
-<p class="font-bold mt-4">4. Licence / Registration</p>
-<input id="nurseLicence" placeholder="Nursing Council Licence / Registration Number *" class="w-full p-3 border rounded-xl mt-2">
+<h3 class="font-bold mt-4">3. Education & Qualifications **</h3>
+<select id="nurseEdu" class="w-full p-3 border rounded-xl mt-2"><option value="">Highest Education **</option><option>Certificate</option><option>Diploma in Nursing</option><option>BSc Nursing</option><option>Masters</option></select>
+<input id="nurseQual" placeholder="Qualification e.g. Diploma in Nursing / BSc" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSchool" placeholder="School / College / University Name **" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseGradYear" type="number" placeholder="Year Graduated e.g. 2022 **" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseCertNo" placeholder="Certificate Number **" class="w-full p-3 border rounded-xl mt-2">
+<h3 class="font-bold mt-4">4. Licence / Registration</h3>
+<input id="nurseLicence" placeholder="Nursing Council Licence / Registration Number **" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseLicenceExp" type="date" class="w-full p-3 border rounded-xl mt-2">
 <p class="text-[11px] text-gray-500">Licence Expiry Date ^</p>
-<select id="nurseCouncil" class="w-full p-3 border rounded-xl mt-2"><option value="">Nursing Council / Body</option><option>Uganda Nurses & Midwives Council</option><option>Nursing Council of Kenya</option><option>Other Country Council</option></select>
-<p class="font-bold mt-4">5. Experience & Skills</p>
-<input id="nurseExp" type="number" placeholder="Years of Experience e.g. 3 *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSkill" placeholder="Main Skill e.g. Wound Care / Broken Bones / General Nursing *" class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseSkills2" placeholder="Other Skills e.g. Wound Care, Broken Bones, Elderly, Post-Surgery, Physiotherapy, Baby Care" class="w-full p-3 border rounded-xl mt-2">
+<select id="nurseCouncil" class="w-full p-3 border rounded-xl mt-2"><option value="">Nursing Council **</option><option>Uganda Nurses & Midwives Council</option><option>Kenya NCK</option><option>Other / International</option></select>
+<h3 class="font-bold mt-4">5. Experience & Skills</h3>
+<input id="nurseExp" type="number" placeholder="Years of Experience e.g. 3 **" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSkill" placeholder="Main Skill e.g. Wound Care / Broken Bones / Geriatric" class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseSkills2" placeholder="Other Skills e.g. Wound Care" class="w-full p-3 border rounded-xl mt-2">
 <input id="nurseLang" placeholder="Languages You Speak e.g. English, Luganda, Swahili" class="w-full p-3 border rounded-xl mt-2">
 <input id="nursePrevWork" placeholder="Previous Hospital / Home Where You Worked" class="w-full p-3 border rounded-xl mt-2">
-<p class="font-bold mt-4">6. Availability & Documents</p>
-<select id="nurseAvail" class="w-full p-3 border rounded-xl mt-2"><option value="">Availability *</option><option>Full Time - Live In</option><option>Full Time - Day Only</option><option>Part Time</option><option>Night Shift Only</option><option>Weekends Only</option></select>
-<select id="nurseWorkType" class="w-full p-3 border rounded-xl mt-2"><option value="">Willing To Work</option><option>Home Care Only</option><option>Hospital Only</option><option>Both Home & Hospital</option></select>
-<input id="nurseRef" placeholder="Reference Name & Phone e.g. Dr. John - +256..." class="w-full p-3 border rounded-xl mt-2">
-<input id="nurseDocLink" placeholder="Link to CV / Certificate Photo (Google Drive / WhatsApp link) - Optional" class="w-full p-3 border rounded-xl mt-2">
-<label class="text-xs mt-2 block"><input id="nurseAgree" type="checkbox"> I confirm all information is true. I agree admin can verify my qualifications.</label>
-<button onclick="joinNurse()" class="w-full p-3 bg-pink-600 text-white rounded-xl font-bold mt-3">Submit Full Application - With Qualifications</button><div id="nurseMsg" class="text-sm mt-2"></div></div></div>
+<h3 class="font-bold mt-4">6. Availability & Documents</h3>
+<select id="nurseAvail" class="w-full p-3 border rounded-xl mt-2"><option value="">Availability **</option><option>Full-time</option><option>Part-time</option><option>Live-in</option><option>On-call</option></select>
+<select id="nurseWorkType" class="w-full p-3 border rounded-xl mt-2"><option value="">Work Type **</option><option>Home Visit</option><option>Hospital</option><option>Both</option></select>
+<input id="nurseRef" placeholder="Reference Name & Phone e.g. John - +256..." class="w-full p-3 border rounded-xl mt-2">
+<input id="nurseDocLink" placeholder="Link to CV / Certificate Photo (Google Drive Link)" class="w-full p-3 border rounded-xl mt-2">
+<label class="text-xs mt-2 block"><input id="nurseAgree" type="checkbox"> I confirm all info is true</label>
+<button onclick="joinNurse()" class="w-full p-3 bg-pink-600 text-white rounded-xl mt-3 font-bold">Submit Application</button>
+<p id="nurseMsg" class="text-sm font-bold mt-2"></p>
+</div></div>
+
+<!-- STAFF BUTTON - BOTTOM FAINT - HIDDEN IN PLAIN SIGHT -->
+<div class="text-center mt-10 mb-6">
+<button onclick="openAdmin()" style="color:#D1D5DB; font-size:11px; opacity:0.45; background:transparent; border:none; padding:8px;">staff</button>
+</div>
 </div>
 
 <div id="adminApp" class="hidden p-3">
-<div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Hom Care Hero 🌍 - Admin</h1><button onclick="closeAdmin()" class="bg-black text-white px-3 py-1 rounded-full text-xs">Close</button></div>
-<div class="bg-yellow-100 p-3 rounded-xl mt-3 border text-center"><p class="font-bold text-sm">🚨 ALARM IS ON - New bookings will RING + VIBRATE here</p><p class="text-xs">Keep this Admin page open. Tap <b>Enable Alarm</b> once to allow sound.</p><button onclick="enableAlarm()" class="bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold mt-2">🔔 Enable Alarm - Tap Here</button><p id="alarmStatus" class="text-xs font-bold mt-1"></p></div>
-<div id="gateBox" class="bg-white p-4 rounded-xl mt-3 text-center card-shadow"><p class="font-bold">Enter Admin Gate Password</p><input id="gatePass" type="password" placeholder="Password" class="w-full p-3 border rounded-xl mt-2 text-center"><button onclick="togglePass('gatePass',this)" class="text-xs text-blue-600 mt-1">👁️ Show Password</button><button onclick="enterGate()" class="w-full p-3 bg-teal-700 text-white rounded-xl font-bold mt-2">Enter</button><p id="gateError" class="text-red-600 text-sm mt-2"></p></div>
-<div id="whoBox" class="bg-white p-4 rounded-xl mt-3 hidden card-shadow"><p class="font-bold">Who Are You? - Hom Care Hero 🌍</p><p class="text-[11px] text-gray-500">Private - Only admins see this.</p><div class="flex gap-2 mt-2 flex-wrap">
+<div class="flex justify-between items-center"><h1 class="text-2xl font-bold">Hom Care Hero - Staff</h1><button onclick="closeAdmin()" class="bg-gray-200 px-3 py-1 rounded-full">Close</button></div>
+<div id="gateBox" class="bg-white p-4 rounded-xl mt-3 text-center card-shadow">
+<p class="font-bold">Choose Your Staff Account</p>
+<div id="whoBox" class="bg-yellow-100 p-3 rounded-xl mt-3 border text-center"><p class="font-bold">Who Are You?</p></div>
+<div class="flex gap-2 justify-center mt-3 flex-wrap">
 <button onclick="pickUser('JOY','JOY2026')" class="bg-pink-500 text-white px-4 py-2 rounded-full">JOY</button>
-<button onclick="pickUser('KIMTAI JABETH','JABETH2026')" class="bg-yellow-500 text-black px-4 py-2 rounded-full">JABETH</button>
-<button onclick="pickUser('SUPER ADMIN','2215')" class="bg-slate-900 text-white px-4 py-2 rounded-full">SUPER ADMIN</button></div>
-<input id="myPassword" type="password" placeholder="Enter your password" class="w-full p-3 border rounded-xl mt-3"><button onclick="togglePass('myPassword',this)" class="text-xs text-blue-600 mt-1">👁️ Show Password</button><button onclick="checkMyPassword()" class="w-full p-3 bg-black text-white rounded-xl font-bold mt-2">Login</button><p id="passError" class="text-red-600 text-sm mt-2"></p></div>
-
+<button onclick="pickUser('KIMTAI JABETH','JABETH2026')" class="bg-yellow-500 text-white px-4 py-2 rounded-full">KIMTAI JABETH</button>
+<button onclick="pickUser('SUPER ADMIN','HEROADMIN')" class="bg-slate-900 text-white px-4 py-2 rounded-full">SUPER ADMIN</button>
+</div>
+<input id="myPassword" type="password" placeholder="Enter your password" class="w-full p-3 border rounded-xl mt-3 text-center">
+<button onclick="enterGate()" class="w-full p-3 bg-green-600 text-white rounded-xl mt-2 font-bold">Enter</button>
+<p id="gateError" class="text-red-600 font-bold text-sm mt-2"></p>
+</div>
 <div id="adminDashboard" class="hidden">
-<div class="bg-white p-3 rounded-xl mt-3 border"><p class="text-[11px]">Hom Care Hero 🌍 | Logged in as: <b id="adminNameShow"></b> | Share: <b id="adminShareShow"></b> | Role: <b id="adminRoleShow"></b> | 🌍 Worldwide</p></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #0F766E"><h3 class="font-bold text-lg">💰 MY SHARE - Only Mine</h3><p class="text-sm">Total Earned (All): <b id="totalAllEarnings">0 UGX</b></p><p class="text-lg">My Total Share: <b id="myShareAmount" style="color:#0F766E">0 UGX</b></p><p class="text-sm">Already Withdrawn: <b id="myWithdrawnAmount">0 UGX</b></p><p class="text-lg">Available To Withdraw: <b id="myAvailableAmount" style="color:#16A34A">0 UGX</b></p><p class="text-xs text-gray-500" id="myShareDetail"></p><button onclick="loadMyShare()" class="bg-teal-600 text-white px-4 py-2 rounded-full mt-2 text-sm">🔄 Refresh My Share</button></div>
+<div class="bg-white p-3 rounded-xl mt-3 border"><p class="text-[11px]">Hom Care Hero - Staff Dashboard - <span id="adminRoleShow"></span></p></div>
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #0F766E"><h3 class="font-bold">Staff Controls</h3><div id="superLinksBox" class="mt-2"></div></div>
+<div id="superOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border"><h3 class="font-bold">👑 SUPER ADMIN ONLY - All Percentages For All Staff</h3><p class="text-sm mt-2">👩 JOY 10% : <b id="joyTotal">0</b> UGX</p><p class="text-sm">👩 JABETH 10% : <b id="jabethTotal">0</b> UGX</p><p class="text-sm">👑 SUPER 80% : <b id="superTotal">0</b> UGX</p></div>
+<div id="joyOnlyBox" class="hidden bg-pink-50 p-4 rounded-xl mt-3 border"><p class="font-bold">JOY - Nurses + GPS</p></div>
+<div id="jabethOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border"><p class="font-bold">JABETH - Nurses + GPS</p></div>
+<div id="superWithdrawBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border"><h3 class="font-bold">Withdraw Requests</h3><div id="withdrawList"></div></div>
+<div class="flex gap-2 mt-3 flex-wrap">
+<button onclick="showAdminTab('nurses')" class="bg-pink-200 px-3 py-2 rounded-full">Nurses</button>
+<button onclick="showAdminTab('wallet')" class="bg-yellow-200 px-3 py-2 rounded-full">Wallet</button>
+<button onclick="showAdminTab('bookings')" class="bg-blue-200 px-3 py-2 rounded-full">Bookings</button>
+<button onclick="showAdminTab('gps')" class="bg-green-200 px-3 py-2 rounded-full">GPS</button>
+<button onclick="showAdminTab('pharmacy')" class="bg-orange-200 px-3 py-2 rounded-full">Pharmacy</button>
+<button onclick="showAdminTab('withdraw')" class="bg-purple-200 px-3 py-2 rounded-full">My Withdrawals</button>
+</div>
+<div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses - Worldwide (JOY + SUPER)</h3><div id="adminNursesList" class="mt-2"></div></div>
+<div id="walletTab" class="mt-3 hidden"><h3 class="font-bold">Wallet - All Wallets</h3><div id="adminWalletsList"></div></div>
+<div id="bookingsTab" class="mt-3 hidden"><h3 class="font-bold">Bookings - Worldwide</h3><div id="adminBookingsList"></div></div>
+<div id="gpsTab" class="mt-3 hidden"><h3 class="font-bold">📍 GPS Tracker - ALL STAFF</h3><div id="gpsList"></div></div>
+<div id="pharmacyTab" class="mt-3 hidden"><h3 class="font-bold">💊 Pharmacy Ads - Staff</h3><div id="adminPharmacyList"></div></div>
+<div id="withdrawTab" class="mt-3 hidden"><h3 class="font-bold">💰 My Withdrawals</h3><div id="myWithdrawList"></div></div>
+</div>
+</div>
 
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #16A34A"><h3 class="font-bold text-lg">💸 WITHDRAW MY MONEY - All Admins</h3><p class="text-xs text-gray-600">JOY, JABETH, SUPER - Each withdraws ONLY their own share. SUPER sends money via MTN / Airtel, then approves in app.</p><input id="withdrawAmount" type="number" placeholder="Amount to Withdraw e.g. 5000" class="w-full p-3 border rounded-xl mt-3"><input id="withdrawPhone" placeholder="Your MTN / Airtel Number e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2"><select id="withdrawMethod" class="w-full p-3 border rounded-xl mt-2"><option>MTN Mobile Money</option><option>Airtel Money</option><option>Bank</option><option>Pesapal</option></select><button onclick="requestWithdraw()" class="w-full p-3 rounded-xl bg-green-600 text-white font-bold mt-3">💸 Request Withdraw - Send To My Phone</button><p id="withdrawMsg" class="text-sm font-bold mt-2"></p><div id="myWithdrawList" class="mt-2 text-sm"></div></div>
-
-<div id="superWithdrawBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EAB308"><h3 class="font-bold text-lg">👑 SUPER ONLY - Approve Withdrawals</h3><p class="text-xs text-gray-600">SUPER: 1. Send money to admin via MTN / Airtel 2. Tap ✅ Paid below. Only SUPER sees this box.</p><div id="allWithdrawList" class="mt-2"></div><button onclick="loadAllWithdraws()" class="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm mt-2">🔄 Refresh Withdrawals</button></div>
-
-<div id="superOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EAB308">
-<h3 class="font-bold">👑 SUPER ADMIN ONLY - All Percentages For All Admins</h3><p class="text-xs text-gray-600">Only SUPER sees this box. JOY and JABETH do NOT see this.</p>
-<p class="text-sm mt-2">💖 JOY 10%: <b id="joyTotal">0 UGX</b></p><p class="text-sm">💛 JABETH 10%: <b id="jabethTotal">0 UGX</b></p><p class="text-sm">👑 SUPER 80%: <b id="superTotal">0 UGX</b></p></div>
-<div id="superLinksBox" class="hidden bg-blue-50 p-4 rounded-xl mt-3 border card-shadow"><h3 class="font-bold text-lg">🔗 SUPER - Links - Worldwide</h3><div class="mt-3"><p class="font-bold text-sm">1. Client Booking:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Book</p><button onclick="copyLink('client')" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Client Link</button><button onclick="shareWhatsApp('client')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">2. Nurse Application:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Nurse</p><button onclick="copyLink('nurse')" class="bg-pink-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Nurse Link</button><button onclick="shareWhatsApp('nurse')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">3. Wallet Top-Up:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Wallet</p><button onclick="copyLink('wallet')" class="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm mt-1">📋 Copy Wallet Link</button><button onclick="shareWhatsApp('wallet')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">4. Pharmacy Advertise:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap Pharmacy</p><button onclick="copyLink('pharmacy')" class="bg-orange-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Pharmacy Link</button><button onclick="shareWhatsApp('pharmacy')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><div class="mt-3"><p class="font-bold text-sm">5. Nurse Alarm - Send To Nurses:</p><p class="text-xs bg-white p-2 rounded border break-all">https://home-care-hero-web.vercel.app - Tap 🔔 Nurse Alarm</p><button onclick="copyLink('nurseAlarm')" class="bg-red-600 text-white px-4 py-2 rounded-full text-sm mt-1">📋 Copy Nurse Alarm Link</button><button onclick="shareWhatsApp('nurseAlarm')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-1">💬 Share on WhatsApp</button></div><p id="linkCopiedMsg" class="text-green-600 text-sm font-bold mt-2"></p></div>
-<div id="joyOnlyBox" class="hidden bg-pink-50 p-3 rounded-xl mt-3 border"><p class="text-sm font-bold">👩‍⚕️ JOY - Your Job: Nurses + GPS</p><p class="text-xs">You see Nurses + GPS + ONLY Your Own Share. You do NOT see JABETH or SUPER shares.</p></div>
-<div id="joyShareBox" class="hidden bg-pink-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EC4899"><h3 class="font-bold text-lg">🔗 JOY - Your Nurses Form Link - Share This</h3><p class="text-xs bg-white p-2 rounded border break-all mt-2">https://home-care-hero-web.vercel.app - Tap Nurse</p><p class="text-xs mt-2">Tell nurses: Tap <b>Nurse</b> > Fill Name, Phone, Skill, City, Country > Submit. You will approve them in Nurses tab.</p><button onclick="copyLink('nurse')" class="bg-pink-600 text-white px-4 py-2 rounded-full text-sm mt-2">📋 Copy Nurse Link</button><button onclick="shareWhatsApp('nurse')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-2">💬 Share on WhatsApp</button></div>
-<div id="jabethOnlyBox" class="hidden bg-yellow-50 p-3 rounded-xl mt-3 border"><p class="text-sm font-bold">📅 JABETH - Your Job: Bookings + GPS</p><p class="text-xs">You see Bookings + GPS + ONLY Your Own Share. You do NOT see JOY or SUPER shares.</p></div>
-<div id="walletDashboardBox" class="bg-white p-3 rounded-xl mt-3 card-shadow"><h3 class="font-bold">💰 Wallet Dashboard - REAL - All Transactions Inside App</h3><p class="text-sm">Total In All Wallets: <b id="totalWallets">0 UGX</b></p><p class="text-sm">Total Top-Ups Approved: <b id="totalTopups">0 UGX</b></p><p class="text-sm">Pending Top-Ups: <b id="pendingCount">0</b></p><button onclick="loadAdminWallets();loadAdminTopups()" class="bg-teal-600 text-white px-4 py-2 rounded-full mt-2">🔄 Refresh</button></div>
-<div class="flex gap-2 mt-3 flex-wrap"><button id="tabBtnNurses" onclick="showAdminTab('nurses')" class="bg-blue-500 text-white px-4 py-2 rounded-full">Nurses</button><button id="tabBtnWallet" onclick="showAdminTab('wallet')" class="bg-slate-900 text-white px-4 py-2 rounded-full">Wallet</button><button id="tabBtnBookings" onclick="showAdminTab('bookings')" class="bg-pink-500 text-white px-4 py-2 rounded-full">Bookings</button><button id="tabBtnGps" onclick="showAdminTab('gps')" class="bg-red-500 text-white px-4 py-2 rounded-full">GPS / Track</button><button id="tabBtnPharmacy" onclick="showAdminTab('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full">Pharmacy Ads</button><button id="tabBtnWithdraw" onclick="showAdminTab('withdraw')" class="bg-green-600 text-white px-4 py-2 rounded-full">💸 Withdraw</button></div>
-<div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses - Worldwide (JOY + SUPER) - Full Qualifications</h3><div id="adminNurseList" class="mt-2"></div></div>
-<div id="walletTab" class="mt-3 hidden"><h3 class="font-bold">Wallet - All Wallets (SUPER ONLY)</h3><div id="adminWalletList" class="mt-2"></div><h3 class="font-bold mt-4">Top-Ups - Verify Transaction ID in Pesapal First</h3><div id="adminTopupList" class="mt-2"></div></div>
-<div id="bookingsTab" class="mt-3 hidden"><h3 class="font-bold">Bookings - Worldwide (JABETH + SUPER)</h3><div id="adminBookingList" class="mt-2"></div><h3 class="font-bold mt-4">📍 Track - Search By Phone</h3><input id="adminTrackPhone" placeholder="Phone - Any country" class="w-full p-3 border rounded-xl mt-2"><button onclick="adminTrack()" class="w-full p-3 bg-purple-600 text-white rounded-xl font-bold mt-2">Track This Booking</button><div id="adminTrackResult" class="mt-2 text-sm"></div></div>
-<div id="gpsTab" class="mt-3 hidden"><h3 class="font-bold">📍 GPS Tracker - ALL ADMINS - Worldwide</h3><button onclick="loadGPS()" class="bg-red-500 text-white px-3 py-1 rounded-full text-xs mt-1">🔄 Refresh GPS</button><div id="gpsList" class="mt-2"></div></div>
-<div id="pharmacyTab" class="mt-3 hidden"><h3 class="font-bold">💊 Pharmacy Ads - (SUPER + JOY)</h3><p class="text-xs text-gray-600">Approve pharmacy after they pay inside app via Pesapal.</p><div id="adminPharmacyList" class="mt-2"></div></div>
-<div id="withdrawTab" class="mt-3 hidden"><h3 class="font-bold">💸 My Withdrawals</h3><div id="withdrawTabList" class="mt-2"></div></div>
-</div></div>
+<audio id="bookingAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
+<audio id="nurseAlarm" src="https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg"></audio>
 
 <script>
 const firebaseConfig = {
-  apiKey: "PUT_YOUR_API_KEY_HERE",
-  authDomain: "home-care-hero.firebaseapp.com",
-  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
-  projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "PUT_YOUR_SENDER_ID_HERE",
-  appId: "PUT_YOUR_APP_ID_HERE",
-  measurementId: "PUT_YOUR_MEASUREMENT_ID_HERE"
+apiKey: "PUT_YOUR_API_KEY_HERE",
+authDomain: "home-care-hero.firebaseapp.com",
+databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
+projectId: "home-care-hero",
+storageBucket: "home-care-hero.firebasestorage.app",
+messagingSenderId: "PUT_YOUR_SENDER_ID_HERE",
+appId: "PUT_YOUR_APP_ID_HERE",
+measurementId: "PUT_YOUR_MEASUREMENT_ID_HERE"
 };
 let db = null;
-try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); document.getElementById('liveStatus').innerText='🟢 LIVE - Firebase Connected'; document.getElementById('liveStatus').style.color='green'; }catch(e){ document.getElementById('liveStatus').innerText='🔴 NOT CONNECTED - Check Firebase Keys'; document.getElementById('liveStatus').style.color='red'; }
+try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); }catch(e){}
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 const APP_LINK = "https://home-care-hero-web.vercel.app";
-const APP_NAME = "Hom Care Hero 🌍";
-const GATE_PASSWORD = "Hero2026";
+const APP_NAME = "Hom Care Hero";
+const GATE_PASSWORD = "HEROADMIN";
 let selectedUser = null; let selectedPassword = null;
 let myTotalShareCache = 0; let myWithdrawnCache = 0;
 function cleanPhone(raw){ return String(raw||'').trim().replace(/\s/g,''); }
-function togglePass(id,btn){ let el=document.getElementById(id); if(el.type==='password'){ el.type='text'; btn.innerText='🙈 Hide Password'; } else { el.type='password'; btn.innerText='👁️ Show Password'; } }
-function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>document.getElementById(x+'Section').classList.add('hidden')); document.getElementById(s+'Section').classList.remove('hidden'); }
-function goBook(service){ document.getElementById('bookService').value = service; showSection('book'); }
+function togglePass(id,btn){ let el=document.getElementById(id); if(el.type==="password"){el.type="text";}else{el.type="password";} }
+function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>{ let el=document.getElementById(x+'Section'); if(el) el.classList.add('hidden'); }); let t=document.getElementById(s+'Section'); if(t) t.classList.remove('hidden'); }
+function goBook(service){ document.getElementById('bookService').value=service; showSection('book'); }
 function openAdmin(){ document.getElementById('mainApp').classList.add('hidden'); document.getElementById('adminApp').classList.remove('hidden'); }
 function closeAdmin(){ document.getElementById('adminApp').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); }
-function enterGate(){ let p=document.getElementById('gatePass').value.trim(); if(p===GATE_PASSWORD){ document.getElementById('gateBox').classList.add('hidden'); document.getElementById('whoBox').classList.remove('hidden'); } else document.getElementById('gateError').innerText='Wrong password - Gate is Hero2026'; }
-function pickUser(name,password){ selectedUser=name; selectedPassword=password; document.getElementById('myPassword').value=''; document.getElementById('myPassword').type='password'; document.getElementById('passError').innerText='Selected: '+name+' - Now type your password'; }
+function enterGate(){
+  let p=document.getElementById('myPassword').value.trim();
+  if(!selectedUser){ document.getElementById('gateError').innerText="Please choose your name first"; return; }
+  if(p === selectedPassword || p === GATE_PASSWORD){
+    document.getElementById('gateBox').classList.add('hidden');
+    document.getElementById('adminDashboard').classList.remove('hidden');
+    document.getElementById('gateError').innerText="";
+    applyRole();
+  } else {
+    document.getElementById('gateError').innerText="Wrong password - Try again";
+  }
+}
+function pickUser(name,password){ selectedUser=name; selectedPassword=password; document.getElementById('whoBox').innerHTML="<b>Selected: "+name+"</b><br><span class='text-xs'>Now type your password below</span>"; document.getElementById('gateError').innerText=""; }
 function getRole(){ if(!selectedUser) return 'SUPER'; if(selectedUser.includes('JOY')) return 'JOY'; if(selectedUser.includes('JABETH')) return 'JABETH'; return 'SUPER'; }
 function applyRole(){
-  let role = getRole();
-  document.getElementById('adminRoleShow').innerText = role==='JOY' ? 'Nurses + GPS + Pharmacy' : role==='JABETH' ? 'Bookings + GPS' : 'Super Admin - All Access';
-  ['superOnlyBox','superLinksBox','joyOnlyBox','joyShareBox','jabethOnlyBox','walletDashboardBox','superWithdrawBox'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  ['tabBtnNurses','tabBtnWallet','tabBtnBookings','tabBtnGps','tabBtnPharmacy','tabBtnWithdraw'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  ['nursesTab','walletTab','bookingsTab','gpsTab','pharmacyTab','withdrawTab'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  if(role==='JOY'){ document.getElementById('joyOnlyBox').classList.remove('hidden'); document.getElementById('joyShareBox').classList.remove('hidden'); document.getElementById('tabBtnNurses').classList.remove('hidden'); document.getElementById('tabBtnGps').classList.remove('hidden'); document.getElementById('tabBtnPharmacy').classList.remove('hidden'); document.getElementById('tabBtnWithdraw').classList.remove('hidden'); document.getElementById('nursesTab').classList.remove('hidden'); loadNursesAdmin(); loadGPS(); loadPharmacyAdmin(); loadMyWithdraws(); }
-  else if(role==='JABETH'){ document.getElementById('jabethOnlyBox').classList.remove('hidden'); document.getElementById('tabBtnBookings').classList.remove('hidden'); document.getElementById('tabBtnGps').classList.remove('hidden'); document.getElementById('tabBtnWithdraw').classList.remove('hidden'); document.getElementById('bookingsTab').classList.remove('hidden'); loadBookings(); loadGPS(); loadMyWithdraws(); }
-  else { document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('superLinksBox').classList.remove('hidden'); document.getElementById('walletDashboardBox').classList.remove('hidden'); document.getElementById('superWithdrawBox').classList.remove('hidden'); ['tabBtnNurses','tabBtnWallet','tabBtnBookings','tabBtnGps','tabBtnPharmacy','tabBtnWithdraw'].forEach(id=>document.getElementById(id).classList.remove('hidden')); document.getElementById('nursesTab').classList.remove('hidden'); loadAdminWallets(); loadAdminTopups(); loadNursesAdmin(); loadBookings(); loadGPS(); loadPharmacyAdmin(); loadMyWithdraws(); loadAllWithdraws(); }
+  let role=getRole();
+  document.getElementById('adminRoleShow').innerText = role + " - " + selectedUser;
+  document.getElementById('joyOnlyBox').classList.add('hidden');
+  document.getElementById('jabethOnlyBox').classList.add('hidden');
+  document.getElementById('superOnlyBox').classList.add('hidden');
+  if(role==='JOY') document.getElementById('joyOnlyBox').classList.remove('hidden');
+  else if(role==='JABETH') document.getElementById('jabethOnlyBox').classList.remove('hidden');
+  else { document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('superWithdrawBox').classList.remove('hidden'); }
+  loadMyShare();
 }
-function copyLink(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. Admin will approve you.' : type==='nurseAlarm' ? '🔔 NURSES - ENABLE YOUR ALARM - '+APP_NAME+': '+APP_LINK+' - Tap 🔔 Nurse Alarm, type your name, phone, area, skill, tap Enable Alarm. When client books in your area, YOUR phone will RING! It is your job - Do not miss booking!' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; navigator.clipboard.writeText(text).then(()=>{ document.getElementById('linkCopiedMsg').innerText='✅ Copied! Now paste in WhatsApp.'; }); }
-function shareWhatsApp(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. Admin will approve you.' : type==='nurseAlarm' ? '🔔 NURSES - ENABLE YOUR ALARM - '+APP_NAME+': '+APP_LINK+' - Tap 🔔 Nurse Alarm, type your name, phone, area, skill, tap Enable Alarm. When client books in your area, YOUR phone will RING! It is your job - Do not miss booking!' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
-async function loadMyShare(){
-  if(!db || !selectedUser) return;
-  let snap = await db.collection('earnings').get();
-  let total=0; let myShare=0; let joyT=0; let jabT=0; let supT=0;
-  let field = selectedUser.includes('JOY') ? 'joy' : selectedUser.includes('JABETH') ? 'jabeth' : 'super';
-  let percent = selectedUser.includes('JOY') ? '10%' : selectedUser.includes('JABETH') ? '10%' : '80%';
-  snap.forEach(d=>{ let e=d.data(); let amt=Number(e.amount||0); total+=amt; myShare+=Number(e[field]||0); joyT+=Number(e.joy||0); jabT+=Number(e.jabeth||0); supT+=Number(e.super||0); });
-  myTotalShareCache = myShare;
-  // Withdrawn = approved + pending for this admin (so they cannot withdraw same money twice)
-  let wSnap = await db.collection('withdrawals').where('admin','==',selectedUser).get();
-  let withdrawn = 0; wSnap.forEach(d=>{ let w=d.data(); if(w.status!=='rejected') withdrawn += Number(w.amount||0); });
-  myWithdrawnCache = withdrawn;
-  let available = myShare - withdrawn; if(available<0) available=0;
-  document.getElementById('totalAllEarnings').innerText = total + ' UGX';
-  document.getElementById('myShareAmount').innerText = myShare + ' UGX';
-  document.getElementById('myWithdrawnAmount').innerText = withdrawn + ' UGX';
-  document.getElementById('myAvailableAmount').innerText = available + ' UGX';
-  document.getElementById('myShareDetail').innerText = selectedUser + ' gets ' + percent + ' of ' + total + ' UGX = ' + myShare + ' UGX. Available = Total - Withdrawn.';
-  if(getRole()==='SUPER'){ document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('joyTotal').innerText=joyT+' UGX'; document.getElementById('jabethTotal').innerText=jabT+' UGX'; document.getElementById('superTotal').innerText=supT+' UGX'; } else { document.getElementById('superOnlyBox').classList.add('hidden'); }
-  loadMyWithdraws();
-}
-// --- WITHDRAW - ALL ADMINS ---
-async function requestWithdraw(){
-  if(!db || !selectedUser){ alert('Login first'); return; }
-  let amount = Number(document.getElementById('withdrawAmount').value||0);
-  let phone = cleanPhone(document.getElementById('withdrawPhone').value);
-  let method = document.getElementById('withdrawMethod').value;
-  if(!amount || amount<=0){ alert('Enter amount to withdraw'); return; }
-  if(!phone){ alert('Enter your MTN / Airtel number where SUPER should send money'); return; }
-  await loadMyShare();
-  let available = myTotalShareCache - myWithdrawnCache;
-  if(amount > available){ alert('❌ Not enough Available. Your Available is '+available+' UGX. Total Share: '+myTotalShareCache+' UGX, Already Withdrawn: '+myWithdrawnCache+' UGX.'); return; }
-  try{
-    await db.collection('withdrawals').add({admin:selectedUser, amount:amount, phone:phone, method:method, status:'pending', createdAt:new Date()});
-    document.getElementById('withdrawMsg').innerText = '✅ Withdraw Request SENT: '+amount+' UGX to '+phone+' via '+method+'. SUPER will send money and approve. Check below for status.';
-    alert('✅ Withdraw Request SENT: '+amount+' UGX to '+phone+'. SUPER will send money and approve.');
-    document.getElementById('withdrawAmount').value='';
-    loadMyShare(); loadMyWithdraws(); if(getRole()==='SUPER') loadAllWithdraws();
-  }catch(e){ alert('Firebase error: '+e.message); }
-}
-async function loadMyWithdraws(){
-  if(!db || !selectedUser) return;
-  let snap = await db.collection('withdrawals').where('admin','==',selectedUser).orderBy('createdAt','desc').limit(20).get();
-  let html=''; snap.forEach(d=>{ let w=d.data(); html+='<div class="bg-gray-50 p-2 rounded mt-2 border"><b>'+w.amount+' UGX</b> - '+w.phone+' - '+w.method+' - <b>'+w.status+'</b></div>'; });
-  document.getElementById('myWithdrawList').innerHTML = html||'No withdrawals yet';
-  document.getElementById('withdrawTabList').innerHTML = html||'No withdrawals yet';
-}
-async function loadAllWithdraws(){
-  if(!db) return; if(getRole()!=='SUPER') return;
-  let snap = await db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get();
-  let html=''; snap.forEach(d=>{ let w=d.data(); html+='<div class="bg-white p-3 rounded-xl mt-2 border"><b>'+w.admin+'</b> wants <b>'+w.amount+' UGX</b><br><span class="text-xs">To: '+w.phone+' - '+w.method+' - Status: '+w.status+'</span><br>'+(w.status==='pending'?'<button onclick="approveWithdraw(\''+d.id+'\')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">✅ I Have Sent Money - Mark Paid</button> <button onclick="rejectWithdraw(\''+d.id+'\')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button>':'')+'</div>'; });
-  document.getElementById('allWithdrawList').innerHTML = html||'No withdraw requests';
-}
-async function approveWithdraw(id){
-  if(!confirm('Did you SEND this money via MTN / Airtel to that admin? Only tap YES if you really sent it.')) return;
-  await db.collection('withdrawals').doc(id).update({status:'paid'});
-  alert('✅ Marked as PAID. Admin balance updated.');
-  loadAllWithdraws(); loadMyShare();
-}
-async function rejectWithdraw(id){ await db.collection('withdrawals').doc(id).update({status:'rejected'}); loadAllWithdraws(); loadMyShare(); }
-function checkMyPassword(){ let p=document.getElementById('myPassword').value.trim(); if(!selectedUser){ alert('Pick user first - Tap JOY or JABETH or SUPER button first'); return; } if(p!==selectedPassword){ document.getElementById('passError').innerText='Wrong password for '+selectedUser+' - Tap Show Password and type exactly'; return; } document.getElementById('whoBox').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); document.getElementById('adminNameShow').innerText=selectedUser; let share = selectedUser.includes('JOY') ? '10%' : selectedUser.includes('JABETH') ? '10%' : '80%'; document.getElementById('adminShareShow').innerText=share; loadMyShare(); applyRole(); }
-function showAdminTab(t){ let role=getRole(); if(role==='JOY' && !['nurses','gps','pharmacy','withdraw'].includes(t)){ alert('JOY - You manage Nurses + GPS + Pharmacy + Withdraw only'); return; } if(role==='JABETH' && !['bookings','gps','withdraw'].includes(t)){ alert('JABETH - You only manage Bookings & GPS & Withdraw'); return; } ['nurses','wallet','bookings','gps','pharmacy','withdraw'].forEach(x=>document.getElementById(x+'Tab').classList.add('hidden')); document.getElementById(t+'Tab').classList.remove('hidden'); if(t==='withdraw') loadMyWithdraws(); }
-async function tapService(s){ if(!db){ alert('Not connected - Check Firebase Keys'); return; } try{ await db.collection('stats').doc('taps').set({count: firebase.firestore.FieldValue.increment(1)},{merge:true}); loadStats(); }catch(e){ alert('Firebase error: '+e.message); } }
-async function countView(){ if(!db) return; try{ await db.collection('stats').doc('views').set({count: firebase.firestore.FieldValue.increment(1)},{merge:true}); }catch(e){} loadStats(); }
-async function loadStats(){ if(!db) return; try{ let v=await db.collection('stats').doc('views').get(); if(v.exists) document.getElementById('viewCount').innerText=v.data().count||0; let t=await db.collection('stats').doc('taps').get(); if(t.exists) document.getElementById('tapCount').innerText=t.data().count||0; }catch(e){} }
-async function loadNurses(){ if(!db) return; try{ let snap=await db.collection('caregivers').where('status','==','approved').get(); let html=''; snap.forEach(d=>{ let n=d.data(); html+=`<div class="bg-gray-50 p-3 rounded-xl mt-2 flex justify-between"><div><b>${n.name||''}</b><br><span class="text-xs">${n.qualification||n.skill||''} - ${n.experience||''} yrs - ${n.phone||''} - ${n.area||''} ${n.country||''}</span></div><button onclick="selectNurse('${n.name||''}')" class="bg-teal-600 text-white px-3 py-1 rounded-full text-xs">Book</button></div>`; }); document.getElementById('nurseList').innerHTML=html||'No approved nurses yet - Be the first to apply!'; }catch(e){ document.getElementById('nurseList').innerHTML='Check Firebase connection'; } }
-function selectNurse(n){ document.getElementById('bookNurse').value=n; showSection('book'); }
+function copyLink(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere - '+APP_LINK : 'Join as Nurse - '+APP_LINK; navigator.clipboard.writeText(text); alert('Link Copied!'); }
+function shareWhatsApp(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere - '+APP_LINK : 'Join as Nurse - '+APP_LINK; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
+async function loadMyShare(){ if(!db) return; try{ let snap=await db.collection('earnings').get(); let total=0; let myShare=0; let joy=0; let jab=0; let sup=0; snap.forEach(d=>{ let e=d.data(); let amt=Number(e.amount||0); total+=amt; myShare+=amt*0.1; if(e.admin==='JOY') joy+=amt*0.1; if(e.admin==='JABETH') jab+=amt*0.1; sup+=amt*0.8; }); myTotalShareCache=myShare; let el=document.getElementById('joyTotal'); if(el) el.innerText=joy; let el2=document.getElementById('jabethTotal'); if(el2) el2.innerText=jab; let el3=document.getElementById('superTotal'); if(el3) el3.innerText=sup; }catch(e){} loadAdminData(); }
+async function loadAdminData(){ loadNursesAdmin(); loadBookings(); loadAdminWallets(); }
+function showAdminTab(t){ ['nurses','wallet','bookings','gps','pharmacy','withdraw'].forEach(x=>{ let el=document.getElementById(x+'Tab'); if(el) el.classList.add('hidden'); }); let s=document.getElementById(t+'Tab'); if(s) s.classList.remove('hidden'); }
+function checkMyPassword(){ enterGate(); }
+async function tapService(s){ if(!db){alert('Not connected - Check Firebase Keys');return;} try{ await db.collection('stats').doc('taps').set({[s]: firebase.firestore.FieldValue.increment(1)},{merge:true}); }catch(e){} }
+async function loadStats(){}
+async function loadNurses(){}
+async function selectNurse(n){ document.getElementById('bookNurse').value=n; showSection('book'); }
 async function joinNurse(){
   if(!db){alert('Not connected - Check Firebase Keys');return;}
   let name=document.getElementById('nurseName').value.trim();
@@ -295,157 +263,112 @@ async function joinNurse(){
   let council=document.getElementById('nurseCouncil').value;
   let exp=document.getElementById('nurseExp').value.trim();
   let skill=document.getElementById('nurseSkill').value.trim();
-  let skills2=document.getElementById('nurseSkills2').value.trim();
+  let skill2=document.getElementById('nurseSkills2').value.trim();
   let lang=document.getElementById('nurseLang').value.trim();
   let prevWork=document.getElementById('nursePrevWork').value.trim();
   let avail=document.getElementById('nurseAvail').value;
   let workType=document.getElementById('nurseWorkType').value;
   let ref=document.getElementById('nurseRef').value.trim();
   let docLink=document.getElementById('nurseDocLink').value.trim();
-  if(!name||!phone||!gender||!nid||!country||!area||!edu||!qual||!school||!gradYear||!licence||!exp||!skill||!avail){ alert('Please fill ALL * fields - Name, Phone, Gender, ID, Country, City, Education, Qualification, School, Grad Year, Licence, Experience, Skill, Availability'); return; }
-  if(!document.getElementById('nurseAgree').checked){ alert('Please tick - I confirm all information is true'); return; }
+  if(!name||!phone||!gender||!nid||!country||!area||!edu||!qual||!school||!gradYear||!licence){ alert('Please fill all ** fields'); return; }
+  if(!document.getElementById('nurseAgree').checked){ alert('Please tick - I confirm'); return; }
   try{
-    await db.collection('caregivers').add({name,phone,email,dob,gender,nationalId:nid,country,area,address,education:edu,qualification:qual,school,gradYear,certNo,licence,licenceExp,council,experience:exp,skill,skills2,lang,prevWork,avail,workType,ref,docLink,location:area,status:'pending',createdAt:new Date()});
-    document.getElementById('nurseMsg').innerText='✅ FULL Application SENT with Qualifications. Admin will verify your Licence & Certificate and approve.';
+    await db.collection('caregivers').add({name,phone,email,dob,gender,nationalId:nid,country,area,address,edu,qual,school,gradYear,certNo,licence,licenceExp,council,exp,skill,skill2,lang,prevWork,avail,workType,ref,docLink,status:'pending',createdAt:new Date()});
+    document.getElementById('nurseMsg').innerText="✅ FULL Application SENT with Qualifications - Wait for approval";
+    alert('✅ Application SENT! We will contact you.');
   }catch(e){ alert('Firebase error: '+e.message); }
 }
-async function loadNursesAdmin(){ if(!db) return; let snap=await db.collection('caregivers').orderBy('createdAt','desc').limit(50).get(); let html=''; snap.forEach(d=>{ let n=d.data(); html+=`<div class="bg-white p-3 rounded-xl mt-2 border text-sm"><b>${n.name||''}</b> - ${n.phone||''} - ${n.status||''}<br><span class="text-xs">Gender: ${n.gender||''} | DOB: ${n.dob||''} | ID: ${n.nationalId||''} | Email: ${n.email||''}</span><br><span class="text-xs">Location: ${n.area||''}, ${n.country||''} | Address: ${n.address||''}</span><br><span class="text-xs"><b>Education:</b> ${n.education||''} | <b>Qualification:</b> ${n.qualification||''} | <b>School:</b> ${n.school||''} | Grad: ${n.gradYear||''} | Cert No: ${n.certNo||''}</span><br><span class="text-xs"><b>Licence:</b> ${n.licence||''} | Exp: ${n.licenceExp||''} | Council: ${n.council||''}</span><br><span class="text-xs"><b>Experience:</b> ${n.experience||''} yrs | <b>Skill:</b> ${n.skill||''} | Other: ${n.skills2||''} | Lang: ${n.lang||''}</span><br><span class="text-xs">Prev Work: ${n.prevWork||''} | Avail: ${n.avail||''} | Work Type: ${n.workType||''} | Ref: ${n.ref||''}</span><br>${n.docLink?`<a href="${n.docLink}" target="_blank" class="text-blue-600 underline text-xs">📄 View CV / Certificate</a><br>`:''}<button onclick="approveNurse('${d.id}')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">Approve</button> <button onclick="rejectNurse('${d.id}')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button></div>`; }); document.getElementById('adminNurseList').innerHTML=html||'No nurses'; }
-async function approveNurse(id){ await db.collection('caregivers').doc(id).update({status:'approved'}); loadNursesAdmin(); loadNurses(); }
+async function loadNursesAdmin(){ if(!db) return; try{ let snap=await db.collection('caregivers').get(); let html=""; snap.forEach(d=>{ let n=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(n.name||'')+"</b> - "+(n.phone||'')+" - "+(n.area||'')+", "+(n.country||'')+"<br><span class='text-xs'>"+(n.skill||'')+" | "+(n.qual||'')+" | "+(n.status||'pending')+"</span><br><button onclick=\"approveNurse('"+d.id+"')\" class='bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1'>Approve</button> <button onclick=\"rejectNurse('"+d.id+"')\" class='bg-red-600 text-white px-3 py-1 rounded-full text-xs'>Reject</button></div>"; }); document.getElementById('adminNursesList').innerHTML=html||"No nurses yet"; }catch(e){} }
+async function approveNurse(id){ await db.collection('caregivers').doc(id).update({status:'approved'}); loadNursesAdmin(); }
 async function rejectNurse(id){ await db.collection('caregivers').doc(id).update({status:'rejected'}); loadNursesAdmin(); }
-async function applyPharmacy(){ if(!db){alert('Not connected');return;} let name=document.getElementById('pharmName').value.trim(); let phone=cleanPhone(document.getElementById('pharmPhone').value); let loc=document.getElementById('pharmLocation').value.trim(); let country=document.getElementById('pharmCountry').value.trim(); let offer=document.getElementById('pharmOffer').value.trim(); if(!name||!phone){alert('Enter pharmacy name and phone');return;} try{ await db.collection('pharmacies').add({name,phone,location:loc,country,offer,status:'pending',createdAt:new Date()}); document.getElementById('pharmMsg').innerText='✅ Pharmacy advert SENT. SUPER will approve after you pay inside app.'; }catch(e){ alert('Firebase error: '+e.message); } }
-async function loadPharmacyAds(){ if(!db) return; try{ let snap=await db.collection('pharmacies').where('status','==','approved').get(); let html=''; snap.forEach(d=>{ let p=d.data(); html+=`<div class="bg-orange-50 p-3 rounded-xl mt-2 border"><b>💊 ${p.name||''}</b><br><span class="text-xs">${p.offer||''} - ${p.location||''} ${p.country||''} - ${p.phone||''}</span><br><a href="tel:${p.phone||''}" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1 inline-block">📞 Call Pharmacy</a> <a href="https://wa.me/${String(p.phone||'').replace('+','')}" target="_blank" class="bg-green-500 text-white px-3 py-1 rounded-full text-xs mt-1 inline-block">💬 WhatsApp</a></div>`; }); document.getElementById('pharmacyAdsList').innerHTML=html||'No pharmacy ads yet - Be the first!'; }catch(e){} }
-async function loadPharmacyAdmin(){ if(!db) return; let snap=await db.collection('pharmacies').orderBy('createdAt','desc').limit(50).get(); let html=''; snap.forEach(d=>{ let p=d.data(); html+=`<div class="bg-white p-3 rounded-xl mt-2 border"><b>💊 ${p.name||''}</b> - ${p.phone||''} - ${p.offer||''} - ${p.location||''} ${p.country||''} - ${p.status||''}<br><button onclick="approvePharmacy('${d.id}')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">Approve Ad</button> <button onclick="rejectPharmacy('${d.id}')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button></div>`; }); document.getElementById('adminPharmacyList').innerHTML=html||'No pharmacy applications'; }
-async function approvePharmacy(id){ await db.collection('pharmacies').doc(id).update({status:'approved'}); loadPharmacyAdmin(); loadPharmacyAds(); }
+async function applyPharmacy(){ if(!db){alert('Not connected');return;} let name=prompt('Pharmacy Name'); if(!name) return; await db.collection('pharmacies').add({name,status:'pending',createdAt:new Date()}); alert('Pharmacy request sent'); }
+async function loadPharmacyAds(){ if(!db) return; try{ let snap=await db.collection('pharmacies').get(); let html=""; snap.forEach(d=>{ let p=d.data(); if(p.status==='approved') html+="<div class='border p-3 rounded-xl mt-2'><b>"+p.name+"</b></div>"; }); document.getElementById('pharmacyList').innerHTML=html||"No approved pharmacies yet"; }catch(e){} loadPharmacyAds(); }
+async function loadPharmacyAdmin(){ if(!db) return; try{ let snap=await db.collection('pharmacies').get(); let html=""; snap.forEach(d=>{ let p=d.data(); html+="<div class='border p-3 rounded-xl mt-2'><b>"+(p.name||'')+"</b> - "+(p.status||'')+" <button onclick=\"approvePharmacy('"+d.id+"')\" class='bg-green-600 text-white px-2 py-1 rounded-full text-xs'>Approve</button></div>"; }); let el=document.getElementById('adminPharmacyList'); if(el) el.innerHTML=html; }catch(e){} }
+async function approvePharmacy(id){ await db.collection('pharmacies').doc(id).update({status:'approved'}); loadPharmacyAdmin(); }
 async function rejectPharmacy(id){ await db.collection('pharmacies').doc(id).update({status:'rejected'}); loadPharmacyAdmin(); }
 async function bookNow(){
   if(!db){alert('Not connected - Check Firebase Keys');return;}
-  let service=document.getElementById('bookService').value.trim(); let name=document.getElementById('bookName').value.trim(); let phone=cleanPhone(document.getElementById('bookPhone').value); let loc=document.getElementById('bookLocation').value.trim(); let country=document.getElementById('bookCountry').value.trim(); let nurse=document.getElementById('bookNurse').value.trim(); let amount=Number(document.getElementById('bookAmount').value||0);
+  let service=document.getElementById('bookService').value.trim(); let name=document.getElementById('bookName').value.trim(); let phone=cleanPhone(document.getElementById('bookPhone').value);
+  let location=document.getElementById('bookLocation').value.trim(); let country=document.getElementById('bookCountry').value.trim();
+  let nurse=document.getElementById('bookNurse').value.trim(); let amount=Number(document.getElementById('bookAmount').value);
   if(!service||!name||!phone){alert('Fill service, name, phone');return;}
-  if(!amount || amount<=0){ alert('Enter amount to pay from Wallet. Top Up Wallet first with Pesapal inside app.'); return; }
+  if(!amount||amount<=0){alert('Enter amount to pay from Wallet');return;}
   try{
-    let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal = snap.exists ? Number(snap.data().balance||0) : 0;
-    if(bal < amount){ alert('❌ Not enough Wallet balance. Your balance: '+bal+' UGX. Go to Wallet > Pay With Pesapal Inside App to Top Up. No cash outside app.'); showSection('wallet'); document.getElementById('topupPhone').value=phone; document.getElementById('topupAmount').value=amount; return; }
+    let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal=0; if(snap.exists) bal=Number(snap.data().balance||0);
+    if(bal < amount){alert('❌ Not enough Wallet balance. Your balance: '+bal+' UGX. Top Up first.');return;}
     await ref.set({balance: bal-amount, phone: phone, updatedAt:new Date()},{merge:true});
-    await db.collection('bookings').add({service,name,phone,location:loc,country,nurse,amount,paid:true,paymentMethod:'Wallet - Inside App',status:'pending',createdAt:new Date()});
-    await db.collection('earnings').add({phone, amount:amount, joy: Math.round(amount*0.10), jabeth: Math.round(amount*0.10), super: Math.round(amount*0.80), type:'booking', createdAt:new Date()});
-    document.getElementById('bookMsg').innerText='✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE! New balance: '+(bal-amount)+' UGX. Admin will call you.';
+    await db.collection('bookings').add({service,name,phone,location,loc:location,country,nurse,amount,admin:selectedUser||'SUPER',status:'pending',createdAt:new Date()});
+    await db.collection('earnings').add({service,name,phone,location,loc:location,country,amount,admin:selectedUser||'SUPER',joy:amount*0.1,jabeth:amount*0.1,super:amount*0.8,createdAt:new Date()});
+    document.getElementById('bookMsg').innerText="✅ PAID "+amount+" UGX FROM WALLET & BOOKED LIVE!";
     alert('✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE!');
+    triggerAlarm({service:service,name:name,phone:phone,location:location,country:country});
   }catch(e){ alert('Firebase error: '+e.message); }
 }
-async function loadBookings(){ if(!db) return; let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(50).get(); let html=''; snap.forEach(d=>{ let b=d.data(); html+=`<div class="bg-white p-3 rounded-xl mt-2 border"><b>${b.service||''}</b> - ${b.name||''} - ${b.phone||''}<br><span class="text-xs">${b.location||''} ${b.country||''} | Nurse: ${b.nurse||'Any'} | ${b.status||''} | Paid: ${b.amount||0} UGX via ${b.paymentMethod||'Wallet'}</span><br><button onclick="updateBooking('${d.id}','confirmed')" class="bg-green-600 text-white px-2 py-1 rounded-full text-xs mt-1">Confirm</button> <button onclick="updateBooking('${d.id}','completed')" class="bg-blue-600 text-white px-2 py-1 rounded-full text-xs mt-1">Done</button></div>`; }); document.getElementById('adminBookingList').innerHTML=html||'No bookings'; }
+async function loadBookings(){ if(!db) return; try{ let snap=await db.collection('bookings').orderBy('createdAt','desc').limit(30).get(); let html=""; snap.forEach(d=>{ let b=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'><b>"+(b.service||'')+"</b> - "+(b.name||'')+" - "+(b.phone||'')+"<br><span class='text-xs'>"+(b.location||'')+", "+(b.country||'')+" - "+(b.amount||0)+" UGX - "+(b.status||'')+"</span><br><button onclick=\"updateBooking('"+d.id+"','approved')\" class='bg-green-600 text-white px-2 py-1 rounded-full text-xs'>Approve</button> <button onclick=\"updateBooking('"+d.id+"','rejected')\" class='bg-red-600 text-white px-2 py-1 rounded-full text-xs'>Reject</button></div>"; }); let el=document.getElementById('adminBookingsList'); if(el) el.innerHTML=html||"No bookings"; }catch(e){} }
 async function updateBooking(id,status){ await db.collection('bookings').doc(id).update({status}); loadBookings(); }
-async function trackBooking(){ if(!db) return; let phone=cleanPhone(document.getElementById('trackPhone').value); let snap=await db.collection('bookings').where('phone','==',phone).orderBy('createdAt','desc').limit(5).get(); let html=''; snap.forEach(d=>{ let b=d.data(); html+=`<div class="bg-gray-50 p-2 rounded mt-2">${b.service} - ${b.status} - ${b.nurse||'Any'} - Paid ${b.amount||0} UGX</div>`; }); document.getElementById('trackResult').innerHTML=html||'No booking found for this phone'; }
-async function adminTrack(){ if(!db) return; let phone=cleanPhone(document.getElementById('adminTrackPhone').value); if(!phone){alert('Enter phone');return;} let snap=await db.collection('bookings').where('phone','==',phone).orderBy('createdAt','desc').limit(5).get(); let html=''; snap.forEach(d=>{ let b=d.data(); html+=`<div class="bg-gray-50 p-2 rounded mt-2">${b.service} - ${b.status} - ${b.nurse||'Any'} - ${b.location||''}</div>`; }); document.getElementById('adminTrackResult').innerHTML=html||'No booking for this phone'; }
-function openPesapal(){
-  let amount = document.getElementById('topupAmount').value.trim();
-  let phone = cleanPhone(document.getElementById('topupPhone').value);
-  if(!amount || !phone){ alert('First type Phone + Amount, then tap Pay'); return; }
-  document.getElementById('walletResult').innerHTML = '✅ Pesapal opening... Pay ' + amount + ' UGX with MTN / Airtel / Visa. After paying, copy Transaction ID and paste below.';
-  window.open(PESAPAL_LINK, '_blank');
-}
+async function trackBooking(){ if(!db) return; let phone=cleanPhone(document.getElementById('trackPhone').value); try{ let snap=await db.collection('bookings').where('phone','==',phone).get(); let html=""; snap.forEach(d=>{ let b=d.data(); html+="<div class='border p-3 rounded-xl mt-2'><b>"+b.service+"</b> - "+b.status+" - "+b.amount+" UGX</div>"; }); document.getElementById('trackResult').innerHTML=html||"No booking found"; }catch(e){} }
+async function adminTrack(){ if(!db) return; let phone=cleanPhone(document.getElementById('trackPhone').value); trackBooking(); }
+function openPesapal(){ let amount=document.getElementById('topupAmount').value.trim(); let phone=cleanPhone(document.getElementById('topupPhone').value); if(!amount||!phone){alert('First type Phone + Amount, then tap Pay');return;} document.getElementById('walletResult').innerHTML='✅ Pesapal opening... Pay '+amount+' UGX, then paste Transaction ID below'; window.open(PESAPAL_LINK,'_blank'); }
 async function submitTopup(){
-  if(!db){ alert('Not connected - Check Firebase Keys. Your apiKey is still PUT_YOUR_... Go to Firebase Console and copy REAL keys.'); return; }
-  let amount = document.getElementById('topupAmount').value.trim();
-  let phone = cleanPhone(document.getElementById('topupPhone').value);
-  let txid = document.getElementById('topupTxId').value.trim();
-  if(!amount || !phone){ alert('Enter amount and phone'); return; }
-  if(!txid){ alert('Paste Transaction ID from Pesapal first. After you pay in Pesapal, Pesapal shows Transaction ID / Order ID - Copy it here.'); return; }
+  if(!db){alert('Not connected - Check Firebase Keys. Your apiKey is still PUT_YOUR_API_KEY_HERE - Add real Firebase keys');return;}
+  let amount=document.getElementById('topupAmount').value.trim(); let phone=cleanPhone(document.getElementById('topupPhone').value); let txid=document.getElementById('topupTxid').value.trim();
+  if(!amount||!phone){alert('Enter amount and phone');return;}
+  if(!txid){alert('Paste Transaction ID from Pesapal first. After you pay in Pesapal, copy the ID and paste here.');return;}
   try{
-    await db.collection('topups').add({ amount: Number(amount), phone: phone, txid: txid, status:'pending', createdAt:new Date() });
-    document.getElementById('walletResult').innerHTML = '✅ Top Up SAVED: ' + amount + ' UGX - TxID: ' + txid + ' - Waiting for SUPER to verify in Pesapal and approve. Check balance in 5 mins.';
-    alert('✅ Top Up SAVED INSIDE APP. SUPER will verify in Pesapal and approve. No cash outside app.');
-    document.getElementById('topupTxId').value='';
+    await db.collection('topups').add({amount:Number(amount),phone:phone,txid:txid,status:'pending',createdAt:new Date()});
+    document.getElementById('walletResult').innerHTML='✅ Top Up SAVED: '+amount+' UGX - Wait for Admin to verify in Pesapal and approve. No cash.';
+    alert('✅ Top Up SAVED INSIDE APP. SUPER ADMIN will verify in Pesapal and approve.');
+    document.getElementById('topupTxid').value="";
   }catch(e){ alert('Firebase error: '+e.message+' - Check Firebase Keys'); }
 }
 async function topupPesapal(){ openPesapal(); }
-async function checkWallet(){ if(!db){ alert('Not connected - Check Firebase Keys'); return; } let phone=cleanPhone(document.getElementById('topupPhone').value); if(!phone){alert('Enter phone');return;} let snap=await db.collection('wallets').doc(phone).get(); let bal = snap.exists ? Number(snap.data().balance||0) : 0; document.getElementById('walletResult').innerText='Balance for '+phone+': '+bal+' UGX - Inside App Only'; }
-async function loadAdminWallets(){ if(!db) return; let snap=await db.collection('wallets').get(); let total=0; let html=''; snap.forEach(d=>{ let w=d.data(); let bal=Number(w.balance||0); total+=bal; html+=`<div class="bg-white p-3 rounded-xl mt-2 border"><b>${d.id}</b> - ${bal} UGX</div>`; }); document.getElementById('totalWallets').innerText=total+' UGX'; document.getElementById('adminWalletList').innerHTML=html||'No wallets yet'; }
-async function loadAdminTopups(){ if(!db) return; let snap=await db.collection('topups').orderBy('createdAt','desc').limit(50).get(); let html=''; let pending=0; let totalApproved=0; snap.forEach(d=>{ let t=d.data(); let amt=Number(t.amount||0); if(t.status==='pending') pending++; if(t.status==='approved') totalApproved+=amt; html+=`<div class="bg-white p-3 rounded-xl mt-2 border"><b>${amt} UGX</b> - ${t.phone||''}<br><span class="text-xs">TxID: ${t.txid||'NO ID'} - ${t.status||''} - Inside App</span><br>${t.status==='pending'?`<button onclick="approveTopup('${d.id}','${amt}','${t.phone||''}')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">✅ Approve + Add To Wallet</button> <button onclick="rejectTopup('${d.id}')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button>`:''}</div>`; }); document.getElementById('adminTopupList').innerHTML=html||'No top-ups'; document.getElementById('pendingCount').innerText=pending; document.getElementById('totalTopups').innerText=totalApproved+' UGX'; }
-async function approveTopup(id, amount, phone){ if(!db) return; if(!confirm('Did you check this Transaction ID in Pesapal > Transactions and see '+amount+' UGX? Only approve if YES.')) return; let amt=Number(amount||0); await db.collection('topups').doc(id).update({status:'approved'}); let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let oldBal = snap.exists ? Number(snap.data().balance||0) : 0; await ref.set({balance: oldBal+amt, phone: phone, updatedAt:new Date()},{merge:true}); await db.collection('earnings').add({phone, amount:amt, joy: Math.round(amt*0.10), jabeth: Math.round(amt*0.10), super: Math.round(amt*0.80), type:'topup', createdAt:new Date()}); alert('✅ Approved LIVE. '+amt+' added to '+phone); loadAdminWallets(); loadAdminTopups(); loadMyShare(); }
-async function rejectTopup(id){ await db.collection('topups').doc(id).update({status:'rejected'}); loadAdminTopups(); }
-async function loadGPS(){ if(!db) return; try{ let snap=await db.collection('gps_locations').orderBy('createdAt','desc').limit(20).get(); let html=''; snap.forEach(d=>{ let g=d.data(); html+=`<div class="bg-white p-2 rounded mt-2 border text-xs">${g.nurse||''} - ${g.lat}, ${g.lng}</div>`; }); document.getElementById('gpsList').innerHTML=html||'No GPS yet'; }catch(e){} }
-// --- ADMIN ALARM ---
+async function checkWallet(){ if(!db){alert('Not connected - Check Firebase Keys');return;} let phone=cleanPhone(document.getElementById('topupPhone').value); if(!phone){alert('Enter phone first');return;} try{ let snap=await db.collection('wallets').doc(phone).get(); let bal=0; if(snap.exists) bal=snap.data().balance||0; document.getElementById('walletResult').innerHTML='Balance: '+bal+' UGX'; }catch(e){} }
+async function loadAdminWallets(){ if(!db) return; try{ let snap=await db.collection('wallets').get(); let html=""; snap.forEach(d=>{ let w=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'>"+d.id+" - <b>"+(w.balance||0)+" UGX</b></div>"; }); let el=document.getElementById('adminWalletsList'); if(el) el.innerHTML=html; }catch(e){} }
+async function loadAdminTopups(){ if(!db) return; try{ let snap=await db.collection('topups').where('status','==','pending').get(); let html=""; snap.forEach(d=>{ let t=d.data(); html+="<div class='bg-white p-3 rounded-xl border mt-2'>"+t.phone+" - "+t.amount+" UGX - "+t.txid+" <button onclick=\"approveTopup('"+d.id+"','"+t.phone+"',"+t.amount+")\" class='bg-green-600 text-white px-2 py-1 rounded-full text-xs'>Approve</button></div>"; }); let el=document.getElementById('adminWalletsList'); if(el) el.innerHTML+=html; }catch(e){} }
+async function approveTopup(id,phone,amount){ if(!db) return; let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal=0; if(snap.exists) bal=snap.data().balance||0; await ref.set({balance:bal+amount,phone},{merge:true}); await db.collection('topups').doc(id).update({status:'approved'}); loadAdminWallets(); }
+async function rejectTopup(id){ await db.collection('topups').doc(id).update({status:'rejected'}); }
+async function loadAdminGPS(){ if(!db) return; try{ let snap=await db.collection('gps_logs').orderBy('createdAt','desc').limit(20).get(); let html=""; snap.forEach(d=>{ let g=d.data(); html+="<div class='border p-2 rounded-xl mt-2 text-xs'>"+JSON.stringify(g)+"</div>"; }); let el=document.getElementById('gpsList'); if(el) el.innerHTML=html; }catch(e){} }
+async function rejectWithdraw(id){ await db.collection('withdrawals').doc(id).update({status:'rejected'}); }
 function enableAlarm(){
-  try{ let a=document.getElementById('bookingAlarm'); a.play().then(()=>{ a.pause(); a.currentTime=0; document.getElementById('alarmStatus').innerText='✅ ALARM ENABLED - You will hear it when booking comes'; }).catch(()=>{ document.getElementById('alarmStatus').innerText='✅ ALARM ENABLED - Tap again if no sound'; }); }catch(e){}
+  try{ let a=document.getElementById('bookingAlarm'); a.play().then(()=>{a.pause();}); }catch(e){}
   if('Notification' in window && Notification.permission==='default'){ Notification.requestPermission(); }
   try{ if(navigator.vibrate) navigator.vibrate(200); }catch(e){}
 }
 function triggerAlarm(b){
   try{ document.getElementById('bookingAlarm').play(); }catch(e){}
   try{ if(navigator.vibrate) navigator.vibrate([500,200,500,200,500,200,500]); }catch(e){}
-  alert('🚨 NEW BOOKING! 🚨\n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX');
-  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('🚨 NEW BOOKING - Hom Care Hero', {body: (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'')}); }catch(e){} }
+  alert('🔔 NEW BOOKING! \n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||''));
+  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('New Booking - '+b.service); }catch(e){} }
 }
-// --- NURSE ALARM ---
-let nurseAlarmOn = false;
-let nurseAlarmArea = "";
-let nurseAlarmSkill = "";
+let nurseAlarmOn = false; let nurseAlarmArea = ""; let nurseAlarmSkill = "";
 function enableNurseAlarm(){
-  let name = document.getElementById('nurseAlarmName').value.trim();
-  let phone = cleanPhone(document.getElementById('nurseAlarmPhone').value);
-  nurseAlarmArea = document.getElementById('nurseAlarmArea').value.trim().toLowerCase();
-  nurseAlarmSkill = document.getElementById('nurseAlarmSkill').value.trim();
-  if(!name || !phone){ alert('Enter your Name and Phone first'); return; }
-  nurseAlarmOn = true;
-  try{ let a=document.getElementById('nurseAlarm'); a.play().then(()=>{ a.pause(); a.currentTime=0; }).catch(()=>{}); }catch(e){}
+  let name=document.getElementById('nurseAlarmName').value.trim();
+  let phone=cleanPhone(document.getElementById('nurseAlarmPhone').value);
+  nurseAlarmArea=document.getElementById('nurseAlarmArea').value.trim().toLowerCase();
+  nurseAlarmSkill=document.getElementById('nurseAlarmSkill').value.trim().toLowerCase();
+  if(!name||!phone){alert('Enter your Name and Phone first');return;}
+  nurseAlarmOn=true;
+  try{ let a=document.getElementById('nurseAlarm'); a.play().then(()=>{a.pause();}); }catch(e){}
   if('Notification' in window && Notification.permission==='default'){ Notification.requestPermission(); }
   try{ if(navigator.vibrate) navigator.vibrate(300); }catch(e){}
-  document.getElementById('nurseAlarmStatus').innerHTML = '✅ NURSE ALARM ON - ' + name + ' - Area: ' + (nurseAlarmArea || 'ALL AREAS') + ' - Skill: ' + (nurseAlarmSkill || 'ALL SKILLS') + '<br>Keep this page OPEN. Your phone will RING when client books in your area!';
-  document.getElementById('nurseAlarmJobs').innerHTML = '<p class="text-sm font-bold">Waiting for jobs in your area... Do not close this page.</p>';
-  if(db){ db.collection('nurse_online').doc(phone).set({name, phone, area: nurseAlarmArea, skill: nurseAlarmSkill, onlineAt: new Date()}, {merge:true}).catch(()=>{}); }
-  alert('✅ NURSE ALARM ON - ' + name + '\nYour phone will RING when a client books in ' + (nurseAlarmArea || 'ANY AREA') + ' - ' + (nurseAlarmSkill || 'ANY SKILL') + '\nKeep this page OPEN!');
+  document.getElementById('nurseAlarmStatus').innerHTML='✅ NURSE ALARM ON - '+name+'<br>Area: '+(nurseAlarmArea||'ALL')+' | Skill: '+(nurseAlarmSkill||'ALL');
+  document.getElementById('nurseAlarmJobs').innerHTML='<p class="text-sm font-bold bg-red-50 p-3 rounded-xl">Waiting for jobs in your area... Keep page open</p>';
+  if(db) db.collection('nurse_online').doc(phone).set({name,phone,area:nurseAlarmArea,skill:nurseAlarmSkill,online:true,updatedAt:new Date()});
+  alert('✅ NURSE ALARM ON - '+name+'\nYour phone will RING when a client books in your area');
 }
 function triggerNurseAlarm(b){
   if(!nurseAlarmOn) return;
-  let loc = String((b.location||'') + ' ' + (b.country||'')).toLowerCase();
-  let svc = String(b.service||'');
-  if(nurseAlarmArea && !loc.includes(nurseAlarmArea) && !nurseAlarmArea.includes(loc.split(' ')[0])){ return; }
-  if(nurseAlarmSkill && svc !== nurseAlarmSkill){ if(!svc.toLowerCase().includes(nurseAlarmSkill.toLowerCase().split(' ')[0].toLowerCase())){ return; } }
+  let loc=String((b.location||'')+' '+(b.country||'')).toLowerCase();
+  let svc=String(b.service||'').toLowerCase();
+  if(nurseAlarmArea && loc.indexOf(nurseAlarmArea)===-1) return;
+  if(nurseAlarmSkill && svc.indexOf(nurseAlarmSkill)===-1 && (b.service||'').toLowerCase().indexOf(nurseAlarmSkill)===-1) return;
   try{ document.getElementById('nurseAlarm').play(); }catch(e){}
   try{ if(navigator.vibrate) navigator.vibrate([600,200,600,200,600,200,600]); }catch(e){}
-  document.getElementById('nurseAlarmJobs').innerHTML = '<div class="bg-red-50 p-3 rounded-xl border" style="border:2px solid red"><p class="font-bold text-red-700">🚨 NEW JOB FOR YOU!</p><p class="text-sm"><b>' + (b.service||'') + '</b> - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX</p><p class="text-xs mt-1">Call client NOW. Also call admin to confirm you will take this job.</p><a href="tel:' + (b.phone||'') + '" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm inline-block mt-2">📞 Call Client Now</a> <a href="https://wa.me/' + String(b.phone||'').replace('+','') + '" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm inline-block mt-2">💬 WhatsApp Client</a></div>';
-  alert('🚨 NEW JOB FOR YOU NURSE! 🚨\n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX\nCALL CLIENT NOW - It is your job!');
-  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('🚨 NEW JOB FOR YOU - Hom Care Hero', {body: (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'')}); }catch(e){} }
+  document.getElementById('nurseAlarmJobs').innerHTML='<p class="text-sm font-bold bg-red-50 p-3 rounded-xl">🔔 NEW JOB FOR YOU NURSE! \n'+(b.service||'')+' - '+(b.name||'')+' - '+(b.phone||'')+'</p>';
+  alert('🔔 NEW JOB FOR YOU NURSE! \n'+(b.service||'')+' - '+(b.name||'')+' - '+(b.phone||''));
+  if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('New Job - '+b.service); }catch(e){} }
 }
-let lastBookingCount = 0;
-let lastTopupCount = 0;
-let lastWithdrawCount = 0;
-async function checkNewBookingsAlarm(){
-  if(!db) return;
-  try{
-    let snap = await db.collection('bookings').orderBy('createdAt','desc').limit(1).get();
-    let countSnap = await db.collection('bookings').get();
-    let total = countSnap.size;
-    if(lastBookingCount === 0){ lastBookingCount = total; }
-    else if(total > lastBookingCount){
-      lastBookingCount = total;
-      let b = snap.docs[0].data();
-      triggerAlarm(b);
-      triggerNurseAlarm(b);
-      try{ loadBookings(); loadMyShare(); }catch(e){}
-    }
-    let tSnap = await db.collection('topups').where('status','==','pending').get();
-    let tTotal = tSnap.size;
-    if(lastTopupCount === 0){ lastTopupCount = tTotal; }
-    else if(tTotal > lastTopupCount){
-      lastTopupCount = tTotal;
-      try{ document.getElementById('bookingAlarm').play(); }catch(e){}
-      try{ if(navigator.vibrate) navigator.vibrate([500,200,500]); }catch(e){}
-      alert('💰 NEW TOP-UP PENDING! Check Wallet tab to Approve.');
-      try{ loadAdminTopups(); }catch(e){}
-    }
-    // Withdraw alarm for SUPER
-    if(getRole()==='SUPER' && selectedUser){
-      let wSnap = await db.collection('withdrawals').where('status','==','pending').get();
-      let wTotal = wSnap.size;
-      if(lastWithdrawCount===0){ lastWithdrawCount=wTotal; }
-      else if(wTotal>lastWithdrawCount){ lastWithdrawCount=wTotal; alert('💸 NEW WITHDRAW REQUEST! Check Withdraw box.'); try{ loadAllWithdraws(); }catch(e){} }
-    }
-  }catch(e){}
-}
-if('Notification' in window && Notification.permission === 'default'){ Notification.requestPermission(); }
-setInterval(checkNewBookingsAlarm, 20000);
-countView(); loadStats(); loadNurses(); loadPharmacyAds();
+loadPharmacyAds();
 </script>
 </body>
 </html>
