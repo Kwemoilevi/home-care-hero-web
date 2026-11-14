@@ -15,6 +15,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .btn{background:#16a34a;color:#fff;border:0;padding:14px;width:100%;border-radius:10px;font-size:17px;font-weight:bold;cursor:pointer;margin-top:8px}
 .btn2{background:#f59e0b}
 .btnRed{background:#dc2626}
+.btnBlue{background:#2563eb}
 .small{color:#666;font-size:14px;text-align:center}
 .balance{font-size:32px;font-weight:bold;text-align:center;color:#16a34a}
 .msg{text-align:center;color:#16a34a;font-weight:bold;margin-top:10px}
@@ -38,6 +39,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .shareFill{background:#16a34a;height:100%;width:10%;color:#fff;font-size:12px;font-weight:bold;line-height:22px;text-align:center}
 .shareFillJoy{background:#2563eb}
 .shareFillJab{background:#f59e0b}
+.gpsBox{background:#eff6ff;border:2px solid #2563eb;padding:12px;border-radius:12px;margin:10px 0}
+.liveDot{color:#22c55e;font-weight:bold}
 #gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
 </style>
@@ -60,7 +63,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <button onclick="show('home')" style="background:#fff;border:1px solid #ddd">Home</button>
 <button onclick="show('wallet')" style="background:#fde68a">Wallet</button>
 <button onclick="show('book')" style="background:#bbf7d0">Book</button>
-<button onclick="show('track')" style="background:#fbcfe8">Track</button>
+<button onclick="show('track')" style="background:#fbcfe8">📍 Track / GPS</button>
 <button onclick="show('nurse')" style="background:#ddd6fe">Nurse</button>
 <button onclick="show('pharmacy')" style="background:#fed7aa">Pharmacy</button>
 <button onclick="show('rate')" style="background:#fef08a">⭐ Rate Us</button>
@@ -70,10 +73,11 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="home" class="card">
 <h2 style="text-align:center">Hom Care Hero 🌍 - Trusted Nurses To Your Home</h2>
-<p style="text-align:center">🌍 Worldwide • Real Nurses • Pay Inside App Only • Pesapal</p>
+<p style="text-align:center">🌍 Worldwide • Real Nurses • Pay Inside App Only • Pesapal • 📍 GPS Tracked</p>
 <p style="text-align:center" class="small">Views: 136 | Taps: 1</p>
-<p style="text-align:center;color:#16a34a;font-weight:bold">✅ LIVE - REAL - Firebase Connected<br>🟢 LIVE - Firebase Connected</p>
+<p style="text-align:center;color:#16a34a;font-weight:bold">✅ LIVE - REAL - Firebase Connected<br>🟢 LIVE - Firebase Connected<br>📍 GPS LIVE - All Nurses Tracked</p>
 <p style="text-align:center;color:#dc2626;font-weight:bold">🚫 NO CASH OUTSIDE APP - All Transactions Inside App Only</p>
+<div class="gpsBox"><h3 style="margin:0">📍 Where Am I Now?</h3><p id="homeGps" class="small">Tap to see your location</p><button class="btn btnBlue" onclick="getMyLocation('homeGps')">📍 Get My GPS Location</button><p id="homeGpsLink"></p></div>
 <h3>💙 Choose Service - Tap To Book</h3>
 <div class="services">
 <button style="background:#dcfce7" onclick="bookService('General Nursing')">General Nursing</button>
@@ -112,6 +116,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <input id="bookLocation" placeholder="Location e.g. Ntinda, Kampala">
 <input id="bookTime" type="datetime-local">
 <input id="bookNotes" placeholder="Notes e.g. Diabetes care, wound dressing">
+<div class="gpsBox"><h3 style="margin:0">📍 Your GPS Location - For Nurse To Find You</h3><p id="bookGpsText" class="small">Your GPS will be captured when you book. Tap to capture now.</p><button class="btn btnBlue" onclick="captureBookGps()">📍 Capture My GPS Now</button><p id="bookGpsLink"></p></div>
 <button class="btn" onclick="bookNow()">Book & Pay with Pesapal</button>
 <p id="bookMsg" class="msg"></p>
 </div>
@@ -130,20 +135,35 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="track" class="card hidden">
-<h2>Track Your Booking</h2>
+<h2>📍 Track Your Booking / GPS</h2>
+<p class="small">See where your nurse is NOW - Live GPS</p>
+<div class="gpsBox"><h3>📍 Live Nurse Locations</h3><div id="liveGpsList">No live nurse yet. Nurse must tap Share Location.</div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh Live GPS</button></div>
+<hr>
+<p class="small">Enter your phone to see your bookings + your GPS</p>
 <input id="trackPhone" placeholder="Phone e.g. 0770000000">
-<button class="btn" onclick="trackBooking()">Track</button>
+<button class="btn" onclick="trackBooking()">Track My Booking</button>
 <div id="trackResult"></div>
+<div class="gpsBox"><h3>📍 My Own GPS</h3><p id="trackGpsText">Tap to see where you are now</p><button class="btn btnBlue" onclick="getMyLocation('trackGpsText')">📍 Get My GPS</button></div>
 </div>
 
 <div id="nurse" class="card hidden">
-<h2>For Nurses - Join Us</h2>
+<h2>For Nurses - Join Us + GPS</h2>
 <p>Are you a qualified nurse? Join Hom Care Hero and get patients worldwide.</p>
 <input id="nurseName" placeholder="Your Full Name">
 <input id="nursePhone" placeholder="Phone">
 <input id="nurseExp" placeholder="Years Experience">
 <button class="btn" onclick="joinNurse()">Apply As Nurse</button>
 <p id="nurseMsg" class="msg"></p>
+<hr>
+<div class="gpsBox" style="border-color:#16a34a;background:#f0fdf4">
+<h3>📍 NURSE LIVE GPS - Share Your Location</h3>
+<p class="small">When you are going to patient, tap START. Admins + Client will see you moving live. Tap STOP when you arrive.</p>
+<p id="nurseGpsStatus">Status: <b>Not Sharing</b></p>
+<p id="nurseGpsText">Your location will show here</p>
+<button class="btn" id="nurseGpsBtn" onclick="toggleNurseGps()">📍 START Sharing My Live Location</button>
+<button class="btn btnBlue" onclick="sendOneGps()">📍 Send One-Time Location Now</button>
+<p id="nurseGpsLink"></p>
+</div>
 </div>
 
 <div id="pharmacy" class="card hidden">
@@ -180,13 +200,13 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="admin" class="card hidden">
-<h2>Admin Login - 3 Admins</h2>
+<h2>Admin Login</h2>
 <p class="small">Choose your name, enter phone + password</p>
 <div id="adminLoginBox">
 <select id="adminRole">
-<option value="SUPER">SUPER ADMIN - 80% Payments</option>
-<option value="JOY">JOY CHELANGAT - 10% Approve Nurses</option>
-<option value="JABETH">JABETH KIMTAI - 10% Client Booking</option>
+<option value="SUPER">SUPER ADMIN</option>
+<option value="JOY">JOY CHELANGAT</option>
+<option value="JABETH">JABETH KIMTAI</option>
 </select>
 <input id="adminPhone" placeholder="Enter Your Phone">
 <input id="adminPass" type="password" placeholder="Enter Your Password">
@@ -196,16 +216,17 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <button class="btn hidden" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin</button>
 
 <div id="superDash" class="adminBox hidden">
-<h2>👑 SUPER ADMIN Dashboard - 80%</h2>
-<p><b>You control ALL payments</b></p>
+<h2>👑 SUPER ADMIN Dashboard</h2>
+<div class="shareBox"><p style="margin:0">YOUR SHARE - SUPER</p><div class="shareBig">80%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 80,000</b></p><div class="shareBar"><div class="shareFill" style="width:80%">80%</div></div></div>
 <div class="stat"><div><b id="sTotal">UGX 0</b>Total Payments</div><div><b id="sSuper">UGX 0</b>Your 80%</div><div><b id="sJoy">UGX 0</b>Joy 10%</div><div><b id="sJabeth">UGX 0</b>Jabeth 10%</div></div>
+<div class="gpsBox"><h3>📍 LIVE GPS - All Nurses + Clients</h3><p class="small">SUPER sees EVERYONE live</p><div id="superGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <h3>All Bookings</h3><div id="superBookings"></div>
 <h3>All Nurses</h3><div id="superNurses"></div>
 <h3>All Payments</h3><div id="superPays"></div>
 <h3>All Ratings</h3><div id="superRatings"></div>
 <div class="passBox">
 <h3>🔐 Change Passwords - SUPER ONLY</h3>
-<p class="small">1. Change GATE password - This is the first password everyone types to open app</p>
+<p class="small">1. Change GATE password</p>
 <input id="newGatePass" type="password" placeholder="New Gate Password">
 <button class="btn btn2" onclick="changeGatePass()">Change GATE Password</button>
 <p id="gateChangeMsg" class="msg"></p>
@@ -221,20 +242,12 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="joyDash" class="adminBox hidden">
 <h2>💙 JOY CHELANGAT Dashboard</h2>
 <p>Your Job: Approve Nurses ONLY.</p>
-<div class="shareBox" style="border-color:#2563eb">
-<p style="margin:0">YOUR SHARE - JOY</p>
-<div class="shareBig" style="color:#2563eb">10%</div>
-<p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p>
-<div class="shareBar"><div class="shareFill shareFillJoy">10%</div></div>
-<p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br>
-<b>Your 10% Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span><br>
-<span class="small">SUPER gets 80% | JABETH gets 10% | YOU get 10% = 100%</span></p>
-</div>
+<div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJoy">10%</div></div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span></p></div>
+<div class="gpsBox"><h3>📍 LIVE GPS - Nurses You Approve</h3><div id="joyGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <div class="stat"><div><b id="jNurseCount">0</b>Nurses To Approve</div><div><b id="jTotal2">UGX 0</b>Your Earnings</div></div>
 <h3>Nurses Waiting For Your Approval</h3><div id="joyNurses"></div>
 <div class="passBox">
 <h3>🔐 Change MY Password - JOY</h3>
-<p class="small">Only you can change your password. No one else sees it.</p>
 <input id="oldJoyPass" type="password" placeholder="Your Current Password">
 <input id="newJoyPass" type="password" placeholder="New Password">
 <button class="btn" onclick="changeMyPass('JOY')">Change MY Joy Password</button>
@@ -245,20 +258,12 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div id="jabethDash" class="adminBox hidden">
 <h2>💛 JABETH KIMTAI Dashboard</h2>
 <p>Your Job: Client Bookings ONLY.</p>
-<div class="shareBox" style="border-color:#f59e0b">
-<p style="margin:0">YOUR SHARE - JABETH</p>
-<div class="shareBig" style="color:#d97706">10%</div>
-<p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p>
-<div class="shareBar"><div class="shareFill shareFillJab">10%</div></div>
-<p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br>
-<b>Your 10% Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span><br>
-<span class="small">SUPER gets 80% | JOY gets 10% | YOU get 10% = 100%</span></p>
-</div>
+<div class="shareBox" style="border-color:#f59e0b"><p style="margin:0">YOUR SHARE - JABETH</p><div class="shareBig" style="color:#d97706">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJab">10%</div></div><p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span></p></div>
+<div class="gpsBox"><h3>📍 LIVE GPS - Clients + Nurses On Booking</h3><div id="jabethGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <div class="stat"><div><b id="jbBookCount">0</b>Client Bookings</div><div><b id="jbTotal2">UGX 0</b>Your Earnings</div></div>
 <h3>Client Bookings - Approve Them</h3><div id="jabethBookings"></div>
 <div class="passBox">
 <h3>🔐 Change MY Password - JABETH</h3>
-<p class="small">Only you can change your password. No one else sees it.</p>
 <input id="oldJabethPass" type="password" placeholder="Your Current Password">
 <input id="newJabethPass" type="password" placeholder="New Password">
 <button class="btn" onclick="changeMyPass('JABETH')">Change MY Jabeth Password</button>
@@ -268,6 +273,69 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <script>
+let gpsList = JSON.parse(localStorage.getItem('hc_gps')||'[]');
+let bookGps = null;
+let nurseWatchId = null;
+let nurseSharing = false;
+function formatGps(g){ if(!g) return 'No GPS yet'; return '<div class="item"><span class="liveDot">● LIVE</span> <b>'+(g.name||'User')+'</b> - '+(g.type||'')+'<br>Lat: '+(g.lat||'').toString().slice(0,9)+', Lng: '+(g.lng||'').toString().slice(0,9)+'<br>Time: '+(g.time||'')+'<br><a href="https://www.google.com/maps?q='+g.lat+','+g.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">📍 View On Google Maps</a> <a href="https://www.google.com/maps/dir/?api=1&destination='+g.lat+','+g.lng+'" target="_blank" style="background:#16a34a;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">🧭 Navigate To Them</a></div>'; }
+function refreshGpsList(){
+  let html = gpsList.length ? gpsList.slice(-10).reverse().map(formatGps).join('') : 'No live nurse yet. Nurse must tap Share Location.';
+  ['liveGpsList','superGps','joyGps','jabethGps'].forEach(id=>{ let el=document.getElementById(id); if(el) el.innerHTML=html; });
+  if(window.db){ window.db.collection('gps_live').orderBy('createdAt','desc').limit(10).get().then(snap=>{ let h=''; snap.forEach(d=>{let g=d.data(); if(g.lat) h+=formatGps(g);}); if(h){ ['liveGpsList','superGps','joyGps','jabethGps'].forEach(id=>{ let el=document.getElementById(id); if(el) el.innerHTML=h; }); } }).catch(()=>{}); }
+}
+function getMyLocation(elId){
+  let el=document.getElementById(elId); if(!el) return;
+  if(!navigator.geolocation){ el.innerText='GPS not supported on this phone'; return; }
+  el.innerText='Getting GPS... Allow Location when asked...';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    let lat=pos.coords.latitude, lng=pos.coords.longitude;
+    el.innerText='📍 You are at Lat: '+lat.toFixed(6)+', Lng: '+lng.toFixed(6)+' - Accuracy: '+Math.round(pos.coords.accuracy)+'m';
+    let linkEl=document.getElementById(elId==='homeGps'?'homeGpsLink':elId==='trackGpsText'?'trackGpsText':elId);
+    if(elId==='homeGps'){ document.getElementById('homeGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+lat+','+lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View Me On Google Maps</a>'; }
+  },err=>{ el.innerText='❌ GPS Failed: '+err.message+' - Turn ON Location in phone Settings > Location > ON, and Allow Chrome to use Location.'; });
+}
+function captureBookGps(){
+  if(!navigator.geolocation){ document.getElementById('bookGpsText').innerText='GPS not supported'; return; }
+  document.getElementById('bookGpsText').innerText='Getting GPS... Allow Location...';
+  navigator.geolocation.getCurrentPosition(pos=>{
+    bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude};
+    document.getElementById('bookGpsText').innerText='✅ GPS Captured: '+bookGps.lat.toFixed(6)+', '+bookGps.lng.toFixed(6);
+    document.getElementById('bookGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+bookGps.lat+','+bookGps.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View My Location On Map</a>';
+  },err=>{ document.getElementById('bookGpsText').innerText='❌ '+err.message+' - Turn ON Location'; });
+}
+function saveGps(name,type,lat,lng){
+  let g={name:name,type:type,lat:lat,lng:lng,time:new Date().toLocaleString(),createdAt:new Date()};
+  gpsList.push(g); if(gpsList.length>50) gpsList=gpsList.slice(-50);
+  localStorage.setItem('hc_gps',JSON.stringify(gpsList));
+  if(window.db){ window.db.collection('gps_live').add(g).catch(()=>{}); }
+  refreshGpsList();
+}
+function sendOneGps(){
+  let name=document.getElementById('nurseName').value || 'Nurse';
+  if(!navigator.geolocation){ document.getElementById('nurseGpsText').innerText='GPS not supported'; return; }
+  navigator.geolocation.getCurrentPosition(pos=>{
+    saveGps(name,'NURSE',pos.coords.latitude,pos.coords.longitude);
+    document.getElementById('nurseGpsText').innerText='✅ Location Sent: '+pos.coords.latitude.toFixed(6)+', '+pos.coords.longitude.toFixed(6)+' - Admins + Client can see you now!';
+    document.getElementById('nurseGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+pos.coords.latitude+','+pos.coords.longitude+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View Me On Map</a>';
+  },err=>{ document.getElementById('nurseGpsText').innerText='❌ '+err.message; });
+}
+function toggleNurseGps(){
+  let name=document.getElementById('nurseName').value || 'Nurse';
+  if(!nurseSharing){
+    if(!navigator.geolocation){ alert('GPS not supported'); return; }
+    nurseSharing=true;
+    document.getElementById('nurseGpsStatus').innerHTML='Status: <span class="liveDot">● LIVE SHARING ON</span> - Updating every 30 seconds';
+    document.getElementById('nurseGpsBtn').innerText='🛑 STOP Sharing Location';
+    document.getElementById('nurseGpsBtn').style.background='#dc2626';
+    sendOneGps();
+    nurseWatchId=setInterval(()=>{ navigator.geolocation.getCurrentPosition(pos=>{ saveGps(name,'NURSE LIVE',pos.coords.latitude,pos.coords.longitude); document.getElementById('nurseGpsText').innerText='🟢 LIVE Updated: '+new Date().toLocaleTimeString()+' - '+pos.coords.latitude.toFixed(6)+', '+pos.coords.longitude.toFixed(6); }); },30000);
+  } else {
+    nurseSharing=false; clearInterval(nurseWatchId);
+    document.getElementById('nurseGpsStatus').innerHTML='Status: <b>Not Sharing - Stopped</b>';
+    document.getElementById('nurseGpsBtn').innerText='📍 START Sharing My Live Location';
+    document.getElementById('nurseGpsBtn').style.background='#16a34a';
+  }
+}
 function getPasswords(){
   let d = JSON.parse(localStorage.getItem('hc_passwords')||'{}');
   if(!d.GATE) d.GATE='HERO2026';
@@ -309,7 +377,7 @@ const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDo
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 let db=null, auth=null, currentStars=0, currentAdmin=null;
 let nursesList = JSON.parse(localStorage.getItem('hc_nurses')||'[]');
-try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); auth=firebase.auth(); document.getElementById('loginStatus').innerText='Firebase: Connected ✅'; auth.onAuthStateChanged(u=>{ if(u){ document.getElementById('loginStatus').innerText='Logged in as '+u.email+' ✅'; document.getElementById('userInfo').innerText='Logged in: '+u.email; document.getElementById('logoutBtn').classList.remove('hidden'); } else { document.getElementById('logoutBtn').classList.add('hidden'); } }); }catch(e){ document.getElementById('loginStatus').innerText='Firebase: Using local mode'; }
+try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); window.db=db; auth=firebase.auth(); document.getElementById('loginStatus').innerText='Firebase: Connected ✅'; auth.onAuthStateChanged(u=>{ if(u){ document.getElementById('loginStatus').innerText='Logged in as '+u.email+' ✅'; document.getElementById('userInfo').innerText='Logged in: '+u.email; document.getElementById('logoutBtn').classList.remove('hidden'); } else { document.getElementById('logoutBtn').classList.add('hidden'); } }); }catch(e){ document.getElementById('loginStatus').innerText='Firebase: Using local mode'; }
 let bookings = JSON.parse(localStorage.getItem('hc_bookings')||'[]');
 let pays = JSON.parse(localStorage.getItem('hc_pays')||'[]');
 let ratings = JSON.parse(localStorage.getItem('hc_ratings')||'[]');
@@ -334,7 +402,7 @@ function adminLogin(){
   if(role==='SUPER') document.getElementById('superDash').classList.remove('hidden');
   if(role==='JOY') document.getElementById('joyDash').classList.remove('hidden');
   if(role==='JABETH') document.getElementById('jabethDash').classList.remove('hidden');
-  updateAdmin();
+  updateAdmin(); refreshGpsList();
 }
 function adminLogout(){ currentAdmin=null; document.getElementById('adminLoginBox').classList.remove('hidden'); document.getElementById('adminLogoutBtn').classList.add('hidden'); document.getElementById('superDash').classList.add('hidden'); document.getElementById('joyDash').classList.add('hidden'); document.getElementById('jabethDash').classList.add('hidden'); document.getElementById('adminLoginMsg').innerText='Logged out'; }
 function updateAdmin(){
@@ -352,8 +420,8 @@ function updateAdmin(){
   document.getElementById('jbTotalCollected').innerText='UGX '+total.toLocaleString();
   document.getElementById('jNurseCount').innerText=nursesList.length;
   document.getElementById('jbBookCount').innerText=bookings.length;
-  document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'</div>').join('') : 'No bookings';
-  document.getElementById('jabethBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>Status: '+b.status+'<br><button onclick="approveBooking('+i+')">Approve Booking ✅</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No client bookings yet';
+  document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>'+(b.gps ? '📍 GPS: <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View Client On Map</a>' : 'No GPS')+'</div>').join('') : 'No bookings';
+  document.getElementById('jabethBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>Status: '+b.status+'<br>'+(b.gps ? '📍 <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View Client GPS On Map</a>' : 'No GPS')+'<br><button onclick="approveBooking('+i+')">Approve Booking ✅</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No client bookings yet';
   let nurseHTML = nursesList.length ? nursesList.map((n,i)=>'<div class="item"><b>'+n.name+'</b> - '+n.phone+' - Exp: '+(n.exp||'')+' yrs<br>Status: '+(n.status||'Waiting')+'<br><button onclick="approveNurse('+i+')">Approve Nurse ✅</button> <button onclick="rejectNurse('+i+')">Reject</button></div>').join('') : 'No nurses yet';
   document.getElementById('joyNurses').innerHTML=nurseHTML;
   document.getElementById('superNurses').innerHTML=nurseHTML;
@@ -370,9 +438,9 @@ function updateBal(){
   }
   if(currentAdmin) updateAdmin();
 }
-function show(id){['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');}); document.getElementById(id).classList.remove('hidden'); if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');} if(id==='admin' && currentAdmin) updateAdmin(); updateBal();}
+function show(id){['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');}); document.getElementById(id).classList.remove('hidden'); if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');} if(id==='admin' && currentAdmin) updateAdmin(); if(id==='track') refreshGpsList(); updateBal();}
 function bookService(s){ document.getElementById('bookService').value=s; show('book'); }
-function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'</div>').join('') : 'No booking found for '+ph; }
+function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.gps ? '📍 Your GPS: <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View On Map</a>' : 'No GPS saved')+'</div>').join('') : 'No booking found for '+ph; refreshGpsList(); }
 function joinNurse(){ let n=document.getElementById('nurseName').value; if(!n){document.getElementById('nurseMsg').innerText='Enter name';return;} let data={name:n,phone:document.getElementById('nursePhone').value,exp:document.getElementById('nurseExp').value,status:'Waiting for JOY Approval',date:new Date().toLocaleString(),createdAt:new Date()}; nursesList.push(data); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add(data); document.getElementById('nurseMsg').innerText='✅ Application saved! JOY will approve you.'; }
 function orderPharmacy(){ let item=document.getElementById('pharmItem').value; if(!item){document.getElementById('pharmMsg').innerText='Enter medicine';return;} document.getElementById('pharmMsg').innerText='Opening Pesapal for '+item+'...'; window.location.href=PESAPAL_LINK; }
 function setStars(n){ currentStars=n; document.getElementById('starText').innerText='You selected '+n+' / 5'; document.querySelectorAll('#starBox span').forEach((s,i)=>{ s.innerText = i<n ? '★' : '☆'; s.style.color = i<n ? '#f59e0b' : '#000'; }); }
@@ -381,12 +449,24 @@ function loginGoogle(){ if(!auth){alert('Paste Firebase config first');return;} 
 function loginEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.signInWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(er=>alert(er.message)); }
 function signupEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.createUserWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Account created ✅'; show('home');}).catch(er=>alert(er.message)); }
 function logout(){ auth.signOut().then(()=>{document.getElementById('userInfo').innerText='Logged out'; document.getElementById('loginMsg').innerText='Logged out';}); }
-function bookNow(){ let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value; if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;} let data={name:name,phone:phone,service:document.getElementById('bookService').value,location:document.getElementById('bookLocation').value,notes:document.getElementById('bookNotes').value,status:'Pending - Waiting for JABETH Approval',date:new Date().toLocaleString()}; bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); if(db) db.collection('bookings').add(data); document.getElementById('bookMsg').innerText='Saved! JABETH will approve your booking. Now opening REAL Pesapal...'; window.location.href=PESAPAL_LINK; }
+function bookNow(){
+  let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value; if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;}
+  if(!bookGps && navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude}; saveBookingWithGps(name,phone); }); document.getElementById('bookMsg').innerText='Capturing your GPS... Allow Location...'; return; }
+  saveBookingWithGps(name,phone);
+}
+function saveBookingWithGps(name,phone){
+  let data={name:name,phone:phone,service:document.getElementById('bookService').value,location:document.getElementById('bookLocation').value,notes:document.getElementById('bookNotes').value,status:'Pending - Waiting for JABETH Approval',date:new Date().toLocaleString(),gps:bookGps};
+  bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings));
+  if(bookGps) saveGps(name,'CLIENT BOOKING',bookGps.lat,bookGps.lng);
+  if(db) db.collection('bookings').add(data);
+  document.getElementById('bookMsg').innerText='Saved with GPS! JABETH will approve. Now opening REAL Pesapal...';
+  window.location.href=PESAPAL_LINK;
+}
 function realDeposit(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){document.getElementById('walletMsg').innerText='Enter at least 500';return;} document.getElementById('walletMsg').innerText='Opening REAL Pesapal for UGX '+a.toLocaleString()+'... Pay with MTN MoMo there.'; window.location.href=PESAPAL_LINK; }
 function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - SUPER to verify in Pesapal'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase. SUPER will verify in Pesapal.'; }
 function approveBooking(i){ bookings[i].status='Approved ✅ by JABETH'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); }
 function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); } }
-updateBal();
+updateBal(); refreshGpsList();
 </script>
 </body>
 </html>
