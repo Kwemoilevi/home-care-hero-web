@@ -19,8 +19,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .balance{font-size:32px;font-weight:bold;text-align:center;color:#16a34a}
 .msg{text-align:center;color:#16a34a;font-weight:bold;margin-top:10px}
 .hidden{display:none}
-.stat{display:flex;gap:10px}
-.stat div{flex:1;background:#e8f5e9;padding:12px;border-radius:10px;text-align:center}
+.stat{display:flex;gap:10px;flex-wrap:wrap}
+.stat div{flex:1;background:#e8f5e9;padding:12px;border-radius:10px;text-align:center;min-width:90px}
 .stat b{font-size:20px;display:block}
 .item{border:1px solid #eee;padding:10px;border-radius:10px;margin:8px 0}
 .stars{text-align:center;font-size:36px;cursor:pointer}
@@ -30,6 +30,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gallery img{width:100%;height:130px;object-fit:cover;border-radius:10px}
 .gallery p{font-size:12px;margin:4px 0 10px;font-weight:bold}
+.adminBox{border:2px solid #16a34a;padding:12px;border-radius:12px;margin:10px 0}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
@@ -112,7 +113,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="track" class="card hidden">
 <h2>Track Your Booking</h2>
-<p class="small">Enter your phone to see your bookings</p>
 <input id="trackPhone" placeholder="Phone e.g. 0770000000">
 <button class="btn" onclick="trackBooking()">Track</button>
 <div id="trackResult"></div>
@@ -150,7 +150,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="login" class="card hidden">
-<h2>Login</h2>
+<h2>Login - Clients</h2>
 <p id="userInfo" class="small">Not logged in</p>
 <input id="loginEmail" placeholder="Email">
 <input id="loginPass" type="password" placeholder="Password">
@@ -162,41 +162,114 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="admin" class="card hidden">
-<h2>Admin Dashboard</h2>
-<div class="stat"><div><b id="statBookings">0</b>Total Bookings</div><div><b id="statPays">UGX 0</b>Total Payments</div><div><b id="statPending">0</b>Pending</div></div>
-<h3>Bookings</h3><div id="adminList">Loading...</div>
-<h3>Payments</h3><div id="adminPays">Loading...</div>
-<h3>⭐ Ratings</h3><div id="adminRatings">Loading...</div>
-<button class="btn" onclick="updateBal()">Refresh Dashboard</button>
+<h2>Admin Login - 3 Admins</h2>
+<p class="small">Choose your name, enter phone + password</p>
+<div id="adminLoginBox">
+<select id="adminRole">
+<option value="SUPER">SUPER ADMIN - 80% Payments</option>
+<option value="JOY">JOY CHELANGAT - 10% Approve Nurses</option>
+<option value="JABETH">JABETH KIMTAI - 10% Client Booking</option>
+</select>
+<input id="adminPhone" placeholder="Phone - For JOY 0775761052, For JABETH 0780545144, For SUPER leave blank">
+<input id="adminPass" type="password" placeholder="Password - SUPER 2215, JOY JOY2026, JABETH JABETH2026">
+<button class="btn btnRed" onclick="adminLogin()">Login As Admin</button>
+<p id="adminLoginMsg" class="msg"></p>
+</div>
+<button class="btn hidden" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin</button>
+
+<div id="superDash" class="adminBox hidden">
+<h2>👑 SUPER ADMIN Dashboard - 80%</h2>
+<p><b>You control ALL payments</b></p>
+<div class="stat"><div><b id="sTotal">UGX 0</b>Total Payments</div><div><b id="sSuper">UGX 0</b>Your 80%</div><div><b id="sJoy">UGX 0</b>Joy 10%</div><div><b id="sJabeth">UGX 0</b>Jabeth 10%</div></div>
+<h3>All Bookings</h3><div id="superBookings"></div>
+<h3>All Nurses</h3><div id="superNurses"></div>
+<h3>All Payments</h3><div id="superPays"></div>
+<h3>All Ratings</h3><div id="superRatings"></div>
+</div>
+
+<div id="joyDash" class="adminBox hidden">
+<h2>💙 JOY CHELANGAT Dashboard - 10%</h2>
+<p>Your Job: Approve Nurses ONLY. You cannot see payments of others.</p>
+<div class="stat"><div><b id="jTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jNurseCount">0</b>Nurses To Approve</div></div>
+<h3>Nurses Waiting For Your Approval</h3><div id="joyNurses"></div>
+<p class="small">Tap Approve to allow nurse to work. Tap Reject to remove.</p>
+</div>
+
+<div id="jabethDash" class="adminBox hidden">
+<h2>💛 JABETH KIMTAI Dashboard - 10%</h2>
+<p>Your Job: Client Bookings ONLY. Approve / Confirm bookings.</p>
+<div class="stat"><div><b id="jbTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jbBookCount">0</b>Client Bookings</div></div>
+<h3>Client Bookings - Approve Them</h3><div id="jabethBookings"></div>
+</div>
 </div>
 
 <script>
 const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "38632827016",appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId: "G-ZV09KN6R90"};
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
-let db=null, auth=null, currentStars=0;
+let db=null, auth=null, currentStars=0, currentAdmin=null;
+let nursesList = JSON.parse(localStorage.getItem('hc_nurses')||'[]');
 try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); auth=firebase.auth(); document.getElementById('loginStatus').innerText='Firebase: Connected ✅'; auth.onAuthStateChanged(u=>{ if(u){ document.getElementById('loginStatus').innerText='Logged in as '+u.email+' ✅'; document.getElementById('userInfo').innerText='Logged in: '+u.email; document.getElementById('logoutBtn').classList.remove('hidden'); } else { document.getElementById('logoutBtn').classList.add('hidden'); } }); }catch(e){ document.getElementById('loginStatus').innerText='Firebase: Using local mode'; }
 let bookings = JSON.parse(localStorage.getItem('hc_bookings')||'[]');
 let pays = JSON.parse(localStorage.getItem('hc_pays')||'[]');
 let ratings = JSON.parse(localStorage.getItem('hc_ratings')||'[]');
 function getBal(){return pays.reduce((s,p)=>s+p.amt,0);}
+function adminLogin(){
+  let role=document.getElementById('adminRole').value;
+  let phone=document.getElementById('adminPhone').value.trim();
+  let pass=document.getElementById('adminPass').value.trim();
+  let ok=false;
+  if(role==='SUPER' && pass==='2215') ok=true;
+  if(role==='JOY' && phone==='0775761052' && pass==='JOY2026') ok=true;
+  if(role==='JABETH' && phone==='0780545144' && (pass==='JABETH2026' || pass==='JABETH 2026')) ok=true;
+  if(!ok){ document.getElementById('adminLoginMsg').innerText='❌ Wrong Phone or Password. Try again.'; return; }
+  currentAdmin=role;
+  document.getElementById('adminLoginMsg').innerText='✅ Welcome '+role+'!';
+  document.getElementById('adminLoginBox').classList.add('hidden');
+  document.getElementById('adminLogoutBtn').classList.remove('hidden');
+  document.getElementById('superDash').classList.add('hidden');
+  document.getElementById('joyDash').classList.add('hidden');
+  document.getElementById('jabethDash').classList.add('hidden');
+  if(role==='SUPER') document.getElementById('superDash').classList.remove('hidden');
+  if(role==='JOY') document.getElementById('joyDash').classList.remove('hidden');
+  if(role==='JABETH') document.getElementById('jabethDash').classList.remove('hidden');
+  updateAdmin();
+}
+function adminLogout(){ currentAdmin=null; document.getElementById('adminLoginBox').classList.remove('hidden'); document.getElementById('adminLogoutBtn').classList.add('hidden'); document.getElementById('superDash').classList.add('hidden'); document.getElementById('joyDash').classList.add('hidden'); document.getElementById('jabethDash').classList.add('hidden'); document.getElementById('adminLoginMsg').innerText='Logged out'; }
+function updateAdmin(){
+  let total=getBal();
+  let superShare=Math.round(total*0.8), joyShare=Math.round(total*0.1), jabShare=Math.round(total*0.1);
+  document.getElementById('sTotal').innerText='UGX '+total.toLocaleString();
+  document.getElementById('sSuper').innerText='UGX '+superShare.toLocaleString();
+  document.getElementById('sJoy').innerText='UGX '+joyShare.toLocaleString();
+  document.getElementById('sJabeth').innerText='UGX '+jabShare.toLocaleString();
+  document.getElementById('jTotal').innerText='UGX '+joyShare.toLocaleString();
+  document.getElementById('jbTotal').innerText='UGX '+jabShare.toLocaleString();
+  document.getElementById('jNurseCount').innerText=nursesList.length;
+  document.getElementById('jbBookCount').innerText=bookings.length;
+  document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'</div>').join('') : 'No bookings';
+  document.getElementById('jabethBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>Status: '+b.status+'<br><button onclick="approveBooking('+i+')">Approve Booking ✅</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No client bookings yet';
+  let nurseHTML = nursesList.length ? nursesList.map((n,i)=>'<div class="item"><b>'+n.name+'</b> - '+n.phone+' - Exp: '+(n.exp||'')+' yrs<br>Status: '+(n.status||'Waiting')+'<br><button onclick="approveNurse('+i+')">Approve Nurse ✅</button> <button onclick="rejectNurse('+i+')">Reject</button></div>').join('') : 'No nurses yet';
+  document.getElementById('joyNurses').innerHTML=nurseHTML;
+  document.getElementById('superNurses').innerHTML=nurseHTML;
+  document.getElementById('superPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+' - '+(p.note||'')+'</div>').join('') : 'No payments';
+  document.getElementById('superRatings').innerHTML = ratings.length ? ratings.map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b> - '+(r.comment||'')+'</div>').join('') : 'No ratings';
+}
+function approveNurse(i){ nursesList[i].status='Approved ✅ by JOY'; localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add({action:'approved',name:nursesList[i].name,date:new Date().toLocaleString()}); updateAdmin(); alert('Nurse Approved ✅'); }
+function rejectNurse(i){ if(confirm('Reject this nurse?')){ nursesList.splice(i,1); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); updateAdmin(); } }
 function updateBal(){
   document.getElementById('bal').innerText='UGX '+getBal().toLocaleString();
-  document.getElementById('statBookings').innerText=bookings.length;
-  document.getElementById('statPays').innerText='UGX '+getBal().toLocaleString();
-  document.getElementById('statPending').innerText=bookings.filter(b=>b.status && b.status.includes('Pending')).length;
-  document.getElementById('adminList').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>'+(b.date||'')+'<br>Status: '+b.status+'<br><button onclick="approveBooking('+i+')">Approve</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No bookings yet.';
-  document.getElementById('adminPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+' - '+(p.note||'')+'</div>').join('') : 'No payments yet.';
-  document.getElementById('adminRatings').innerHTML = ratings.length ? ratings.map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b><br>'+(r.comment||'')+'<br>'+(r.date||'')+'</div>').join('') : 'No ratings yet.';
   document.getElementById('ratingList').innerHTML = ratings.length ? ratings.slice(-5).reverse().map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b><br>'+(r.comment||'')+'</div>').join('') : 'No ratings yet. Be first!';
   if(db){
-    db.collection('bookings').limit(30).get().then(snap=>{ let h=''; snap.forEach(d=>{let b=d.data(); h+='<div class="item"><b>Firebase:</b> '+(b.name||'')+' - '+(b.service||'')+' - '+(b.status||'')+'</div>';}); if(h) document.getElementById('adminList').innerHTML = h + document.getElementById('adminList').innerHTML; });
-    db.collection('ratings').orderBy('createdAt','desc').limit(20).get().then(snap=>{ let h=''; snap.forEach(d=>{let r=d.data(); h+='<div class="item">⭐ '+(r.stars||'')+'/5 - <b>'+(r.name||'')+'</b><br>'+(r.comment||'')+'<br>'+(r.date||'')+'</div>';}); if(h){ document.getElementById('adminRatings').innerHTML = h + document.getElementById('adminRatings').innerHTML; document.getElementById('ratingList').innerHTML = h; }});
+    db.collection('bookings').limit(30).get().then(snap=>{ snap.forEach(d=>{let b=d.data();}); });
+    db.collection('ratings').orderBy('createdAt','desc').limit(20).get().then(snap=>{ let h=''; snap.forEach(d=>{let r=d.data(); h+='<div class="item">⭐ '+(r.stars||'')+'/5 - <b>'+(r.name||'')+'</b><br>'+(r.comment||'')+'<br>'+(r.date||'')+'</div>';}); if(h) document.getElementById('ratingList').innerHTML=h; });
+    db.collection('nurses').orderBy('createdAt','desc').limit(20).get().then(snap=>{ let h=''; snap.forEach(d=>{let n=d.data(); if(n.name) h+='<div class="item"><b>'+n.name+'</b> - '+(n.phone||'')+'</div>';}); if(h && currentAdmin==='JOY') document.getElementById('joyNurses').innerHTML=h; });
   }
+  if(currentAdmin) updateAdmin();
 }
-function show(id){['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');}); document.getElementById(id).classList.remove('hidden'); if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');} updateBal();}
+function show(id){['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');}); document.getElementById(id).classList.remove('hidden'); if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');} if(id==='admin' && currentAdmin) updateAdmin(); updateBal();}
 function bookService(s){ document.getElementById('bookService').value=s; show('book'); }
 function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'</div>').join('') : 'No booking found for '+ph; }
-function joinNurse(){ let n=document.getElementById('nurseName').value; if(!n){document.getElementById('nurseMsg').innerText='Enter name';return;} if(db) db.collection('nurses').add({name:n,phone:document.getElementById('nursePhone').value,exp:document.getElementById('nurseExp').value,date:new Date().toLocaleString()}); document.getElementById('nurseMsg').innerText='✅ Application saved! We will contact you.'; }
+function joinNurse(){ let n=document.getElementById('nurseName').value; if(!n){document.getElementById('nurseMsg').innerText='Enter name';return;} let data={name:n,phone:document.getElementById('nursePhone').value,exp:document.getElementById('nurseExp').value,status:'Waiting for JOY Approval',date:new Date().toLocaleString(),createdAt:new Date()}; nursesList.push(data); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add(data); document.getElementById('nurseMsg').innerText='✅ Application saved! JOY will approve you.'; }
 function orderPharmacy(){ let item=document.getElementById('pharmItem').value; if(!item){document.getElementById('pharmMsg').innerText='Enter medicine';return;} document.getElementById('pharmMsg').innerText='Opening Pesapal for '+item+'...'; window.location.href=PESAPAL_LINK; }
 function setStars(n){ currentStars=n; document.getElementById('starText').innerText='You selected '+n+' / 5'; document.querySelectorAll('#starBox span').forEach((s,i)=>{ s.innerText = i<n ? '★' : '☆'; s.style.color = i<n ? '#f59e0b' : '#000'; }); }
 function submitRating(){ let name=document.getElementById('rateName').value.trim(); if(!name){ document.getElementById('rateMsg').innerText='Please enter your name'; return; } if(!currentStars){ document.getElementById('rateMsg').innerText='Please tap stars first'; return; } if(!db){ document.getElementById('rateMsg').innerText='Firebase not connected yet'; return; } let data={name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:new Date().toLocaleString(),createdAt:new Date()}; document.getElementById('rateMsg').innerText='Saving...'; db.collection('ratings').add(data).then(()=>{ ratings.push({name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:data.date}); localStorage.setItem('hc_ratings',JSON.stringify(ratings)); document.getElementById('rateMsg').innerText='✅ Thank you! '+currentStars+' Stars - Rating saved to Firebase!'; updateBal(); }).catch(e=>{ document.getElementById('rateMsg').innerText='Error: '+e.message; }); }
@@ -204,11 +277,11 @@ function loginGoogle(){ if(!auth){alert('Paste Firebase config first');return;} 
 function loginEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.signInWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(er=>alert(er.message)); }
 function signupEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.createUserWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Account created ✅'; show('home');}).catch(er=>alert(er.message)); }
 function logout(){ auth.signOut().then(()=>{document.getElementById('userInfo').innerText='Logged out'; document.getElementById('loginMsg').innerText='Logged out';}); }
-function bookNow(){ let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value; if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;} let data={name:name,phone:phone,service:document.getElementById('bookService').value,location:document.getElementById('bookLocation').value,notes:document.getElementById('bookNotes').value,status:'Pending - Waiting for Pesapal Payment',date:new Date().toLocaleString()}; bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); if(db) db.collection('bookings').add(data); document.getElementById('bookMsg').innerText='Saved to Firebase as Pending. Now opening REAL Pesapal...'; window.location.href=PESAPAL_LINK; }
+function bookNow(){ let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value; if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;} let data={name:name,phone:phone,service:document.getElementById('bookService').value,location:document.getElementById('bookLocation').value,notes:document.getElementById('bookNotes').value,status:'Pending - Waiting for JABETH Approval',date:new Date().toLocaleString()}; bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); if(db) db.collection('bookings').add(data); document.getElementById('bookMsg').innerText='Saved! JABETH will approve your booking. Now opening REAL Pesapal...'; window.location.href=PESAPAL_LINK; }
 function realDeposit(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){document.getElementById('walletMsg').innerText='Enter at least 500';return;} document.getElementById('walletMsg').innerText='Opening REAL Pesapal for UGX '+a.toLocaleString()+'... Pay with MTN MoMo there.'; window.location.href=PESAPAL_LINK; }
-function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - verify in Pesapal dashboard'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase as PENDING verification. Admin will check Pesapal.'; }
-function approveBooking(i){ bookings[i].status='Approved ✅'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); }
-function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); } }
+function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - SUPER to verify in Pesapal'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase. SUPER will verify in Pesapal.'; }
+function approveBooking(i){ bookings[i].status='Approved ✅ by JABETH'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); }
+function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); } }
 updateBal();
 </script>
 </body>
