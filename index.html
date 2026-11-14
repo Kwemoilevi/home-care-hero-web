@@ -32,6 +32,12 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .gallery p{font-size:12px;margin:4px 0 10px;font-weight:bold}
 .adminBox{border:2px solid #16a34a;padding:12px;border-radius:12px;margin:10px 0}
 .passBox{border:2px dashed #f59e0b;padding:12px;border-radius:12px;margin:12px 0;background:#fffbeb}
+.shareBox{background:#dcfce7;border:3px solid #16a34a;padding:16px;border-radius:14px;text-align:center;margin:12px 0}
+.shareBig{font-size:48px;font-weight:bold;color:#16a34a}
+.shareBar{background:#e5e7eb;height:22px;border-radius:20px;overflow:hidden;margin:10px 0}
+.shareFill{background:#16a34a;height:100%;width:10%;color:#fff;font-size:12px;font-weight:bold;line-height:22px;text-align:center}
+.shareFillJoy{background:#2563eb}
+.shareFillJab{background:#f59e0b}
 #gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
 </style>
@@ -200,7 +206,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div class="passBox">
 <h3>🔐 Change Passwords - SUPER ONLY</h3>
 <p class="small">1. Change GATE password - This is the first password everyone types to open app</p>
-<input id="newGatePass" type="password" placeholder="New Gate Password e.g. HERO2027">
+<input id="newGatePass" type="password" placeholder="New Gate Password">
 <button class="btn btn2" onclick="changeGatePass()">Change GATE Password</button>
 <p id="gateChangeMsg" class="msg"></p>
 <hr>
@@ -213,9 +219,18 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="joyDash" class="adminBox hidden">
-<h2>💙 JOY CHELANGAT Dashboard - 10%</h2>
+<h2>💙 JOY CHELANGAT Dashboard</h2>
 <p>Your Job: Approve Nurses ONLY.</p>
-<div class="stat"><div><b id="jTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jNurseCount">0</b>Nurses To Approve</div></div>
+<div class="shareBox" style="border-color:#2563eb">
+<p style="margin:0">YOUR SHARE - JOY</p>
+<div class="shareBig" style="color:#2563eb">10%</div>
+<p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p>
+<div class="shareBar"><div class="shareFill shareFillJoy">10%</div></div>
+<p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br>
+<b>Your 10% Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span><br>
+<span class="small">SUPER gets 80% | JABETH gets 10% | YOU get 10% = 100%</span></p>
+</div>
+<div class="stat"><div><b id="jNurseCount">0</b>Nurses To Approve</div><div><b id="jTotal2">UGX 0</b>Your Earnings</div></div>
 <h3>Nurses Waiting For Your Approval</h3><div id="joyNurses"></div>
 <div class="passBox">
 <h3>🔐 Change MY Password - JOY</h3>
@@ -228,9 +243,18 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="jabethDash" class="adminBox hidden">
-<h2>💛 JABETH KIMTAI Dashboard - 10%</h2>
+<h2>💛 JABETH KIMTAI Dashboard</h2>
 <p>Your Job: Client Bookings ONLY.</p>
-<div class="stat"><div><b id="jbTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jbBookCount">0</b>Client Bookings</div></div>
+<div class="shareBox" style="border-color:#f59e0b">
+<p style="margin:0">YOUR SHARE - JABETH</p>
+<div class="shareBig" style="color:#d97706">10%</div>
+<p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p>
+<div class="shareBar"><div class="shareFill shareFillJab">10%</div></div>
+<p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br>
+<b>Your 10% Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span><br>
+<span class="small">SUPER gets 80% | JOY gets 10% | YOU get 10% = 100%</span></p>
+</div>
+<div class="stat"><div><b id="jbBookCount">0</b>Client Bookings</div><div><b id="jbTotal2">UGX 0</b>Your Earnings</div></div>
 <h3>Client Bookings - Approve Them</h3><div id="jabethBookings"></div>
 <div class="passBox">
 <h3>🔐 Change MY Password - JABETH</h3>
@@ -265,7 +289,7 @@ function changeGatePass(){
   let np=document.getElementById('newGatePass').value.trim();
   if(np.length<4){ document.getElementById('gateChangeMsg').innerText='❌ New Gate Password must be at least 4 letters'; return; }
   let pw=getPasswords(); pw.GATE=np; savePasswords(pw);
-  document.getElementById('gateChangeMsg').innerText='✅ GATE Password Changed! Tell everyone new Gate Password privately. Next time app opens, use new password.';
+  document.getElementById('gateChangeMsg').innerText='✅ GATE Password Changed! Tell everyone new Gate Password privately.';
   document.getElementById('newGatePass').value='';
 }
 function changeMyPass(role){
@@ -278,7 +302,7 @@ function changeMyPass(role){
   if(oldP!==pw[role]){ document.getElementById(msgId).innerText='❌ Wrong Current Password. Try again.'; return; }
   if(newP.length<4){ document.getElementById(msgId).innerText='❌ New Password must be at least 4 letters'; return; }
   pw[role]=newP; savePasswords(pw);
-  document.getElementById(msgId).innerText='✅ Your Password Changed! Next login use NEW password: '+newP+' - Remember it, do NOT screenshot it.';
+  document.getElementById(msgId).innerText='✅ Your Password Changed! Next login use NEW password. Remember it, do NOT screenshot it.';
   document.getElementById(oldId).value=''; document.getElementById(newId).value='';
 }
 const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "38632827016",appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId: "G-ZV09KN6R90"};
@@ -321,7 +345,11 @@ function updateAdmin(){
   document.getElementById('sJoy').innerText='UGX '+joyShare.toLocaleString();
   document.getElementById('sJabeth').innerText='UGX '+jabShare.toLocaleString();
   document.getElementById('jTotal').innerText='UGX '+joyShare.toLocaleString();
+  document.getElementById('jTotal2').innerText='UGX '+joyShare.toLocaleString();
+  document.getElementById('jTotalCollected').innerText='UGX '+total.toLocaleString();
   document.getElementById('jbTotal').innerText='UGX '+jabShare.toLocaleString();
+  document.getElementById('jbTotal2').innerText='UGX '+jabShare.toLocaleString();
+  document.getElementById('jbTotalCollected').innerText='UGX '+total.toLocaleString();
   document.getElementById('jNurseCount').innerText=nursesList.length;
   document.getElementById('jbBookCount').innerText=bookings.length;
   document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'</div>').join('') : 'No bookings';
