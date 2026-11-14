@@ -1,13 +1,24 @@
 {
-  "name": "Home Care Hero 🌍 - Nursing Only",
-  "short_name": "Home Care Hero",
-  "description": "Nursing Only - All Transactions In-App Wallet - REAL, No Demo",
-  "start_url": "/index.html",
+  "name": "Hom Care Hero - Trusted Nurses Worldwide",
+  "short_name": "Hom Care Hero",
+  "description": "Book a Trusted Nurse Anywhere - Elderly, Wound Care, Broken Bones, Physiotherapy - Worldwide",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#0284c7",
-  "theme_color": "#0284c7",
+  "background_color": "#FFF7ED",
+  "theme_color": "#7c3aed",
+  "orientation": "portrait",
   "icons": [
-    { "src": "https://cdn-icons-png.flaticon.com/512/2966/2966327.png", "sizes": "192x192", "type": "image/png" },
-    { "src": "https://cdn-icons-png.flaticon.com/512/2966/2966327.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+    {
+      "src": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=192&q=80",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=512&q=80",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }
