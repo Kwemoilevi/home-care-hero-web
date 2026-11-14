@@ -16,6 +16,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .btn2{background:#f59e0b}
 .btnRed{background:#dc2626}
 .btnBlue{background:#2563eb}
+.btnGreen{background:#25D366}
 .small{color:#666;font-size:14px;text-align:center}
 .balance{font-size:32px;font-weight:bold;text-align:center;color:#16a34a}
 .msg{text-align:center;color:#16a34a;font-weight:bold;margin-top:10px}
@@ -41,17 +42,24 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .shareFillJab{background:#f59e0b}
 .gpsBox{background:#eff6ff;border:2px solid #2563eb;padding:12px;border-radius:12px;margin:10px 0}
 .liveDot{color:#22c55e;font-weight:bold}
+.alarmBox{background:#fee2e2;border:3px solid #dc2626;padding:14px;border-radius:14px;margin:12px 0;text-align:center;animation:blink 1s infinite}
+@keyframes blink{0%{background:#fee2e2}50%{background:#fecaca}100%{background:#fee2e2}}
+.alarmBig{font-size:28px;font-weight:bold;color:#dc2626}
+#alarmBanner{position:fixed;top:0;left:0;right:0;background:#dc2626;color:#fff;padding:12px;text-align:center;font-weight:bold;z-index:9998;display:none;animation:blink2 0.8s infinite}
+@keyframes blink2{0%{background:#dc2626}50%{background:#991b1b}100%{background:#dc2626}}
+.shareLinkBox{background:#f0fdf4;border:2px solid #16a34a;padding:14px;border-radius:12px;margin:12px 0;text-align:center}
 #gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
 .footer{position:fixed;bottom:0;left:0;right:0;background:#fdf6ee;text-align:center;padding:6px;z-index:5}
 #hiddenAdmin{opacity:0.08;font-size:10px;color:#999;border:0;background:transparent;cursor:pointer;padding:8px}
-#hiddenAdmin:active{opacity:0.6}
+label{font-weight:bold;font-size:14px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body>
+<div id="alarmBanner" onclick="stopAlarm()">🚨 NEW BOOKING! <span id="alarmBannerText"></span> - TAP TO STOP ALARM ✅</div>
 <div id="gate"><div id="gateBox">
 <div style="font-size:48px">💚</div>
 <h2>Hom Care Hero 🌍</h2>
@@ -71,7 +79,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <button onclick="show('wallet')" style="background:#fde68a">Wallet</button>
 <button onclick="show('book')" style="background:#bbf7d0">Book</button>
 <button onclick="show('track')" style="background:#fbcfe8">📍 Track / GPS</button>
-<button onclick="show('nurse')" style="background:#ddd6fe">Nurse</button>
+<button onclick="show('nurse')" style="background:#ddd6fe">Nurse 🔔</button>
 <button onclick="show('pharmacy')" style="background:#fed7aa">Pharmacy</button>
 <button onclick="show('rate')" style="background:#fef08a">⭐ Rate Us</button>
 <button onclick="show('login')" style="background:#e0e7ff">Login</button>
@@ -81,8 +89,10 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <h2 style="text-align:center">Hom Care Hero 🌍 - Trusted Nurses To Your Home</h2>
 <p style="text-align:center">🌍 Worldwide • Real Nurses • Pay Inside App Only • Pesapal • 📍 GPS Tracked</p>
 <p style="text-align:center" class="small">Views: 136 | Taps: 1</p>
-<p style="text-align:center;color:#16a34a;font-weight:bold">✅ LIVE - REAL - Firebase Connected<br>🟢 LIVE - Firebase Connected<br>📍 GPS LIVE - All Nurses Tracked</p>
+<p style="text-align:center;color:#16a34a;font-weight:bold">✅ LIVE - REAL - Firebase Connected<br>🟢 LIVE - Firebase Connected<br>📍 GPS LIVE - All Nurses Tracked<br>🚨 Booking Alarm ON for Nurses + Admins</p>
 <p style="text-align:center;color:#dc2626;font-weight:bold">🚫 NO CASH OUTSIDE APP - All Transactions Inside App Only</p>
+<div id="homeAlarm"></div>
+<div class="shareLinkBox"><h3 style="margin:0">👩‍⚕️ Are You A Nurse? Join Us!</h3><p class="small">Fill Qualification Form - JOY will check your qualifications & approve you</p><button class="btn" onclick="show('nurse')">👩‍⚕️ Apply As Nurse - Qualification Form</button></div>
 <div class="gpsBox"><h3 style="margin:0">📍 Where Am I Now?</h3><p id="homeGps" class="small">Tap to see your location</p><button class="btn btnBlue" onclick="getMyLocation('homeGps')">📍 Get My GPS Location</button><p id="homeGpsLink"></p></div>
 <h3>💙 Choose Service - Tap To Book</h3>
 <div class="services">
@@ -98,6 +108,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <button class="btn btn2" onclick="show('wallet')">PAY NOW with MoMo / Card</button>
 <p class="small">Real payment via Pesapal - MTN MoMo, Airtel Money, Visa</p>
 <p class="small" id="loginStatus">Connected ✅</p>
+<button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Booking Alarm / Notifications</button>
 </div>
 
 <div class="card">
@@ -123,7 +134,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <input id="bookTime" type="datetime-local">
 <input id="bookNotes" placeholder="Notes e.g. Diabetes care, wound dressing">
 <div class="gpsBox"><h3 style="margin:0">📍 Your GPS Location - For Nurse To Find You</h3><p id="bookGpsText" class="small">Your GPS will be captured when you book. Tap to capture now.</p><button class="btn btnBlue" onclick="captureBookGps()">📍 Capture My GPS Now</button><p id="bookGpsLink"></p></div>
-<button class="btn" onclick="bookNow()">Book & Pay with Pesapal</button>
+<button class="btn" onclick="bookNow()">🚨 Book & ALARM Nurses + Admins</button>
 <p id="bookMsg" class="msg"></p>
 </div>
 
@@ -153,13 +164,46 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="nurse" class="card hidden">
-<h2>For Nurses - Join Us + GPS</h2>
-<p>Are you a qualified nurse? Join Hom Care Hero and get patients worldwide.</p>
-<input id="nurseName" placeholder="Your Full Name">
-<input id="nursePhone" placeholder="Phone">
-<input id="nurseExp" placeholder="Years Experience">
-<button class="btn" onclick="joinNurse()">Apply As Nurse</button>
+<h2>👩‍⚕️ For Nurses - Qualification Form</h2>
+<p class="small">Fill ALL fields honestly. JOY will check your qualifications before approving you. Fake qualifications = Rejected.</p>
+<div id="nurseAlarm"></div>
+<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM - Tap To Hear How It Sounds</button>
+<hr>
+<label>1. Full Name *</label><input id="nurseName" placeholder="e.g. Mary Atim">
+<label>2. Phone / WhatsApp *</label><input id="nursePhone" placeholder="e.g. 0770000000">
+<label>3. National ID Number *</label><input id="nurseID" placeholder="e.g. CM123456789">
+<label>4. Highest Nursing Qualification *</label>
+<select id="nurseQual">
+<option value="">-- Select Qualification --</option>
+<option>Certificate in Nursing</option>
+<option>Certificate in Midwifery</option>
+<option>Diploma in Nursing</option>
+<option>Diploma in Midwifery</option>
+<option>Bachelor Degree in Nursing (BSN)</option>
+<option>Bachelor Degree in Midwifery</option>
+<option>Degree in Clinical Medicine</option>
+<option>Master Degree in Nursing</option>
+<option>Other - Write in Notes</option>
+</select>
+<label>5. Nursing Council License / Registration Number *</label><input id="nurseLicense" placeholder="e.g. UNMC 12345 - Must be real">
+<label>6. Years of Experience *</label><select id="nurseExp"><option value="">-- Select --</option><option>Less than 1 year</option><option>1-2 years</option><option>3-5 years</option><option>5-10 years</option><option>10+ years</option></select>
+<label>7. Specialization / Skills (Tick all you can do)</label>
+<select id="nurseSpec"><option>General Nursing</option><option>Elderly Care</option><option>Midwifery / Mother & Baby</option><option>Wound Care / Dressing</option><option>Broken Bones / Fracture Care</option><option>Physiotherapy / Help to Walk</option><option>Post-Surgery Care</option><option>Diabetes / Hypertension Care</option><option>Home Nursing - All</option></select>
+<label>8. Where Did You Study? School / University</label><input id="nurseSchool" placeholder="e.g. Mulago School of Nursing">
+<label>9. Year You Finished Study</label><input id="nurseYear" placeholder="e.g. 2020">
+<label>10. Your Location / District *</label><input id="nurseLocation" placeholder="e.g. Ntinda, Kampala">
+<label>11. Do You Have Transport? Can You Travel To Patients?</label><select id="nurseTransport"><option>Yes - I have boda / transport</option><option>Yes - I can use taxi / boda</option><option>No - Patient must be near me</option></select>
+<label>12. Tell Us About Yourself - Why Should We Approve You?</label><textarea id="nurseAbout" placeholder="e.g. I am kind, experienced, I have cared for elderly for 5 years..."></textarea>
+<button class="btn" onclick="joinNurse()">✅ Submit Qualification Form - Send To JOY</button>
 <p id="nurseMsg" class="msg"></p>
+<div class="shareLinkBox">
+<h3>📤 Share This Nurse Form</h3>
+<p class="small">Send this app link to other nurses - They will fill same form</p>
+<input id="shareLinkInput" readonly value="">
+<button class="btn btnBlue" onclick="copyShareLink()">📋 Copy Nurse Form Link</button>
+<button class="btn btnGreen" onclick="shareViaWhatsApp()">💬 Share Via WhatsApp</button>
+<p id="shareMsg" class="msg"></p>
+</div>
 <hr>
 <div class="gpsBox" style="border-color:#16a34a;background:#f0fdf4">
 <h3>📍 NURSE LIVE GPS - Share Your Location</h3>
@@ -223,11 +267,23 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="superDash" class="adminBox hidden">
 <h2>👑 SUPER ADMIN Dashboard</h2>
+<div id="superAlarm"></div>
+<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
+<button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
+<div class="shareLinkBox">
+<h3>📤 SHARE LINK - For JOY & SUPER</h3>
+<p class="small">Share Nurse Qualification Form + App Link to JOY, to Nurses, to anyone.<br><b>JOY Link:</b> Send to JOY on WhatsApp - She opens Admin to approve nurses<br><b>SUPER Link:</b> Same app link - SUPER opens Admin to see all</p>
+<input id="superShareLink" readonly value="">
+<button class="btn btnGreen" onclick="shareLinkWhatsApp('SUPER')">💬 Share App Link Via WhatsApp - To JOY / SUPER</button>
+<button class="btn btnBlue" onclick="copySuperLink()">📋 Copy App Link</button>
+<button class="btn btn2" onclick="shareNurseFormWhatsApp()">👩‍⚕️ Share NURSE FORM Only - To Nurses</button>
+<p id="superShareMsg" class="msg"></p>
+</div>
 <div class="shareBox"><p style="margin:0">YOUR SHARE - SUPER</p><div class="shareBig">80%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 80,000</b></p><div class="shareBar"><div class="shareFill" style="width:80%">80%</div></div></div>
 <div class="stat"><div><b id="sTotal">UGX 0</b>Total Payments</div><div><b id="sSuper">UGX 0</b>Your 80%</div><div><b id="sJoy">UGX 0</b>Joy 10%</div><div><b id="sJabeth">UGX 0</b>Jabeth 10%</div></div>
-<div class="gpsBox"><h3>📍 LIVE GPS - All Nurses + Clients</h3><p class="small">SUPER sees EVERYONE live</p><div id="superGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
+<div class="gpsBox"><h3>📍 LIVE GPS - All Nurses + Clients</h3><div id="superGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <h3>All Bookings</h3><div id="superBookings"></div>
-<h3>All Nurses</h3><div id="superNurses"></div>
+<h3>All Nurses - With Qualifications</h3><div id="superNurses"></div>
 <h3>All Payments</h3><div id="superPays"></div>
 <h3>All Ratings</h3><div id="superRatings"></div>
 <div class="passBox">
@@ -247,11 +303,22 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="joyDash" class="adminBox hidden">
 <h2>💙 JOY CHELANGAT Dashboard</h2>
-<p>Your Job: Approve Nurses ONLY.</p>
+<div id="joyAlarm"></div>
+<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
+<button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
+<div class="shareLinkBox">
+<h3>📤 SHARE LINK - JOY</h3>
+<p class="small">JOY - Share Nurse Form to nurses you know. They fill qualifications, you approve here.</p>
+<input id="joyShareLink" readonly value="">
+<button class="btn btnGreen" onclick="shareLinkWhatsApp('JOY')">💬 Share Nurse Form Via WhatsApp</button>
+<button class="btn btnBlue" onclick="copyJoyLink()">📋 Copy Link</button>
+<p id="joyShareMsg" class="msg"></p>
+</div>
+<p>Your Job: Approve Nurses ONLY - Check Qualifications Carefully.</p>
 <div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJoy">10%</div></div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span></p></div>
 <div class="gpsBox"><h3>📍 LIVE GPS - Nurses You Approve</h3><div id="joyGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <div class="stat"><div><b id="jNurseCount">0</b>Nurses To Approve</div><div><b id="jTotal2">UGX 0</b>Your Earnings</div></div>
-<h3>Nurses Waiting For Your Approval</h3><div id="joyNurses"></div>
+<h3>Nurses Waiting For Your Approval - Check Qualifications</h3><div id="joyNurses"></div>
 <div class="passBox">
 <h3>🔐 Change MY Password - JOY</h3>
 <input id="oldJoyPass" type="password" placeholder="Your Current Password">
@@ -263,6 +330,9 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 
 <div id="jabethDash" class="adminBox hidden">
 <h2>💛 JABETH KIMTAI Dashboard</h2>
+<div id="jabethAlarm"></div>
+<button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
+<button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
 <p>Your Job: Client Bookings ONLY.</p>
 <div class="shareBox" style="border-color:#f59e0b"><p style="margin:0">YOUR SHARE - JABETH</p><div class="shareBig" style="color:#d97706">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJab">10%</div></div><p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span></p></div>
 <div class="gpsBox"><h3>📍 LIVE GPS - Clients + Nurses On Booking</h3><div id="jabethGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
@@ -281,6 +351,112 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">• • •</button></div>
 
 <script>
+function getAppLink(){ return window.location.href.split('?')[0].split('#')[0] || 'https://home-care-hero.web.app'; }
+function setupShareLinks(){
+  let link=getAppLink();
+  ['shareLinkInput','superShareLink','joyShareLink'].forEach(id=>{ let el=document.getElementById(id); if(el) el.value=link; });
+}
+function copyShareLink(){
+  let el=document.getElementById('shareLinkInput'); el.select(); document.execCommand('copy');
+  document.getElementById('shareMsg').innerText='✅ Link Copied! Send it to nurses on WhatsApp.';
+  if(navigator.clipboard) navigator.clipboard.writeText(el.value);
+}
+function copySuperLink(){
+  let el=document.getElementById('superShareLink'); el.select(); document.execCommand('copy');
+  document.getElementById('superShareMsg').innerText='✅ App Link Copied! Send to JOY / SUPER.';
+  if(navigator.clipboard) navigator.clipboard.writeText(el.value);
+}
+function copyJoyLink(){
+  let el=document.getElementById('joyShareLink'); el.select(); document.execCommand('copy');
+  document.getElementById('joyShareMsg').innerText='✅ Link Copied! Send to nurses.';
+  if(navigator.clipboard) navigator.clipboard.writeText(el.value);
+}
+function shareViaWhatsApp(){
+  let link=getAppLink();
+  let text=encodeURIComponent('👩‍⚕️ Hello! Join Hom Care Hero as a Nurse! Fill your Qualification Form here: '+link+' - Tap Nurse, fill Qualification, JOY will approve you. Thank you!');
+  window.open('https://wa.me/?text='+text,'_blank');
+}
+function shareLinkWhatsApp(who){
+  let link=getAppLink();
+  let text='';
+  if(who==='JOY') text=encodeURIComponent('💙 Hi JOY! This is Hom Care Hero App Link: '+link+' - Open it, tap faint dots at bottom 3 times, enter Gate Password, then login as JOY to approve nurses. Share this link to nurses to fill Qualification Form. Thank you!');
+  else text=encodeURIComponent('👑 Hi SUPER! This is Hom Care Hero App Link: '+link+' - Open it, tap faint dots at bottom 3 times, enter Gate Password, then login as SUPER to see all payments, nurses, GPS, alarms. Share Nurse Form link to nurses. Thank you!');
+  window.open('https://wa.me/?text='+text,'_blank');
+}
+function shareNurseFormWhatsApp(){
+  let link=getAppLink();
+  let text=encodeURIComponent('👩‍⚕️ Hello Nurse! Are you qualified? Join Hom Care Hero! Fill Qualification Form here: '+link+' - Tap ENTER AS CLIENT, then Tap NURSE, fill your Qualification, License Number, Experience. JOY will check and approve you. Pay is good, patients worldwide!');
+  window.open('https://wa.me/?text='+text,'_blank');
+}
+let alarmInterval=null, alarmAudioCtx=null;
+let notificationsList = JSON.parse(localStorage.getItem('hc_notifications')||'[]');
+function enableNotifications(){
+  if('Notification' in window){
+    Notification.requestPermission().then(p=>{
+      if(p==='granted'){ new Notification('Hom Care Hero 🚨', {body:'Alarm ON - You will get notified when client books'}); alert('✅ Notifications ON - Keep app open for alarm'); }
+      else alert('Please Allow Notifications in Chrome settings to get alarm when app is in background');
+    });
+  } else alert('Notifications not supported on this phone, but alarm sound + vibration will still work when app is open');
+}
+function playAlarmSound(times){
+  try{
+    if(!alarmAudioCtx) alarmAudioCtx=new (window.AudioContext||window.webkitAudioContext)();
+    let count=0;
+    let beepLoop=setInterval(()=>{
+      if(count>= (times||6)){ clearInterval(beepLoop); return; }
+      count++;
+      [0,1].forEach(i=>{
+        setTimeout(()=>{
+          let o=alarmAudioCtx.createOscillator(), g=alarmAudioCtx.createGain();
+          o.connect(g); g.connect(alarmAudioCtx.destination);
+          o.frequency.value=880; o.type='square'; g.gain.value=0.2;
+          o.start(); o.stop(alarmAudioCtx.currentTime+0.25);
+        }, i*300);
+      });
+    },600);
+  }catch(e){}
+}
+function triggerBookingAlarm(booking){
+  let msg='NEW BOOKING: '+(booking.name||'Client')+' - '+(booking.service||'')+' - '+(booking.phone||'')+' - '+(booking.location||'');
+  let notif={msg:msg, booking:booking, time:new Date().toLocaleString(), seen:false};
+  notificationsList.push(notif); if(notificationsList.length>30) notificationsList=notificationsList.slice(-30);
+  localStorage.setItem('hc_notifications',JSON.stringify(notificationsList));
+  if(window.db){ window.db.collection('notifications').add({msg:msg, booking:booking, time:notif.time, createdAt:new Date(), seen:false}).catch(()=>{}); }
+  if(navigator.vibrate) navigator.vibrate([500,200,500,200,500,200,1000]);
+  playAlarmSound(8);
+  document.getElementById('alarmBannerText').innerText=msg;
+  document.getElementById('alarmBanner').style.display='block';
+  if('Notification' in window && Notification.permission==='granted'){
+    try{ new Notification('🚨 NEW BOOKING - Hom Care Hero', {body:msg}); }catch(e){}
+  }
+  if(alarmInterval) clearInterval(alarmInterval);
+  alarmInterval=setInterval(()=>{ playAlarmSound(3); if(navigator.vibrate) navigator.vibrate([500,200,500]); },8000);
+  renderAlarms();
+}
+function testAlarm(){
+  playAlarmSound(6);
+  if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);
+  alert('🚨 Did you hear alarm? If YES, alarm works. If NO, turn up volume + tap Enable Notifications.');
+}
+function stopAlarm(){
+  if(alarmInterval) clearInterval(alarmInterval);
+  document.getElementById('alarmBanner').style.display='none';
+  notificationsList.forEach(n=>n.seen=true);
+  localStorage.setItem('hc_notifications',JSON.stringify(notificationsList));
+  renderAlarms();
+}
+function renderAlarms(){
+  let unseen=notificationsList.filter(n=>!n.seen);
+  let html='';
+  if(unseen.length){
+    html='<div class="alarmBox"><div class="alarmBig">🚨 '+unseen.length+' NEW BOOKING(S)!</div><p>'+unseen.map(n=>'<b>'+n.msg+'</b><br><span class="small">'+n.time+'</span>').join('<hr>')+'</p><button class="btn" style="background:#dc2626" onclick="stopAlarm()">✅ SEEN - STOP ALARM</button></div>';
+  } else if(notificationsList.length){
+    html='<div class="item"><b>🔔 Last Notifications:</b><br>'+notificationsList.slice(-3).reverse().map(n=>n.msg+' - '+n.time).join('<br>')+'</div>';
+  } else {
+    html='<div class="item">🔔 No new bookings yet. Alarm will ring here when client books.</div>';
+  }
+  ['homeAlarm','nurseAlarm','superAlarm','joyAlarm','jabethAlarm'].forEach(id=>{ let el=document.getElementById(id); if(el) el.innerHTML=html; });
+}
 let hiddenTaps=0, hiddenTimer=null;
 function tapHiddenAdmin(){
   hiddenTaps++;
@@ -434,9 +610,20 @@ function adminLogin(){
   if(role==='SUPER') document.getElementById('superDash').classList.remove('hidden');
   if(role==='JOY') document.getElementById('joyDash').classList.remove('hidden');
   if(role==='JABETH') document.getElementById('jabethDash').classList.remove('hidden');
-  updateAdmin(); refreshGpsList();
+  updateAdmin(); refreshGpsList(); renderAlarms(); setupShareLinks();
 }
 function adminLogout(){ currentAdmin=null; document.getElementById('adminLoginBox').classList.remove('hidden'); document.getElementById('adminLogoutBtn').classList.add('hidden'); document.getElementById('superDash').classList.add('hidden'); document.getElementById('joyDash').classList.add('hidden'); document.getElementById('jabethDash').classList.add('hidden'); document.getElementById('adminLoginMsg').innerText='Logged out'; }
+function formatNurse(n,i){
+  return '<div class="item"><b>'+(n.name||'')+'</b> - '+(n.phone||'')+'<br>'
+  +'🎓 Qualification: <b>'+(n.qual||n.qualification||'Not given')+'</b><br>'
+  +'🪪 License: <b>'+(n.license||'Not given')+'</b> | ID: '+(n.idNo||'Not given')+'<br>'
+  +'📚 School: '+(n.school||'')+' ('+(n.year||'')+')<br>'
+  +'⏰ Experience: '+(n.exp||'')+' | Special: '+(n.spec||'')+'<br>'
+  +'📍 Location: '+(n.location||'')+' | Transport: '+(n.transport||'')+'<br>'
+  +'💬 About: '+(n.about||'')+'<br>'
+  +'Status: '+(n.status||'Waiting')+'<br>'
+  +'<button onclick="approveNurse('+i+')">Approve Nurse ✅</button> <button onclick="rejectNurse('+i+')">Reject</button></div>';
+}
 function updateAdmin(){
   let total=getBal();
   let superShare=Math.round(total*0.8), joyShare=Math.round(total*0.1), jabShare=Math.round(total*0.1);
@@ -454,14 +641,14 @@ function updateAdmin(){
   document.getElementById('jbBookCount').innerText=bookings.length;
   document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>'+(b.gps ? '📍 GPS: <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View Client On Map</a>' : 'No GPS')+'</div>').join('') : 'No bookings';
   document.getElementById('jabethBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>Status: '+b.status+'<br>'+(b.gps ? '📍 <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View Client GPS On Map</a>' : 'No GPS')+'<br><button onclick="approveBooking('+i+')">Approve Booking ✅</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No client bookings yet';
-  let nurseHTML = nursesList.length ? nursesList.map((n,i)=>'<div class="item"><b>'+n.name+'</b> - '+n.phone+' - Exp: '+(n.exp||'')+' yrs<br>Status: '+(n.status||'Waiting')+'<br><button onclick="approveNurse('+i+')">Approve Nurse ✅</button> <button onclick="rejectNurse('+i+')">Reject</button></div>').join('') : 'No nurses yet';
+  let nurseHTML = nursesList.length ? nursesList.map((n,i)=>formatNurse(n,i)).join('') : 'No nurses yet';
   document.getElementById('joyNurses').innerHTML=nurseHTML;
   document.getElementById('superNurses').innerHTML=nurseHTML;
   document.getElementById('superPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+' - '+(p.note||'')+'</div>').join('') : 'No payments';
   document.getElementById('superRatings').innerHTML = ratings.length ? ratings.map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b> - '+(r.comment||'')+'</div>').join('') : 'No ratings';
 }
 function approveNurse(i){ nursesList[i].status='Approved ✅ by JOY'; localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add({action:'approved',name:nursesList[i].name,date:new Date().toLocaleString()}); updateAdmin(); alert('Nurse Approved ✅'); }
-function rejectNurse(i){ if(confirm('Reject this nurse?')){ nursesList.splice(i,1); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); updateAdmin(); } }
+function rejectNurse(i){ if(confirm('Reject this nurse? Check qualification first.')){ nursesList.splice(i,1); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); updateAdmin(); } }
 function updateBal(){
   document.getElementById('bal').innerText='UGX '+getBal().toLocaleString();
   document.getElementById('ratingList').innerHTML = ratings.length ? ratings.slice(-5).reverse().map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b><br>'+(r.comment||'')+'</div>').join('') : 'No ratings yet. Be first!';
@@ -482,11 +669,26 @@ function show(id){
   document.getElementById(id).classList.remove('hidden');
   if(id==='home'){document.querySelectorAll('.card')[1].classList.remove('hidden');}
   if(id==='track') refreshGpsList();
+  if(id==='nurse' || id==='home') renderAlarms();
+  if(id==='nurse') setupShareLinks();
   updateBal();
 }
 function bookService(s){ document.getElementById('bookService').value=s; show('book'); }
 function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.gps ? '📍 Your GPS: <a href="https://www.google.com/maps?q='+b.gps.lat+','+b.gps.lng+'" target="_blank">View On Map</a>' : 'No GPS saved')+'</div>').join('') : 'No booking found for '+ph; refreshGpsList(); }
-function joinNurse(){ let n=document.getElementById('nurseName').value; if(!n){document.getElementById('nurseMsg').innerText='Enter name';return;} let data={name:n,phone:document.getElementById('nursePhone').value,exp:document.getElementById('nurseExp').value,status:'Waiting for JOY Approval',date:new Date().toLocaleString(),createdAt:new Date()}; nursesList.push(data); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add(data); document.getElementById('nurseMsg').innerText='✅ Application saved! JOY will approve you.'; }
+function joinNurse(){
+  let n=document.getElementById('nurseName').value.trim();
+  let ph=document.getElementById('nursePhone').value.trim();
+  let qual=document.getElementById('nurseQual').value;
+  let lic=document.getElementById('nurseLicense').value.trim();
+  if(!n || !ph){document.getElementById('nurseMsg').innerText='❌ Enter Name + Phone';return;}
+  if(!qual){document.getElementById('nurseMsg').innerText='❌ Select Your Qualification - JOY must check it';return;}
+  if(!lic){document.getElementById('nurseMsg').innerText='❌ Enter Nursing Council License Number - Required';return;}
+  let data={name:n,phone:ph,idNo:document.getElementById('nurseID').value,qual:qual,qualification:qual,license:lic,exp:document.getElementById('nurseExp').value,spec:document.getElementById('nurseSpec').value,school:document.getElementById('nurseSchool').value,year:document.getElementById('nurseYear').value,location:document.getElementById('nurseLocation').value,transport:document.getElementById('nurseTransport').value,about:document.getElementById('nurseAbout').value,status:'Waiting for JOY Approval - Check Qualifications',date:new Date().toLocaleString(),createdAt:new Date()};
+  nursesList.push(data); localStorage.setItem('hc_nurses',JSON.stringify(nursesList));
+  if(db) db.collection('nurses').add(data);
+  document.getElementById('nurseMsg').innerText='✅ Qualification Form Sent! JOY will check your '+qual+' + License '+lic+' and approve you. Thank you!';
+  triggerBookingAlarm({name:'NEW NURSE: '+n, service:'Qualification: '+qual, phone:ph, location:document.getElementById('nurseLocation').value});
+}
 function orderPharmacy(){ let item=document.getElementById('pharmItem').value; if(!item){document.getElementById('pharmMsg').innerText='Enter medicine';return;} document.getElementById('pharmMsg').innerText='Opening Pesapal for '+item+'...'; window.location.href=PESAPAL_LINK; }
 function setStars(n){ currentStars=n; document.getElementById('starText').innerText='You selected '+n+' / 5'; document.querySelectorAll('#starBox span').forEach((s,i)=>{ s.innerText = i<n ? '★' : '☆'; s.style.color = i<n ? '#f59e0b' : '#000'; }); }
 function submitRating(){ let name=document.getElementById('rateName').value.trim(); if(!name){ document.getElementById('rateMsg').innerText='Please enter your name'; return; } if(!currentStars){ document.getElementById('rateMsg').innerText='Please tap stars first'; return; } if(!db){ document.getElementById('rateMsg').innerText='Firebase not connected yet'; return; } let data={name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:new Date().toLocaleString(),createdAt:new Date()}; document.getElementById('rateMsg').innerText='Saving...'; db.collection('ratings').add(data).then(()=>{ ratings.push({name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:data.date}); localStorage.setItem('hc_ratings',JSON.stringify(ratings)); document.getElementById('rateMsg').innerText='✅ Thank you! '+currentStars+' Stars - Rating saved to Firebase!'; updateBal(); }).catch(e=>{ document.getElementById('rateMsg').innerText='Error: '+e.message; }); }
@@ -504,14 +706,39 @@ function saveBookingWithGps(name,phone){
   bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings));
   if(bookGps) saveGps(name,'CLIENT BOOKING',bookGps.lat,bookGps.lng);
   if(db) db.collection('bookings').add(data);
-  document.getElementById('bookMsg').innerText='Saved with GPS! JABETH will approve. Now opening REAL Pesapal...';
-  window.location.href=PESAPAL_LINK;
+  triggerBookingAlarm(data);
+  document.getElementById('bookMsg').innerText='✅ Booked! 🚨 Alarm sent to Nurses + Admins! Now opening REAL Pesapal...';
+  setTimeout(()=>{ window.location.href=PESAPAL_LINK; },1200);
 }
 function realDeposit(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){document.getElementById('walletMsg').innerText='Enter at least 500';return;} document.getElementById('walletMsg').innerText='Opening REAL Pesapal for UGX '+a.toLocaleString()+'... Pay with MTN MoMo there.'; window.location.href=PESAPAL_LINK; }
-function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - SUPER to verify in Pesapal'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase. SUPER will verify in Pesapal.'; }
+function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - SUPER to verify in Pesapal'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase. SUPER will verify in Pesapal.'; triggerBookingAlarm({name:'PAYMENT: UGX '+a, service:'Payment Confirmed', phone:'', location:''}); }
 function approveBooking(i){ bookings[i].status='Approved ✅ by JABETH'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); }
 function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); } }
-updateBal(); refreshGpsList();
+updateBal(); refreshGpsList(); renderAlarms(); setupShareLinks();
+setInterval(()=>{
+  if(window.db && sessionStorage.getItem('hero_gate')==='open'){
+    window.db.collection('notifications').orderBy('createdAt','desc').limit(1).get().then(snap=>{
+      snap.forEach(d=>{
+        let n=d.data(); let key=n.time+'_'+n.msg;
+        let last=localStorage.getItem('hc_last_notif_key')||'';
+        if(key!==last && n.time){
+          let already=notificationsList.some(x=>x.msg===n.msg && x.time===n.time);
+          if(!already){
+            notificationsList.push({msg:n.msg, time:n.time, seen:false});
+            localStorage.setItem('hc_notifications',JSON.stringify(notificationsList));
+            localStorage.setItem('hc_last_notif_key',key);
+            if(document.getElementById('admin').classList.contains('hidden')===false || document.getElementById('nurse').classList.contains('hidden')===false){
+              playAlarmSound(4); if(navigator.vibrate) navigator.vibrate([500,200,500]);
+              document.getElementById('alarmBannerText').innerText=n.msg;
+              document.getElementById('alarmBanner').style.display='block';
+            }
+            renderAlarms();
+          }
+        }
+      });
+    }).catch(()=>{});
+  }
+},15000);
 </script>
 </body>
 </html>
