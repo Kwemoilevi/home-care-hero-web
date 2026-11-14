@@ -50,13 +50,17 @@
 
 <div id="walletSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow">
 <h3 class="font-bold text-lg">💰 Wallet - Pay Inside App Only - Pesapal</h3>
-<p class="text-xs text-gray-600 mt-1">🚫 NO cash, NO MTN to personal number. All money MUST go through this app. Step 1: Pay with Pesapal INSIDE app below. Step 2: Paste Transaction ID. Step 3: SUPER verifies and approves.</p>
+<p class="text-xs text-gray-600 mt-1">🚫 NO cash, NO MTN to personal number. All money MUST go through this app.</p>
+<div class="bg-yellow-50 p-3 rounded-xl mt-3 border"><p class="font-bold text-sm">HOW TO PAY - 3 EASY STEPS:</p><p class="text-xs mt-1">1️⃣ Type phone + amount below<br>2️⃣ Tap GREEN button - Pesapal will open in new tab - Pay with MTN / Airtel / Visa<br>3️⃣ Copy Transaction ID from Pesapal - Come back here - Paste it - Tap SUBMIT</p></div>
 <input id="topupPhone" placeholder="Phone e.g. +256772101875 - Any country" class="w-full p-3 border rounded-xl mt-3">
 <input id="topupAmount" type="number" placeholder="Amount e.g. 5000" class="w-full p-3 border rounded-xl mt-2">
-<input id="topupTxId" placeholder="Paste Pesapal Transaction ID e.g. PSK_..." class="w-full p-3 border rounded-xl mt-2">
-<button onclick="topupPesapal()" class="w-full p-3 rounded-xl font-bold text-white mt-3" style="background:#0F766E">Pay With Pesapal Inside App - MTN / Airtel / Visa</button>
+<button onclick="openPesapal()" class="w-full p-3 rounded-xl font-bold text-white mt-3" style="background:#0F766E">1️⃣ STEP 1 - Tap Here To Pay With Pesapal - MTN / Airtel / Visa</button>
+<input id="topupTxId" placeholder="STEP 2 - Paste Pesapal Transaction ID e.g. PSK_... / Order ID" class="w-full p-3 border rounded-xl mt-3" style="border:2px solid #0F766E">
+<button onclick="submitTopup()" class="w-full p-3 rounded-xl font-bold bg-green-600 text-white mt-2">2️⃣ STEP 2 - SUBMIT Transaction ID - I Have Paid</button>
 <button onclick="checkWallet()" class="w-full p-3 rounded-xl font-bold bg-yellow-300 mt-2">Check My Wallet Balance</button>
-<div id="walletResult" class="mt-3 text-sm font-bold"></div></div></div>
+<div id="walletResult" class="mt-3 text-sm font-bold"></div>
+<p class="text-xs text-red-600 font-bold mt-2">⚠️ Do NOT close app before you paste Transaction ID. SUPER will verify in Pesapal and approve in 5 mins.</p>
+</div></div>
 
 <div id="bookSection" class="p-3 hidden"><div class="bg-white p-4 rounded-xl card-shadow"><h3 class="font-bold text-lg">📅 Book A Nurse - Pay Inside App Only</h3>
 <p class="text-xs text-red-600 font-bold">You must have Wallet balance to book. Top Up Wallet first with Pesapal inside app.</p>
@@ -140,7 +144,12 @@
 
 <div id="adminDashboard" class="hidden">
 <div class="bg-white p-3 rounded-xl mt-3 border"><p class="text-[11px]">Hom Care Hero 🌍 | Logged in as: <b id="adminNameShow"></b> | Share: <b id="adminShareShow"></b> | Role: <b id="adminRoleShow"></b> | 🌍 Worldwide</p></div>
-<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #0F766E"><h3 class="font-bold text-lg">💰 MY SHARE - Only Mine</h3><p class="text-sm">Total Top-Ups Approved (All): <b id="totalAllEarnings">0 UGX</b></p><p class="text-lg">My Share: <b id="myShareAmount" style="color:#0F766E">0 UGX</b></p><p class="text-xs text-gray-500" id="myShareDetail"></p><button onclick="loadMyShare()" class="bg-teal-600 text-white px-4 py-2 rounded-full mt-2 text-sm">🔄 Refresh My Share</button></div>
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #0F766E"><h3 class="font-bold text-lg">💰 MY SHARE - Only Mine</h3><p class="text-sm">Total Earned (All): <b id="totalAllEarnings">0 UGX</b></p><p class="text-lg">My Total Share: <b id="myShareAmount" style="color:#0F766E">0 UGX</b></p><p class="text-sm">Already Withdrawn: <b id="myWithdrawnAmount">0 UGX</b></p><p class="text-lg">Available To Withdraw: <b id="myAvailableAmount" style="color:#16A34A">0 UGX</b></p><p class="text-xs text-gray-500" id="myShareDetail"></p><button onclick="loadMyShare()" class="bg-teal-600 text-white px-4 py-2 rounded-full mt-2 text-sm">🔄 Refresh My Share</button></div>
+
+<div class="bg-white p-4 rounded-xl mt-3 card-shadow" style="border:2px solid #16A34A"><h3 class="font-bold text-lg">💸 WITHDRAW MY MONEY - All Admins</h3><p class="text-xs text-gray-600">JOY, JABETH, SUPER - Each withdraws ONLY their own share. SUPER sends money via MTN / Airtel, then approves in app.</p><input id="withdrawAmount" type="number" placeholder="Amount to Withdraw e.g. 5000" class="w-full p-3 border rounded-xl mt-3"><input id="withdrawPhone" placeholder="Your MTN / Airtel Number e.g. +256772101875" class="w-full p-3 border rounded-xl mt-2"><select id="withdrawMethod" class="w-full p-3 border rounded-xl mt-2"><option>MTN Mobile Money</option><option>Airtel Money</option><option>Bank</option><option>Pesapal</option></select><button onclick="requestWithdraw()" class="w-full p-3 rounded-xl bg-green-600 text-white font-bold mt-3">💸 Request Withdraw - Send To My Phone</button><p id="withdrawMsg" class="text-sm font-bold mt-2"></p><div id="myWithdrawList" class="mt-2 text-sm"></div></div>
+
+<div id="superWithdrawBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EAB308"><h3 class="font-bold text-lg">👑 SUPER ONLY - Approve Withdrawals</h3><p class="text-xs text-gray-600">SUPER: 1. Send money to admin via MTN / Airtel 2. Tap ✅ Paid below. Only SUPER sees this box.</p><div id="allWithdrawList" class="mt-2"></div><button onclick="loadAllWithdraws()" class="bg-yellow-500 text-black px-4 py-2 rounded-full text-sm mt-2">🔄 Refresh Withdrawals</button></div>
+
 <div id="superOnlyBox" class="hidden bg-yellow-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EAB308">
 <h3 class="font-bold">👑 SUPER ADMIN ONLY - All Percentages For All Admins</h3><p class="text-xs text-gray-600">Only SUPER sees this box. JOY and JABETH do NOT see this.</p>
 <p class="text-sm mt-2">💖 JOY 10%: <b id="joyTotal">0 UGX</b></p><p class="text-sm">💛 JABETH 10%: <b id="jabethTotal">0 UGX</b></p><p class="text-sm">👑 SUPER 80%: <b id="superTotal">0 UGX</b></p></div>
@@ -149,12 +158,13 @@
 <div id="joyShareBox" class="hidden bg-pink-50 p-4 rounded-xl mt-3 border card-shadow" style="border:2px solid #EC4899"><h3 class="font-bold text-lg">🔗 JOY - Your Nurses Form Link - Share This</h3><p class="text-xs bg-white p-2 rounded border break-all mt-2">https://home-care-hero-web.vercel.app - Tap Nurse</p><p class="text-xs mt-2">Tell nurses: Tap <b>Nurse</b> > Fill Name, Phone, Skill, City, Country > Submit. You will approve them in Nurses tab.</p><button onclick="copyLink('nurse')" class="bg-pink-600 text-white px-4 py-2 rounded-full text-sm mt-2">📋 Copy Nurse Link</button><button onclick="shareWhatsApp('nurse')" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm mt-2">💬 Share on WhatsApp</button></div>
 <div id="jabethOnlyBox" class="hidden bg-yellow-50 p-3 rounded-xl mt-3 border"><p class="text-sm font-bold">📅 JABETH - Your Job: Bookings + GPS</p><p class="text-xs">You see Bookings + GPS + ONLY Your Own Share. You do NOT see JOY or SUPER shares.</p></div>
 <div id="walletDashboardBox" class="bg-white p-3 rounded-xl mt-3 card-shadow"><h3 class="font-bold">💰 Wallet Dashboard - REAL - All Transactions Inside App</h3><p class="text-sm">Total In All Wallets: <b id="totalWallets">0 UGX</b></p><p class="text-sm">Total Top-Ups Approved: <b id="totalTopups">0 UGX</b></p><p class="text-sm">Pending Top-Ups: <b id="pendingCount">0</b></p><button onclick="loadAdminWallets();loadAdminTopups()" class="bg-teal-600 text-white px-4 py-2 rounded-full mt-2">🔄 Refresh</button></div>
-<div class="flex gap-2 mt-3 flex-wrap"><button id="tabBtnNurses" onclick="showAdminTab('nurses')" class="bg-blue-500 text-white px-4 py-2 rounded-full">Nurses</button><button id="tabBtnWallet" onclick="showAdminTab('wallet')" class="bg-slate-900 text-white px-4 py-2 rounded-full">Wallet</button><button id="tabBtnBookings" onclick="showAdminTab('bookings')" class="bg-pink-500 text-white px-4 py-2 rounded-full">Bookings</button><button id="tabBtnGps" onclick="showAdminTab('gps')" class="bg-red-500 text-white px-4 py-2 rounded-full">GPS / Track</button><button id="tabBtnPharmacy" onclick="showAdminTab('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full">Pharmacy Ads</button></div>
+<div class="flex gap-2 mt-3 flex-wrap"><button id="tabBtnNurses" onclick="showAdminTab('nurses')" class="bg-blue-500 text-white px-4 py-2 rounded-full">Nurses</button><button id="tabBtnWallet" onclick="showAdminTab('wallet')" class="bg-slate-900 text-white px-4 py-2 rounded-full">Wallet</button><button id="tabBtnBookings" onclick="showAdminTab('bookings')" class="bg-pink-500 text-white px-4 py-2 rounded-full">Bookings</button><button id="tabBtnGps" onclick="showAdminTab('gps')" class="bg-red-500 text-white px-4 py-2 rounded-full">GPS / Track</button><button id="tabBtnPharmacy" onclick="showAdminTab('pharmacy')" class="bg-orange-500 text-white px-4 py-2 rounded-full">Pharmacy Ads</button><button id="tabBtnWithdraw" onclick="showAdminTab('withdraw')" class="bg-green-600 text-white px-4 py-2 rounded-full">💸 Withdraw</button></div>
 <div id="nursesTab" class="mt-3"><h3 class="font-bold">Nurses - Worldwide (JOY + SUPER) - Full Qualifications</h3><div id="adminNurseList" class="mt-2"></div></div>
 <div id="walletTab" class="mt-3 hidden"><h3 class="font-bold">Wallet - All Wallets (SUPER ONLY)</h3><div id="adminWalletList" class="mt-2"></div><h3 class="font-bold mt-4">Top-Ups - Verify Transaction ID in Pesapal First</h3><div id="adminTopupList" class="mt-2"></div></div>
 <div id="bookingsTab" class="mt-3 hidden"><h3 class="font-bold">Bookings - Worldwide (JABETH + SUPER)</h3><div id="adminBookingList" class="mt-2"></div><h3 class="font-bold mt-4">📍 Track - Search By Phone</h3><input id="adminTrackPhone" placeholder="Phone - Any country" class="w-full p-3 border rounded-xl mt-2"><button onclick="adminTrack()" class="w-full p-3 bg-purple-600 text-white rounded-xl font-bold mt-2">Track This Booking</button><div id="adminTrackResult" class="mt-2 text-sm"></div></div>
 <div id="gpsTab" class="mt-3 hidden"><h3 class="font-bold">📍 GPS Tracker - ALL ADMINS - Worldwide</h3><button onclick="loadGPS()" class="bg-red-500 text-white px-3 py-1 rounded-full text-xs mt-1">🔄 Refresh GPS</button><div id="gpsList" class="mt-2"></div></div>
 <div id="pharmacyTab" class="mt-3 hidden"><h3 class="font-bold">💊 Pharmacy Ads - (SUPER + JOY)</h3><p class="text-xs text-gray-600">Approve pharmacy after they pay inside app via Pesapal.</p><div id="adminPharmacyList" class="mt-2"></div></div>
+<div id="withdrawTab" class="mt-3 hidden"><h3 class="font-bold">💸 My Withdrawals</h3><div id="withdrawTabList" class="mt-2"></div></div>
 </div></div>
 
 <script>
@@ -175,6 +185,7 @@ const APP_LINK = "https://home-care-hero-web.vercel.app";
 const APP_NAME = "Hom Care Hero 🌍";
 const GATE_PASSWORD = "Hero2026";
 let selectedUser = null; let selectedPassword = null;
+let myTotalShareCache = 0; let myWithdrawnCache = 0;
 function cleanPhone(raw){ return String(raw||'').trim().replace(/\s/g,''); }
 function togglePass(id,btn){ let el=document.getElementById(id); if(el.type==='password'){ el.type='text'; btn.innerText='🙈 Hide Password'; } else { el.type='password'; btn.innerText='👁️ Show Password'; } }
 function showSection(s){ ['home','wallet','book','track','nurse','nurseAlarmSec','pharmacy'].forEach(x=>document.getElementById(x+'Section').classList.add('hidden')); document.getElementById(s+'Section').classList.remove('hidden'); }
@@ -187,12 +198,12 @@ function getRole(){ if(!selectedUser) return 'SUPER'; if(selectedUser.includes('
 function applyRole(){
   let role = getRole();
   document.getElementById('adminRoleShow').innerText = role==='JOY' ? 'Nurses + GPS + Pharmacy' : role==='JABETH' ? 'Bookings + GPS' : 'Super Admin - All Access';
-  ['superOnlyBox','superLinksBox','joyOnlyBox','joyShareBox','jabethOnlyBox','walletDashboardBox'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  ['tabBtnNurses','tabBtnWallet','tabBtnBookings','tabBtnGps','tabBtnPharmacy'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  ['nursesTab','walletTab','bookingsTab','gpsTab','pharmacyTab'].forEach(id=>document.getElementById(id).classList.add('hidden'));
-  if(role==='JOY'){ document.getElementById('joyOnlyBox').classList.remove('hidden'); document.getElementById('joyShareBox').classList.remove('hidden'); document.getElementById('tabBtnNurses').classList.remove('hidden'); document.getElementById('tabBtnGps').classList.remove('hidden'); document.getElementById('tabBtnPharmacy').classList.remove('hidden'); document.getElementById('nursesTab').classList.remove('hidden'); loadNursesAdmin(); loadGPS(); loadPharmacyAdmin(); }
-  else if(role==='JABETH'){ document.getElementById('jabethOnlyBox').classList.remove('hidden'); document.getElementById('tabBtnBookings').classList.remove('hidden'); document.getElementById('tabBtnGps').classList.remove('hidden'); document.getElementById('bookingsTab').classList.remove('hidden'); loadBookings(); loadGPS(); }
-  else { document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('superLinksBox').classList.remove('hidden'); document.getElementById('walletDashboardBox').classList.remove('hidden'); ['tabBtnNurses','tabBtnWallet','tabBtnBookings','tabBtnGps','tabBtnPharmacy'].forEach(id=>document.getElementById(id).classList.remove('hidden')); document.getElementById('nursesTab').classList.remove('hidden'); loadAdminWallets(); loadAdminTopups(); loadNursesAdmin(); loadBookings(); loadGPS(); loadPharmacyAdmin(); }
+  ['superOnlyBox','superLinksBox','joyOnlyBox','joyShareBox','jabethOnlyBox','walletDashboardBox','superWithdrawBox'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  ['tabBtnNurses','tabBtnWallet','tabBtnBookings','tabBtnGps','tabBtnPharmacy','tabBtnWithdraw'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  ['nursesTab','walletTab','bookingsTab','gpsTab','pharmacyTab','withdrawTab'].forEach(id=>document.getElementById(id).classList.add('hidden'));
+  if(role==='JOY'){ document.getElementById('joyOnlyBox').classList.remove('hidden'); document.getElementById('joyShareBox').classList.remove('hidden'); document.getElementById('tabBtnNurses').classList.remove('hidden'); document.getElementById('tabBtnGps').classList.remove('hidden'); document.getElementById('tabBtnPharmacy').classList.remove('hidden'); document.getElementById('tabBtnWithdraw').classList.remove('hidden'); document.getElementById('nursesTab').classList.remove('hidden'); loadNursesAdmin(); loadGPS(); loadPharmacyAdmin(); loadMyWithdraws(); }
+  else if(role==='JABETH'){ document.getElementById('jabethOnlyBox').classList.remove('hidden'); document.getElementById('tabBtnBookings').classList.remove('hidden'); document.getElementById('tabBtnGps').classList.remove('hidden'); document.getElementById('tabBtnWithdraw').classList.remove('hidden'); document.getElementById('bookingsTab').classList.remove('hidden'); loadBookings(); loadGPS(); loadMyWithdraws(); }
+  else { document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('superLinksBox').classList.remove('hidden'); document.getElementById('walletDashboardBox').classList.remove('hidden'); document.getElementById('superWithdrawBox').classList.remove('hidden'); ['tabBtnNurses','tabBtnWallet','tabBtnBookings','tabBtnGps','tabBtnPharmacy','tabBtnWithdraw'].forEach(id=>document.getElementById(id).classList.remove('hidden')); document.getElementById('nursesTab').classList.remove('hidden'); loadAdminWallets(); loadAdminTopups(); loadNursesAdmin(); loadBookings(); loadGPS(); loadPharmacyAdmin(); loadMyWithdraws(); loadAllWithdraws(); }
 }
 function copyLink(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. Admin will approve you.' : type==='nurseAlarm' ? '🔔 NURSES - ENABLE YOUR ALARM - '+APP_NAME+': '+APP_LINK+' - Tap 🔔 Nurse Alarm, type your name, phone, area, skill, tap Enable Alarm. When client books in your area, YOUR phone will RING! It is your job - Do not miss booking!' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; navigator.clipboard.writeText(text).then(()=>{ document.getElementById('linkCopiedMsg').innerText='✅ Copied! Now paste in WhatsApp.'; }); }
 function shareWhatsApp(type){ let text = type==='client' ? 'Book a Trusted Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. All payments inside app only. Tap Book.' : type==='nurse' ? 'Apply as Nurse Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Nurse, fill your name, phone, skill. Admin will approve you.' : type==='nurseAlarm' ? '🔔 NURSES - ENABLE YOUR ALARM - '+APP_NAME+': '+APP_LINK+' - Tap 🔔 Nurse Alarm, type your name, phone, area, skill, tap Enable Alarm. When client books in your area, YOUR phone will RING! It is your job - Do not miss booking!' : type==='pharmacy' ? 'Advertise Your Pharmacy Anywhere 🌍 - '+APP_NAME+': '+APP_LINK+' - Any Country. Tap Pharmacy to advertise.' : 'Top Up Wallet - '+APP_NAME+': '+APP_LINK+' - Tap Wallet, pay with Pesapal inside app only.'; window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank'); }
@@ -203,13 +214,61 @@ async function loadMyShare(){
   let field = selectedUser.includes('JOY') ? 'joy' : selectedUser.includes('JABETH') ? 'jabeth' : 'super';
   let percent = selectedUser.includes('JOY') ? '10%' : selectedUser.includes('JABETH') ? '10%' : '80%';
   snap.forEach(d=>{ let e=d.data(); let amt=Number(e.amount||0); total+=amt; myShare+=Number(e[field]||0); joyT+=Number(e.joy||0); jabT+=Number(e.jabeth||0); supT+=Number(e.super||0); });
+  myTotalShareCache = myShare;
+  // Withdrawn = approved + pending for this admin (so they cannot withdraw same money twice)
+  let wSnap = await db.collection('withdrawals').where('admin','==',selectedUser).get();
+  let withdrawn = 0; wSnap.forEach(d=>{ let w=d.data(); if(w.status!=='rejected') withdrawn += Number(w.amount||0); });
+  myWithdrawnCache = withdrawn;
+  let available = myShare - withdrawn; if(available<0) available=0;
   document.getElementById('totalAllEarnings').innerText = total + ' UGX';
   document.getElementById('myShareAmount').innerText = myShare + ' UGX';
-  document.getElementById('myShareDetail').innerText = selectedUser + ' gets ' + percent + ' of ' + total + ' UGX = ' + myShare + ' UGX';
+  document.getElementById('myWithdrawnAmount').innerText = withdrawn + ' UGX';
+  document.getElementById('myAvailableAmount').innerText = available + ' UGX';
+  document.getElementById('myShareDetail').innerText = selectedUser + ' gets ' + percent + ' of ' + total + ' UGX = ' + myShare + ' UGX. Available = Total - Withdrawn.';
   if(getRole()==='SUPER'){ document.getElementById('superOnlyBox').classList.remove('hidden'); document.getElementById('joyTotal').innerText=joyT+' UGX'; document.getElementById('jabethTotal').innerText=jabT+' UGX'; document.getElementById('superTotal').innerText=supT+' UGX'; } else { document.getElementById('superOnlyBox').classList.add('hidden'); }
+  loadMyWithdraws();
 }
+// --- WITHDRAW - ALL ADMINS ---
+async function requestWithdraw(){
+  if(!db || !selectedUser){ alert('Login first'); return; }
+  let amount = Number(document.getElementById('withdrawAmount').value||0);
+  let phone = cleanPhone(document.getElementById('withdrawPhone').value);
+  let method = document.getElementById('withdrawMethod').value;
+  if(!amount || amount<=0){ alert('Enter amount to withdraw'); return; }
+  if(!phone){ alert('Enter your MTN / Airtel number where SUPER should send money'); return; }
+  await loadMyShare();
+  let available = myTotalShareCache - myWithdrawnCache;
+  if(amount > available){ alert('❌ Not enough Available. Your Available is '+available+' UGX. Total Share: '+myTotalShareCache+' UGX, Already Withdrawn: '+myWithdrawnCache+' UGX.'); return; }
+  try{
+    await db.collection('withdrawals').add({admin:selectedUser, amount:amount, phone:phone, method:method, status:'pending', createdAt:new Date()});
+    document.getElementById('withdrawMsg').innerText = '✅ Withdraw Request SENT: '+amount+' UGX to '+phone+' via '+method+'. SUPER will send money and approve. Check below for status.';
+    alert('✅ Withdraw Request SENT: '+amount+' UGX to '+phone+'. SUPER will send money and approve.');
+    document.getElementById('withdrawAmount').value='';
+    loadMyShare(); loadMyWithdraws(); if(getRole()==='SUPER') loadAllWithdraws();
+  }catch(e){ alert('Firebase error: '+e.message); }
+}
+async function loadMyWithdraws(){
+  if(!db || !selectedUser) return;
+  let snap = await db.collection('withdrawals').where('admin','==',selectedUser).orderBy('createdAt','desc').limit(20).get();
+  let html=''; snap.forEach(d=>{ let w=d.data(); html+='<div class="bg-gray-50 p-2 rounded mt-2 border"><b>'+w.amount+' UGX</b> - '+w.phone+' - '+w.method+' - <b>'+w.status+'</b></div>'; });
+  document.getElementById('myWithdrawList').innerHTML = html||'No withdrawals yet';
+  document.getElementById('withdrawTabList').innerHTML = html||'No withdrawals yet';
+}
+async function loadAllWithdraws(){
+  if(!db) return; if(getRole()!=='SUPER') return;
+  let snap = await db.collection('withdrawals').orderBy('createdAt','desc').limit(50).get();
+  let html=''; snap.forEach(d=>{ let w=d.data(); html+='<div class="bg-white p-3 rounded-xl mt-2 border"><b>'+w.admin+'</b> wants <b>'+w.amount+' UGX</b><br><span class="text-xs">To: '+w.phone+' - '+w.method+' - Status: '+w.status+'</span><br>'+(w.status==='pending'?'<button onclick="approveWithdraw(\''+d.id+'\')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">✅ I Have Sent Money - Mark Paid</button> <button onclick="rejectWithdraw(\''+d.id+'\')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button>':'')+'</div>'; });
+  document.getElementById('allWithdrawList').innerHTML = html||'No withdraw requests';
+}
+async function approveWithdraw(id){
+  if(!confirm('Did you SEND this money via MTN / Airtel to that admin? Only tap YES if you really sent it.')) return;
+  await db.collection('withdrawals').doc(id).update({status:'paid'});
+  alert('✅ Marked as PAID. Admin balance updated.');
+  loadAllWithdraws(); loadMyShare();
+}
+async function rejectWithdraw(id){ await db.collection('withdrawals').doc(id).update({status:'rejected'}); loadAllWithdraws(); loadMyShare(); }
 function checkMyPassword(){ let p=document.getElementById('myPassword').value.trim(); if(!selectedUser){ alert('Pick user first - Tap JOY or JABETH or SUPER button first'); return; } if(p!==selectedPassword){ document.getElementById('passError').innerText='Wrong password for '+selectedUser+' - Tap Show Password and type exactly'; return; } document.getElementById('whoBox').classList.add('hidden'); document.getElementById('adminDashboard').classList.remove('hidden'); document.getElementById('adminNameShow').innerText=selectedUser; let share = selectedUser.includes('JOY') ? '10%' : selectedUser.includes('JABETH') ? '10%' : '80%'; document.getElementById('adminShareShow').innerText=share; loadMyShare(); applyRole(); }
-function showAdminTab(t){ let role=getRole(); if(role==='JOY' && !['nurses','gps','pharmacy'].includes(t)){ alert('JOY - You manage Nurses + GPS + Pharmacy only'); return; } if(role==='JABETH' && !['bookings','gps'].includes(t)){ alert('JABETH - You only manage Bookings & GPS'); return; } ['nurses','wallet','bookings','gps','pharmacy'].forEach(x=>document.getElementById(x+'Tab').classList.add('hidden')); document.getElementById(t+'Tab').classList.remove('hidden'); }
+function showAdminTab(t){ let role=getRole(); if(role==='JOY' && !['nurses','gps','pharmacy','withdraw'].includes(t)){ alert('JOY - You manage Nurses + GPS + Pharmacy + Withdraw only'); return; } if(role==='JABETH' && !['bookings','gps','withdraw'].includes(t)){ alert('JABETH - You only manage Bookings & GPS & Withdraw'); return; } ['nurses','wallet','bookings','gps','pharmacy','withdraw'].forEach(x=>document.getElementById(x+'Tab').classList.add('hidden')); document.getElementById(t+'Tab').classList.remove('hidden'); if(t==='withdraw') loadMyWithdraws(); }
 async function tapService(s){ if(!db){ alert('Not connected - Check Firebase Keys'); return; } try{ await db.collection('stats').doc('taps').set({count: firebase.firestore.FieldValue.increment(1)},{merge:true}); loadStats(); }catch(e){ alert('Firebase error: '+e.message); } }
 async function countView(){ if(!db) return; try{ await db.collection('stats').doc('views').set({count: firebase.firestore.FieldValue.increment(1)},{merge:true}); }catch(e){} loadStats(); }
 async function loadStats(){ if(!db) return; try{ let v=await db.collection('stats').doc('views').get(); if(v.exists) document.getElementById('viewCount').innerText=v.data().count||0; let t=await db.collection('stats').doc('taps').get(); if(t.exists) document.getElementById('tapCount').innerText=t.data().count||0; }catch(e){} }
@@ -265,11 +324,11 @@ async function bookNow(){
   if(!amount || amount<=0){ alert('Enter amount to pay from Wallet. Top Up Wallet first with Pesapal inside app.'); return; }
   try{
     let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let bal = snap.exists ? Number(snap.data().balance||0) : 0;
-    if(bal < amount){ alert('❌ Not enough Wallet balance. Your balance: '+bal+' UGX. Go to Wallet > Pay With Pesapal Inside App to Top Up. No cash outside app.'); showSection('wallet'); return; }
+    if(bal < amount){ alert('❌ Not enough Wallet balance. Your balance: '+bal+' UGX. Go to Wallet > Pay With Pesapal Inside App to Top Up. No cash outside app.'); showSection('wallet'); document.getElementById('topupPhone').value=phone; document.getElementById('topupAmount').value=amount; return; }
     await ref.set({balance: bal-amount, phone: phone, updatedAt:new Date()},{merge:true});
     await db.collection('bookings').add({service,name,phone,location:loc,country,nurse,amount,paid:true,paymentMethod:'Wallet - Inside App',status:'pending',createdAt:new Date()});
     await db.collection('earnings').add({phone, amount:amount, joy: Math.round(amount*0.10), jabeth: Math.round(amount*0.10), super: Math.round(amount*0.80), type:'booking', createdAt:new Date()});
-    document.getElementById('bookMsg').innerText='✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE! New balance: '+(bal-amount)+' UGX. JABETH will call you.';
+    document.getElementById('bookMsg').innerText='✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE! New balance: '+(bal-amount)+' UGX. Admin will call you.';
     alert('✅ PAID '+amount+' UGX FROM WALLET & BOOKED LIVE!');
   }catch(e){ alert('Firebase error: '+e.message); }
 }
@@ -277,19 +336,29 @@ async function loadBookings(){ if(!db) return; let snap=await db.collection('boo
 async function updateBooking(id,status){ await db.collection('bookings').doc(id).update({status}); loadBookings(); }
 async function trackBooking(){ if(!db) return; let phone=cleanPhone(document.getElementById('trackPhone').value); let snap=await db.collection('bookings').where('phone','==',phone).orderBy('createdAt','desc').limit(5).get(); let html=''; snap.forEach(d=>{ let b=d.data(); html+=`<div class="bg-gray-50 p-2 rounded mt-2">${b.service} - ${b.status} - ${b.nurse||'Any'} - Paid ${b.amount||0} UGX</div>`; }); document.getElementById('trackResult').innerHTML=html||'No booking found for this phone'; }
 async function adminTrack(){ if(!db) return; let phone=cleanPhone(document.getElementById('adminTrackPhone').value); if(!phone){alert('Enter phone');return;} let snap=await db.collection('bookings').where('phone','==',phone).orderBy('createdAt','desc').limit(5).get(); let html=''; snap.forEach(d=>{ let b=d.data(); html+=`<div class="bg-gray-50 p-2 rounded mt-2">${b.service} - ${b.status} - ${b.nurse||'Any'} - ${b.location||''}</div>`; }); document.getElementById('adminTrackResult').innerHTML=html||'No booking for this phone'; }
-async function topupPesapal(){
-  if(!db){ alert('Not connected - Check Firebase Keys'); return; }
-  let amount = document.getElementById('topupAmount').value.trim(); let phone = cleanPhone(document.getElementById('topupPhone').value); let txid = document.getElementById('topupTxId').value.trim();
-  if(!amount || !phone){ alert('Enter amount and phone'); return; }
-  if(!txid){
-    document.getElementById('walletResult').innerHTML = '<p class="text-green-700">✅ Pay INSIDE App below with Pesapal, then paste Transaction ID above and tap again:</p><iframe src="'+PESAPAL_LINK+'" style="width:100%;height:420px;border:1px solid #ddd;border-radius:12px;margin-top:8px"></iframe>';
-    return;
-  }
-  await db.collection('topups').add({ amount: Number(amount), phone: phone, txid: txid, status:'pending', createdAt:new Date() });
-  alert('✅ Top Up SAVED INSIDE APP. SUPER will verify in Pesapal and approve. No cash outside app.');
-  document.getElementById('topupTxId').value='';
+function openPesapal(){
+  let amount = document.getElementById('topupAmount').value.trim();
+  let phone = cleanPhone(document.getElementById('topupPhone').value);
+  if(!amount || !phone){ alert('First type Phone + Amount, then tap Pay'); return; }
+  document.getElementById('walletResult').innerHTML = '✅ Pesapal opening... Pay ' + amount + ' UGX with MTN / Airtel / Visa. After paying, copy Transaction ID and paste below.';
+  window.open(PESAPAL_LINK, '_blank');
 }
-async function checkWallet(){ if(!db){ alert('Not connected'); return; } let phone=cleanPhone(document.getElementById('topupPhone').value); if(!phone){alert('Enter phone');return;} let snap=await db.collection('wallets').doc(phone).get(); let bal = snap.exists ? Number(snap.data().balance||0) : 0; document.getElementById('walletResult').innerText='Balance for '+phone+': '+bal+' UGX - Inside App Only'; }
+async function submitTopup(){
+  if(!db){ alert('Not connected - Check Firebase Keys. Your apiKey is still PUT_YOUR_... Go to Firebase Console and copy REAL keys.'); return; }
+  let amount = document.getElementById('topupAmount').value.trim();
+  let phone = cleanPhone(document.getElementById('topupPhone').value);
+  let txid = document.getElementById('topupTxId').value.trim();
+  if(!amount || !phone){ alert('Enter amount and phone'); return; }
+  if(!txid){ alert('Paste Transaction ID from Pesapal first. After you pay in Pesapal, Pesapal shows Transaction ID / Order ID - Copy it here.'); return; }
+  try{
+    await db.collection('topups').add({ amount: Number(amount), phone: phone, txid: txid, status:'pending', createdAt:new Date() });
+    document.getElementById('walletResult').innerHTML = '✅ Top Up SAVED: ' + amount + ' UGX - TxID: ' + txid + ' - Waiting for SUPER to verify in Pesapal and approve. Check balance in 5 mins.';
+    alert('✅ Top Up SAVED INSIDE APP. SUPER will verify in Pesapal and approve. No cash outside app.');
+    document.getElementById('topupTxId').value='';
+  }catch(e){ alert('Firebase error: '+e.message+' - Check Firebase Keys'); }
+}
+async function topupPesapal(){ openPesapal(); }
+async function checkWallet(){ if(!db){ alert('Not connected - Check Firebase Keys'); return; } let phone=cleanPhone(document.getElementById('topupPhone').value); if(!phone){alert('Enter phone');return;} let snap=await db.collection('wallets').doc(phone).get(); let bal = snap.exists ? Number(snap.data().balance||0) : 0; document.getElementById('walletResult').innerText='Balance for '+phone+': '+bal+' UGX - Inside App Only'; }
 async function loadAdminWallets(){ if(!db) return; let snap=await db.collection('wallets').get(); let total=0; let html=''; snap.forEach(d=>{ let w=d.data(); let bal=Number(w.balance||0); total+=bal; html+=`<div class="bg-white p-3 rounded-xl mt-2 border"><b>${d.id}</b> - ${bal} UGX</div>`; }); document.getElementById('totalWallets').innerText=total+' UGX'; document.getElementById('adminWalletList').innerHTML=html||'No wallets yet'; }
 async function loadAdminTopups(){ if(!db) return; let snap=await db.collection('topups').orderBy('createdAt','desc').limit(50).get(); let html=''; let pending=0; let totalApproved=0; snap.forEach(d=>{ let t=d.data(); let amt=Number(t.amount||0); if(t.status==='pending') pending++; if(t.status==='approved') totalApproved+=amt; html+=`<div class="bg-white p-3 rounded-xl mt-2 border"><b>${amt} UGX</b> - ${t.phone||''}<br><span class="text-xs">TxID: ${t.txid||'NO ID'} - ${t.status||''} - Inside App</span><br>${t.status==='pending'?`<button onclick="approveTopup('${d.id}','${amt}','${t.phone||''}')" class="bg-green-600 text-white px-3 py-1 rounded-full text-xs mt-1">✅ Approve + Add To Wallet</button> <button onclick="rejectTopup('${d.id}')" class="bg-red-600 text-white px-3 py-1 rounded-full text-xs mt-1">Reject</button>`:''}</div>`; }); document.getElementById('adminTopupList').innerHTML=html||'No top-ups'; document.getElementById('pendingCount').innerText=pending; document.getElementById('totalTopups').innerText=totalApproved+' UGX'; }
 async function approveTopup(id, amount, phone){ if(!db) return; if(!confirm('Did you check this Transaction ID in Pesapal > Transactions and see '+amount+' UGX? Only approve if YES.')) return; let amt=Number(amount||0); await db.collection('topups').doc(id).update({status:'approved'}); let ref=db.collection('wallets').doc(phone); let snap=await ref.get(); let oldBal = snap.exists ? Number(snap.data().balance||0) : 0; await ref.set({balance: oldBal+amt, phone: phone, updatedAt:new Date()},{merge:true}); await db.collection('earnings').add({phone, amount:amt, joy: Math.round(amt*0.10), jabeth: Math.round(amt*0.10), super: Math.round(amt*0.80), type:'topup', createdAt:new Date()}); alert('✅ Approved LIVE. '+amt+' added to '+phone); loadAdminWallets(); loadAdminTopups(); loadMyShare(); }
@@ -307,12 +376,10 @@ function triggerAlarm(b){
   alert('🚨 NEW BOOKING! 🚨\n' + (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX');
   if('Notification' in window && Notification.permission==='granted'){ try{ new Notification('🚨 NEW BOOKING - Hom Care Hero', {body: (b.service||'') + ' - ' + (b.name||'') + ' - ' + (b.phone||'')}); }catch(e){} }
 }
-// --- NURSE ALARM - IT IS THEIR JOB ---
+// --- NURSE ALARM ---
 let nurseAlarmOn = false;
 let nurseAlarmArea = "";
 let nurseAlarmSkill = "";
-let nurseAlarmLastCount = 0;
-let nurseAlarmLastBookingId = "";
 function enableNurseAlarm(){
   let name = document.getElementById('nurseAlarmName').value.trim();
   let phone = cleanPhone(document.getElementById('nurseAlarmPhone').value);
@@ -333,9 +400,7 @@ function triggerNurseAlarm(b){
   let loc = String((b.location||'') + ' ' + (b.country||'')).toLowerCase();
   let svc = String(b.service||'');
   if(nurseAlarmArea && !loc.includes(nurseAlarmArea) && !nurseAlarmArea.includes(loc.split(' ')[0])){ return; }
-  if(nurseAlarmSkill && svc !== nurseAlarmSkill){ 
-    if(!svc.toLowerCase().includes(nurseAlarmSkill.toLowerCase().split(' ')[0].toLowerCase())){ return; }
-  }
+  if(nurseAlarmSkill && svc !== nurseAlarmSkill){ if(!svc.toLowerCase().includes(nurseAlarmSkill.toLowerCase().split(' ')[0].toLowerCase())){ return; } }
   try{ document.getElementById('nurseAlarm').play(); }catch(e){}
   try{ if(navigator.vibrate) navigator.vibrate([600,200,600,200,600,200,600]); }catch(e){}
   document.getElementById('nurseAlarmJobs').innerHTML = '<div class="bg-red-50 p-3 rounded-xl border" style="border:2px solid red"><p class="font-bold text-red-700">🚨 NEW JOB FOR YOU!</p><p class="text-sm"><b>' + (b.service||'') + '</b> - ' + (b.name||'') + ' - ' + (b.phone||'') + ' - ' + (b.location||'') + ' - Paid ' + (b.amount||0) + ' UGX</p><p class="text-xs mt-1">Call client NOW. Also call admin to confirm you will take this job.</p><a href="tel:' + (b.phone||'') + '" class="bg-green-600 text-white px-4 py-2 rounded-full text-sm inline-block mt-2">📞 Call Client Now</a> <a href="https://wa.me/' + String(b.phone||'').replace('+','') + '" target="_blank" class="bg-green-500 text-white px-4 py-2 rounded-full text-sm inline-block mt-2">💬 WhatsApp Client</a></div>';
@@ -344,13 +409,14 @@ function triggerNurseAlarm(b){
 }
 let lastBookingCount = 0;
 let lastTopupCount = 0;
+let lastWithdrawCount = 0;
 async function checkNewBookingsAlarm(){
   if(!db) return;
   try{
     let snap = await db.collection('bookings').orderBy('createdAt','desc').limit(1).get();
     let countSnap = await db.collection('bookings').get();
     let total = countSnap.size;
-    if(lastBookingCount === 0){ lastBookingCount = total; if(!snap.empty) nurseAlarmLastBookingId = snap.docs[0].id; }
+    if(lastBookingCount === 0){ lastBookingCount = total; }
     else if(total > lastBookingCount){
       lastBookingCount = total;
       let b = snap.docs[0].data();
@@ -367,6 +433,13 @@ async function checkNewBookingsAlarm(){
       try{ if(navigator.vibrate) navigator.vibrate([500,200,500]); }catch(e){}
       alert('💰 NEW TOP-UP PENDING! Check Wallet tab to Approve.');
       try{ loadAdminTopups(); }catch(e){}
+    }
+    // Withdraw alarm for SUPER
+    if(getRole()==='SUPER' && selectedUser){
+      let wSnap = await db.collection('withdrawals').where('status','==','pending').get();
+      let wTotal = wSnap.size;
+      if(lastWithdrawCount===0){ lastWithdrawCount=wTotal; }
+      else if(wTotal>lastWithdrawCount){ lastWithdrawCount=wTotal; alert('💸 NEW WITHDRAW REQUEST! Check Withdraw box.'); try{ loadAllWithdraws(); }catch(e){} }
     }
   }catch(e){}
 }
