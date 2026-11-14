@@ -48,6 +48,11 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 #alarmBanner{position:fixed;top:0;left:0;right:0;background:#dc2626;color:#fff;padding:12px;text-align:center;font-weight:bold;z-index:9998;display:none;animation:blink2 0.8s infinite}
 @keyframes blink2{0%{background:#dc2626}50%{background:#991b1b}100%{background:#dc2626}}
 .shareLinkBox{background:#f0fdf4;border:2px solid #16a34a;padding:14px;border-radius:12px;margin:12px 0;text-align:center}
+.withdrawBox{background:#fffbeb;border:3px solid #f59e0b;padding:14px;border-radius:14px;margin:12px 0;text-align:center}
+.withdrawBig{font-size:28px;font-weight:bold;color:#d97706}
+table{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+table th,table td{border:1px solid #ddd;padding:8px;text-align:left}
+table th{background:#16a34a;color:#fff}
 #gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
 .footer{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid #eee;text-align:center;padding:8px;z-index:5}
@@ -268,20 +273,45 @@ label{font-weight:bold;font-size:14px}
 <button class="btn hidden" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin</button>
 
 <div id="superDash" class="adminBox hidden">
-<h2>👑 SUPER ADMIN Dashboard</h2>
+<h2>👑 SUPER ADMIN Dashboard - SEE ALL</h2>
 <div id="superAlarm"></div>
 <button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
 <button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
+
+<div class="shareBox" style="background:#fffbeb;border-color:#f59e0b">
+<h3 style="margin:0">📊 ALL PERCENTAGES - SUPER SEES EVERYONE</h3>
+<p class="small">Total Collected from all clients via Pesapal</p>
+<table>
+<tr><th>Person</th><th>Share</th><th>Earnings</th><th>Withdrawn</th><th>Balance Left</th></tr>
+<tr><td><b>👑 SUPER (You)</b></td><td>80%</td><td id="tblSuperEarn">UGX 0</td><td id="tblSuperWith">UGX 0</td><td id="tblSuperBal">UGX 0</td></tr>
+<tr><td><b>💙 JOY</b></td><td>10%</td><td id="tblJoyEarn">UGX 0</td><td id="tblJoyWith">UGX 0</td><td id="tblJoyBal">UGX 0</td></tr>
+<tr><td><b>💛 JABETH</b></td><td>10%</td><td id="tblJabEarn">UGX 0</td><td id="tblJabWith">UGX 0</td><td id="tblJabBal">UGX 0</td></tr>
+<tr style="background:#dcfce7;font-weight:bold"><td>TOTAL</td><td>100%</td><td id="tblTotalEarn">UGX 0</td><td id="tblTotalWith">UGX 0</td><td id="tblTotalBal">UGX 0</td></tr>
+</table>
+<p class="small">Example: If Total = UGX 100,000, SUPER gets 80,000, JOY 10,000, JABETH 10,000</p>
+</div>
+
+<div class="withdrawBox">
+<h3 style="margin:0">💰 WITHDRAW - SUPER</h3>
+<p>Your Balance: <span id="superWithdrawBal" class="withdrawBig">UGX 0</span></p>
+<p class="small">Withdraw to your MoMo. SUPER withdraws directly, no approval needed.</p>
+<input id="superWithdrawAmt" type="number" placeholder="Amount to Withdraw e.g. 50000">
+<input id="superWithdrawPhone" placeholder="MoMo Number to Receive e.g. 0770000000">
+<select id="superWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+<button class="btn" style="background:#d97706" onclick="requestWithdraw('SUPER')">💰 WITHDRAW NOW - SUPER</button>
+<p id="superWithdrawMsg" class="msg"></p>
+<h3>All Withdraw Requests - From JOY + JABETH + You</h3>
+<div id="superWithdrawList"></div>
+</div>
+
 <div class="shareLinkBox">
 <h3>📤 SHARE LINK - For JOY & SUPER</h3>
-<p class="small">Share App Link to JOY, to Nurses, to anyone.</p>
 <input id="superShareLink" readonly value="">
 <button class="btn btnGreen" onclick="shareLinkWhatsApp('SUPER')">💬 Share App Link Via WhatsApp - To JOY / SUPER</button>
 <button class="btn btnBlue" onclick="copySuperLink()">📋 Copy App Link</button>
 <button class="btn btn2" onclick="shareNurseFormWhatsApp()">👩‍⚕️ Share NURSE FORM Only - To Nurses</button>
 <p id="superShareMsg" class="msg"></p>
 </div>
-<div class="shareBox"><p style="margin:0">YOUR SHARE - SUPER</p><div class="shareBig">80%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 80,000</b></p><div class="shareBar"><div class="shareFill" style="width:80%">80%</div></div></div>
 <div class="stat"><div><b id="sTotal">UGX 0</b>Total Payments</div><div><b id="sSuper">UGX 0</b>Your 80%</div><div><b id="sJoy">UGX 0</b>Joy 10%</div><div><b id="sJabeth">UGX 0</b>Jabeth 10%</div></div>
 <div class="gpsBox"><h3>📍 LIVE GPS - All Nurses + Clients</h3><div id="superGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <h3>All Bookings</h3><div id="superBookings"></div>
@@ -308,16 +338,29 @@ label{font-weight:bold;font-size:14px}
 <div id="joyAlarm"></div>
 <button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
 <button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
+<div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJoy">10%</div></div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span></p></div>
+
+<div class="withdrawBox">
+<h3 style="margin:0">💰 WITHDRAW - JOY</h3>
+<p>Your Earnings: <span id="joyWithdrawBal" class="withdrawBig">UGX 0</span><br><span class="small">Already Withdrawn: <span id="joyWithdrawnTxt">UGX 0</span> | Balance Left: <span id="joyBalanceLeft">UGX 0</span></span></p>
+<p class="small">Request withdraw - SUPER will see it and send to your MoMo, then mark as Paid.</p>
+<input id="joyWithdrawAmt" type="number" placeholder="Amount to Withdraw e.g. 10000">
+<input id="joyWithdrawPhone" placeholder="Your MoMo Number e.g. 0775761052">
+<select id="joyWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+<button class="btn" style="background:#2563eb" onclick="requestWithdraw('JOY')">💰 REQUEST WITHDRAW - JOY</button>
+<p id="joyWithdrawMsg" class="msg"></p>
+<h3>My Withdraw History</h3>
+<div id="joyWithdrawList"></div>
+</div>
+
 <div class="shareLinkBox">
 <h3>📤 SHARE LINK - JOY</h3>
-<p class="small">JOY - Share Nurse Form to nurses you know.</p>
 <input id="joyShareLink" readonly value="">
 <button class="btn btnGreen" onclick="shareLinkWhatsApp('JOY')">💬 Share Nurse Form Via WhatsApp</button>
 <button class="btn btnBlue" onclick="copyJoyLink()">📋 Copy Link</button>
 <p id="joyShareMsg" class="msg"></p>
 </div>
 <p>Your Job: Approve Nurses ONLY - Check Qualifications Carefully.</p>
-<div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJoy">10%</div></div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span></p></div>
 <div class="gpsBox"><h3>📍 LIVE GPS - Nurses You Approve</h3><div id="joyGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <div class="stat"><div><b id="jNurseCount">0</b>Nurses To Approve</div><div><b id="jTotal2">UGX 0</b>Your Earnings</div></div>
 <h3>Nurses Waiting For Your Approval - Check Qualifications</h3><div id="joyNurses"></div>
@@ -335,8 +378,22 @@ label{font-weight:bold;font-size:14px}
 <div id="jabethAlarm"></div>
 <button class="btn btnRed" onclick="testAlarm()">🚨 TEST ALARM</button>
 <button class="btn btnBlue" onclick="enableNotifications()">🔔 Enable Notifications</button>
-<p>Your Job: Client Bookings ONLY.</p>
 <div class="shareBox" style="border-color:#f59e0b"><p style="margin:0">YOUR SHARE - JABETH</p><div class="shareBig" style="color:#d97706">10%</div><p style="margin:0"><b>For every UGX 100,000 collected, YOU get UGX 10,000</b></p><div class="shareBar"><div class="shareFill shareFillJab">10%</div></div><p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br><b>Your 10% Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span></p></div>
+
+<div class="withdrawBox">
+<h3 style="margin:0">💰 WITHDRAW - JABETH</h3>
+<p>Your Earnings: <span id="jabethWithdrawBal" class="withdrawBig">UGX 0</span><br><span class="small">Already Withdrawn: <span id="jabethWithdrawnTxt">UGX 0</span> | Balance Left: <span id="jabethBalanceLeft">UGX 0</span></span></p>
+<p class="small">Request withdraw - SUPER will see it and send to your MoMo, then mark as Paid.</p>
+<input id="jabethWithdrawAmt" type="number" placeholder="Amount to Withdraw e.g. 10000">
+<input id="jabethWithdrawPhone" placeholder="Your MoMo Number e.g. 0780545144">
+<select id="jabethWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+<button class="btn" style="background:#d97706" onclick="requestWithdraw('JABETH')">💰 REQUEST WITHDRAW - JABETH</button>
+<p id="jabethWithdrawMsg" class="msg"></p>
+<h3>My Withdraw History</h3>
+<div id="jabethWithdrawList"></div>
+</div>
+
+<p>Your Job: Client Bookings ONLY.</p>
 <div class="gpsBox"><h3>📍 LIVE GPS - Clients + Nurses On Booking</h3><div id="jabethGps"></div><button class="btn btnBlue" onclick="refreshGpsList()">🔄 Refresh GPS</button></div>
 <div class="stat"><div><b id="jbBookCount">0</b>Client Bookings</div><div><b id="jbTotal2">UGX 0</b>Your Earnings</div></div>
 <h3>Client Bookings - Approve Them</h3><div id="jabethBookings"></div>
@@ -353,6 +410,72 @@ label{font-weight:bold;font-size:14px}
 <div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">🔐 Admin • Staff Only - Tap Here</button></div>
 
 <script>
+let withdraws = JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
+function getWithdrawStats(){
+  let total=getBal();
+  let earns={SUPER:Math.round(total*0.8), JOY:Math.round(total*0.1), JABETH:Math.round(total*0.1)};
+  let withdrawn={SUPER:0, JOY:0, JABETH:0};
+  withdraws.forEach(w=>{ if(w.status==='Paid ✅'){ withdrawn[w.who]= (withdrawn[w.who]||0)+w.amt; } });
+  let balance={SUPER:earns.SUPER-withdrawn.SUPER, JOY:earns.JOY-withdrawn.JOY, JABETH:earns.JABETH-withdrawn.JABETH};
+  return {total, earns, withdrawn, balance};
+}
+function requestWithdraw(who){
+  let amtId = who==='SUPER' ? 'superWithdrawAmt' : who==='JOY' ? 'joyWithdrawAmt' : 'jabethWithdrawAmt';
+  let phoneId = who==='SUPER' ? 'superWithdrawPhone' : who==='JOY' ? 'joyWithdrawPhone' : 'jabethWithdrawPhone';
+  let methodId = who==='SUPER' ? 'superWithdrawMethod' : who==='JOY' ? 'joyWithdrawMethod' : 'jabethWithdrawMethod';
+  let msgId = who==='SUPER' ? 'superWithdrawMsg' : who==='JOY' ? 'joyWithdrawMsg' : 'jabethWithdrawMsg';
+  let amt=Number(document.getElementById(amtId).value||0);
+  let phone=document.getElementById(phoneId).value.trim();
+  let method=document.getElementById(methodId).value;
+  let stats=getWithdrawStats();
+  if(amt<=0){ document.getElementById(msgId).innerText='❌ Enter amount'; return; }
+  if(!phone){ document.getElementById(msgId).innerText='❌ Enter MoMo number'; return; }
+  if(amt > stats.balance[who]){ document.getElementById(msgId).innerText='❌ Not enough balance! Your balance is UGX '+stats.balance[who].toLocaleString(); return; }
+  let w={who:who, amt:amt, phone:phone, method:method, status: who==='SUPER' ? 'Paid ✅ (SUPER - Self Withdraw)' : 'Pending - Waiting for SUPER to Pay', date:new Date().toLocaleString(), createdAt:new Date()};
+  withdraws.push(w); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
+  if(window.db) window.db.collection('withdraws').add(w).catch(()=>{});
+  document.getElementById(msgId).innerText='✅ Withdraw Request Saved! '+(who==='SUPER' ? 'SUPER - Send money to yourself via MoMo.' : 'SUPER will see it and send to '+phone);
+  document.getElementById(amtId).value='';
+  if(who!=='SUPER') triggerBookingAlarm({name:'WITHDRAW REQUEST: '+who, service:'Withdraw UGX '+amt, phone:phone, location:method});
+  updateWithdrawUI();
+}
+function markWithdrawPaid(i){
+  if(!confirm('Did you send this money via MoMo? Mark as Paid?')) return;
+  withdraws[i].status='Paid ✅';
+  localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
+  updateWithdrawUI();
+}
+function deleteWithdraw(i){
+  if(confirm('Delete this withdraw request?')){ withdraws.splice(i,1); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); }
+}
+function updateWithdrawUI(){
+  let stats=getWithdrawStats();
+  let el=document.getElementById('tblSuperEarn'); if(el) el.innerText='UGX '+stats.earns.SUPER.toLocaleString();
+  if(document.getElementById('tblJoyEarn')) document.getElementById('tblJoyEarn').innerText='UGX '+stats.earns.JOY.toLocaleString();
+  if(document.getElementById('tblJabEarn')) document.getElementById('tblJabEarn').innerText='UGX '+stats.earns.JABETH.toLocaleString();
+  if(document.getElementById('tblSuperWith')) document.getElementById('tblSuperWith').innerText='UGX '+stats.withdrawn.SUPER.toLocaleString();
+  if(document.getElementById('tblJoyWith')) document.getElementById('tblJoyWith').innerText='UGX '+stats.withdrawn.JOY.toLocaleString();
+  if(document.getElementById('tblJabWith')) document.getElementById('tblJabWith').innerText='UGX '+stats.withdrawn.JABETH.toLocaleString();
+  if(document.getElementById('tblSuperBal')) document.getElementById('tblSuperBal').innerText='UGX '+stats.balance.SUPER.toLocaleString();
+  if(document.getElementById('tblJoyBal')) document.getElementById('tblJoyBal').innerText='UGX '+stats.balance.JOY.toLocaleString();
+  if(document.getElementById('tblJabBal')) document.getElementById('tblJabBal').innerText='UGX '+stats.balance.JABETH.toLocaleString();
+  if(document.getElementById('tblTotalEarn')) document.getElementById('tblTotalEarn').innerText='UGX '+stats.total.toLocaleString();
+  if(document.getElementById('tblTotalWith')) document.getElementById('tblTotalWith').innerText='UGX '+(stats.withdrawn.SUPER+stats.withdrawn.JOY+stats.withdrawn.JABETH).toLocaleString();
+  if(document.getElementById('tblTotalBal')) document.getElementById('tblTotalBal').innerText='UGX '+(stats.balance.SUPER+stats.balance.JOY+stats.balance.JABETH).toLocaleString();
+  if(document.getElementById('superWithdrawBal')) document.getElementById('superWithdrawBal').innerText='UGX '+stats.balance.SUPER.toLocaleString();
+  if(document.getElementById('joyWithdrawBal')) document.getElementById('joyWithdrawBal').innerText='UGX '+stats.earns.JOY.toLocaleString();
+  if(document.getElementById('joyWithdrawnTxt')) document.getElementById('joyWithdrawnTxt').innerText='UGX '+stats.withdrawn.JOY.toLocaleString();
+  if(document.getElementById('joyBalanceLeft')) document.getElementById('joyBalanceLeft').innerText='UGX '+stats.balance.JOY.toLocaleString();
+  if(document.getElementById('jabethWithdrawBal')) document.getElementById('jabethWithdrawBal').innerText='UGX '+stats.earns.JABETH.toLocaleString();
+  if(document.getElementById('jabethWithdrawnTxt')) document.getElementById('jabethWithdrawnTxt').innerText='UGX '+stats.withdrawn.JABETH.toLocaleString();
+  if(document.getElementById('jabethBalanceLeft')) document.getElementById('jabethBalanceLeft').innerText='UGX '+stats.balance.JABETH.toLocaleString();
+  let superList = withdraws.length ? withdraws.map((w,i)=>'<div class="item"><b>'+w.who+'</b> - UGX '+w.amt.toLocaleString()+' - '+w.method+' to '+w.phone+'<br>Status: '+w.status+'<br>'+w.date+'<br>'+(w.status.includes('Pending') ? '<button onclick="markWithdrawPaid('+i+')">✅ Mark As Paid - I Sent Money</button> ' : '')+'<button onclick="deleteWithdraw('+i+')">Delete</button></div>').join('') : 'No withdraw requests yet';
+  if(document.getElementById('superWithdrawList')) document.getElementById('superWithdrawList').innerHTML=superList;
+  let joyList = withdraws.filter(w=>w.who==='JOY').length ? withdraws.map((w,i)=> w.who==='JOY' ? '<div class="item">UGX '+w.amt.toLocaleString()+' - '+w.method+' to '+w.phone+'<br>'+w.status+'<br>'+w.date+'</div>' : '').join('') : 'No withdraws yet';
+  if(document.getElementById('joyWithdrawList')) document.getElementById('joyWithdrawList').innerHTML=joyList;
+  let jabList = withdraws.filter(w=>w.who==='JABETH').length ? withdraws.map((w,i)=> w.who==='JABETH' ? '<div class="item">UGX '+w.amt.toLocaleString()+' - '+w.method+' to '+w.phone+'<br>'+w.status+'<br>'+w.date+'</div>' : '').join('') : 'No withdraws yet';
+  if(document.getElementById('jabethWithdrawList')) document.getElementById('jabethWithdrawList').innerHTML=jabList;
+}
 function getAppLink(){ return window.location.href.split('?')[0].split('#')[0] || 'https://home-care-hero.web.app'; }
 function setupShareLinks(){
   let link=getAppLink();
@@ -459,7 +582,6 @@ function renderAlarms(){
   }
   ['homeAlarm','nurseAlarm','superAlarm','joyAlarm','jabethAlarm'].forEach(id=>{ let el=document.getElementById(id); if(el) el.innerHTML=html; });
 }
-let hiddenTaps=0, hiddenTimer=null;
 function tapHiddenAdmin(){
   if(sessionStorage.getItem('hero_user_type')!=='admin' && !currentAdmin){
     alert('⚠️ You entered as CLIENT. To see Admin: Close app completely, reopen, choose OPEN AS ADMIN with Gate Password, then tap Admin at bottom again.');
@@ -471,7 +593,7 @@ function showAdminDirect(){
   ['home','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
   document.getElementById('admin').classList.remove('hidden');
   if(currentAdmin) updateAdmin();
-  updateBal();
+  updateBal(); updateWithdrawUI();
 }
 let gpsList = JSON.parse(localStorage.getItem('hc_gps')||'[]');
 let bookGps = null;
@@ -606,7 +728,7 @@ function adminLogin(){
   if(role==='SUPER') document.getElementById('superDash').classList.remove('hidden');
   if(role==='JOY') document.getElementById('joyDash').classList.remove('hidden');
   if(role==='JABETH') document.getElementById('jabethDash').classList.remove('hidden');
-  updateAdmin(); refreshGpsList(); renderAlarms(); setupShareLinks();
+  updateAdmin(); refreshGpsList(); renderAlarms(); setupShareLinks(); updateWithdrawUI();
 }
 function adminLogout(){ currentAdmin=null; document.getElementById('adminLoginBox').classList.remove('hidden'); document.getElementById('adminLogoutBtn').classList.add('hidden'); document.getElementById('superDash').classList.add('hidden'); document.getElementById('joyDash').classList.add('hidden'); document.getElementById('jabethDash').classList.add('hidden'); document.getElementById('adminLoginMsg').innerText='Logged out'; }
 function formatNurse(n,i){
@@ -642,6 +764,7 @@ function updateAdmin(){
   document.getElementById('superNurses').innerHTML=nurseHTML;
   document.getElementById('superPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+' - '+(p.note||'')+'</div>').join('') : 'No payments';
   document.getElementById('superRatings').innerHTML = ratings.length ? ratings.map(r=>'<div class="item">⭐ '+r.stars+'/5 - <b>'+r.name+'</b> - '+(r.comment||'')+'</div>').join('') : 'No ratings';
+  updateWithdrawUI();
 }
 function approveNurse(i){ nursesList[i].status='Approved ✅ by JOY'; localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add({action:'approved',name:nursesList[i].name,date:new Date().toLocaleString()}); updateAdmin(); alert('Nurse Approved ✅'); }
 function rejectNurse(i){ if(confirm('Reject this nurse? Check qualification first.')){ nursesList.splice(i,1); localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); updateAdmin(); } }
@@ -710,7 +833,7 @@ function realDeposit(){ let a=Number(document.getElementById('depAmt').value||0)
 function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid - SUPER to verify in Pesapal'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved to Firebase. SUPER will verify in Pesapal.'; triggerBookingAlarm({name:'PAYMENT: UGX '+a, service:'Payment Confirmed', phone:'', location:''}); }
 function approveBooking(i){ bookings[i].status='Approved ✅ by JABETH'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); }
 function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); } }
-updateBal(); refreshGpsList(); renderAlarms(); setupShareLinks();
+updateBal(); refreshGpsList(); renderAlarms(); setupShareLinks(); updateWithdrawUI();
 setInterval(()=>{
   if(window.db && sessionStorage.getItem('hero_gate')==='open'){
     window.db.collection('notifications').orderBy('createdAt','desc').limit(1).get().then(snap=>{
