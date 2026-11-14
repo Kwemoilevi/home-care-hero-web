@@ -31,14 +31,14 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
 </head>
 <body>
-<div class="header">💚 HomeCare Hero</div>
+<div class="header" onclick="tapHeader()">💚 HomeCare Hero</div>
 <div class="nav">
 <button onclick="show('home')">Home</button>
 <button onclick="show('book')">Book Nurse</button>
 <button onclick="show('wallet')">Wallet</button>
 <button onclick="show('rate')">⭐ Rate Us</button>
 <button onclick="show('login')">Login</button>
-<button onclick="show('admin')">Admin Dashboard</button>
+<button id="adminNavBtn" onclick="show('admin')" style="display:none;background:#dc2626;color:#fff">Admin Dashboard</button>
 </div>
 
 <div id="home" class="card">
@@ -103,7 +103,8 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <div id="admin" class="card hidden">
-<h2>Admin Dashboard</h2>
+<h2>Admin Dashboard - OWNER ONLY</h2>
+<p class="small" id="adminCheck">Checking admin...</p>
 <div class="stat">
 <div><b id="statBookings">0</b>Total Bookings</div>
 <div><b id="statPays">UGX 0</b>Total Payments</div>
@@ -119,10 +120,20 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 </div>
 
 <script>
-// ==== YOUR REAL FIREBASE - ALREADY FILLED ====
 const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "38632827016",appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId: "G-ZV09KN6R90"};
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
-let db=null, auth=null, currentStars=0;
+const ADMIN_EMAIL = "kwemoilevi64@gmail.com";
+let db=null, auth=null, currentStars=0, headerTaps=0, isAdmin=false;
+function checkAdmin(user){
+  isAdmin = user && user.email && user.email.toLowerCase()===ADMIN_EMAIL;
+  document.getElementById('adminNavBtn').style.display = isAdmin ? 'block' : 'none';
+  document.getElementById('adminCheck').innerText = isAdmin ? 'Welcome Owner ✅' : 'Not admin - Access denied';
+}
+function tapHeader(){
+  headerTaps++;
+  if(headerTaps>=5){ headerTaps=0; document.getElementById('adminNavBtn').style.display='block'; alert('Admin unlocked for this session - Tap Admin Dashboard'); }
+  setTimeout(()=>{headerTaps=0},3000);
+}
 try{
   firebase.initializeApp(firebaseConfig);
   db=firebase.firestore(); auth=firebase.auth();
@@ -131,7 +142,8 @@ try{
     if(u){ document.getElementById('loginStatus').innerText='Logged in as '+u.email+' ✅';
       document.getElementById('userInfo').innerText='Logged in: '+u.email;
       document.getElementById('logoutBtn').classList.remove('hidden');
-    } else { document.getElementById('logoutBtn').classList.add('hidden'); }
+      checkAdmin(u);
+    } else { document.getElementById('logoutBtn').classList.add('hidden'); checkAdmin(null); }
   });
 }catch(e){ document.getElementById('loginStatus').innerText='Firebase: Using local mode'; }
 let bookings = JSON.parse(localStorage.getItem('hc_bookings')||'[]');
@@ -152,13 +164,16 @@ function updateBal(){
     db.collection('ratings').orderBy('createdAt','desc').limit(20).get().then(snap=>{ let h=''; snap.forEach(d=>{let r=d.data(); h+='<div class="item">⭐ '+(r.stars||'')+'/5 - <b>'+(r.name||'')+'</b><br>'+(r.comment||'')+'<br>'+(r.date||'')+'</div>';}); if(h){ document.getElementById('adminRatings').innerHTML = h + document.getElementById('adminRatings').innerHTML; document.getElementById('ratingList').innerHTML = h; }});
   }
 }
-function show(id){['home','book','wallet','rate','login','admin'].forEach(x=>document.getElementById(x).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); updateBal();}
+function show(id){
+  if(id==='admin' && !isAdmin && document.getElementById('adminNavBtn').style.display==='none'){ alert('Admin is private. Login as owner first.'); show('login'); return; }
+  ['home','book','wallet','rate','login','admin'].forEach(x=>document.getElementById(x).classList.add('hidden')); document.getElementById(id).classList.remove('hidden'); updateBal();
+}
 function setStars(n){ currentStars=n; document.getElementById('starText').innerText='You selected '+n+' / 5'; document.querySelectorAll('#starBox span').forEach((s,i)=>{ s.innerText = i<n ? '★' : '☆'; s.style.color = i<n ? '#f59e0b' : '#000'; }); }
 function submitRating(){
   let name=document.getElementById('rateName').value.trim();
   if(!name){ document.getElementById('rateMsg').innerText='Please enter your name'; return; }
   if(!currentStars){ document.getElementById('rateMsg').innerText='Please tap stars first'; return; }
-  if(!db){ document.getElementById('rateMsg').innerText='Firebase not connected yet - check config'; return; }
+  if(!db){ document.getElementById('rateMsg').innerText='Firebase not connected yet'; return; }
   let data={name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:new Date().toLocaleString(),createdAt:new Date()};
   document.getElementById('rateMsg').innerText='Saving...';
   db.collection('ratings').add(data).then(()=>{
@@ -171,7 +186,7 @@ function submitRating(){
 function loginGoogle(){ if(!auth){alert('Paste Firebase config first');return;} let p=new firebase.auth.GoogleAuthProvider(); auth.signInWithPopup(p).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(e=>alert(e.message)); }
 function loginEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.signInWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Logged in ✅'; show('home');}).catch(er=>alert(er.message)); }
 function signupEmail(){ let e=document.getElementById('loginEmail').value, pw=document.getElementById('loginPass').value; auth.createUserWithEmailAndPassword(e,pw).then(()=>{document.getElementById('loginMsg').innerText='Account created ✅'; show('home');}).catch(er=>alert(er.message)); }
-function logout(){ auth.signOut().then(()=>{document.getElementById('userInfo').innerText='Logged out'; document.getElementById('loginMsg').innerText='Logged out';}); }
+function logout(){ auth.signOut().then(()=>{document.getElementById('userInfo').innerText='Logged out'; document.getElementById('loginMsg').innerText='Logged out'; checkAdmin(null);}); }
 function bookNow(){
   let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value;
   if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;}
