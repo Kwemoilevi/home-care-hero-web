@@ -31,6 +31,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .gallery img{width:100%;height:130px;object-fit:cover;border-radius:10px}
 .gallery p{font-size:12px;margin:4px 0 10px;font-weight:bold}
 .adminBox{border:2px solid #16a34a;padding:12px;border-radius:12px;margin:10px 0}
+.passBox{border:2px dashed #f59e0b;padding:12px;border-radius:12px;margin:12px 0;background:#fffbeb}
 #gate{position:fixed;top:0;left:0;right:0;bottom:0;background:#16a34a;z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px}
 #gateBox{background:#fff;width:100%;max-width:380px;padding:24px;border-radius:16px;text-align:center}
 </style>
@@ -46,7 +47,6 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <input id="gatePass" type="password" placeholder="Enter Gate Password">
 <button class="btn" onclick="checkGate()">🔓 OPEN APP</button>
 <p id="gateMsg" class="msg"></p>
-<p class="small">Gate: HERO2026<br>Admins inside still have their own passwords.</p>
 </div></div>
 
 <div class="header">Hom Care Hero 🌍<div class="sub">🌍 Worldwide • Any Country • Any City • All Payments Inside App Only • No Cash Outside</div></div>
@@ -182,12 +182,13 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <option value="JOY">JOY CHELANGAT - 10% Approve Nurses</option>
 <option value="JABETH">JABETH KIMTAI - 10% Client Booking</option>
 </select>
-<input id="adminPhone" placeholder="Phone - For JOY 0775761052, For JABETH 0780545144, For SUPER leave blank">
-<input id="adminPass" type="password" placeholder="Password - SUPER 2215, JOY JOY2026, JABETH JABETH2026">
+<input id="adminPhone" placeholder="Enter Your Phone">
+<input id="adminPass" type="password" placeholder="Enter Your Password">
 <button class="btn btnRed" onclick="adminLogin()">Login As Admin</button>
 <p id="adminLoginMsg" class="msg"></p>
 </div>
 <button class="btn hidden" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin</button>
+
 <div id="superDash" class="adminBox hidden">
 <h2>👑 SUPER ADMIN Dashboard - 80%</h2>
 <p><b>You control ALL payments</b></p>
@@ -196,30 +197,90 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 <h3>All Nurses</h3><div id="superNurses"></div>
 <h3>All Payments</h3><div id="superPays"></div>
 <h3>All Ratings</h3><div id="superRatings"></div>
+<div class="passBox">
+<h3>🔐 Change Passwords - SUPER ONLY</h3>
+<p class="small">1. Change GATE password - This is the first password everyone types to open app</p>
+<input id="newGatePass" type="password" placeholder="New Gate Password e.g. HERO2027">
+<button class="btn btn2" onclick="changeGatePass()">Change GATE Password</button>
+<p id="gateChangeMsg" class="msg"></p>
+<hr>
+<p class="small">2. Change YOUR OWN Super password</p>
+<input id="oldSuperPass" type="password" placeholder="Your Current Super Password">
+<input id="newSuperPass" type="password" placeholder="New Super Password">
+<button class="btn" onclick="changeMyPass('SUPER')">Change MY Super Password</button>
+<p id="superChangeMsg" class="msg"></p>
 </div>
+</div>
+
 <div id="joyDash" class="adminBox hidden">
 <h2>💙 JOY CHELANGAT Dashboard - 10%</h2>
 <p>Your Job: Approve Nurses ONLY.</p>
 <div class="stat"><div><b id="jTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jNurseCount">0</b>Nurses To Approve</div></div>
 <h3>Nurses Waiting For Your Approval</h3><div id="joyNurses"></div>
+<div class="passBox">
+<h3>🔐 Change MY Password - JOY</h3>
+<p class="small">Only you can change your password. No one else sees it.</p>
+<input id="oldJoyPass" type="password" placeholder="Your Current Password">
+<input id="newJoyPass" type="password" placeholder="New Password">
+<button class="btn" onclick="changeMyPass('JOY')">Change MY Joy Password</button>
+<p id="joyChangeMsg" class="msg"></p>
 </div>
+</div>
+
 <div id="jabethDash" class="adminBox hidden">
 <h2>💛 JABETH KIMTAI Dashboard - 10%</h2>
 <p>Your Job: Client Bookings ONLY.</p>
 <div class="stat"><div><b id="jbTotal">UGX 0</b>Your 10% Earnings</div><div><b id="jbBookCount">0</b>Client Bookings</div></div>
 <h3>Client Bookings - Approve Them</h3><div id="jabethBookings"></div>
+<div class="passBox">
+<h3>🔐 Change MY Password - JABETH</h3>
+<p class="small">Only you can change your password. No one else sees it.</p>
+<input id="oldJabethPass" type="password" placeholder="Your Current Password">
+<input id="newJabethPass" type="password" placeholder="New Password">
+<button class="btn" onclick="changeMyPass('JABETH')">Change MY Jabeth Password</button>
+<p id="jabethChangeMsg" class="msg"></p>
+</div>
 </div>
 </div>
 
 <script>
-const GATE_PASSWORD = "HERO2026";
+function getPasswords(){
+  let d = JSON.parse(localStorage.getItem('hc_passwords')||'{}');
+  if(!d.GATE) d.GATE='HERO2026';
+  if(!d.SUPER) d.SUPER='2215';
+  if(!d.JOY) d.JOY='JOY2026';
+  if(!d.JABETH) d.JABETH='JABETH2026';
+  return d;
+}
+function savePasswords(d){ localStorage.setItem('hc_passwords',JSON.stringify(d)); }
 function checkGate(){
   let p=document.getElementById('gatePass').value.trim();
-  if(p===GATE_PASSWORD){ document.getElementById('gate').style.display='none'; sessionStorage.setItem('hero_gate','open'); }
+  let pw=getPasswords();
+  if(p===pw.GATE){ document.getElementById('gate').style.display='none'; sessionStorage.setItem('hero_gate','open'); }
   else { document.getElementById('gateMsg').innerText='❌ Wrong Gate Password. Try again.'; document.getElementById('gatePass').value=''; }
 }
 if(sessionStorage.getItem('hero_gate')==='open'){ document.getElementById('gate').style.display='none'; }
 document.getElementById('gatePass').addEventListener('keydown',function(e){ if(e.key==='Enter') checkGate(); });
+function changeGatePass(){
+  let np=document.getElementById('newGatePass').value.trim();
+  if(np.length<4){ document.getElementById('gateChangeMsg').innerText='❌ New Gate Password must be at least 4 letters'; return; }
+  let pw=getPasswords(); pw.GATE=np; savePasswords(pw);
+  document.getElementById('gateChangeMsg').innerText='✅ GATE Password Changed! Tell everyone new Gate Password privately. Next time app opens, use new password.';
+  document.getElementById('newGatePass').value='';
+}
+function changeMyPass(role){
+  let oldId = role==='SUPER' ? 'oldSuperPass' : role==='JOY' ? 'oldJoyPass' : 'oldJabethPass';
+  let newId = role==='SUPER' ? 'newSuperPass' : role==='JOY' ? 'newJoyPass' : 'newJabethPass';
+  let msgId = role==='SUPER' ? 'superChangeMsg' : role==='JOY' ? 'joyChangeMsg' : 'jabethChangeMsg';
+  let oldP=document.getElementById(oldId).value.trim();
+  let newP=document.getElementById(newId).value.trim();
+  let pw=getPasswords();
+  if(oldP!==pw[role]){ document.getElementById(msgId).innerText='❌ Wrong Current Password. Try again.'; return; }
+  if(newP.length<4){ document.getElementById(msgId).innerText='❌ New Password must be at least 4 letters'; return; }
+  pw[role]=newP; savePasswords(pw);
+  document.getElementById(msgId).innerText='✅ Your Password Changed! Next login use NEW password: '+newP+' - Remember it, do NOT screenshot it.';
+  document.getElementById(oldId).value=''; document.getElementById(newId).value='';
+}
 const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "38632827016",appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId: "G-ZV09KN6R90"};
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
 let db=null, auth=null, currentStars=0, currentAdmin=null;
@@ -233,10 +294,11 @@ function adminLogin(){
   let role=document.getElementById('adminRole').value;
   let phone=document.getElementById('adminPhone').value.trim();
   let pass=document.getElementById('adminPass').value.trim();
+  let pw=getPasswords();
   let ok=false;
-  if(role==='SUPER' && pass==='2215') ok=true;
-  if(role==='JOY' && phone==='0775761052' && pass==='JOY2026') ok=true;
-  if(role==='JABETH' && phone==='0780545144' && (pass==='JABETH2026' || pass==='JABETH 2026')) ok=true;
+  if(role==='SUPER' && pass===pw.SUPER) ok=true;
+  if(role==='JOY' && phone==='0775761052' && pass===pw.JOY) ok=true;
+  if(role==='JABETH' && phone==='0780545144' && pass===pw.JABETH) ok=true;
   if(!ok){ document.getElementById('adminLoginMsg').innerText='❌ Wrong Phone or Password. Try again.'; return; }
   currentAdmin=role;
   document.getElementById('adminLoginMsg').innerText='✅ Welcome '+role+'!';
