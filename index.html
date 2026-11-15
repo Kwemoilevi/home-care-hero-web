@@ -55,6 +55,10 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .clientAccountBox{background:#eff6ff;border:3px solid #2563eb;padding:16px;border-radius:14px;margin:12px 0;text-align:center}
 .superLinkBox{background:#fef3c7;border:3px solid #f59e0b;padding:14px;border-radius:14px;margin:12px 0;text-align:center}
 .superLinkBox input{background:#fff}
+.approachBox{background:#f0fdf4;border:3px solid #16a34a;padding:14px;border-radius:14px;margin:12px 0}
+.approachBox textarea{height:180px;font-size:14px;background:#fff;white-space:pre-wrap}
+.approachBoxNurse{background:#eff6ff;border:3px solid #2563eb;padding:14px;border-radius:14px;margin:12px 0}
+.approachBoxNurse textarea{height:180px;font-size:14px;background:#fff;white-space:pre-wrap}
 .adBox{background:#fff7ed;border:2px dashed #f59e0b;padding:12px;border-radius:12px;margin:12px 0;text-align:center;overflow:hidden}
 .adBox img{width:100%;max-height:220px;object-fit:cover;border-radius:10px}
 .adLabel{font-size:10px;color:#999;letter-spacing:2px}
@@ -350,6 +354,31 @@ label{font-weight:bold;font-size:14px}
 <div id="superDash" class="hidden">
 <h2 style="text-align:center">👑 SUPER - Your Work - ALL FORMS COME TO YOU</h2>
 <div id="superAlarm"></div>
+
+<div class="workTitle">💬 APPROACH MESSAGES - SUPER - COPY & PASTE LIKE LINK</div>
+<div class="approachBox">
+<h3 style="margin:0">🟢 CLIENT APPROACH - SUPER - For Clients</h3>
+<p class="small">Tap COPY, Paste on WhatsApp to Client. Link auto-fills.</p>
+<textarea id="superClientApproach" readonly></textarea>
+<button class="btn" style="background:#16a34a" onclick="copyApproach('superClientApproach','superClientApproachMsg')">📋 COPY CLIENT MESSAGE - SUPER</button>
+<button class="btn btnGreen" onclick="shareApproachWhatsApp('superClientApproach')">💬 Send This Client Message Via WhatsApp</button>
+<p id="superClientApproachMsg" class="msg"></p>
+</div>
+<div class="approachBoxNurse">
+<h3 style="margin:0">🔵 NURSE APPROACH - SUPER - For Nurses</h3>
+<p class="small">Tap COPY, Paste on WhatsApp to Nurse. Link auto-fills.</p>
+<textarea id="superNurseApproach" readonly></textarea>
+<button class="btn" style="background:#2563eb" onclick="copyApproach('superNurseApproach','superNurseApproachMsg')">📋 COPY NURSE MESSAGE - SUPER</button>
+<button class="btn btnGreen" onclick="shareApproachWhatsApp('superNurseApproach')">💬 Send This Nurse Message Via WhatsApp</button>
+<p id="superNurseApproachMsg" class="msg"></p>
+</div>
+<div class="approachBox" style="background:#fffbeb;border-color:#f59e0b">
+<h3 style="margin:0">📢 STATUS APPROACH - SUPER - Short For Status / Group</h3>
+<textarea id="superStatusApproach" readonly style="height:120px"></textarea>
+<button class="btn btn2" onclick="copyApproach('superStatusApproach','superStatusApproachMsg')">📋 COPY STATUS MESSAGE</button>
+<p id="superStatusApproachMsg" class="msg"></p>
+</div>
+
 <div class="workTitle">🔗 LINK FORMS TO SUPER - YOUR MASTER LINKS - ADMINS ONLY</div>
 <div class="superLinkBox">
 <p><b>Share these 2 links - All forms come to YOU</b><br><span class="small">Anyone who taps link, creates account, fills form - You see it first in SUPER dashboard. Clients do NOT see this box on Home.</span></p>
@@ -423,6 +452,31 @@ label{font-weight:bold;font-size:14px}
 <div id="joyDash" class="hidden">
 <h2 style="text-align:center">💙 JOY - Your Work: Nurses Only</h2>
 <div id="joyAlarm"></div>
+
+<div class="workTitle">💬 APPROACH MESSAGES - JOY - COPY & PASTE LIKE LINK</div>
+<div class="approachBox">
+<h3 style="margin:0">🟢 CLIENT APPROACH - JOY - For Clients</h3>
+<p class="small">Tap COPY, Paste on WhatsApp to Client. Link auto-fills. All admins send to clients.</p>
+<textarea id="joyClientApproach" readonly></textarea>
+<button class="btn" style="background:#16a34a" onclick="copyApproach('joyClientApproach','joyClientApproachMsg')">📋 COPY CLIENT MESSAGE - JOY</button>
+<button class="btn btnGreen" onclick="shareApproachWhatsApp('joyClientApproach')">💬 Send This Client Message Via WhatsApp</button>
+<p id="joyClientApproachMsg" class="msg"></p>
+</div>
+<div class="approachBoxNurse">
+<h3 style="margin:0">🔵 NURSE APPROACH - JOY - For Nurses</h3>
+<p class="small">Tap COPY, Paste on WhatsApp to Nurse. You are in charge of nurses.</p>
+<textarea id="joyNurseApproach" readonly></textarea>
+<button class="btn" style="background:#2563eb" onclick="copyApproach('joyNurseApproach','joyNurseApproachMsg')">📋 COPY NURSE MESSAGE - JOY</button>
+<button class="btn btnGreen" onclick="shareApproachWhatsApp('joyNurseApproach')">💬 Send This Nurse Message Via WhatsApp</button>
+<p id="joyNurseApproachMsg" class="msg"></p>
+</div>
+<div class="approachBox" style="background:#fffbeb;border-color:#f59e0b">
+<h3 style="margin:0">📢 STATUS APPROACH - JOY - Short For Status / Group</h3>
+<textarea id="joyStatusApproach" readonly style="height:120px"></textarea>
+<button class="btn btn2" onclick="copyApproach('joyStatusApproach','joyStatusApproachMsg')">📋 COPY STATUS MESSAGE</button>
+<p id="joyStatusApproachMsg" class="msg"></p>
+</div>
+
 <div class="workTitle">1. MY MONEY - 10%</div>
 <div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span><br><b>Balance Left:</b> <span id="joyBalanceLeft">UGX 0</span><br><span class="small">SUPER must approve your withdraw</span></p></div>
 <div class="workTitle">2. MY NURSE LINK - JOY Shares To Nurses - Forms Go To SUPER First, Then To You</div>
@@ -452,6 +506,15 @@ label{font-weight:bold;font-size:14px}
 <div id="jabethDash" class="hidden">
 <h2 style="text-align:center">💛 JABETH - Your Work: Clients Only</h2>
 <div id="jabethAlarm"></div>
+<div class="workTitle">💬 APPROACH MESSAGE - JABETH - CLIENTS ONLY</div>
+<div class="approachBox">
+<h3 style="margin:0">🟢 CLIENT APPROACH - JABETH - For Clients</h3>
+<p class="small">Tap COPY, Paste on WhatsApp to Client. You focus on clients only.</p>
+<textarea id="jabethClientApproach" readonly></textarea>
+<button class="btn" style="background:#16a34a" onclick="copyApproach('jabethClientApproach','jabethClientApproachMsg')">📋 COPY CLIENT MESSAGE - JABETH</button>
+<button class="btn btnGreen" onclick="shareApproachWhatsApp('jabethClientApproach')">💬 Send This Client Message Via WhatsApp</button>
+<p id="jabethClientApproachMsg" class="msg"></p>
+</div>
 <div class="workTitle">1. MY MONEY - 10%</div>
 <div class="shareBox" style="border-color:#f59e0b"><p style="margin:0">YOUR SHARE - JABETH</p><div class="shareBig" style="color:#d97706">10%</div><p><b>Total Collected:</b> <span id="jbTotalCollected">UGX 0</span><br><b>Your Earnings:</b> <span id="jbTotal" style="color:#d97706;font-size:20px">UGX 0</span><br><b>Balance Left:</b> <span id="jabethBalanceLeft">UGX 0</span><br><span class="small">SUPER must approve your withdraw</span></p></div>
 <div class="workTitle">2. MY CLIENT LINK - JABETH Shares To Clients - Forms Go To SUPER First, Then To You</div>
@@ -521,6 +584,28 @@ function shareAppLink(){
   let text=encodeURIComponent('📲 Download Hom Care Hero App FREE! Tap link, Create Account first, then tap DOWNLOAD APP, then Install. Link: '+link);
   window.open('https://wa.me/?text='+text,'_blank');
   document.getElementById('downloadMsg').innerText='✅ WhatsApp opened - Choose person to send download link to.';
+}
+// APPROACH MESSAGES - IN SUPER + JOY DASHBOARD - COPY LIKE LINK
+function buildApproachMessages(){
+  let clientLink=getClientLinkToSuper();
+  let nurseLink=getNurseLinkToSuper();
+  let set=(id,txt)=>{ let el=document.getElementById(id); if(el) el.value=txt; };
+  set('superClientApproach',"Hello! I'm SUPER from Hom Care Hero 💚\n\nWe bring a trusted, qualified nurse to your home. Wound Care, Elderly Care, Broken Bones, Post-Surgery, Physiotherapy.\n\nFREE to join. You only pay when you book, and you pay INSIDE the app - No cash outside, so your money is safe.\n\nTap link, Create Account first (Name + Phone + Password), then fill Booking Form. Form goes to SUPER, we will approve and send nurse to you:\n"+clientLink+"\n\nCan I help you book now? What does patient need? 🙏");
+  set('superNurseApproach',"Hello Nurse! I'm SUPER from Hom Care Hero 💙\n\nWe need qualified nurses to earn money from home visits. You choose when you want to work. We send you clients near you. Paid inside app - Safe, no chasing money.\n\nFREE to join. Fill Nurse Form here (Comes directly to me):\n"+nurseLink+"\n\nSteps: Tap link > Create Account first > Fill Form (Qualification + License Number) > Submit. I will check and forward to JOY to approve you.\n\nAre you qualified? What is your qualification? 🙏");
+  set('superStatusApproach',"💚 Need a Nurse At Home? Hom Care Hero brings trusted nurses to your home - Wound Care, Elderly Care, Broken Bones, Post-Surgery, Physiotherapy. FREE to join. Pay inside app only. No cash outside. Tap link, Create Account, Book Nurse 👇\n"+clientLink+"\n\n👩‍⚕️ NURSES WANTED - Earn money from home visits. Fill form 👇\n"+nurseLink);
+  set('joyClientApproach',"Hello! I'm JOY from Hom Care Hero 💚\n\nWe bring a trusted, qualified nurse to your home. Wound Care, Elderly Care, Broken Bones, Post-Surgery, Physiotherapy.\n\nFREE to join. You only pay when you book, and you pay INSIDE the app - No cash outside, so your money is safe.\n\nTap link, Create Account first (Name + Phone + Password), then fill Booking Form. Form goes to SUPER, we will approve and send nurse to you:\n"+clientLink+"\n\nCan I help you book now? What does patient need? 🙏");
+  set('joyNurseApproach',"Hello Nurse! I'm JOY CHELANGAT from Hom Care Hero 💙\n\nI am in charge of Nurses. We need qualified nurses for home visits - Elderly Care, Wound Care, Broken Bones, Post-Surgery, Mother & Baby.\n\nYou work when you want, near your home, paid inside app.\n\nFREE to join. Fill Nurse Form here (Goes to SUPER first, then to me to approve):\n"+nurseLink+"\n\nSteps: Tap link > Create Account first > Fill Form with Qualification + License Number > Submit. I will check and approve you.\n\nWhat is your qualification and where are you located? 🙏");
+  set('joyStatusApproach',"💚 Need a Nurse At Home? Hom Care Hero - FREE to join. Pay inside app only. Tap link, Create Account, Book Nurse 👇\n"+clientLink+"\n\n👩‍⚕️ NURSES WANTED - I am JOY, in charge of Nurses. Earn money from home visits. Fill form 👇\n"+nurseLink);
+  set('jabethClientApproach',"Hello! I'm JABETH from Hom Care Hero 💚\n\nWe bring a trusted, qualified nurse to your home. Wound Care, Elderly Care, Broken Bones, Post-Surgery, Physiotherapy.\n\nFREE to join. You only pay when you book, and you pay INSIDE the app - No cash outside, so your money is safe.\n\nTap link, Create Account first (Name + Phone + Password), then fill Booking Form. Form goes to SUPER, we will approve and send nurse to you:\n"+clientLink+"\n\nCan I help you book now? What does patient need? 🙏");
+}
+function copyApproach(textareaId,msgId){
+  let el=document.getElementById(textareaId); el.select(); document.execCommand('copy');
+  if(navigator.clipboard) navigator.clipboard.writeText(el.value);
+  let m=document.getElementById(msgId); if(m) m.innerText='✅ Copied! Paste on WhatsApp now - Link already inside.';
+}
+function shareApproachWhatsApp(textareaId){
+  let el=document.getElementById(textareaId);
+  window.open('https://wa.me/?text='+encodeURIComponent(el.value),'_blank');
 }
 let adverts = JSON.parse(localStorage.getItem('hc_adverts')||'[]');
 function openAdvertise(){
@@ -653,6 +738,7 @@ function setupShareLinks(){
   let map={superNurseLink:nurseLink, joyNurseLink:nurseLink, superClientLink:clientLink, jabethClientLink:clientLink};
   for(let id in map){ let el=document.getElementById(id); if(el) el.value=map[id]; }
   let master=document.getElementById('superMasterLinkText'); if(master) master.innerText=getBaseLink()+'?to=SUPER';
+  buildApproachMessages();
 }
 function copyLinkById(inputId,msgId){
   let el=document.getElementById(inputId); el.select(); document.execCommand('copy');
@@ -749,15 +835,15 @@ function showMyDuties(){
   if(currentAdmin==='SUPER'){
     document.getElementById('superDash').classList.remove('hidden');
     if(title) title.innerText='SUPER';
-    if(msg) msg.innerText='👑 Welcome SUPER! ALL FORMS COME TO YOU! Your duties BELOW: 1. Links To SUPER 2. Ads 3. All Money 4. Withdraw 5. Approve Payments 6. Bookings 7. Nurses 8. Payments - Scroll down!';
+    if(msg) msg.innerText='👑 Welcome SUPER! Your duties BELOW: 1. Approach Messages 2. Links To SUPER 3. Ads 4. All Money 5. Withdraw 6. Approve Payments 7. Bookings 8. Nurses 9. Payments - Scroll down!';
   } else if(currentAdmin==='JOY'){
     document.getElementById('joyDash').classList.remove('hidden');
     if(title) title.innerText='JOY';
-    if(msg) msg.innerText='💙 Welcome JOY! Forms go to SUPER first, then to you. Your duties BELOW: 1. My Money 10% 2. Nurse Link 3. Withdraw 4. Nurses To Approve - Scroll down!';
+    if(msg) msg.innerText='💙 Welcome JOY! Your duties BELOW: 1. Approach Messages 2. My Money 10% 3. Nurse Link 4. Withdraw 5. Nurses To Approve - Scroll down!';
   } else if(currentAdmin==='JABETH'){
     document.getElementById('jabethDash').classList.remove('hidden');
     if(title) title.innerText='JABETH';
-    if(msg) msg.innerText='💛 Welcome JABETH! Forms go to SUPER first, then to you. Your duties BELOW: 1. My Money 10% 2. Client Link 3. Withdraw 4. Bookings To Approve - Scroll down!';
+    if(msg) msg.innerText='💛 Welcome JABETH! Your duties BELOW: 1. Approach Message 2. My Money 10% 3. Client Link 4. Withdraw 5. Bookings To Approve - Scroll down!';
   }
 }
 let withdraws = JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
