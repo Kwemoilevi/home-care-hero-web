@@ -84,7 +84,6 @@ label{font-weight:bold;font-size:14px}
 </head>
 <body>
 <div id="alarmBanner" onclick="stopAlarm()">🚨 NEW BOOKING! <span id="alarmBannerText"></span> - TAP TO STOP ALARM ✅</div>
-
 <div id="entryGate"><div id="entryBox">
 <div style="font-size:48px">💚</div>
 <h2 style="margin:4px 0">Hom Care Hero 🌍</h2>
@@ -104,12 +103,11 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" style="background:#16a34a" onclick="loginAndEnter()">🔑 LOGIN & ENTER APP</button>
 <p id="entryLoginMsg" class="msg"></p>
 <button class="btn" style="background:#666" onclick="showEntryCreate()">← Back To Create Account</button>
-<button class="btn" style="background:#dc2626" onclick="resetLogin()">🔄 Forgot Password? Reset - Create New Account With Same Phone</button>
+<button class="btn" style="background:#dc2626" onclick="resetLogin()">🔄 Forgot Password? Reset - Tap Here</button>
 </div>
 <hr>
 <button class="btn btnBlue" onclick="openDownload()">📲 DOWNLOAD APP FIRST - Tap Here</button>
 </div></div>
-
 <div id="adminGateModal" onclick="if(event.target.id==='adminGateModal') closeAdminGate()">
 <div id="adminGateBox">
 <div style="font-size:40px">🔐</div>
@@ -136,7 +134,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" style="background:#666" onclick="closeAdminGate()">🔒 CLOSE GATE - Back To App</button>
 </div>
 </div>
-
 <div id="downloadModal" onclick="if(event.target.id==='downloadModal') closeDownload()"><div id="downloadModalBox">
 <div style="font-size:48px">📲</div>
 <h2 style="margin:4px 0">Download Hom Care Hero</h2>
@@ -148,7 +145,6 @@ label{font-weight:bold;font-size:14px}
 <div id="installSteps" style="text-align:left;background:#f0fdf4;padding:12px;border-radius:10px;font-size:14px;display:none"></div>
 <button class="btn" style="background:#666" onclick="closeDownload()">Close</button>
 </div></div>
-
 <div class="header">Hom Care Hero 🌍<div class="sub">🌍 Worldwide • Any Country • Any City • All Payments Inside App Only • No Cash Outside</div></div>
 <div class="nav">
 <button onclick="show('home')" style="background:#fff;border:1px solid #ddd">Home</button>
@@ -160,7 +156,6 @@ label{font-weight:bold;font-size:14px}
 <button onclick="show('rate')" style="background:#fef08a">⭐ Rate Us</button>
 <button onclick="show('login')" style="background:#e0e7ff">Login</button>
 </div>
-
 <div id="home" class="card">
 <div id="adTopSlot"></div>
 <div class="downloadBox">
@@ -209,7 +204,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn btn2" onclick="event.stopPropagation();openAdvertise()">📢 I Want To Advertise Here</button>
 </div>
 </div>
-
 <div id="homeGallery" class="card">
 <h3>❤️ Our Nurses Caring For Patients At Home - Real Care</h3>
 <p class="small">Trusted nurses attending patients at home - Worldwide</p>
@@ -224,7 +218,6 @@ label{font-weight:bold;font-size:14px}
 <div id="adGallerySlot"></div>
 <button class="btn btn2" onclick="show('rate')">⭐ Rate Us - Tap Here</button>
 </div>
-
 <div id="book" class="card hidden">
 <h2>📋 Client Booking Form → To SUPER</h2>
 <div class="superLinkBox" style="margin:0 0 12px"><p style="margin:0"><b>👑 This Form Goes To SUPER</b><br><span class="small">SUPER will see your booking first, then send to JABETH to approve.</span></p></div>
@@ -240,7 +233,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" onclick="bookNow()">🚨 Book & Send To SUPER - ALARM SUPER + Admins</button>
 <p id="bookMsg" class="msg"></p>
 </div>
-
 <div id="wallet" class="card hidden">
 <h2 style="text-align:center">Wallet</h2>
 <p style="text-align:center">Balance</p>
@@ -254,7 +246,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn btn2" onclick="confirmPaid()">I Have Paid in Pesapal - Confirm</button>
 <div id="adWalletSlot"></div>
 </div>
-
 <div id="track" class="card hidden">
 <h2>📍 Track Your Booking / GPS</h2>
 <p class="small">See where your nurse is NOW - Live GPS</p>
@@ -266,7 +257,6 @@ label{font-weight:bold;font-size:14px}
 <div id="trackResult"></div>
 <div class="gpsBox"><h3>📍 My Own GPS</h3><p id="trackGpsText">Tap to see where you are now</p><button class="btn btnBlue" onclick="getMyLocation('trackGpsText')">📍 Get My GPS</button></div>
 </div>
-
 <div id="nurse" class="card hidden">
 <h2>👩‍⚕️ Nurse Qualification Form → To SUPER</h2>
 <div class="superLinkBox" style="margin:0 0 12px"><p style="margin:0"><b>👑 This Form Goes To SUPER</b><br><span class="small">SUPER will see your qualification first, then send to JOY to approve.</span></p></div>
@@ -311,7 +301,6 @@ label{font-weight:bold;font-size:14px}
 <p id="nurseGpsLink"></p>
 </div>
 </div>
-
 <div id="pharmacy" class="card hidden">
 <h2>Pharmacy</h2>
 <p class="small">Order medicine - Pay Inside App Only - Pesapal</p>
@@ -321,7 +310,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" onclick="orderPharmacy()">Order & Pay with Pesapal</button>
 <p id="pharmMsg" class="msg"></p>
 </div>
-
 <div id="rate" class="card hidden">
 <h2>⭐ Rate Us</h2>
 <input id="rateName" placeholder="Your Name e.g. kwemoi levi">
@@ -333,10 +321,9 @@ label{font-weight:bold;font-size:14px}
 <h3>Recent Ratings</h3>
 <div id="ratingList">Loading...</div>
 </div>
-
 <div id="login" class="card hidden">
 <h2>Login - Clients</h2>
-<p class="small">You already created account to enter. If logged out, login here with Phone + Password.</p>
+<p class="small">If you forgot password, just login with same phone + new password - It will auto-create / reset.</p>
 <input id="loginPhone" placeholder="Your Phone">
 <input id="loginPassClient" type="password" placeholder="Your Password">
 <button class="btn" onclick="loginClientFromLoginPage()">Login As Client</button>
@@ -344,14 +331,12 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" style="background:#dc2626" onclick="resetLogin()">🔄 Forgot Password? Reset</button>
 <button class="btn" onclick="openDownload()">📲 DOWNLOAD APP - Tap Here</button>
 </div>
-
 <div id="admin" class="card hidden">
 <h2 style="text-align:center">🔐 Admin Dashboard - <span id="adminNameTitle">Staff</span></h2>
 <p class="small" style="text-align:center">✅ Gate Open! You tapped bottom • • •, entered Gate + Your Own Password.<br>Your duties are BELOW - Scroll down to see them.</p>
 <p id="adminDutyMsg" class="msg" style="background:#dcfce7;padding:10px;border-radius:10px"></p>
 <button class="btn" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin + Close Gate</button>
 <button class="btn" style="background:#666" onclick="show('home')">← Back To Home</button>
-
 <div id="superDash" class="hidden">
 <h2 style="text-align:center">👑 SUPER - Your Work - ALL FORMS COME TO YOU</h2>
 <div id="superAlarm"></div>
@@ -447,7 +432,6 @@ label{font-weight:bold;font-size:14px}
 <p id="superChangeMsg" class="msg"></p>
 </div>
 </div>
-
 <div id="joyDash" class="hidden">
 <h2 style="text-align:center">💙 JOY - Your Work: Nurses Only</h2>
 <div id="joyAlarm"></div>
@@ -499,7 +483,6 @@ label{font-weight:bold;font-size:14px}
 <p id="joyChangeMsg" class="msg"></p>
 </div>
 </div>
-
 <div id="jabethDash" class="hidden">
 <h2 style="text-align:center">💛 JABETH - Your Work: Clients Only</h2>
 <div id="jabethAlarm"></div>
@@ -538,9 +521,7 @@ label{font-weight:bold;font-size:14px}
 </div>
 </div>
 </div>
-
 <div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">• • •</button></div>
-
 <script>
 let deferredPrompt=null;
 window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; });
@@ -582,7 +563,6 @@ function shareAppLink(){
   window.open('https://wa.me/?text='+text,'_blank');
   document.getElementById('downloadMsg').innerText='✅ WhatsApp opened - Choose person to send download link to.';
 }
-// FIX LOGIN - STAY LOGGED IN FOREVER - localStorage NOT sessionStorage
 function isLoggedIn(){ return localStorage.getItem('hero_entered')==='yes' && localStorage.getItem('hc_current_client'); }
 function setLoggedIn(){ localStorage.setItem('hero_entered','yes'); }
 function logoutClient(){
@@ -598,7 +578,7 @@ function resetLogin(){
   if(!phone) return;
   phone=phone.trim();
   let idx=clientAccounts.findIndex(c=>c.phone===phone);
-  if(idx===-1){ alert('No account for '+phone+'. Create new account instead.'); showEntryCreate(); return; }
+  if(idx===-1){ alert('No account for '+phone+'. It will be created when you login with new password.'); showEntryCreate(); return; }
   let newPass=prompt('Enter NEW Password - Min 4 (e.g. 1234) for '+phone);
   if(!newPass || newPass.trim().length<4){ alert('Password must be min 4'); return; }
   clientAccounts[idx].pass=newPass.trim();
@@ -698,6 +678,12 @@ let hasEntered = isLoggedIn();
 function showEntryCreate(){ document.getElementById('entryCreate').classList.remove('hidden'); document.getElementById('entryLogin').classList.add('hidden'); }
 function showEntryLogin(){ document.getElementById('entryCreate').classList.add('hidden'); document.getElementById('entryLogin').classList.remove('hidden'); }
 function normalizePhone(p){ p=p.trim().replace(/\s+/g,''); return p; }
+function enterApp(acc,msg){
+  currentClient=acc; localStorage.setItem('hc_current_client',JSON.stringify(acc)); setLoggedIn();
+  document.getElementById('entryLoginMsg').innerText=msg;
+  document.getElementById('entryMsg').innerText=msg;
+  setTimeout(()=>{ document.getElementById('entryGate').style.display='none'; updateClientUI(); autoOpenFormFromLink(); },500);
+}
 function createAccountAndEnter(){
   let name=document.getElementById('entryName').value.trim();
   let phone=normalizePhone(document.getElementById('entryPhone').value);
@@ -706,33 +692,55 @@ function createAccountAndEnter(){
   if(!phone){ document.getElementById('entryMsg').innerText='❌ Enter Your Phone first'; return; }
   if(pass.length<4){ document.getElementById('entryMsg').innerText='❌ Create Password - Min 4 letters/numbers'; return; }
   let exists=clientAccounts.find(c=>c.phone===phone);
-  if(exists){ document.getElementById('entryMsg').innerText='❌ This phone already has account. Tap Login below.'; showEntryLogin(); document.getElementById('entryLoginPhone').value=phone; return; }
+  if(exists){
+    exists.pass=pass; exists.name=name; localStorage.setItem('hc_clients',JSON.stringify(clientAccounts));
+    document.getElementById('entryMsg').innerText='✅ Phone already existed - Password updated to new one. Entering...';
+    enterApp(exists,'✅ Welcome back '+name+'!');
+    return;
+  }
   let acc={name:name,phone:phone,pass:pass,date:new Date().toLocaleString()};
   clientAccounts.push(acc); localStorage.setItem('hc_clients',JSON.stringify(clientAccounts));
-  currentClient=acc; localStorage.setItem('hc_current_client',JSON.stringify(acc));
-  setLoggedIn();
   if(window.db) window.db.collection('clients').add(acc).catch(()=>{});
-  document.getElementById('entryMsg').innerText='✅ Welcome '+name+'! Entering... Stay logged in now.';
-  setTimeout(()=>{ document.getElementById('entryGate').style.display='none'; updateClientUI(); autoOpenFormFromLink(); },600);
+  enterApp(acc,'✅ Welcome '+name+'! Entering...');
 }
 function loginAndEnter(){
   let phone=normalizePhone(document.getElementById('entryLoginPhone').value);
   let pass=document.getElementById('entryLoginPass').value.trim();
   if(!phone||!pass){ document.getElementById('entryLoginMsg').innerText='❌ Enter Phone + Password'; return; }
-  let acc=clientAccounts.find(c=>c.phone===phone && String(c.pass).trim()===pass);
-  if(!acc){ document.getElementById('entryLoginMsg').innerText='❌ Wrong Phone or Password. Tap Forgot Password below to reset, or Create new account.'; return; }
-  currentClient=acc; localStorage.setItem('hc_current_client',JSON.stringify(acc));
-  setLoggedIn();
-  document.getElementById('entryLoginMsg').innerText='✅ Welcome back '+acc.name+'! Stay logged in now.';
-  setTimeout(()=>{ document.getElementById('entryGate').style.display='none'; updateClientUI(); autoOpenFormFromLink(); },600);
+  let acc=clientAccounts.find(c=>c.phone===phone);
+  if(!acc){
+    let name=prompt('No account for '+phone+' on this phone. Enter Your Name to CREATE account now and enter:');
+    if(!name){ document.getElementById('entryLoginMsg').innerText='Enter Name to create account'; return; }
+    let newAcc={name:name.trim(),phone:phone,pass:pass,date:new Date().toLocaleString()};
+    clientAccounts.push(newAcc); localStorage.setItem('hc_clients',JSON.stringify(clientAccounts));
+    enterApp(newAcc,'✅ New account created for '+phone+'! Entering...');
+    return;
+  }
+  if(String(acc.pass).trim()!==pass){
+    if(confirm('Wrong password for '+phone+'. Tap OK to RESET password to the one you just typed and enter now?')){
+      acc.pass=pass; localStorage.setItem('hc_clients',JSON.stringify(clientAccounts));
+      enterApp(acc,'✅ Password Reset! Welcome back '+acc.name+'!');
+    } else {
+      document.getElementById('entryLoginMsg').innerText='❌ Wrong Password. Tap OK to reset next time.';
+    }
+    return;
+  }
+  enterApp(acc,'✅ Welcome back '+acc.name+'!');
 }
 function loginClientFromLoginPage(){
   let phone=normalizePhone(document.getElementById('loginPhone').value);
   let pass=document.getElementById('loginPassClient').value.trim();
-  let acc=clientAccounts.find(c=>c.phone===phone && String(c.pass).trim()===pass);
-  if(!acc){ document.getElementById('loginMsg').innerText='❌ Wrong Phone or Password. Tap Forgot Password.'; return; }
-  currentClient=acc; localStorage.setItem('hc_current_client',JSON.stringify(acc));
-  setLoggedIn();
+  if(!phone||!pass){ document.getElementById('loginMsg').innerText='❌ Enter Phone + Password'; return; }
+  let acc=clientAccounts.find(c=>c.phone===phone);
+  if(!acc){
+    let newAcc={name:'User '+phone,phone:phone,pass:pass,date:new Date().toLocaleString()};
+    clientAccounts.push(newAcc); localStorage.setItem('hc_clients',JSON.stringify(clientAccounts));
+    currentClient=newAcc; localStorage.setItem('hc_current_client',JSON.stringify(newAcc)); setLoggedIn();
+    document.getElementById('loginMsg').innerText='✅ New account created! Welcome!';
+    updateClientUI(); show('home'); return;
+  }
+  if(String(acc.pass).trim()!==pass){ acc.pass=pass; localStorage.setItem('hc_clients',JSON.stringify(clientAccounts)); }
+  currentClient=acc; localStorage.setItem('hc_current_client',JSON.stringify(acc)); setLoggedIn();
   document.getElementById('loginMsg').innerText='✅ Welcome '+acc.name+'!';
   updateClientUI(); show('home');
 }
