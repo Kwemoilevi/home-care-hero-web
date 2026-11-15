@@ -160,23 +160,6 @@ label{font-weight:bold;font-size:14px}
 
 <div id="home" class="card">
 <div id="adTopSlot"></div>
-
-<!-- LINK FORMS TO SUPER - HOME TOP -->
-<div class="superLinkBox">
-<h3 style="margin:0">👑 Link Forms To SUPER</h3>
-<p class="small">All forms go to SUPER first. SUPER sees it, then forwards to JOY / JABETH.<br>Tap to open form that goes to SUPER.</p>
-<button class="btn" style="background:#2563eb" onclick="show('nurse')">👩‍⚕️ NURSE FORM → TO SUPER</button>
-<button class="btn" style="background:#f59e0b" onclick="show('book')">📋 CLIENT FORM → TO SUPER</button>
-<p class="small">Share SUPER's links below - Anyone who taps will fill form to SUPER</p>
-<input id="homeSuperNurseLink" readonly value="">
-<button class="btn btnBlue" onclick="copyLinkById('homeSuperNurseLink','homeSuperMsg')">📋 Copy Nurse Form Link - To SUPER</button>
-<input id="homeSuperClientLink" readonly value="">
-<button class="btn btnBlue" onclick="copyLinkById('homeSuperClientLink','homeSuperMsg')">📋 Copy Client Form Link - To SUPER</button>
-<button class="btn btnGreen" onclick="shareSuperFormsWhatsApp()">💬 Share BOTH Forms To SUPER Via WhatsApp</button>
-<p id="homeSuperMsg" class="msg"></p>
-<p class="small" id="formToSuperNote" style="color:#16a34a;font-weight:bold"></p>
-</div>
-
 <div class="downloadBox">
 <div style="font-size:32px">📲</div>
 <h3 style="margin:4px 0">DOWNLOAD APP - FREE</h3>
@@ -195,7 +178,7 @@ label{font-weight:bold;font-size:14px}
 <p style="text-align:center;color:#16a34a;font-weight:bold">✅ LIVE - REAL - Firebase Connected<br>🟢 LIVE - Firebase Connected<br>📍 GPS LIVE - All Nurses Tracked<br>🚨 Booking Alarm ON for Nurses + Admins</p>
 <p style="text-align:center;color:#dc2626;font-weight:bold">🚫 NO CASH OUTSIDE APP - All Transactions Inside App Only</p>
 <div id="homeAlarm"></div>
-<div class="shareLinkBox"><h3 style="margin:0">👩‍⚕️ Are You A Nurse? Join Us!</h3><p class="small">Fill Qualification Form - Goes to SUPER, SUPER forwards to JOY</p><button class="btn" onclick="show('nurse')">👩‍⚕️ Apply As Nurse - Form To SUPER</button></div>
+<div class="shareLinkBox"><h3 style="margin:0">👩‍⚕️ Are You A Nurse? Join Us!</h3><p class="small">Fill Qualification Form - Goes to SUPER, SUPER forwards to JOY</p><button class="btn" onclick="show('nurse')">👩‍⚕️ Apply As Nurse - Qualification Form</button></div>
 <div class="gpsBox"><h3 style="margin:0">📍 Where Am I Now?</h3><p id="homeGps" class="small">Tap to see your location</p><button class="btn btnBlue" onclick="getMyLocation('homeGps')">📍 Get My GPS Location</button><p id="homeGpsLink"></p></div>
 <h3>💙 Choose Service - Tap To Book</h3>
 <div class="services">
@@ -252,7 +235,6 @@ label{font-weight:bold;font-size:14px}
 <div class="gpsBox"><h3 style="margin:0">📍 Your GPS Location - For Nurse To Find You</h3><p id="bookGpsText" class="small">Your GPS will be captured when you book. Tap to capture now.</p><button class="btn btnBlue" onclick="captureBookGps()">📍 Capture My GPS Now</button><p id="bookGpsLink"></p></div>
 <button class="btn" onclick="bookNow()">🚨 Book & Send To SUPER - ALARM SUPER + Admins</button>
 <p id="bookMsg" class="msg"></p>
-<div class="linkBoxClient"><h3>📤 Share This Client Form - To SUPER</h3><p class="small">Copy this link, send to clients on WhatsApp - Form goes to SUPER</p><input id="clientShareLink" readonly value=""><button class="btn btnBlue" onclick="copyLinkById('clientShareLink','shareMsg')">📋 Copy Client Form Link - To SUPER</button><button class="btn btnGreen" onclick="shareClientWhatsAppBy('SUPER')">💬 Share Client Form To SUPER Via WhatsApp</button></div>
 </div>
 
 <div id="wallet" class="card hidden">
@@ -315,7 +297,6 @@ label{font-weight:bold;font-size:14px}
 <label>12. Tell Us About Yourself</label><textarea id="nurseAbout" placeholder="e.g. I am kind, experienced..."></textarea>
 <button class="btn" onclick="joinNurse()">✅ Submit Form - Send To SUPER</button>
 <p id="nurseMsg" class="msg"></p>
-<div class="linkBox"><h3>📤 Share This Nurse Form - To SUPER</h3><p class="small">Copy this link, send to nurses on WhatsApp - Form goes to SUPER</p><input id="shareLinkInput" readonly value=""><button class="btn btnBlue" onclick="copyLinkById('shareLinkInput','shareMsg')">📋 Copy Nurse Form Link - To SUPER</button><button class="btn btnGreen" onclick="shareNurseWhatsAppBy('SUPER')">💬 Share Nurse Form To SUPER Via WhatsApp</button><p id="shareMsg" class="msg"></p></div>
 <hr>
 <div class="gpsBox" style="border-color:#16a34a;background:#f0fdf4">
 <h3>📍 NURSE LIVE GPS</h3>
@@ -369,10 +350,9 @@ label{font-weight:bold;font-size:14px}
 <div id="superDash" class="hidden">
 <h2 style="text-align:center">👑 SUPER - Your Work - ALL FORMS COME TO YOU</h2>
 <div id="superAlarm"></div>
-
-<div class="workTitle">🔗 LINK FORMS TO SUPER - YOUR MASTER LINKS</div>
+<div class="workTitle">🔗 LINK FORMS TO SUPER - YOUR MASTER LINKS - ADMINS ONLY</div>
 <div class="superLinkBox">
-<p><b>Share these 2 links - All forms come to YOU</b><br><span class="small">Anyone who taps link, creates account, fills form - You see it first in SUPER dashboard</span></p>
+<p><b>Share these 2 links - All forms come to YOU</b><br><span class="small">Anyone who taps link, creates account, fills form - You see it first in SUPER dashboard. Clients do NOT see this box on Home.</span></p>
 <label>👩‍⚕️ NURSE FORM LINK - TO SUPER</label>
 <input id="superNurseLink" readonly value="">
 <button class="btn btnBlue" onclick="copyLinkById('superNurseLink','superNurseMsg')">📋 Copy Nurse Form Link - To SUPER</button>
@@ -386,7 +366,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn" style="background:#f59e0b" onclick="shareSuperFormsWhatsApp()">💬 Share BOTH Forms To SUPER - One Message</button>
 <p class="small">SUPER Link = <span id="superMasterLinkText"></span></p>
 </div>
-
 <div class="workTitle">📢 ADVERTISEMENTS - SUPER Controls Ads</div>
 <div class="adBox">
 <p class="small">Add Ad - It shows to ALL clients on Home, Booking, Pharmacy<br>Charge advertiser e.g. 20,000 per week - Pay via MoMo to you</p>
@@ -400,7 +379,6 @@ label{font-weight:bold;font-size:14px}
 <p id="adMsg" class="msg"></p>
 <div id="superAdList"></div>
 </div>
-
 <div class="workTitle">1. ALL MONEY - ALL PERCENTAGES</div>
 <table>
 <tr><th>Person</th><th>Share</th><th>Earnings</th><th>Withdrawn</th><th>Balance</th></tr>
@@ -409,8 +387,6 @@ label{font-weight:bold;font-size:14px}
 <tr><td><b>💛 JABETH</b></td><td>10%</td><td id="tblJabEarn">UGX 0</td><td id="tblJabWith">UGX 0</td><td id="tblJabBal">UGX 0</td></tr>
 <tr style="background:#dcfce7;font-weight:bold"><td>TOTAL</td><td>100%</td><td id="tblTotalEarn">UGX 0</td><td id="tblTotalWith">UGX 0</td><td id="tblTotalBal">UGX 0</td></tr>
 </table>
-<div class="workTitle">2. MY LINKS - Already Above - SUPER Links</div>
-<p class="small">Your Nurse + Client links are at top of this dashboard - Copy from there.</p>
 <div class="workTitle">3. MY WITHDRAW - SUPER</div>
 <div class="withdrawBox">
 <p>Your Balance: <span id="superWithdrawBal" class="withdrawBig">UGX 0</span></p>
@@ -663,7 +639,6 @@ function updateClientUI(){
 }
 function togglePassBox(id){ let el=document.getElementById(id); el.classList.toggle('hidden'); }
 function getBaseLink(){ return window.location.href.split('?')[0].split('#')[0] || 'https://home-care-hero.web.app'; }
-// LINK FORMS TO SUPER - ALL LINKS POINT TO SUPER
 function getNurseLinkToSuper(){ return getBaseLink()+'?form=nurse&to=SUPER'; }
 function getClientLinkToSuper(){ return getBaseLink()+'?form=client&to=SUPER'; }
 function getNurseLink(){ return getNurseLinkToSuper(); }
@@ -675,14 +650,9 @@ function shareSuperFormsWhatsApp(){
 }
 function setupShareLinks(){
   let nurseLink=getNurseLinkToSuper(), clientLink=getClientLinkToSuper();
-  let map={shareLinkInput:nurseLink, superNurseLink:nurseLink, joyNurseLink:nurseLink, homeSuperNurseLink:nurseLink, clientShareLink:clientLink, superClientLink:clientLink, jabethClientLink:clientLink, homeSuperClientLink:clientLink};
+  let map={superNurseLink:nurseLink, joyNurseLink:nurseLink, superClientLink:clientLink, jabethClientLink:clientLink};
   for(let id in map){ let el=document.getElementById(id); if(el) el.value=map[id]; }
   let master=document.getElementById('superMasterLinkText'); if(master) master.innerText=getBaseLink()+'?to=SUPER';
-  let note=document.getElementById('formToSuperNote');
-  let params=new URLSearchParams(window.location.search);
-  if(params.get('to')==='SUPER'){
-    if(note) note.innerText='✅ You opened SUPER link - Your form will go to SUPER';
-  }
 }
 function copyLinkById(inputId,msgId){
   let el=document.getElementById(inputId); el.select(); document.execCommand('copy');
@@ -746,10 +716,6 @@ function autoOpenFormFromLink(){
   if(!sessionStorage.getItem('hero_entered')) return;
   let params=new URLSearchParams(window.location.search);
   let form=params.get('form');
-  let to=params.get('to');
-  if(to==='SUPER'){
-    let note=document.getElementById('formToSuperNote'); if(note) note.innerText='✅ Link to SUPER - Your form will go to SUPER';
-  }
   if(form==='nurse'){ show('nurse'); }
   else if(form==='client'){ show('book'); }
 }
