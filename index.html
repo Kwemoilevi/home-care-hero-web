@@ -89,7 +89,7 @@ label{font-weight:bold;font-size:14px}
 <div id="entryGate"><div id="entryBox">
 <div style="font-size:48px">💚</div>
 <h2 style="margin:4px 0">Hom Care Hero 🌍</h2>
-<p><b>Create Account Before Entering</b><br><span class="small">Everyone must create account first - Clients, Nurses, All.<br>No account = No entry. Admins: Tap • • • at bottom to open Admin Gate (closed).</span></p>
+<p><b>Create Account Before Entering</b><br><span class="small">Everyone must create account first - Clients, Nurses, All.</span></p>
 <div id="entryCreate">
 <input id="entryName" placeholder="Your Full Name e.g. John Kato">
 <input id="entryPhone" placeholder="Your Phone e.g. 0770000000">
@@ -108,7 +108,6 @@ label{font-weight:bold;font-size:14px}
 </div>
 <hr>
 <button class="btn btnBlue" onclick="openDownload()">📲 DOWNLOAD APP FIRST - Tap Here</button>
-<p class="small" style="margin-top:10px">Admins: After you create/login, scroll to bottom, tap <b>• • •</b> 3 times to open Admin Gate (Gate is CLOSED now).</p>
 </div></div>
 
 <div id="adminGateModal" onclick="if(event.target.id==='adminGateModal') closeAdminGate()">
@@ -354,7 +353,6 @@ label{font-weight:bold;font-size:14px}
 <div id="superDash" class="hidden">
 <h2 style="text-align:center">👑 SUPER - Your Work - ALL FORMS COME TO YOU</h2>
 <div id="superAlarm"></div>
-
 <div class="workTitle">💬 APPROACH MESSAGES - SUPER - COPY & PASTE LIKE LINK</div>
 <div class="approachBox">
 <h3 style="margin:0">🟢 CLIENT APPROACH - SUPER - For Clients</h3>
@@ -378,7 +376,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn btn2" onclick="copyApproach('superStatusApproach','superStatusApproachMsg')">📋 COPY STATUS MESSAGE</button>
 <p id="superStatusApproachMsg" class="msg"></p>
 </div>
-
 <div class="workTitle">🔗 LINK FORMS TO SUPER - YOUR MASTER LINKS - ADMINS ONLY</div>
 <div class="superLinkBox">
 <p><b>Share these 2 links - All forms come to YOU</b><br><span class="small">Anyone who taps link, creates account, fills form - You see it first in SUPER dashboard. Clients do NOT see this box on Home.</span></p>
@@ -452,7 +449,6 @@ label{font-weight:bold;font-size:14px}
 <div id="joyDash" class="hidden">
 <h2 style="text-align:center">💙 JOY - Your Work: Nurses Only</h2>
 <div id="joyAlarm"></div>
-
 <div class="workTitle">💬 APPROACH MESSAGES - JOY - COPY & PASTE LIKE LINK</div>
 <div class="approachBox">
 <h3 style="margin:0">🟢 CLIENT APPROACH - JOY - For Clients</h3>
@@ -476,7 +472,6 @@ label{font-weight:bold;font-size:14px}
 <button class="btn btn2" onclick="copyApproach('joyStatusApproach','joyStatusApproachMsg')">📋 COPY STATUS MESSAGE</button>
 <p id="joyStatusApproachMsg" class="msg"></p>
 </div>
-
 <div class="workTitle">1. MY MONEY - 10%</div>
 <div class="shareBox" style="border-color:#2563eb"><p style="margin:0">YOUR SHARE - JOY</p><div class="shareBig" style="color:#2563eb">10%</div><p><b>Total Collected:</b> <span id="jTotalCollected">UGX 0</span><br><b>Your Earnings:</b> <span id="jTotal" style="color:#2563eb;font-size:20px">UGX 0</span><br><b>Balance Left:</b> <span id="joyBalanceLeft">UGX 0</span><br><span class="small">SUPER must approve your withdraw</span></p></div>
 <div class="workTitle">2. MY NURSE LINK - JOY Shares To Nurses - Forms Go To SUPER First, Then To You</div>
@@ -585,7 +580,6 @@ function shareAppLink(){
   window.open('https://wa.me/?text='+text,'_blank');
   document.getElementById('downloadMsg').innerText='✅ WhatsApp opened - Choose person to send download link to.';
 }
-// APPROACH MESSAGES - IN SUPER + JOY DASHBOARD - COPY LIKE LINK
 function buildApproachMessages(){
   let clientLink=getClientLinkToSuper();
   let nurseLink=getNurseLinkToSuper();
