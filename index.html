@@ -38,7 +38,7 @@ input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ddd
 .gallery{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .gallery img{width:100%;height:130px;object-fit:cover;border-radius:10px}
 .gallery p{font-size:12px;margin:4px 0 10px;font-weight:bold}
-.adminBox{border:2px solid #16a34a;padding:12px;border-radius:12px;margin:10px 0}
+.adminBox{border:2px solid #16a34a;padding:12px;border-radius:12px;margin:10px 0;display:block !important}
 .passBox{border:2px dashed #f59e0b;padding:12px;border-radius:12px;margin:12px 0;background:#fffbeb}
 .shareBox{background:#dcfce7;border:3px solid #16a34a;padding:16px;border-radius:14px;text-align:center;margin:12px 0}
 .shareBig{font-size:48px;font-weight:bold;color:#16a34a}
@@ -76,7 +76,6 @@ label{font-weight:bold;font-size:14px}
 <body>
 <div id="alarmBanner" onclick="stopAlarm()">🚨 NEW BOOKING! <span id="alarmBannerText"></span> - TAP TO STOP ALARM ✅</div>
 
-<!-- ADMIN GATE AT BOTTOM - SAME LOCATION FOR ALL 3 ADMINS - TAP • • • TO OPEN -->
 <div id="adminGateModal" onclick="if(event.target.id==='adminGateModal') closeAdminGate()">
 <div id="adminGateBox">
 <div style="font-size:40px">🔐</div>
@@ -313,12 +312,13 @@ label{font-weight:bold;font-size:14px}
 </div>
 
 <div id="admin" class="card hidden">
-<h2 style="text-align:center">🔐 Admin Dashboard</h2>
-<p class="small" style="text-align:center">✅ Gate Open! You tapped bottom • • •, entered Gate, now you are in.<br>If you see this without Gate, close and tap • • • again.</p>
+<h2 style="text-align:center">🔐 Admin Dashboard - <span id="adminNameTitle">Staff</span></h2>
+<p class="small" style="text-align:center">✅ Gate Open! You tapped bottom • • •, entered Gate + Your Own Password.<br>Your duties are BELOW - Scroll down to see them.</p>
+<p id="adminDutyMsg" class="msg" style="background:#dcfce7;padding:10px;border-radius:10px"></p>
 <button class="btn" id="adminLogoutBtn" onclick="adminLogout()">Logout Admin</button>
 <button class="btn" style="background:#666" onclick="show('home')">← Back To Home</button>
 
-<div id="superDash" class="adminBox hidden">
+<div id="superDash" class="hidden">
 <h2 style="text-align:center">👑 SUPER - Your Work</h2>
 <div id="superAlarm"></div>
 <div class="workTitle">1. ALL MONEY - ALL PERCENTAGES</div>
@@ -365,7 +365,7 @@ label{font-weight:bold;font-size:14px}
 </div>
 </div>
 
-<div id="joyDash" class="adminBox hidden">
+<div id="joyDash" class="hidden">
 <h2 style="text-align:center">💙 JOY - Your Work: Nurses Only</h2>
 <div id="joyAlarm"></div>
 <div class="workTitle">1. MY MONEY - 10%</div>
@@ -394,7 +394,7 @@ label{font-weight:bold;font-size:14px}
 </div>
 </div>
 
-<div id="jabethDash" class="adminBox hidden">
+<div id="jabethDash" class="hidden">
 <h2 style="text-align:center">💛 JABETH - Your Work: Clients Only</h2>
 <div id="jabethAlarm"></div>
 <div class="workTitle">1. MY MONEY - 10%</div>
@@ -424,7 +424,6 @@ label{font-weight:bold;font-size:14px}
 </div>
 </div>
 
-<!-- BOTTOM - SAME LOCATION FOR ALL 3 ADMINS - TAP • • • -->
 <div class="footer"><button id="hiddenAdmin" onclick="tapHiddenAdmin()">• • •</button></div>
 
 <script>
@@ -507,7 +506,6 @@ function loginClientAccount(){
   updateClientUI();
 }
 function loginClientFromLoginPage(){
-  let name=document.getElementById('loginName').value.trim();
   let phone=document.getElementById('loginPhone').value.trim();
   let pass=document.getElementById('loginPassClient').value.trim();
   let acc=clientAccounts.find(c=>c.phone===phone && c.pass===pass);
@@ -544,8 +542,8 @@ function shareClientWhatsAppBy(who){
   else text=encodeURIComponent('📋 Hello! I am SUPER from Hom Care Hero. Need a nurse at home? Fill Client Form here: '+link+' - Create Account FREE, then fill Booking. JABETH will approve your booking.');
   window.open('https://wa.me/?text='+text,'_blank');
 }
-// ADMIN GATE - AT BOTTOM ONLY - SAME LOCATION FOR ALL 3 ADMINS
 let gateOpen = sessionStorage.getItem('hero_gate')==='admin_open';
+let currentAdmin = sessionStorage.getItem('hero_admin')||null;
 function openAdminGate(){
   document.getElementById('adminGateModal').style.display='flex';
   if(gateOpen){
@@ -608,6 +606,27 @@ function changeMyPass(role){
   pw[role]=newP; savePasswords(pw);
   document.getElementById(msgId).innerText='✅ Your Own Password Changed! Gate Password stays same.';
   document.getElementById(oldId).value=''; document.getElementById(newId).value='';
+}
+// FIXED: SHOW DUTIES FUNCTION - THIS WAS THE BUG
+function showMyDuties(){
+  document.getElementById('superDash').classList.add('hidden');
+  document.getElementById('joyDash').classList.add('hidden');
+  document.getElementById('jabethDash').classList.add('hidden');
+  let title=document.getElementById('adminNameTitle');
+  let msg=document.getElementById('adminDutyMsg');
+  if(currentAdmin==='SUPER'){
+    document.getElementById('superDash').classList.remove('hidden');
+    if(title) title.innerText='SUPER';
+    if(msg) msg.innerText='👑 Welcome SUPER! Your duties BELOW: 1. All Money 2. Links 3. Withdraw 4. Approve Payments 5. Bookings 6. Nurses 7. Payments - Scroll down!';
+  } else if(currentAdmin==='JOY'){
+    document.getElementById('joyDash').classList.remove('hidden');
+    if(title) title.innerText='JOY';
+    if(msg) msg.innerText='💙 Welcome JOY! Your duties BELOW: 1. My Money 10% 2. Nurse Link 3. Withdraw 4. Nurses To Approve - Scroll down!';
+  } else if(currentAdmin==='JABETH'){
+    document.getElementById('jabethDash').classList.remove('hidden');
+    if(title) title.innerText='JABETH';
+    if(msg) msg.innerText='💛 Welcome JABETH! Your duties BELOW: 1. My Money 10% 2. Client Link 3. Withdraw 4. Bookings To Approve - Scroll down!';
+  }
 }
 let withdraws = JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
 function getWithdrawStats(){
@@ -760,7 +779,7 @@ function tapHiddenAdmin(){
 function showAdminDirect(){
   ['home','homeGallery','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
   document.getElementById('admin').classList.remove('hidden');
-  if(currentAdmin) updateAdmin();
+  showMyDuties();
   updateBal(); updateWithdrawUI();
 }
 let gpsList = JSON.parse(localStorage.getItem('hc_gps')||'[]');
@@ -827,7 +846,7 @@ function toggleNurseGps(){
 }
 const firebaseConfig = {apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",authDomain: "home-care-hero.firebaseapp.com",databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",projectId: "home-care-hero",storageBucket: "home-care-hero.firebasestorage.app",messagingSenderId: "38632827016",appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",measurementId: "G-ZV09KN6R90"};
 const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
-let db=null, auth=null, currentStars=0, currentAdmin=null;
+let db=null, auth=null, currentStars=0;
 let nursesList = JSON.parse(localStorage.getItem('hc_nurses')||'[]');
 try{ firebase.initializeApp(firebaseConfig); db=firebase.firestore(); window.db=db; auth=firebase.auth(); document.getElementById('loginStatus').innerText='Connected ✅'; auth.onAuthStateChanged(u=>{ if(u){ document.getElementById('logoutBtn').classList.remove('hidden'); } else { document.getElementById('logoutBtn').classList.add('hidden'); } }); }catch(e){ document.getElementById('loginStatus').innerText='Connected ✅'; }
 let bookings = JSON.parse(localStorage.getItem('hc_bookings')||'[]');
@@ -849,13 +868,15 @@ function adminLogin(){
   if(role==='JABETH' && phone==='0780545144' && pass===pw.JABETH) ok=true;
   if(!ok){ document.getElementById('adminLoginMsg').innerText='❌ Wrong Phone or YOUR OWN Password.'; return; }
   currentAdmin=role;
+  sessionStorage.setItem('hero_admin',role);
   closeAdminGate();
-  document.getElementById('adminLoginMsg').innerText='✅ Welcome '+role+'!';
+  document.getElementById('adminLoginMsg').innerText='✅ Welcome '+role+'! Duties opening...';
   showAdminDirect();
   updateAdmin(); refreshGpsList(); renderAlarms(); setupShareLinks(); updateWithdrawUI();
+  setTimeout(()=>{ document.getElementById('admin').scrollIntoView({behavior:'smooth'}); },300);
 }
 function adminLogout(){
-  currentAdmin=null;
+  currentAdmin=null; sessionStorage.removeItem('hero_admin');
   gateOpen=false; sessionStorage.removeItem('hero_gate');
   document.getElementById('gateStep1').classList.remove('hidden');
   document.getElementById('gateStep2').classList.add('hidden');
@@ -885,6 +906,7 @@ function updateAdmin(){
   document.getElementById('joyNurses').innerHTML=nurseHTML;
   document.getElementById('superNurses').innerHTML=nurseHTML;
   document.getElementById('superPays').innerHTML = pays.length ? pays.map(p=>'<div class="item">UGX '+p.amt.toLocaleString()+' - '+p.date+'</div>').join('') : 'No payments yet';
+  showMyDuties();
   updateWithdrawUI();
 }
 function approveNurse(i){ nursesList[i].status='Approved ✅ by JOY'; localStorage.setItem('hc_nurses',JSON.stringify(nursesList)); if(db) db.collection('nurses').add({action:'approved',name:nursesList[i].name,date:new Date().toLocaleString()}); updateAdmin(); alert('Nurse Approved ✅'); }
@@ -898,7 +920,7 @@ function updateBal(){
   if(currentAdmin) updateAdmin();
 }
 function show(id){
-  if(id==='admin'){ if(gateOpen) showAdminDirect(); else openAdminGate(); return; }
+  if(id==='admin'){ if(gateOpen && currentAdmin) showAdminDirect(); else openAdminGate(); return; }
   ['home','homeGallery','book','wallet','track','nurse','pharmacy','rate','login','admin'].forEach(x=>{let el=document.getElementById(x); if(el) el.classList.add('hidden');});
   document.getElementById(id).classList.remove('hidden');
   if(id==='home'){document.getElementById('homeGallery').classList.remove('hidden');}
@@ -949,6 +971,7 @@ function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0)
 function approveBooking(i){ bookings[i].status='Approved ✅ by JABETH'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); }
 function deleteBooking(i){ if(confirm('Delete this booking?')){ bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); updateBal(); updateAdmin(); } }
 updateBal(); refreshGpsList(); renderAlarms(); setupShareLinks(); updateWithdrawUI(); updateClientUI();
+if(currentAdmin && gateOpen){ showMyDuties(); }
 autoOpenFormFromLink();
 </script>
 </body>
