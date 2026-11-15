@@ -224,14 +224,21 @@ label{font-weight:bold;font-size:14px}
 <p class="small">Client fills this - SUPER + JABETH will see it. Your account: <span id="bookClientName" style="font-weight:bold;color:#16a34a">Guest</span></p>
 <div id="adBookSlot"></div>
 <select id="bookService"><option>General Nursing</option><option>Elderly Care</option><option>Post-Surgery</option><option>Physiotherapy</option><option>Wound Care</option><option>Broken Bones</option><option>Home Nursing</option><option>Mother & Baby Care</option></select>
-<input id="bookName" placeholder="Patient / Your Name">
-<input id="bookPhone" placeholder="Phone e.g. 0770000000">
-<input id="bookLocation" placeholder="Location e.g. Ntinda, Kampala">
+<input id="bookName" placeholder="Patient / Your Name * Required">
+<input id="bookPhone" placeholder="Phone e.g. 0770000000 * Required">
+<input id="bookLocation" placeholder="Location e.g. Ntinda, Kampala * Required">
 <input id="bookTime" type="datetime-local">
 <input id="bookNotes" placeholder="Notes e.g. Diabetes care, wound dressing">
-<div class="gpsBox"><h3 style="margin:0">📍 Your GPS Location - For Nurse To Find You</h3><p id="bookGpsText" class="small">Your GPS will be captured when you book. Tap to capture now.</p><button class="btn btnBlue" onclick="captureBookGps()">📍 Capture My GPS Now</button><p id="bookGpsLink"></p></div>
-<button class="btn" onclick="bookNow()">🚨 Book & Send To SUPER - ALARM SUPER + Admins</button>
+<div class="gpsBox"><h3 style="margin:0">📍 Your GPS Location - OPTIONAL - Booking works without it</h3><p id="bookGpsText" class="small">GPS is optional. If you skip it, nurse will use Location you typed above.</p><button class="btn btnBlue" onclick="captureBookGps()">📍 Add My GPS (Optional)</button><p id="bookGpsLink"></p></div>
+<button class="btn" id="bookBtn" onclick="bookNow()">🚨 Book & Send To SUPER - TAP HERE</button>
 <p id="bookMsg" class="msg"></p>
+<div id="bookSuccess" class="hidden" style="background:#dcfce7;border:2px solid #16a34a;padding:14px;border-radius:12px;margin-top:12px;text-align:center">
+<h3 style="margin:0;color:#16a34a">✅ BOOKING SAVED!</h3>
+<p id="bookSuccessText" class="small"></p>
+<button class="btn btnGreen" onclick="shareBookingWhatsApp()">💬 Send Booking To SUPER Via WhatsApp</button>
+<button class="btn btnBlue" onclick="show('track')">📍 Track My Booking</button>
+<button class="btn" onclick="show('home')">🏠 Back To Home</button>
+</div>
 </div>
 <div id="wallet" class="card hidden">
 <h2 style="text-align:center">Wallet</h2>
@@ -1034,6 +1041,7 @@ let gpsList = JSON.parse(localStorage.getItem('hc_gps')||'[]');
 let bookGps = null;
 let nurseWatchId = null;
 let nurseSharing = false;
+let lastBooking = null;
 function formatGps(g){ if(!g) return 'No GPS yet'; return '<div class="item"><span class="liveDot">● LIVE</span> <b>'+(g.name||'User')+'</b> - '+(g.type||'')+'<br>Lat: '+(g.lat||'').toString().slice(0,9)+', Lng: '+(g.lng||'').toString().slice(0,9)+'<br>Time: '+(g.time||'')+'<br><a href="https://www.google.com/maps?q='+g.lat+','+g.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:8px 12px;border-radius:20px;text-decoration:none;display:inline-block;margin-top:6px">📍 View On Google Maps</a></div>'; }
 function refreshGpsList(){
   let html = gpsList.length ? gpsList.slice(-10).reverse().map(formatGps).join('') : 'No live nurse yet.';
@@ -1042,22 +1050,22 @@ function refreshGpsList(){
 }
 function getMyLocation(elId){
   let el=document.getElementById(elId); if(!el) return;
-  if(!navigator.geolocation){ el.innerText='GPS not supported'; return; }
+  if(!navigator.geolocation){ el.innerText='GPS not supported - Booking still works without GPS'; return; }
   el.innerText='Getting GPS... Allow Location...';
   navigator.geolocation.getCurrentPosition(pos=>{
     let lat=pos.coords.latitude, lng=pos.coords.longitude;
     el.innerText='📍 You are at Lat: '+lat.toFixed(6)+', Lng: '+lng.toFixed(6);
     if(elId==='homeGps'){ document.getElementById('homeGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+lat+','+lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View Me On Google Maps</a>'; }
-  },err=>{ el.innerText='❌ '+err.message; });
+  },err=>{ el.innerText='❌ GPS denied / off - Booking still works without GPS. Use typed Location.'; }, {timeout:5000});
 }
 function captureBookGps(){
-  if(!navigator.geolocation){ document.getElementById('bookGpsText').innerText='GPS not supported'; return; }
+  if(!navigator.geolocation){ document.getElementById('bookGpsText').innerText='GPS not supported - Use typed Location, booking will still work.'; return; }
   document.getElementById('bookGpsText').innerText='Getting GPS...';
   navigator.geolocation.getCurrentPosition(pos=>{
     bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude};
     document.getElementById('bookGpsText').innerText='✅ GPS Captured: '+bookGps.lat.toFixed(6)+', '+bookGps.lng.toFixed(6);
     document.getElementById('bookGpsLink').innerHTML='<a href="https://www.google.com/maps?q='+bookGps.lat+','+bookGps.lng+'" target="_blank" style="background:#2563eb;color:#fff;padding:10px 16px;border-radius:20px;text-decoration:none;display:inline-block">📍 View My Location On Map</a>';
-  },err=>{ document.getElementById('bookGpsText').innerText='❌ '+err.message; });
+  },err=>{ document.getElementById('bookGpsText').innerText='❌ GPS denied - No problem, booking uses your typed Location.'; }, {timeout:5000});
 }
 function saveGps(name,type,lat,lng){
   let g={name:name,type:type,lat:lat,lng:lng,time:new Date().toLocaleString(),createdAt:new Date()};
@@ -1150,7 +1158,7 @@ function updateAdmin(){
   set('jTotal','UGX '+Math.round(total*0.1).toLocaleString()); set('jbTotal','UGX '+Math.round(total*0.1).toLocaleString());
   set('jTotalCollected','UGX '+total.toLocaleString()); set('jbTotalCollected','UGX '+total.toLocaleString());
   set('jNurseCount',nursesList.length); set('jbBookCount',bookings.length);
-  document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>To: <b>SUPER</b></div>').join('') : 'No bookings yet - Share SUPER Client Link';
+  document.getElementById('superBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>To: <b>SUPER</b> | '+(b.date||'')+'</div>').join('') : 'No bookings yet - Share SUPER Client Link';
   document.getElementById('jabethBookings').innerHTML = bookings.length ? bookings.map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+'<br>'+(b.phone||'')+' | '+(b.location||'')+'<br>Status: '+b.status+' | From SUPER<br><button onclick="approveBooking('+i+')">Approve ✅</button> <button onclick="deleteBooking('+i+')">Delete</button></div>').join('') : 'No bookings yet - Share your Client Link - Forms go to SUPER first';
   let nurseHTML = nursesList.length ? nursesList.map((n,i)=>formatNurse(n,i)).join('') : 'No nurses yet - Share SUPER Nurse Link';
   document.getElementById('joyNurses').innerHTML=nurseHTML;
@@ -1178,10 +1186,18 @@ function show(id){
   if(id==='track') refreshGpsList();
   if(id==='nurse' || id==='home') renderAlarms();
   if(id==='nurse' || id==='book') setupShareLinks();
+  if(id==='book'){
+    if(currentClient){
+      let bn=document.getElementById('bookName'); if(bn && !bn.value) bn.value=currentClient.name;
+      let bp=document.getElementById('bookPhone'); if(bp && !bp.value) bp.value=currentClient.phone;
+    }
+    let bs=document.getElementById('bookSuccess'); if(bs) bs.classList.add('hidden');
+    let bm=document.getElementById('bookMsg'); if(bm) bm.innerText='';
+  }
   updateBal(); updateClientUI(); renderAdverts();
 }
 function bookService(s){ document.getElementById('bookService').value=s; show('book'); }
-function trackBooking(){ let ph=document.getElementById('trackPhone').value; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'</div>').join('') : 'No booking found for '+ph; refreshGpsList(); }
+function trackBooking(){ let ph=document.getElementById('trackPhone').value.trim(); if(!ph && currentClient) ph=currentClient.phone; let found=bookings.filter(b=>b.phone===ph); document.getElementById('trackResult').innerHTML = found.length ? found.map(b=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.status+'<br>'+(b.location||'')+' | '+(b.date||'')+'</div>').join('') : 'No booking found for '+ph+' - Book first, then track here. Total bookings on this phone: '+bookings.length; refreshGpsList(); }
 function joinNurse(){
   let n=document.getElementById('nurseName').value.trim();
   let ph=document.getElementById('nursePhone').value.trim();
@@ -1192,26 +1208,48 @@ function joinNurse(){
   if(!lic){document.getElementById('nurseMsg').innerText='❌ Enter License Number';return;}
   let data={name:n,phone:ph,idNo:document.getElementById('nurseID').value,qual:qual,qualification:qual,license:lic,exp:document.getElementById('nurseExp').value,spec:document.getElementById('nurseSpec').value,school:document.getElementById('nurseSchool').value,year:document.getElementById('nurseYear').value,location:document.getElementById('nurseLocation').value,transport:document.getElementById('nurseTransport').value,about:document.getElementById('nurseAbout').value,status:'Waiting - To SUPER, then JOY',to:'SUPER',date:new Date().toLocaleString(),createdAt:new Date()};
   nursesList.push(data); localStorage.setItem('hc_nurses',JSON.stringify(nursesList));
-  if(db) db.collection('nurses').add(data);
+  if(db) db.collection('nurses').add(data).catch(()=>{});
   document.getElementById('nurseMsg').innerText='✅ Sent To SUPER! SUPER will check your '+qual+' and forward to JOY to approve.';
   triggerBookingAlarm({name:'NEW NURSE TO SUPER: '+n, service:'Qualification: '+qual, phone:ph, location:document.getElementById('nurseLocation').value});
 }
 function orderPharmacy(){ let item=document.getElementById('pharmItem').value; if(!item){document.getElementById('pharmMsg').innerText='Enter medicine';return;} document.getElementById('pharmMsg').innerText='Opening Pesapal for '+item+'...'; window.location.href=PESAPAL_LINK; }
 function setStars(n){ currentStars=n; document.getElementById('starText').innerText='You selected '+n+' / 5'; document.querySelectorAll('#starBox span').forEach((s,i)=>{ s.innerText = i<n ? '★' : '☆'; s.style.color = i<n ? '#f59e0b' : '#000'; }); }
 function submitRating(){ let name=document.getElementById('rateName').value.trim(); if(!name){ document.getElementById('rateMsg').innerText='Please enter your name'; return; } if(!currentStars){ document.getElementById('rateMsg').innerText='Please tap stars first'; return; } if(!db){ document.getElementById('rateMsg').innerText='Firebase not connected yet'; return; } let data={name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:new Date().toLocaleString(),createdAt:new Date()}; document.getElementById('rateMsg').innerText='Saving...'; db.collection('ratings').add(data).then(()=>{ ratings.push({name:name,stars:currentStars,comment:document.getElementById('rateComment').value,date:data.date}); localStorage.setItem('hc_ratings',JSON.stringify(ratings)); document.getElementById('rateMsg').innerText='✅ Thank you! '+currentStars+' Stars!'; updateBal(); }).catch(e=>{ document.getElementById('rateMsg').innerText='Error: '+e.message; }); }
+function shareBookingWhatsApp(){
+  if(!lastBooking) return;
+  let text='🚨 NEW BOOKING - Hom Care Hero\n\nName: '+lastBooking.name+'\nPhone: '+lastBooking.phone+'\nService: '+lastBooking.service+'\nLocation: '+lastBooking.location+'\nTime: '+(lastBooking.time||'ASAP')+'\nNotes: '+(lastBooking.notes||'')+'\nDate: '+lastBooking.date+'\n\nPlease approve and send nurse. Thank you!';
+  window.open('https://wa.me/?text='+encodeURIComponent(text),'_blank');
+}
 function bookNow(){
-  let name=document.getElementById('bookName').value; let phone=document.getElementById('bookPhone').value; if(!name||!phone){document.getElementById('bookMsg').innerText='Please enter name and phone';return;}
-  if(!bookGps && navigator.geolocation){ navigator.geolocation.getCurrentPosition(pos=>{ bookGps={lat:pos.coords.latitude,lng:pos.coords.longitude}; saveBookingWithGps(name,phone); }); document.getElementById('bookMsg').innerText='Capturing your GPS...'; return; }
-  saveBookingWithGps(name,phone);
+  try{
+    let name=(document.getElementById('bookName').value||'').trim();
+    let phone=(document.getElementById('bookPhone').value||'').trim();
+    let location=(document.getElementById('bookLocation').value||'').trim();
+    if(!name){ document.getElementById('bookMsg').innerText='❌ Enter Patient / Your Name - Required'; document.getElementById('bookName').focus(); return; }
+    if(!phone){ document.getElementById('bookMsg').innerText='❌ Enter Phone - Required'; document.getElementById('bookPhone').focus(); return; }
+    if(!location){ document.getElementById('bookMsg').innerText='❌ Enter Location e.g. Ntinda, Kampala - Required'; document.getElementById('bookLocation').focus(); return; }
+    let btn=document.getElementById('bookBtn'); if(btn){ btn.innerText='⏳ SAVING...'; btn.disabled=true; setTimeout(()=>{ if(btn){ btn.innerText='🚨 Book & Send To SUPER - TAP HERE'; btn.disabled=false; } },3000); }
+    document.getElementById('bookMsg').innerText='⏳ Saving booking...';
+    saveBookingWithGps(name,phone);
+  }catch(e){
+    document.getElementById('bookMsg').innerText='❌ Error: '+e.message+' - Try again';
+    let btn=document.getElementById('bookBtn'); if(btn){ btn.disabled=false; btn.innerText='🚨 Book & Send To SUPER - TAP HERE'; }
+  }
 }
 function saveBookingWithGps(name,phone){
-  let data={name:name,phone:phone,service:document.getElementById('bookService').value,location:document.getElementById('bookLocation').value,notes:document.getElementById('bookNotes').value,status:'Pending - To SUPER, then JABETH',to:'SUPER',date:new Date().toLocaleString(),gps:bookGps,client:currentClient?currentClient.name:''};
-  bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings));
-  if(bookGps) saveGps(name,'CLIENT BOOKING TO SUPER',bookGps.lat,bookGps.lng);
-  if(db) db.collection('bookings').add(data);
-  triggerBookingAlarm(data);
-  document.getElementById('bookMsg').innerText='✅ Booked! Sent To SUPER! 🚨 Alarm sent to SUPER + Admins! Opening Pesapal...';
-  setTimeout(()=>{ window.location.href=PESAPAL_LINK; },1200);
+  let location=document.getElementById('bookLocation').value.trim();
+  let data={name:name,phone:phone,service:document.getElementById('bookService').value,location:location,time:document.getElementById('bookTime').value,notes:document.getElementById('bookNotes').value,status:'Pending - To SUPER, then JABETH',to:'SUPER',date:new Date().toLocaleString(),gps:bookGps,client:currentClient?currentClient.name:''};
+  lastBooking=data;
+  try{ bookings.push(data); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); }catch(e){ alert('Storage full, but booking will be sent via WhatsApp'); }
+  if(bookGps){ try{ saveGps(name,'CLIENT BOOKING TO SUPER',bookGps.lat,bookGps.lng); }catch(e){} }
+  if(db){ try{ db.collection('bookings').add(data).catch(()=>{}); }catch(e){} }
+  try{ triggerBookingAlarm(data); }catch(e){}
+  document.getElementById('bookMsg').innerText='✅ Booked! Sent To SUPER! Booking #'+bookings.length;
+  document.getElementById('bookSuccessText').innerText='Name: '+name+' | Phone: '+phone+' | Service: '+data.service+' | Location: '+location+' | Status: Pending - SUPER will see it in SUPER Dashboard > ALL BOOKINGS';
+  document.getElementById('bookSuccess').classList.remove('hidden');
+  document.getElementById('bookSuccess').scrollIntoView({behavior:'smooth'});
+  let btn=document.getElementById('bookBtn'); if(btn){ btn.disabled=false; btn.innerText='🚨 Book & Send To SUPER - TAP HERE'; }
+  if(currentAdmin) updateAdmin();
 }
 function realDeposit(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){document.getElementById('walletMsg').innerText='Enter at least 500';return;} document.getElementById('walletMsg').innerText='Opening REAL Pesapal for UGX '+a.toLocaleString(); window.location.href=PESAPAL_LINK; }
 function confirmPaid(){ let a=Number(document.getElementById('depAmt').value||0); if(a<500){alert('Enter amount first');return;} let data={amt:a,date:new Date().toLocaleString(),note:'User confirmed paid'}; pays.push(data); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(db) db.collection('payments').add(data); updateBal(); document.getElementById('walletMsg').innerText='Saved. SUPER will verify in Pesapal.'; triggerBookingAlarm({name:'PAYMENT TO SUPER: UGX '+a, service:'Payment Confirmed', phone:'', location:''}); }
