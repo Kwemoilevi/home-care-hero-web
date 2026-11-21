@@ -27,68 +27,43 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
 </head>
 <body>
 <h1>🏥 Home Care Hero</h1>
-<p class="small">Home Nursing - For All Countries • Secure Payments</p>
+<p class="small">Home Nursing - For All Countries</p>
 <p class="safe">🔒 Secured by Firebase • Stripe • Pesapal • Flutterwave - No Secret Keys in App</p>
 
 <div class="countryBar">
   <b>🌍 Choose Your Country</b>
   <select id="countrySelect" onchange="changeCountry()">
-    <option value="UG|UGX">🇺🇬 Uganda - UGX</option>
-    <option value="KE|KES">🇰🇪 Kenya - KES - M-Pesa</option>
-    <option value="TZ|TZS">🇹🇿 Tanzania - TZS</option>
-    <option value="RW|RWF">🇷🇼 Rwanda - RWF</option>
-    <option value="NG|NGN">🇳🇬 Nigeria - NGN</option>
-    <option value="GH|GHS">🇬🇭 Ghana - GHS</option>
-    <option value="ZA|ZAR">🇿🇦 South Africa - ZAR</option>
-    <option value="US|USD">🇺🇸 USA - USD</option>
-    <option value="GB|GBP">🇬🇧 UK - GBP</option>
-    <option value="ET|ETB">🇪🇹 Ethiopia - ETB</option>
-    <option value="ZM|ZMW">🇿🇲 Zambia - ZMW</option>
+    <option value="UG|UGX">🇺🇬 Uganda - UGX</option><option value="KE|KES">🇰🇪 Kenya - KES</option><option value="TZ|TZS">🇹🇿 Tanzania - TZS</option><option value="RW|RWF">🇷🇼 Rwanda - RWF</option><option value="NG|NGN">🇳🇬 Nigeria - NGN</option><option value="GH|GHS">🇬🇭 Ghana - GHS</option><option value="ZA|ZAR">🇿🇦 South Africa - ZAR</option><option value="US|USD">🇺🇸 USA - USD</option><option value="GB|GBP">🇬🇧 UK - GBP</option>
   </select>
-  <div class="small" style="color:#fff" id="countryInfo">Uganda • Currency: UGX • Pesapal + Flutterwave for Africa, Stripe for USA/UK</div>
+  <div class="small" style="color:#fff" id="countryInfo">Uganda • Currency: UGX</div>
 </div>
 
-<!-- NURSE FORM - Opens only via Admin Link ?form=nurse -->
 <div class="card hidden" id="nurseFormCard">
-  <h2>👩‍⚕️ Nurse Application Form</h2>
-  <p class="small">Fill this form. JOY CHELANGAT will approve you.</p>
+  <h2>👩‍⚕️ Nurse Application Form</h2><p class="small">Fill this form. JOY will approve you.</p>
   <input id="nFullName" placeholder="Full Name *"><input id="nPhone" placeholder="Phone / WhatsApp *"><input id="nEmail" placeholder="Email">
-  <select id="nCountry"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>USA</option><option>UK</option><option>Ethiopia</option><option>Zambia</option><option>Other</option></select>
-  <input id="nCity" placeholder="City / Location *">
-  <select id="nService"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option><option>Baby Care</option></select>
+  <select id="nCountry"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>USA</option><option>UK</option><option>Other</option></select>
+  <input id="nCity" placeholder="City *"><select id="nService"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option><option>Baby Care</option></select>
   <input id="nExperience" placeholder="Years of Experience"><input id="nQualification" placeholder="Qualification"><input id="nID" placeholder="National ID / Passport">
-  <textarea id="nAbout" placeholder="Tell us about yourself..."></textarea>
-  <input id="nPrice" type="number" placeholder="Your Price Per Day">
-  <button onclick="submitNurseApplication()">Submit Application to JOY →</button>
-  <button class="gray" onclick="closeForms()">Back to Homepage</button>
-  <p class="small" id="nurseFormMsg"></p>
+  <textarea id="nAbout" placeholder="Tell us about yourself..."></textarea><input id="nPrice" type="number" placeholder="Your Price Per Day">
+  <button onclick="submitNurseApplication()">Submit Application to JOY →</button><button class="gray" onclick="closeForms()">Back to Homepage</button><p class="small" id="nurseFormMsg"></p>
 </div>
 
-<!-- CLIENT FORM - Opens only via Admin Link ?form=client -->
 <div class="card hidden" id="clientFormCard">
-  <h2>🧑‍🦱 Client Form - Request a Nurse</h2>
-  <p class="small">Fill this form. It goes to ALL ADMINS - SUPER, JOY, KIMTAI.</p>
+  <h2>🧑‍🦱 Client Form - Request a Nurse</h2><p class="small">Fill this form. All Admins will call you back.</p>
   <input id="cName" placeholder="Your Full Name *"><input id="cPhone" placeholder="Phone / WhatsApp *"><input id="cEmail" placeholder="Email">
   <select id="cCountry"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>USA</option><option>UK</option><option>Other</option></select>
-  <input id="cLocation" placeholder="Patient Location *">
-  <select id="cService"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option><option>Baby Care</option></select>
+  <input id="cLocation" placeholder="Patient Location *"><select id="cService"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option><option>Baby Care</option></select>
   <select id="cDuration"><option>1 Day</option><option>1 Week</option><option>1 Month</option><option>Long Term</option></select>
-  <input id="cDate" type="date"><textarea id="cDetails" placeholder="Patient condition, what help do you need?"></textarea>
-  <input id="cBudget" type="number" placeholder="Your Budget">
-  <button onclick="submitClientForm()">Send Request to ALL Admins →</button>
-  <button class="gray" onclick="closeForms()">Back to Homepage</button>
-  <p class="small" id="clientFormMsg"></p>
+  <input id="cDate" type="date"><textarea id="cDetails" placeholder="Patient condition?"></textarea><input id="cBudget" type="number" placeholder="Your Budget">
+  <button onclick="submitClientForm()">Send Request to ALL Admins →</button><button class="gray" onclick="closeForms()">Back to Homepage</button><p class="small" id="clientFormMsg"></p>
 </div>
 
-<!-- HOMEPAGE - CLEAN - NO LINKS -->
 <div class="card" id="authCard">
   <h2>Login / Register</h2>
-  <select id="role"><option value="patient">Patient</option><option value="nurse">Nurse</option></select>
+  <select id="role"><option value="patient">Patient / Client</option><option value="nurse">Nurse</option></select>
   <input id="name" placeholder="Full Name"><input id="phone" placeholder="Phone"><input id="email" placeholder="Email"><input id="password" type="password" placeholder="Password (min 6)">
   <div class="row"><button onclick="register()">Register</button><button class="gray" onclick="login()">Login</button></div>
-  <hr>
-  <button class="bigAdmin" onclick="showAdminGate()">🔐 ADMIN LOGIN - Tap Here</button>
-  <p class="small" style="text-align:center">Admins only - Need Gate Code</p>
+  <hr><button class="bigAdmin" onclick="showAdminGate()">🔐 ADMIN LOGIN - Tap Here</button>
 </div>
 
 <div class="card hidden" id="gateCard"><h2>Admin Gate</h2><input id="gatePass" type="password" placeholder="Enter Gate Code"><button onclick="checkGate()">Continue</button><button class="gray" onclick="hideAdminGate()">Back</button></div>
@@ -99,76 +74,96 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
   <div class="card">
     <p>Welcome <b id="uName"></b> • <span class="badge" id="uRole"></span> • <span id="uPhone"></span></p>
     <p id="adminInfo" class="small"></p>
-    <p>Wallet Balance</p><div class="wallet" id="walletBalance">0</div>
-    <div class="nav"><button onclick="showTab('walletTab')" id="btn-walletTab" class="active">Wallet</button><button onclick="showTab('patientTab')" id="btn-patientTab">Book Nurse</button><button onclick="showTab('nurseTab')" id="btn-nurseTab">My Jobs</button><button onclick="showTab('adminTab')" id="btn-adminTab">Dashboard</button><button onclick="showTab('txnTab')" id="btn-txnTab">Transactions</button></div>
+    <p id="walletLabel">Wallet Balance</p><div class="wallet" id="walletBalance">0</div>
+    <!-- NAV - WILL CHANGE BY ROLE -->
+    <div class="nav">
+      <button onclick="showTab('walletTab')" id="btn-walletTab">Wallet</button>
+      <button onclick="showTab('patientTab')" id="btn-patientTab">Book Nurse</button>
+      <button onclick="showTab('nurseTab')" id="btn-nurseTab">My Jobs</button>
+      <button onclick="showTab('adminTab')" id="btn-adminTab">Dashboard</button>
+      <button onclick="showTab('txnTab')" id="btn-txnTab">Transactions</button>
+    </div>
     <button class="red" onclick="logout()">Logout</button>
   </div>
 
-  <!-- WALLET - 3 SAFE PAYMENTS -->
   <div class="card" id="walletTab">
-    <h2>Top Up Wallet - Choose Payment</h2>
-    <p class="safe">✅ Only Publishable Keys Used - Secret Keys NEVER in App - Safe</p>
-    <input id="topupAmount" type="number" placeholder="Amount - e.g 50000">
-    <p class="small" id="topupCurrLabel">Currency: UGX</p>
-    <select id="payMethod"><option value="mobilemoneyuganda">MTN MoMo / Mobile Money</option><option value="mpesa">M-Pesa (Kenya)</option><option value="airtelmoney">Airtel Money</option><option value="card">Visa / Mastercard</option></select>
-    <h3>1. Pesapal - Best for Uganda, Kenya, Tanzania</h3>
-    <button class="pesapal" onclick="payWithPesapal()">Pay with Pesapal - M-Pesa / MoMo / Card</button>
-    <h3>2. Flutterwave - Best for Nigeria, Ghana, Africa</h3>
-    <button class="flw" onclick="payWithFlutterwave()">Pay with Flutterwave</button>
-    <h3>3. Stripe - Best for USA, UK, South Africa, International Card</h3>
-    <button class="stripe" onclick="payWithStripe()">Pay with Stripe - Visa / Mastercard</button>
-    <h3>Withdraw</h3>
-    <input id="withdrawAmount" type="number" placeholder="Amount"><input id="withdrawPhone" placeholder="MoMo / Bank Number">
-    <select id="withdrawMethod"><option>Mobile Money</option><option>M-Pesa</option><option>Airtel Money</option><option>Bank Transfer</option><option>Pesapal Payout</option><option>Stripe Payout</option></select>
-    <button class="gray" onclick="requestWithdraw()">Request Withdraw - SUPER Approves</button>
+    <h2>Top Up Wallet</h2><p class="safe">✅ Only Publishable Keys - Secret Keys NEVER in App</p>
+    <input id="topupAmount" type="number" placeholder="Amount"><p class="small" id="topupCurrLabel">Currency: UGX</p>
+    <select id="payMethod"><option value="mobilemoneyuganda">MTN MoMo / Mobile Money</option><option value="mpesa">M-Pesa</option><option value="airtelmoney">Airtel Money</option><option value="card">Visa / Mastercard</option></select>
+    <h3>1. Pesapal - Uganda, Kenya, Tanzania</h3><button class="pesapal" onclick="payWithPesapal()">Pay with Pesapal - M-Pesa / MoMo / Card</button>
+    <h3>2. Flutterwave - Nigeria, Ghana, Africa</h3><button class="flw" onclick="payWithFlutterwave()">Pay with Flutterwave</button>
+    <h3>3. Stripe - USA, UK, International</h3><button class="stripe" onclick="payWithStripe()">Pay with Stripe - Visa / Mastercard</button>
+    <h3>Withdraw</h3><input id="withdrawAmount" type="number" placeholder="Amount"><input id="withdrawPhone" placeholder="MoMo / Bank Number">
+    <select id="withdrawMethod"><option>Mobile Money</option><option>M-Pesa</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+    <button class="gray" onclick="requestWithdraw()">Request Withdraw</button>
   </div>
 
-  <div class="card hidden" id="patientTab"><h2>Book a Nurse</h2><select id="nurseSelect"><option>Loading...</option></select><select id="service"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option></select><input id="servicePrice" type="number" placeholder="Price in your currency"><input id="address" placeholder="Location"><input id="date" type="date"><button onclick="createBooking()">Create Booking & Pay From Wallet</button><div id="myBookings"></div></div>
+  <div class="card hidden" id="patientTab"><h2>Book a Nurse</h2><select id="nurseSelect"><option>Loading...</option></select><select id="service"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option></select><input id="servicePrice" type="number" placeholder="Price"><input id="address" placeholder="Location"><input id="date" type="date"><button onclick="createBooking()">Create Booking & Pay From Wallet</button><div id="myBookings"></div></div>
   <div class="card hidden" id="nurseTab"><h2>Nurse Jobs</h2><div id="nurseJobs"></div></div>
 
-  <!-- ADMIN DASHBOARD - ALL LINKS HERE ONLY -->
+  <!-- ADMIN DASHBOARD ONLY - CLIENTS CAN NEVER SEE THIS -->
   <div class="card hidden" id="adminTab">
     <h2>Dashboard - Admins Only</h2><p class="small" id="adminPermMsg"></p><div id="adminStats"></div>
     <div style="background:#f0fdfa;padding:12px;border-radius:12px;border:2px dashed #0f766e;margin-bottom:12px">
-      <h3>🔗 Share Links - Copy From Here Only</h3>
-      <p class="small">Only admins see this box. Homepage has NO links.</p>
+      <h3>🔗 Share Links - Copy From Here Only - Admins Only</h3><p class="small">Only admins see this box. Clients never see it.</p>
       <b>1. Nurse Application Form:</b><div class="linkBox" id="nurseLink"></div><button class="linkBtn" onclick="copyLink('nurse')">📋 Copy Nurse Form Link</button>
       <b>2. Client Form:</b><div class="linkBox" id="clientLink"></div><button class="linkBtn" onclick="copyLink('client')">📋 Copy Client Form Link</button>
       <b>3. Admin Links:</b><div class="linkBox" id="superLink"></div><button class="linkBtn" onclick="copyLink('super')">📋 Copy SUPER Link</button>
       <div class="linkBox" id="joyLink"></div><button class="linkBtn" onclick="copyLink('joy')">📋 Copy JOY Link</button>
       <div class="linkBox" id="allAdminLink"></div><button class="linkBtn" onclick="copyLink('all')">📋 Copy ALL Admins Link</button>
     </div>
-    <div id="superSection"><h3>All Bookings + Payments (SUPER)</h3><div id="allBookings"></div><h3>Withdrawals - Approve Payouts</h3><div id="withdrawList"></div></div>
-    <div id="joySection"><h3>✅ JOY: Nurse Applications - Approve Nurses</h3><div id="nurseApplicationsList"></div><h3>Approved Nurses</h3><div id="nurseApprovalList"></div></div>
-    <div id="kimtaiSection"><h3>📅 KIMTAI: Client Requests + Bookings</h3><div id="clientRequestsList"></div><select id="kimtaiNurse"><option>Select Nurse</option></select><input id="kimtaiPatient" placeholder="Patient Name"><input id="kimtaiPhone" placeholder="Patient Phone"><input id="kimtaiPrice" type="number" placeholder="Price"><button onclick="kimtaiCreateBooking()">Create Booking for Patient</button><div id="kimtaiBookings"></div></div>
+    <div id="superSection"><h3>All Bookings + Payments (SUPER)</h3><div id="allBookings"></div><h3>Withdrawals</h3><div id="withdrawList"></div></div>
+    <div id="joySection"><h3>✅ JOY: Nurse Applications</h3><div id="nurseApplicationsList"></div><h3>Approved Nurses</h3><div id="nurseApprovalList"></div></div>
+    <div id="kimtaiSection"><h3>📅 KIMTAI: Client Requests</h3><div id="clientRequestsList"></div><select id="kimtaiNurse"><option>Select Nurse</option></select><input id="kimtaiPatient" placeholder="Patient Name"><input id="kimtaiPhone" placeholder="Patient Phone"><input id="kimtaiPrice" type="number" placeholder="Price"><button onclick="kimtaiCreateBooking()">Create Booking for Patient</button><div id="kimtaiBookings"></div></div>
     <h3>📩 All Client Requests (All Admins)</h3><div id="allClientRequests"></div>
-    <h3>All Users - All Countries</h3><div id="allUsers"></div>
-    <h3>All Transactions - Stripe / Pesapal / Flutterwave</h3><div id="allTxns"></div>
+    <h3>All Users</h3><div id="allUsers"></div><h3>All Transactions</h3><div id="allTxns"></div>
   </div>
   <div class="card" id="txnTab"><h2>My Transactions</h2><div id="myTxns"></div></div>
 </div>
 
 <script>
-// ===== SAFE KEYS - ONLY PUBLIC / PUBLISHABLE KEYS HERE - NEVER SECRET KEYS =====
-// Firebase Public Key - Safe to show, Google says so
 const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", authDomain: "home-care-hero.firebaseapp.com", databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com", projectId: "home-care-hero", storageBucket: "home-care-hero.firebasestorage.app", messagingSenderId: "38632827016", appId: "1:38632827016:web:0ebca8c98541b2fb3e573d", measurementId: "G-ZV09KN6R90" };
-// Flutterwave Public Key - Safe
 const FLW_PUBLIC_KEY = "FLW_PUBLIC_KEY_LIVE_REPLACE_ME";
-// Stripe Publishable Key - Safe, starts with pk_ - NEVER put sk_ secret here
 const STRIPE_PUBLISHABLE_KEY = "pk_live_REPLACE_ME";
-// Pesapal - Only Consumer Key (Public) - NEVER put Consumer Secret here. Secret stays on your server / Pesapal dashboard only.
-// For Pesapal you need a small backend / Vercel Function to get token safely. Frontend only sends request to your backend.
 const PESAPAL_CONSUMER_KEY = "PESAPAL_CONSUMER_KEY_REPLACE_ME";
-const PESAPAL_API_URL = "https://pay.pesapal.com/v3/api"; // Live: https://pay.pesapal.com/v3/api , Demo: https://cybqa.pesapal.com/pesapalv3/api
-
 const GATE_PASSWORD = "HERO 2026";
 const ADMINS = { "SUPER": { password: "2215", share: 0.80, job: "Manages All Bookings + Approves Payments" }, "JOY CHELANGAT": { password: "JOY 2026", share: 0.10, job: "Approves Nurses" }, "KIMTAI JABETH": { password: "JABETH 2026", share: 0.10, job: "In Charge of Bookings" } };
 const SPLIT = { nurse: 0.80, adminTotal: 0.15, platform: 0.05 };
 let currentCountry = { code:"UG", currency:"UGX", name:"Uganda" };
-function changeCountry(){ const v=document.getElementById('countrySelect').value.split('|'); currentCountry={code:v[0], currency:v[1], name:v[0]}; document.getElementById('countryInfo').innerText=currentCountry.code+" • Currency: "+currentCountry.currency+" • Pesapal + Flutterwave for Africa, Stripe for USA/UK"; document.getElementById('topupCurrLabel').innerText="Currency: "+currentCountry.currency; }
+function changeCountry(){ const v=document.getElementById('countrySelect').value.split('|'); currentCountry={code:v[0], currency:v[1], name:v[0]}; document.getElementById('countryInfo').innerText=currentCountry.code+" • Currency: "+currentCountry.currency; document.getElementById('topupCurrLabel').innerText="Currency: "+currentCountry.currency; }
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database(); const auth = firebase.auth();
 let currentUser=null, currentProfile=null, currentAdmin=null, selectedAdminName=null;
+
+// ===== FIX: SEPARATE MENUS BY ROLE =====
+function setMenuForAdmin(){
+  // ADMIN sees ONLY Dashboard + Transactions
+  document.getElementById('btn-walletTab').style.display='none';
+  document.getElementById('btn-patientTab').style.display='none';
+  document.getElementById('btn-nurseTab').style.display='none';
+  document.getElementById('btn-adminTab').style.display='block';
+  document.getElementById('btn-txnTab').style.display='block';
+  document.getElementById('btn-adminTab').classList.add('active');
+  document.getElementById('walletLabel').style.display='none';
+  document.getElementById('walletBalance').innerText='Admin Earnings Below';
+}
+function setMenuForPatient(){
+  // CLIENT sees ONLY Wallet + Book Nurse + Transactions - NO Dashboard
+  document.getElementById('btn-walletTab').style.display='block';
+  document.getElementById('btn-patientTab').style.display='block';
+  document.getElementById('btn-nurseTab').style.display='none';
+  document.getElementById('btn-adminTab').style.display='none';
+  document.getElementById('btn-txnTab').style.display='block';
+}
+function setMenuForNurse(){
+  // NURSE sees ONLY Wallet + My Jobs + Transactions - NO Dashboard
+  document.getElementById('btn-walletTab').style.display='block';
+  document.getElementById('btn-patientTab').style.display='none';
+  document.getElementById('btn-nurseTab').style.display='block';
+  document.getElementById('btn-adminTab').style.display='none';
+  document.getElementById('btn-txnTab').style.display='block';
+}
+
 function getBaseUrl(){ return window.location.href.split('?')[0].split('#')[0]; }
 function buildLinks(){ const base=getBaseUrl(); const n=document.getElementById('nurseLink'); if(n) n.innerText=base+"?form=nurse"; const c=document.getElementById('clientLink'); if(c) c.innerText=base+"?form=client"; const s=document.getElementById('superLink'); if(s) s.innerText=base+"?admin=SUPER"; const j=document.getElementById('joyLink'); if(j) j.innerText=base+"?admin=JOY"; const a=document.getElementById('allAdminLink'); if(a) a.innerText=base+"?admin=ALL"; }
 function copyLink(type){ let txt=""; if(type==='nurse') txt=document.getElementById('nurseLink').innerText; if(type==='client') txt=document.getElementById('clientLink').innerText; if(type==='super') txt=document.getElementById('superLink').innerText; if(type==='joy') txt=document.getElementById('joyLink').innerText; if(type==='all') txt=document.getElementById('allAdminLink').innerText; navigator.clipboard.writeText(txt).then(()=>alert("Link Copied! Paste in WhatsApp:\n"+txt)); }
@@ -182,50 +177,29 @@ function hideAdminGate(){ document.getElementById('gateCard').classList.add('hid
 function checkGate(){ if(document.getElementById('gatePass').value===GATE_PASSWORD){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); } else alert("Wrong Code"); }
 function selectAdmin(name){ selectedAdminName=name; document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.remove('hidden'); document.getElementById('adminPassTitle').innerText="Hi "+name; document.getElementById('adminPassDesc').innerText=ADMINS[name].job; }
 function backToSelect(){ document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); }
-function checkAdminPass(){ const pass=document.getElementById('adminPass').value; if(pass===ADMINS[selectedAdminName].password){ currentAdmin={name:selectedAdminName, ...ADMINS[selectedAdminName]}; document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentAdmin.name; document.getElementById('uRole').innerText="ADMIN"; document.getElementById('uPhone').innerText=currentAdmin.job; document.getElementById('adminInfo').innerText="Admin: "+currentAdmin.name; document.getElementById('walletBalance').innerText="See Earnings Below"; showTab('adminTab'); loadAdminDashboard(); } else alert("Wrong Code"); }
-function showTab(id){ ['walletTab','patientTab','nurseTab','adminTab','txnTab'].forEach(t=>{ document.getElementById(t).classList.add('hidden'); document.getElementById('btn-'+t).classList.remove('active'); }); document.getElementById(id).classList.remove('hidden'); document.getElementById('btn-'+id).classList.add('active'); if(id==='adminTab') loadAdminDashboard(); if(id==='nurseTab') loadNurseJobs(); if(id==='patientTab'){ loadNurses(); loadMyBookings(); } }
-async function register(){ const name=document.getElementById('name').value.trim(); const phone=document.getElementById('phone').value.trim(); const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; const role=document.getElementById('role').value; if(!name||!phone||!email||!pass) return alert("Fill all"); try{ const res=await auth.createUserWithEmailAndPassword(email,pass); await db.ref('users/'+res.user.uid).set({name,phone,email,role,country:currentCountry.code,currency:currentCountry.currency,wallet:0, approved: role==='nurse'? false : true, createdAt:Date.now()}); alert("Registered as "+role+" in "+currentCountry.code); }catch(e){ alert(e.message); } }
+function checkAdminPass(){ const pass=document.getElementById('adminPass').value; if(pass===ADMINS[selectedAdminName].password){ currentAdmin={name:selectedAdminName, ...ADMINS[selectedAdminName]}; document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentAdmin.name; document.getElementById('uRole').innerText="ADMIN"; document.getElementById('uPhone').innerText=currentAdmin.job; document.getElementById('adminInfo').innerText="Admin: "+currentAdmin.name; setMenuForAdmin(); showTab('adminTab'); loadAdminDashboard(); } else alert("Wrong Code"); }
+function showTab(id){
+  // SECURITY: Clients can NEVER open adminTab
+  if(id==='adminTab' && !currentAdmin){ alert("Admins Only"); return; }
+  ['walletTab','patientTab','nurseTab','adminTab','txnTab'].forEach(t=>{ document.getElementById(t).classList.add('hidden'); const b=document.getElementById('btn-'+t); if(b) b.classList.remove('active'); });
+  document.getElementById(id).classList.remove('hidden'); const btn=document.getElementById('btn-'+id); if(btn) btn.classList.add('active');
+  if(id==='adminTab') loadAdminDashboard(); if(id==='nurseTab') loadNurseJobs(); if(id==='patientTab'){ loadNurses(); loadMyBookings(); }
+}
+async function register(){ const name=document.getElementById('name').value.trim(); const phone=document.getElementById('phone').value.trim(); const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; const role=document.getElementById('role').value; if(!name||!phone||!email||!pass) return alert("Fill all"); try{ const res=await auth.createUserWithEmailAndPassword(email,pass); await db.ref('users/'+res.user.uid).set({name,phone,email,role,country:currentCountry.code,currency:currentCountry.currency,wallet:0, approved: role==='nurse'? false : true, createdAt:Date.now()}); alert("Registered as "+role); }catch(e){ alert(e.message); } }
 async function login(){ const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; try{ await auth.signInWithEmailAndPassword(email,pass); }catch(e){ alert(e.message); } }
 function logout(){ auth.signOut(); currentAdmin=null; location.reload(); }
-auth.onAuthStateChanged(async (user)=>{ if(!user) return; currentUser=user; const snap=await db.ref('users/'+user.uid).once('value'); currentProfile=snap.val(); if(!currentProfile) return; document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentProfile.name; document.getElementById('uRole').innerText=currentProfile.role; document.getElementById('uPhone').innerText=currentProfile.phone; db.ref('users/'+user.uid+'/wallet').on('value',s=>{ document.getElementById('walletBalance').innerText=(currentProfile.currency||'UGX')+" "+(s.val()||0).toLocaleString(); }); loadNurses(); loadMyBookings(); loadNurseJobs(); loadMyTxns(); });
+auth.onAuthStateChanged(async (user)=>{ if(!user) return; currentUser=user; const snap=await db.ref('users/'+user.uid).once('value'); currentProfile=snap.val(); if(!currentProfile) return; document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentProfile.name; document.getElementById('uRole').innerText=currentProfile.role; document.getElementById('uPhone').innerText=currentProfile.phone; if(currentProfile.role==='nurse') setMenuForNurse(); else setMenuForPatient(); showTab(currentProfile.role==='nurse' ? 'nurseTab' : 'walletTab'); db.ref('users/'+user.uid+'/wallet').on('value',s=>{ document.getElementById('walletBalance').innerText=(currentProfile.currency||'UGX')+" "+(s.val()||0).toLocaleString(); }); loadNurses(); loadMyBookings(); loadNurseJobs(); loadMyTxns(); });
 async function getWallet(uid){ const s=await db.ref('users/'+uid+'/wallet').once('value'); return s.val()||0; }
-
-// ===== PAYMENTS - SAFE - NO SECRET KEYS =====
-function payWithFlutterwave(){ const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<100) return alert("Enter amount"); if(FLW_PUBLIC_KEY.includes("REPLACE")) return alert("Flutterwave Public Key not set yet. Add it in code."); const curr=currentProfile? currentProfile.currency : currentCountry.currency; const country=currentProfile? currentProfile.country : currentCountry.code; const tx_ref="HCH-FLW-"+currentUser.uid+"-"+Date.now(); db.ref('pending_topups/'+tx_ref).set({userId:currentUser.uid, amount:amt, currency:curr, country:country, provider:'flutterwave', status:'pending', createdAt:Date.now()}); FlutterwaveCheckout({ public_key: FLW_PUBLIC_KEY, tx_ref: tx_ref, amount: amt, currency: curr, country: country, payment_options: document.getElementById('payMethod').value, customer: { email: currentProfile.email, phone_number: currentProfile.phone, name: currentProfile.name }, customizations: { title: "Home Care Hero", description: "Top Up "+amt+" "+curr }, callback: async function(data){ if(data.status==="successful"){ const bal=await getWallet(currentUser.uid); await db.ref('users/'+currentUser.uid+'/wallet').set(bal+amt); await db.ref('transactions').push({type:'topup', provider:'flutterwave', userId:currentUser.uid, amount:amt, currency:curr, status:'completed', createdAt:Date.now()}); alert("Flutterwave SUCCESS "+amt+" "+curr); } else alert("Not completed"); } }); }
-
-// PESAPAL - SAFE: Frontend only creates order ID, Pesapal token is created on your secure backend / Vercel Function, NOT in this file.
-// To finish Pesapal: Create a Vercel Function /api/pesapal-order that uses your Consumer Secret (kept secret on server) to get token and return order URL. Then frontend redirects there.
-async function payWithPesapal(){
-  const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<100) return alert("Enter amount");
-  if(PESAPAL_CONSUMER_KEY.includes("REPLACE")) return alert("Pesapal not set yet.\n\nSteps:\n1. Go to Pesapal Dashboard > Get Consumer Key\n2. Put Consumer Key in code (public, safe)\n3. Put Consumer Secret ONLY in Vercel Env / Server, NEVER in this file\n4. Create /api/pesapal-order on Vercel to get token safely.");
-  const curr=currentProfile? currentProfile.currency : currentCountry.currency;
-  const orderId="HCH-PESAPAL-"+currentUser.uid+"-"+Date.now();
-  await db.ref('pending_topups/'+orderId).set({userId:currentUser.uid, amount:amt, currency:curr, provider:'pesapal', status:'pending', createdAt:Date.now()});
-  alert("Pesapal Order Created: "+orderId+"\nAmount: "+amt+" "+curr+"\n\nYour backend will now redirect to Pesapal to pay with M-Pesa / MoMo / Card.\nAsk me to make the /api/pesapal-order Vercel Function if you want it live.");
-  // When backend is ready, uncomment this redirect:
-  // window.location.href = "/api/pesapal-order?amount="+amt+"&currency="+curr+"&orderId="+orderId+"&email="+currentProfile.email+"&phone="+currentProfile.phone+"&name="+encodeURIComponent(currentProfile.name);
-}
-
-// STRIPE - SAFE: Only Publishable Key in frontend. Secret Key stays on Stripe / server. Uses Stripe Checkout via your backend.
-async function payWithStripe(){
-  const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<100) return alert("Enter amount");
-  if(STRIPE_PUBLISHABLE_KEY.includes("REPLACE")) return alert("Stripe Publishable Key not set yet.\n\nSteps:\n1. Go to Stripe Dashboard > Developers > API Keys\n2. Copy Publishable Key pk_live_...\n3. Put it in code (safe)\n4. NEVER put Secret Key sk_live_... in this file. Keep it on server only.");
-  const curr=(currentProfile? currentProfile.currency : currentCountry.currency).toLowerCase();
-  const orderId="HCH-STRIPE-"+currentUser.uid+"-"+Date.now();
-  await db.ref('pending_topups/'+orderId).set({userId:currentUser.uid, amount:amt, currency:curr, provider:'stripe', status:'pending', createdAt:Date.now()});
-  alert("Stripe Order Created: "+orderId+"\nAmount: "+amt+" "+curr.toUpperCase()+"\n\nYour backend will create Stripe Checkout Session with Secret Key (server only) and redirect to Stripe.\nAsk me to make the /api/stripe-checkout Vercel Function if you want it live.");
-  // When backend is ready:
-  // const res = await fetch("/api/stripe-checkout", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({amount:amt, currency:curr, orderId, email:currentProfile.email})});
-  // const data = await res.json(); if(data.url) window.location.href = data.url;
-}
-
-async function requestWithdraw(){ const amt=parseInt(document.getElementById('withdrawAmount').value); const momo=document.getElementById('withdrawPhone').value.trim(); const method=document.getElementById('withdrawMethod').value; if(!amt||!momo) return alert("Enter amount and number"); const bal=await getWallet(currentUser.uid); if(bal<amt) return alert("Not enough"); await db.ref('users/'+currentUser.uid+'/wallet').set(bal-amt); await db.ref('withdrawals').push({userId:currentUser.uid, name:currentProfile.name, phone:momo, method, amount:amt, currency:currentProfile.currency||'UGX', status:'pending', createdAt:Date.now()}); alert("Withdraw request sent. SUPER will approve."); }
+function payWithFlutterwave(){ const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<100) return alert("Enter amount"); if(FLW_PUBLIC_KEY.includes("REPLACE")) return alert("Flutterwave Public Key not set yet."); const curr=currentProfile? currentProfile.currency : currentCountry.currency; const country=currentProfile? currentProfile.country : currentCountry.code; const tx_ref="HCH-FLW-"+currentUser.uid+"-"+Date.now(); db.ref('pending_topups/'+tx_ref).set({userId:currentUser.uid, amount:amt, currency:curr, country:country, provider:'flutterwave', status:'pending', createdAt:Date.now()}); FlutterwaveCheckout({ public_key: FLW_PUBLIC_KEY, tx_ref: tx_ref, amount: amt, currency: curr, country: country, payment_options: document.getElementById('payMethod').value, customer: { email: currentProfile.email, phone_number: currentProfile.phone, name: currentProfile.name }, customizations: { title: "Home Care Hero", description: "Top Up "+amt+" "+curr }, callback: async function(data){ if(data.status==="successful"){ const bal=await getWallet(currentUser.uid); await db.ref('users/'+currentUser.uid+'/wallet').set(bal+amt); await db.ref('transactions').push({type:'topup', provider:'flutterwave', userId:currentUser.uid, amount:amt, currency:curr, status:'completed', createdAt:Date.now()}); alert("Flutterwave SUCCESS "+amt); } else alert("Not completed"); } }); }
+async function payWithPesapal(){ const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<100) return alert("Enter amount"); if(PESAPAL_CONSUMER_KEY.includes("REPLACE")) return alert("Pesapal not set yet. Put Consumer Key (public) in code. Secret stays on server only."); const curr=currentProfile? currentProfile.currency : currentCountry.currency; const orderId="HCH-PESAPAL-"+currentUser.uid+"-"+Date.now(); await db.ref('pending_topups/'+orderId).set({userId:currentUser.uid, amount:amt, currency:curr, provider:'pesapal', status:'pending', createdAt:Date.now()}); alert("Pesapal Order Created: "+orderId+" - Backend will redirect to Pesapal to pay with M-Pesa / MoMo / Card."); }
+async function payWithStripe(){ const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<100) return alert("Enter amount"); if(STRIPE_PUBLISHABLE_KEY.includes("REPLACE")) return alert("Stripe Publishable Key not set yet. Put pk_... in code. NEVER put sk_ secret in code."); const curr=(currentProfile? currentProfile.currency : currentCountry.currency).toLowerCase(); const orderId="HCH-STRIPE-"+currentUser.uid+"-"+Date.now(); await db.ref('pending_topups/'+orderId).set({userId:currentUser.uid, amount:amt, currency:curr, provider:'stripe', status:'pending', createdAt:Date.now()}); alert("Stripe Order Created: "+orderId+" - Backend will redirect to Stripe Checkout."); }
+async function requestWithdraw(){ const amt=parseInt(document.getElementById('withdrawAmount').value); const momo=document.getElementById('withdrawPhone').value.trim(); const method=document.getElementById('withdrawMethod').value; if(!amt||!momo) return alert("Enter amount and number"); const bal=await getWallet(currentUser.uid); if(bal<amt) return alert("Not enough"); await db.ref('users/'+currentUser.uid+'/wallet').set(bal-amt); await db.ref('withdrawals').push({userId:currentUser.uid, name:currentProfile.name, phone:momo, method, amount:amt, currency:currentProfile.currency||'UGX', status:'pending', createdAt:Date.now()}); alert("Withdraw request sent."); }
 async function loadNurses(){ const snap=await db.ref('users').once('value'); const sel=document.getElementById('nurseSelect'); const kSel=document.getElementById('kimtaiNurse'); sel.innerHTML=''; if(kSel) kSel.innerHTML=''; if(!snap.val()) return; Object.entries(snap.val()).forEach(([id,n])=>{ if(n.role==='nurse' && n.approved!==false){ const o=document.createElement('option'); o.value=id; o.text=n.name+" - "+n.phone; sel.appendChild(o); if(kSel){ const o2=document.createElement('option'); o2.value=id; o2.text=n.name; kSel.appendChild(o2); } } }); if(sel.innerHTML==='') sel.innerHTML='<option>No approved nurses yet</option>'; }
 async function createBooking(){ const nurseId=document.getElementById('nurseSelect').value; const service=document.getElementById('service').value; const price=parseInt(document.getElementById('servicePrice').value); const address=document.getElementById('address').value; const date=document.getElementById('date').value; if(!nurseId||!address||!price) return alert("Select nurse, price and address"); const bal=await getWallet(currentUser.uid); if(bal<price) return alert("Top up "+price+" first"); const curr=currentProfile.currency||'UGX'; await db.ref('users/'+currentUser.uid+'/wallet').set(bal-price); const nurseShare=Math.round(price*SPLIT.nurse); const adminTotal=Math.round(price*SPLIT.adminTotal); const platformShare=price-nurseShare-adminTotal; const superShare=Math.round(adminTotal*0.80); const joyShare=Math.round(adminTotal*0.10); const kimtaiShare=adminTotal-superShare-joyShare; const ref=db.ref('bookings').push(); await ref.set({bookingId:ref.key, patientId:currentUser.uid, patientName:currentProfile.name, nurseId, service, price, currency:curr, address, date, nurseShare, adminTotal, superShare, joyShare, kimtaiShare, platformShare, status:'paid', createdAt:Date.now()}); await db.ref('transactions').push({type:'booking_payment', bookingId:ref.key, patientId:currentUser.uid, nurseId, amount:price, currency:curr, nurseShare, adminTotal, superShare, joyShare, kimtaiShare, status:'holding', createdAt:Date.now()}); alert(`Paid ${price} ${curr}.`); loadMyBookings(); }
 async function loadMyBookings(){ if(!currentUser) return; const snap=await db.ref('bookings').once('value'); const div=document.getElementById('myBookings'); div.innerHTML='<h3>My Bookings</h3>'; if(!snap.val()) return; Object.values(snap.val()).filter(b=>b.patientId===currentUser.uid).reverse().forEach(b=>{ div.innerHTML+=`<div class="item"><b>${b.service}</b> - ${b.price} ${b.currency||''} - ${b.status}</div>`; }); }
 async function loadNurseJobs(){ if(!currentUser) return; const snap=await db.ref('bookings').once('value'); const div=document.getElementById('nurseJobs'); div.innerHTML=''; if(!snap.val()){ div.innerHTML='<p>No jobs</p>'; return; } let jobs=Object.values(snap.val()).filter(b=>b.nurseId===currentUser.uid); if(jobs.length===0){ div.innerHTML='<p>No jobs for you</p>'; return; } jobs.reverse().forEach(b=>{ div.innerHTML+=`<div class="item"><b>${b.service}</b> - Patient ${b.patientName} - Your Share ${b.nurseShare}<br>Status ${b.status} ${b.status==='paid'?`<button onclick="completeBooking('${b.bookingId}')">Mark Completed - Get Paid</button>`:''}</div>`; }); }
 async function completeBooking(bookingId){ const snap=await db.ref('bookings/'+bookingId).once('value'); const b=snap.val(); if(!b||b.status!=='paid') return; const nBal=await getWallet(b.nurseId); await db.ref('users/'+b.nurseId+'/wallet').set(nBal+b.nurseShare); await db.ref('admin_earnings').push({bookingId, superShare:b.superShare, joyShare:b.joyShare, kimtaiShare:b.kimtaiShare, total:b.adminTotal, status:'pending_approval', createdAt:Date.now()}); await db.ref('bookings/'+bookingId).update({status:'completed', completedAt:Date.now()}); await db.ref('transactions').push({type:'auto_split', bookingId, nurseId:b.nurseId, amount:b.price, nurseShare:b.nurseShare, superShare:b.superShare, joyShare:b.joyShare, kimtaiShare:b.kimtaiShare, status:'completed', createdAt:Date.now()}); alert(`Split Done! You got ${b.nurseShare}.`); loadNurseJobs(); }
-async function loadMyTxns(){ if(!currentUser) return; const div=document.getElementById('myTxns'); const snap=await db.ref('transactions').once('value'); div.innerHTML=''; if(!snap.val()){ div.innerHTML='<p>No transactions</p>'; return; } Object.values(snap.val()).reverse().forEach(t=>{ if(t.userId===currentUser.uid||t.patientId===currentUser.uid||t.nurseId===currentUser.uid) div.innerHTML+=`<div class="item">${t.type} - ${t.provider||''} - ${t.amount} ${t.currency||''} - ${t.status}</div>`; }); }
+async function loadMyTxns(){ if(!currentUser) return; const div=document.getElementById('myTxns'); const snap=await db.ref('transactions').once('value'); div.innerHTML=''; if(!snap.val()){ div.innerHTML='<p>No transactions</p>'; return; } Object.values(snap.val()).reverse().forEach(t=>{ if(t.userId===currentUser.uid||t.patientId===currentUser.uid||t.nurseId===currentUser.uid) div.innerHTML+=`<div class="item">${t.type} - ${t.provider||''} - ${t.amount} - ${t.status}</div>`; }); }
 async function kimtaiCreateBooking(){ if(!currentAdmin || currentAdmin.name!=='KIMTAI JABETH') return alert("Only KIMTAI can do this"); const nurseId=document.getElementById('kimtaiNurse').value; const pname=document.getElementById('kimtaiPatient').value; const pphone=document.getElementById('kimtaiPhone').value; const price=parseInt(document.getElementById('kimtaiPrice').value); if(!nurseId||!pname||!price) return alert("Fill all"); const ref=db.ref('bookings').push(); await ref.set({bookingId:ref.key, patientName:pname, patientPhone:pphone, nurseId, service:"Home Nursing", price, status:'created_by_kimtai', createdAt:Date.now(), createdBy:'KIMTAI JABETH'}); alert("Booking created for "+pname); loadAdminDashboard(); }
 async function loadAdminDashboard(){
   if(!currentAdmin) return; const name=currentAdmin.name; document.getElementById('adminPermMsg').innerText=`Logged in as ${name} | ${currentAdmin.job}`; buildLinks();
@@ -236,9 +210,9 @@ async function loadAdminDashboard(){
   const crSnap=await db.ref('client_requests').once('value'); const crDiv=document.getElementById('clientRequestsList'); const allCrDiv=document.getElementById('allClientRequests'); crDiv.innerHTML=''; allCrDiv.innerHTML=''; if(!crSnap.val()){ crDiv.innerHTML='<p>No client requests yet</p>'; allCrDiv.innerHTML='<p>No client requests yet</p>'; } else Object.entries(crSnap.val()).reverse().forEach(([id,c])=>{ const html=`<div class="item"><b>${c.name}</b> - ${c.phone} - ${c.country} - ${c.location}<br>${c.service} - ${c.duration}<br>Status: ${c.status}</div>`; crDiv.innerHTML+=html; allCrDiv.innerHTML+=html; });
   const txSnap=await db.ref('transactions').once('value'); let total=0, superTotal=0, joyTotal=0, kimtaiTotal=0; if(txSnap.val()) Object.values(txSnap.val()).forEach(t=>{ total+=t.amount||0; superTotal+=t.superShare||0; joyTotal+=t.joyShare||0; kimtaiTotal+=t.kimtaiShare||0; }); document.getElementById('adminStats').innerHTML=`<p><b>Total:</b> ${total.toLocaleString()} | <b>SUPER:</b> ${superTotal.toLocaleString()} | <b>JOY:</b> ${joyTotal.toLocaleString()} | <b>KIMTAI:</b> ${kimtaiTotal.toLocaleString()}</p>`;
   const bSnap=await db.ref('bookings').once('value'); const bDiv=document.getElementById('allBookings'); bDiv.innerHTML=''; if(bSnap.val()) Object.values(bSnap.val()).reverse().forEach(b=>{ bDiv.innerHTML+=`<div class="item">${b.service} - ${b.patientName} - ${b.price} ${b.currency||''} - ${b.status} ${name==='SUPER'?`<button class="red" onclick="deleteBooking('${b.bookingId}')">Delete</button>`:''}</div>`; }); document.getElementById('kimtaiBookings').innerHTML=bDiv.innerHTML;
-  const wSnap=await db.ref('withdrawals').once('value'); const wDiv=document.getElementById('withdrawList'); wDiv.innerHTML=''; if(!wSnap.val()) wDiv.innerHTML='<p>No requests</p>'; else Object.entries(wSnap.val()).reverse().forEach(([id,w])=>{ wDiv.innerHTML+=`<div class="item">${w.name} - ${w.amount} ${w.currency||''} to ${w.phone} - ${w.method} - ${w.status} ${name==='SUPER' && w.status==='pending'?`<button onclick="approveWithdraw('${id}')">Approve</button>`:''}</div>`; });
-  const uSnap=await db.ref('users').once('value'); const nDiv=document.getElementById('nurseApprovalList'); nDiv.innerHTML=''; const uDiv=document.getElementById('allUsers'); uDiv.innerHTML=''; if(uSnap.val()) Object.entries(uSnap.val()).forEach(([id,u])=>{ uDiv.innerHTML+=`<div class="item">${u.name} - ${u.role} - ${u.phone} - ${u.country||''} - Wallet ${u.wallet||0}</div>`; if(u.role==='nurse'){ nDiv.innerHTML+=`<div class="item">${u.name} - ${u.phone} - ${u.approved===false?'Waiting':'Approved'} ${(name==='JOY CHELANGAT' || name==='SUPER')?`<button onclick="approveNurse('${id}')">Approve</button>`:''}</div>`; } });
-  const tDiv=document.getElementById('allTxns'); tDiv.innerHTML=''; if(txSnap.val()) Object.values(txSnap.val()).reverse().forEach(t=>{ tDiv.innerHTML+=`<div class="item">${t.type} - ${t.provider||''} - ${t.amount} ${t.currency||''} - SUPER ${t.superShare||0} JOY ${t.joyShare||0} KIMTAI ${t.kimtaiShare||0}</div>`; }); loadNurses();
+  const wSnap=await db.ref('withdrawals').once('value'); const wDiv=document.getElementById('withdrawList'); wDiv.innerHTML=''; if(!wSnap.val()) wDiv.innerHTML='<p>No requests</p>'; else Object.entries(wSnap.val()).reverse().forEach(([id,w])=>{ wDiv.innerHTML+=`<div class="item">${w.name} - ${w.amount} to ${w.phone} - ${w.status} ${name==='SUPER' && w.status==='pending'?`<button onclick="approveWithdraw('${id}')">Approve</button>`:''}</div>`; });
+  const uSnap=await db.ref('users').once('value'); const nDiv=document.getElementById('nurseApprovalList'); nDiv.innerHTML=''; const uDiv=document.getElementById('allUsers'); uDiv.innerHTML=''; if(uSnap.val()) Object.entries(uSnap.val()).forEach(([id,u])=>{ uDiv.innerHTML+=`<div class="item">${u.name} - ${u.role} - ${u.phone} - Wallet ${u.wallet||0}</div>`; if(u.role==='nurse'){ nDiv.innerHTML+=`<div class="item">${u.name} - ${u.phone} - ${u.approved===false?'Waiting':'Approved'} ${(name==='JOY CHELANGAT' || name==='SUPER')?`<button onclick="approveNurse('${id}')">Approve</button>`:''}</div>`; } });
+  const tDiv=document.getElementById('allTxns'); tDiv.innerHTML=''; if(txSnap.val()) Object.values(txSnap.val()).reverse().forEach(t=>{ tDiv.innerHTML+=`<div class="item">${t.type} - ${t.amount} - SUPER ${t.superShare||0} JOY ${t.joyShare||0} KIMTAI ${t.kimtaiShare||0}</div>`; }); loadNurses();
 }
 async function approveApplication(id){ await db.ref('nurse_applications/'+id).update({status:'approved_by_joy'}); alert("Approved!"); loadAdminDashboard(); }
 async function rejectApplication(id){ await db.ref('nurse_applications/'+id).update({status:'rejected'}); alert("Rejected"); loadAdminDashboard(); }
