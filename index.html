@@ -4,8 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Home Care Hero Global - Hire Trusted Caregivers Worldwide</title>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <style>
-*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f1f5f9;color:#111}
+*{box-sizing:border-box}body{font-family:Arial,sans-serif;margin:0;background:#f1f5f9;color:#111;padding-bottom:80px}
 header{background:#0f766e;color:#fff;padding:14px;text-align:center;position:sticky;top:0;z-index:10}
 header h1{margin:0;font-size:22px}header p{margin:2px 0 0;font-size:13px;opacity:.9}
 nav{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;background:#fff;padding:8px;position:sticky;top:78px;z-index:9;box-shadow:0 2px 6px #0001}
@@ -22,7 +24,10 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 .small{font-size:13px;color:#475569}.hidden{display:none!important}
 .nurse{border:1px solid #e2e8f0;border-radius:12px;padding:10px;margin:8px 0}
 .appr{border:1px solid #e2e8f0;border-radius:12px;padding:10px;margin:8px 0;background:#fffbeb}
+.item{border:1px solid #e2e8f0;border-radius:12px;padding:10px;margin:8px 0}
 .live{background:#dcfce7;color:#166534;padding:6px 10px;border-radius:20px;font-size:12px;font-weight:800;display:inline-block}
+#entryGate,#adminGateModal{position:fixed;inset:0;background:#0f766e;z-index:100;display:flex;align-items:center;justify-content:center;padding:16px}
+.gateBox{background:#fff;width:100%;max-width:420px;padding:18px;border-radius:16px}
 </style>
 </head>
 <body>
@@ -35,292 +40,280 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 </header>
 
 <nav>
-<button onclick="showPage('dashboard',this)">📊 Dashboard</button>
-<button onclick="showPage('home',this)" class="active">🏠 Home</button>
-<button onclick="showPage('nurses',this)">👩‍⚕️ Nurses</button>
-<button onclick="showPage('wallet',this)">💰 Wallet</button>
-<button onclick="showPage('approvals',this)">✅ Approvals <span id="navAppr"></span></button>
-<button onclick="showPage('account',this)">👤 Account</button>
+<button onclick="show('home',this)" class="active">🏠 Home</button>
+<button onclick="show('book',this)">📝 Book</button>
+<button onclick="show('wallet',this)">💰 Wallet</button>
+<button onclick="show('track',this)">📍 Track</button>
+<button onclick="show('nurse',this)">👩‍⚕️ Nurse</button>
+<button onclick="show('pharmacy',this)">💊 Pharmacy</button>
+<button onclick="show('rate',this)">⭐ Rate</button>
+<button onclick="show('login',this)">🔐 Login</button>
+<button onclick="show('approvals',this)">✅ Approvals <span id="navAppr"></span></button>
+<button onclick="tapHiddenAdmin()">••</button>
 </nav>
 
-<!-- DASHBOARD / WORKSPACE -->
-<div id="page-dashboard" class="card hidden">
-<h2>📊 Dashboard - Workspace</h2>
-<p class="small">Your workspace - everything in one place.</p>
-<div class="nurse"><b>💰 Balance (Cloud):</b> <span id="dashBal">UGX 0</span><br>
-<b>👩‍⚕️ Total Nurses:</b> <span id="dashNurses">0</span><br>
-<b>⏳ Pending Withdraws:</b> <span id="dashPending">0</span><br>
-<b>👤 Logged in:</b> <span id="dashUser">-</span><br>
-<b>📱 Phone:</b> <span id="dashPhone">-</span></div>
-<h3>⚡ Quick Actions</h3>
-<button class="btn" onclick="goTo('wallet')">💰 Go to Wallet</button>
-<button class="btn btn2" onclick="goTo('nurses')">👩‍⚕️ View Nurses</button>
-<button class="btn btn3" onclick="goTo('approvals')">✅ View Approvals</button>
-<h3>📋 Recent Withdraws</h3>
-<div id="dashWithdraws"></div>
-</div>
+<!-- ENTRY GATE -->
+<div id="entryGate"><div class="gateBox">
+<h2>🏠 Home Care Hero</h2><p class="small">Create Account Before Entering</p>
+<input id="entryName" placeholder="Full Name e.g. Levi Kwemoi">
+<input id="entryPhone" placeholder="Phone e.g. 0772101875">
+<select id="entryCountry"><option>Uganda - UGX</option><option>Kenya - KES</option><option>USA - USD</option><option>UK - GBP</option></select>
+<select id="entryLang"><option>English</option><option>Luganda</option></select>
+<input id="entryPass" type="password" placeholder="Create Password">
+<input id="entryPass2" type="password" placeholder="Confirm Password">
+<button class="btn" onclick="createAccountAndEnter()">✅ CREATE ACCOUNT & ENTER</button>
+<button class="btn btn2" onclick="document.getElementById('entryGate').style.display='none'">Already have account - Enter</button>
+<p id="entryMsg" class="msg"></p>
+</div></div>
+
+<!-- ADMIN GATE -->
+<div id="adminGateModal" class="hidden"><div class="gateBox">
+<h2>🔐 Admin Gate</h2><p class="small">SUPER / JOY / JABETH only</p>
+<input id="gatePass" type="password" placeholder="Gate Password">
+<select id="gateRole"><option value="SUPER">SUPER</option><option value="JOY">JOY</option><option value="JABETH">JABETH</option></select>
+<input id="gateName" placeholder="Your Name">
+<button class="btn" onclick="adminLogin()">🔐 ENTER WORKSPACE</button>
+<button class="btn btn4" onclick="document.getElementById('adminGateModal').style.display='none'">Cancel</button>
+<p id="gateMsg" class="msg"></p>
+</div></div>
 
 <!-- HOME -->
-<div id="page-home" class="card">
+<div id="home" class="card">
 <h2>Welcome to Home Care Hero</h2>
 <p class="small">Book a nurse, pay securely via Pesapal, track your balance and withdraw. Pesapal • GPS Tracked • Real Nurses.</p>
-
-<div id="loginBox">
-<h3>🔐 Login / Create Account</h3>
-<div class="row">
-<button class="btn" onclick="showSignup()">📝 CREATE ACCOUNT</button>
-<button class="btn btn2" onclick="showLoginTab()">🔐 LOGIN</button>
-</div>
-
-<div id="signupForm">
-<input id="suName" placeholder="Full Name e.g. Levi Kwemoi">
-<input id="suPhone" placeholder="Phone e.g. 0772101875">
-<select id="suRole"><option value="CLIENT">CLIENT - I need care</option><option value="NURSE">NURSE / HERO - I give care</option></select>
-<input id="suPass" type="password" placeholder="Create Password">
-<input id="suPass2" type="password" placeholder="Confirm Password">
-<button class="btn" onclick="createAccount()">✅ CREATE MY ACCOUNT</button>
-</div>
-
-<div id="loginForm" class="hidden">
-<select id="loginRole"><option value="CLIENT">CLIENT</option><option value="NURSE">NURSE</option><option value="SUPER">SUPER</option><option value="JOY">JOY</option><option value="JABETH">JABETH</option></select>
-<input id="loginName" placeholder="Your Name e.g. Levi">
-<input id="loginPhone" placeholder="Phone e.g. 0772101875">
-<input id="loginPass" type="password" placeholder="Password">
-<label style="font-size:13px"><input type="checkbox" id="rememberMe" checked style="width:auto"> ✅ Remember me on this phone</label>
-<label style="font-size:13px"><input type="checkbox" onchange="document.getElementById('loginPass').type=this.checked?'text':'password'" style="width:auto"> 👁️ Show password</label>
-<button class="btn btn2" onclick="doLogin()">🔐 LOGIN</button>
-<p class="small">CLIENT / NURSE: use phone + password you created. SUPER: K1c2x3 | JOY: J0y | JABETH: Jab3th</p>
-</div>
-<p id="loginMsg" class="msg"></p>
-</div>
-
-<div id="loggedInfo" class="hidden"><p>Logged in as: <b id="whoLabel"></b><br><span class="small" id="whoPhone"></span></p>
-<button class="btn btn4" onclick="doLogout()">Logout - Switch Account</button></div>
-
+<div class="nurse"><b>🌍 World Box - Uganda - UGX</b><br><span class="small">Download App • Your Account • GPS • Services</span></div>
+<h3>Our Services</h3>
+<div class="small">🩺 General Nursing • 👴 Elderly Care • 🏥 Post-Surgery • 💪 Physiotherapy • 🩹 Wound Care • 🦴 Broken Bones</div>
+<button class="btn" onclick="show('book')">📝 BOOK A NURSE NOW</button>
+<button class="btn btn2" onclick="show('wallet')">💰 GO TO WALLET</button>
+<button class="btn btnG" onclick="downloadApp()">⬇️ Download App - Free</button>
 <h3>⭐ Adverts</h3><div id="advertsBox"></div>
 <h3>⭐ Ratings</h3><div id="ratingsBox"></div>
 <h3>🔗 Share</h3><div id="shareBox"></div>
-<button class="btn btnG" onclick="downloadApp()">⬇️ Download App - Free</button>
 </div>
 
-<!-- NURSES -->
-<div id="page-nurses" class="card hidden">
-<h2>👩‍⚕️ Available Nurses / Heroes</h2>
-<input id="searchNurse" placeholder="Search nurse by name / skill / location" oninput="renderNurses()">
-<div id="nurseList"></div>
-<h3>Add Nurse (SUPER / JOY)</h3>
-<input id="nName" placeholder="Nurse Name"><input id="nSkill" placeholder="Skill e.g. Elderly Care">
-<input id="nLoc" placeholder="Location e.g. Kampala"><input id="nPrice" type="number" placeholder="Price per day UGX">
-<button class="btn btn2" onclick="addNurse()">+ ADD NURSE</button>
+<!-- BOOK -->
+<div id="book" class="card hidden">
+<h2>📝 Book A Nurse - Client Booking Form To SUPER In App</h2>
+<input id="bookName" placeholder="Your Name"><input id="bookPhone" placeholder="Your Phone">
+<input id="bookLoc" placeholder="Location e.g. Kampala"><select id="bookService"><option>General Nursing</option><option>Elderly Care</option><option>Post-Surgery</option><option>Physiotherapy</option><option>Wound Care</option><option>Broken Bones</option></select>
+<textarea id="bookNotes" placeholder="Notes - What care do you need?"></textarea>
+<button class="btn" onclick="bookNow()">📝 BOOK NOW</button><p id="bookMsg" class="msg"></p>
+<h3>📋 My Bookings</h3><div id="bookingsList"></div>
 </div>
 
 <!-- WALLET -->
-<div id="page-wallet" class="card hidden">
-<h2>💰 My Wallet - Cloud</h2>
-<p>Balance: <b id="balLabel">UGX 0</b></p>
-<p class="small">Balance is saved in Cloud by your phone number - works on all phones.</p>
-<p class="small">Pay via Pesapal Secure Link:</p>
+<div id="wallet" class="card hidden">
+<h2>💰 My Wallet - Cloud</h2><p>Balance: <b id="balLabel">UGX 0</b></p>
+<p class="small">Total Paid: <span id="totalPaid">UGX 0</span> • SUPER: <span id="superShare">UGX 0</span> • JOY: <span id="joyShare">UGX 0</span> • JABETH: <span id="jabethShare">UGX 0</span></p>
 <a href="https://store.pesapal.com/homecareheropayment" target="_blank"><button class="btn btn2">💳 PAY WITH PESAPAL</button></a>
-<hr>
 <input id="depAmt" type="number" placeholder="Amount you paid e.g. 50000">
-<button class="btn" onclick="realDeposit()">✅ I HAVE PAID - ADD TO BALANCE</button>
-<p id="depMsg" class="msg"></p>
-<hr>
-<h3>📱 Withdraw To My Phone - CLIENT</h3>
-<input id="clientWithAmt" type="number" placeholder="Amount e.g. 5000">
-<input id="clientWithPhone" placeholder="Your MoMo number e.g. +256772101875">
+<button class="btn" onclick="realDeposit()">✅ I HAVE PAID - ADD TO BALANCE</button><p id="depMsg" class="msg"></p>
+<h3>📱 Withdraw - CLIENT</h3>
+<input id="clientWithAmt" type="number" placeholder="Amount e.g. 5000"><input id="clientWithPhone" placeholder="Your MoMo number">
 <select id="clientWithMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
-<button class="btn btn3" onclick="requestWithdrawClient()">📱 REQUEST WITHDRAW</button>
-<p id="clientWithMsg" class="msg"></p>
-<hr>
-<h3>💸 Withdraw - SUPER / JOY / JABETH / NURSE</h3>
-<input id="withAmt" type="number" placeholder="Amount">
-<input id="withPhone" placeholder="MoMo / Bank">
-<select id="withMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
-<button class="btn btn3" onclick="requestWithdraw()">REQUEST WITHDRAW (STAFF)</button>
-<p id="withMsg" class="msg"></p>
-<hr>
-<h3>📋 My Withdraw History</h3>
-<div id="pendingList"></div>
-<div id="superList"></div>
-<div id="nurseAccountBox"></div>
-<h3>📍 GPS Nurses Near Me</h3><div id="gpsList"></div>
+<button class="btn btn3" onclick="requestWithdrawClient()">📱 REQUEST WITHDRAW</button><p id="clientWithMsg" class="msg"></p>
+<h3>📋 Withdraw History</h3><div id="pendingList"></div><div id="superList"></div><div id="superApprovePayments"></div><div id="clientWithdrawList"></div>
+</div>
+
+<!-- TRACK -->
+<div id="track" class="card hidden"><h2>📍 Track Nurse - GPS</h2><div id="gpsList"></div><div id="trackList"></div></div>
+
+<!-- NURSE -->
+<div id="nurse" class="card hidden">
+<h2>👩‍⚕️ Join As Nurse / Hero - Qualification Form</h2>
+<input id="nName" placeholder="Full Name"><input id="nPhone" placeholder="Phone"><input id="nSkill" placeholder="Skill e.g. Elderly Care"><input id="nLoc" placeholder="Location e.g. Kampala"><input id="nPrice" type="number" placeholder="Price per day UGX">
+<input id="nExp" placeholder="Years Experience"><input id="nSchool" placeholder="School / Training"><input id="nCert" placeholder="Certificate / ID"><textarea id="nAbout" placeholder="About you - 12 questions: experience, availability, languages, etc."></textarea>
+<button class="btn btn2" onclick="joinNurse()">✅ APPLY AS NURSE</button><p id="nurseMsg" class="msg"></p>
+<h3>Available Nurses</h3><input id="searchNurse" placeholder="Search nurse" oninput="renderNurses()"><div id="nurseList"></div>
+</div>
+
+<!-- PHARMACY -->
+<div id="pharmacy" class="card hidden"><h2>💊 Pharmacy</h2><input id="phSearch" placeholder="Search medicine" oninput="renderPharmacy()"><div id="pharmacyList"></div></div>
+
+<!-- RATE -->
+<div id="rate" class="card hidden"><h2>⭐ Rate Us</h2><select id="rateStars"><option value="5">⭐⭐⭐⭐⭐ 5</option><option value="4">⭐⭐⭐⭐ 4</option><option value="3">⭐⭐⭐ 3</option><option value="2">⭐⭐ 2</option><option value="1">⭐ 1</option></select><input id="rateName" placeholder="Your Name"><textarea id="rateComment" placeholder="Your comment"></textarea><button class="btn" onclick="submitRating()">⭐ SUBMIT RATING</button><p id="rateMsg" class="msg"></p></div>
+
+<!-- LOGIN -->
+<div id="login" class="card hidden">
+<h2>🔐 Login</h2>
+<select id="loginRole"><option value="CLIENT">CLIENT</option><option value="NURSE">NURSE</option><option value="SUPER">SUPER</option><option value="JOY">JOY</option><option value="JABETH">JABETH</option></select>
+<input id="loginName" placeholder="Your Name"><input id="loginPhone" placeholder="Phone"><input id="loginPass" type="password" placeholder="Password">
+<button class="btn btn2" onclick="doLogin()">🔐 LOGIN</button><p id="loginMsg" class="msg"></p>
+<div id="loggedInfo" class="hidden"><p>Logged in as: <b id="whoLabel"></b><br><span class="small" id="whoPhone"></span></p><button class="btn btn4" onclick="doLogout()">Logout</button></div>
+</div>
+
+<!-- ADMIN / DASHBOARD / WORKSPACE -->
+<div id="admin" class="card hidden">
+<h2>📊 Dashboard - Workspace - Admin</h2>
+<p class="small">SUPER • JOY • JABETH Working Space</p>
+<div class="nurse"><b>💰 Balance:</b> <span id="dashBal">UGX 0</span><br><b>👩‍⚕️ Nurses:</b> <span id="dashNurses">0</span><br><b>⏳ Pending:</b> <span id="dashPending">0</span><br><b>👤 Logged:</b> <span id="dashUser">-</span></div>
+<h3>👑 SUPER WORKING SPACE</h3>
+<div class="nurse"><b>SUPER Balance:</b> <span id="superBal">UGX 0</span> • Withdrawn: <span id="superWithdrawn">UGX 0</span> • Pending: <span id="superPending">UGX 0</span><br>
+<input id="superWithdrawAmt" type="number" placeholder="SUPER Amount"><input id="superWithdrawPhone" placeholder="SUPER MoMo"><select id="superWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+<button class="btn btn3" onclick="requestWithdraw('SUPER')">💸 SUPER WITHDRAW</button><p id="superWithdrawMsg" class="msg"></p></div>
+<h3>💛 JOY WORKING SPACE</h3>
+<div class="nurse"><b>JOY Balance:</b> <span id="joyBal">UGX 0</span> • Withdrawn: <span id="joyWithdrawn">UGX 0</span> • Pending: <span id="joyPending">UGX 0</span><br>
+<input id="joyWithdrawAmt" type="number" placeholder="JOY Amount"><input id="joyWithdrawPhone" placeholder="JOY MoMo"><select id="joyWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+<button class="btn btn3" onclick="requestWithdraw('JOY')">💸 JOY WITHDRAW</button><p id="joyWithdrawMsg" class="msg"></p></div>
+<h3>💙 JABETH WORKING SPACE</h3>
+<div class="nurse"><b>JABETH Balance:</b> <span id="jabethBal">UGX 0</span> • Withdrawn: <span id="jabethWithdrawn">UGX 0</span> • Pending: <span id="jabethPending">UGX 0</span><br>
+<input id="jabethWithdrawAmt" type="number" placeholder="JABETH Amount"><input id="jabethWithdrawPhone" placeholder="JABETH MoMo"><select id="jabethWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+<button class="btn btn3" onclick="requestWithdraw('JABETH')">💸 JABETH WITHDRAW</button><p id="jabethWithdrawMsg" class="msg"></p></div>
+<h3>📋 Recent Withdraws</h3><div id="dashWithdraws"></div>
 </div>
 
 <!-- APPROVALS -->
-<div id="page-approvals" class="card hidden">
-<h2>✅ Approvals - SUPER Only</h2>
-<p class="small">SUPER approves Client Withdraws, Nurse Withdraws, Deposits.</p>
-<div id="approvalsBox"></div>
-</div>
-
-<!-- ACCOUNT -->
-<div id="page-account" class="card hidden">
-<h2>👤 My Account</h2>
-<p id="accInfo"></p>
-<p id="accPhone"></p>
-<p class="small">Your account is saved by phone number in Cloud.</p>
-<button class="btn btn4" onclick="doLogout()">Logout</button>
-</div>
+<div id="approvals" class="card hidden"><h2>✅ Approvals - SUPER Only</h2><div id="approvalsBox"></div></div>
+<div id="homeGallery" class="card hidden"><h2>🖼️ Gallery</h2><p class="small">Our nurses in action.</p></div>
 
 <script>
+// ===== FIREBASE - PASTE YOUR KEYS HERE (from your old code) =====
+const firebaseConfig = { apiKey:"YOUR_FIREBASE_API_KEY", authDomain:"YOUR_PROJECT.firebaseapp.com", projectId:"YOUR_PROJECT_ID", storageBucket:"YOUR_PROJECT.appspot.com", messagingSenderId:"YOUR_SENDER_ID", appId:"YOUR_APP_ID" };
+try{ firebase.initializeApp(firebaseConfig); window.db = firebase.firestore(); }catch(e){ window.db=null; }
+
 let currentUser=null,currentClient=null,currentRole='CLIENT';
 let nurses=JSON.parse(localStorage.getItem('hc_nurses')||'[]');
 let withdraws=JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
 let deposits=JSON.parse(localStorage.getItem('hc_deposits')||'[]');
-// RESTORE OLD BALANCE - CHECK ALL OLD KEYS (so old money not lost)
-let balance=Number(localStorage.getItem('hc_balance')||0);
-try{['balance','clientBalance','userBalance','walletBalance','myBalance'].forEach(k=>{let v=Number(localStorage.getItem(k)||0); if(v>balance) balance=v;});}catch(e){}
+let pays=JSON.parse(localStorage.getItem('hc_pays')||'[]');
+let bookings=JSON.parse(localStorage.getItem('hc_bookings')||'[]');
+let clients=JSON.parse(localStorage.getItem('hc_clients')||'[]');
+let nurseAccounts=JSON.parse(localStorage.getItem('hc_nurse_accounts')||'[]');
 let adverts=[{t:'Trusted Nurses in Kampala',d:'Book today, care tomorrow.'},{t:'Elderly Care Specialists',d:'24/7 home care.'}];
 let ratings=[{n:'Mary',s:5,c:'Great nurse!'}];
-if(!nurses.length){nurses=[{name:'Joy N.',skill:'Elderly Care',loc:'Kampala',price:50000},{name:'Jabeth K.',skill:'Baby Care',loc:'Entebbe',price:40000}];}
+let pharmacyItems=[{name:'Paracetamol',price:5000},{name:'Vitamin C',price:15000},{name:'First Aid Kit',price:30000}];
+if(!nurses.length){ nurses=[{name:'Joy N.',skill:'Elderly Care',loc:'Kampala',price:50000},{name:'Jabeth K.',skill:'Baby Care',loc:'Entebbe',price:40000}]; }
 
-function fmtAmt(n){return 'UGX '+Number(n||0).toLocaleString()}
-function getBal(){return balance}
-function saveAll(){
-  localStorage.setItem('hc_nurses',JSON.stringify(nurses));
-  localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
-  localStorage.setItem('hc_deposits',JSON.stringify(deposits));
-  localStorage.setItem('hc_balance',balance);
-  // CLOUD SAVE - ALL PHONES
-  try{
-    if(window.db && currentUser && currentUser.phone){
-      window.db.collection('balances').doc(currentUser.phone).set({phone:currentUser.phone, name:currentUser.name, balance:balance, updated:Date.now()});
-      window.db.collection('withdraws').doc('last').set({all:withdraws});
-    }
-  }catch(e){}
+function fmtAmt(n){ return 'UGX '+Number(n||0).toLocaleString() }
+function getBal(){ return pays.reduce((s,p)=>s+(Number(p.amt)||0),0) }
+function getWithdrawStats(){
+  let total=getBal();
+  let earns={SUPER:Math.round(total*0.8),JOY:Math.round(total*0.1),JABETH:Math.round(total*0.1)};
+  let withdrawn={SUPER:0,JOY:0,JABETH:0}, pending={SUPER:0,JOY:0,JABETH:0};
+  withdraws.forEach(w=>{ if((w.status||'').includes('Paid')) withdrawn[w.who]=(withdrawn[w.who]||0)+Number(w.amt||0); else if((w.status||'').includes('Pending')||(w.status||'').includes('Waiting')) pending[w.who]=(pending[w.who]||0)+Number(w.amt||0); });
+  let balance={SUPER:earns.SUPER-withdrawn.SUPER-pending.SUPER,JOY:earns.JOY-withdrawn.JOY-pending.JOY,JABETH:earns.JABETH-withdrawn.JABETH-pending.JABETH};
+  return {total,earns,withdrawn,pending,balance};
 }
-function showPage(id,btn){document.querySelectorAll('[id^="page-"]').forEach(e=>e.classList.add('hidden'));document.getElementById('page-'+id).classList.remove('hidden');document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');updateDashboard();}
-function goTo(p){let btns=document.querySelectorAll('nav button');let map={dashboard:0,home:1,nurses:2,wallet:3,approvals:4,account:5};showPage(p,btns[map[p]])}
-function showSignup(){document.getElementById('signupForm').classList.remove('hidden');document.getElementById('loginForm').classList.add('hidden')}
-function showLoginTab(){document.getElementById('signupForm').classList.add('hidden');document.getElementById('loginForm').classList.remove('hidden');try{let s=JSON.parse(localStorage.getItem('hc_remember')||'null');if(s){document.getElementById('loginName').value=s.name||'';document.getElementById('loginPhone').value=s.phone||'';document.getElementById('loginPass').value=s.pass||'';document.getElementById('loginRole').value=s.role||'CLIENT';}}catch(e){}}
-
-function createAccount(){
-  let name=document.getElementById('suName').value.trim();
-  let phone=document.getElementById('suPhone').value.trim();
-  let role=document.getElementById('suRole').value;
-  let p1=document.getElementById('suPass').value;
-  let p2=document.getElementById('suPass2').value;
-  let m=document.getElementById('loginMsg');m.style.display='block';
-  if(!name||!phone||!p1){m.textContent='Fill Name, Phone and Password';return}
-  if(p1!==p2){m.textContent='Passwords do not match';return}
+function show(id,btn){ ['home','book','wallet','track','nurse','pharmacy','rate','login','admin','homeGallery','approvals'].forEach(x=>{let e=document.getElementById(x); if(e)e.classList.add('hidden')}); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); updateWithdrawUI(); renderApprovals(); }
+function tapHiddenAdmin(){ document.getElementById('adminGateModal').style.display='flex'; }
+function adminLogin(){
+  let pass=document.getElementById('gatePass').value.trim();
+  let role=document.getElementById('gateRole').value;
+  let name=document.getElementById('gateName').value.trim()||role;
+  let secrets={SUPER:'K1c2x3',JOY:'J0y',JABETH:'Jab3th'};
+  if(pass!==secrets[role]){ document.getElementById('gateMsg').textContent='Wrong Gate Password'; document.getElementById('gateMsg').style.display='block'; return; }
+  document.getElementById('adminGateModal').style.display='none';
+  finishLogin(name,role,'000'); show('admin');
+}
+function createAccountAndEnter(){
+  let name=document.getElementById('entryName').value.trim(), phone=document.getElementById('entryPhone').value.trim(), p1=document.getElementById('entryPass').value, p2=document.getElementById('entryPass2').value;
+  let m=document.getElementById('entryMsg'); m.style.display='block';
+  if(!name||!phone||!p1){ m.textContent='Fill Name, Phone and Password'; return; }
+  if(p1!==p2){ m.textContent='Passwords do not match'; return; }
   let users=JSON.parse(localStorage.getItem('hc_users')||'[]');
-  if(users.find(u=>u.phone===phone)){m.textContent='This phone already has account. Go to LOGIN.';showLoginTab();return}
-  let nu={name:name,phone:phone,role:role,pass:p1,balance:0};
-  users.push(nu);localStorage.setItem('hc_users',JSON.stringify(users));
-  try{if(window.db)window.db.collection('users').doc(phone).set(nu);}catch(e){}
-  m.textContent='✅ Account created for '+name+'! Now LOGIN.';
-  showLoginTab();document.getElementById('loginPhone').value=phone;document.getElementById('loginPass').value=p1;document.getElementById('loginName').value=name;document.getElementById('loginRole').value=role;
+  if(!users.find(u=>u.phone===phone)){ users.push({name:name,phone:phone,role:'CLIENT',pass:p1}); localStorage.setItem('hc_users',JSON.stringify(users)); }
+  document.getElementById('entryGate').style.display='none'; finishLogin(name,'CLIENT',phone);
 }
 function doLogin(){
-  let role=document.getElementById('loginRole').value;
-  let name=document.getElementById('loginName').value.trim()||role;
-  let phone=document.getElementById('loginPhone').value.trim();
-  let pass=document.getElementById('loginPass').value.trim();
-  let m=document.getElementById('loginMsg');m.style.display='block';
+  let role=document.getElementById('loginRole').value, name=document.getElementById('loginName').value.trim()||role, phone=document.getElementById('loginPhone').value.trim(), pass=document.getElementById('loginPass').value.trim();
+  let m=document.getElementById('loginMsg'); m.style.display='block';
   let secrets={SUPER:'K1c2x3',JOY:'J0y',JABETH:'Jab3th'};
-  if(['SUPER','JOY','JABETH'].includes(role)){
-    if(pass!==secrets[role]){m.textContent='Wrong password for '+role;return}
-    finishLogin(role,role,phone||'000');
-  } else {
-    let users=JSON.parse(localStorage.getItem('hc_users')||'[]');
-    let u=users.find(x=>x.phone===phone && x.pass===pass);
-    if(!u && phone){ u={name:name,phone:phone,role:role,pass:pass,balance:0};users.push(u);localStorage.setItem('hc_users',JSON.stringify(users)); }
-    if(!u){m.textContent='Wrong phone or password. Create Account first.';return}
-    finishLogin(u.name,u.role,u.phone);
-  }
-  if(document.getElementById('rememberMe')?.checked){localStorage.setItem('hc_remember',JSON.stringify({role:role,name:name,phone:phone,pass:pass}))}
+  if(['SUPER','JOY','JABETH'].includes(role)){ if(pass!==secrets[role]){ m.textContent='Wrong password for '+role; return; } finishLogin(role,role,phone||'000'); return; }
+  let users=JSON.parse(localStorage.getItem('hc_users')||'[]'); let u=users.find(x=>x.phone===phone && x.pass===pass);
+  if(!u){ m.textContent='Wrong phone or password. Create Account first.'; return; }
+  finishLogin(u.name,u.role,u.phone);
 }
 function finishLogin(name,role,phone){
-  currentRole=role;currentUser={name:name,role:role,phone:phone};currentClient={name:name,phone:phone};
-  document.getElementById('whoLabel').textContent=name+' ('+role+')';
-  document.getElementById('whoPhone').textContent=phone+' - Uganda';
+  currentRole=role; currentUser={name:name,role:role,phone:phone}; currentClient={name:name,phone:phone};
+  document.getElementById('whoLabel').textContent=name+' ('+role+')'; document.getElementById('whoPhone').textContent=phone;
   document.getElementById('loggedInfo').classList.remove('hidden');
-  document.getElementById('loginBox').classList.add('hidden');
-  document.getElementById('accInfo').textContent=name+' - '+role;
-  document.getElementById('accPhone').textContent='Phone: '+phone;
-  updateBal();renderApprovals();updateWithdrawUI();updateDashboard();
-  // LOAD BALANCE FROM CLOUD FOR THIS PHONE NUMBER
-  try{
-    if(window.db){
-      window.db.collection('balances').doc(phone).get().then(doc=>{
-        if(doc.exists){
-          let cb=Number(doc.data().balance||0);
-          if(cb>0){ balance=cb; localStorage.setItem('hc_balance',balance); updateBal(); updateDashboard(); }
-        } else {
-          // First time on cloud - push local balance up
-          if(balance>0) saveAll();
-        }
-      }).catch(e=>{});
-    }
-  }catch(e){}
+  updateBal(); updateWithdrawUI(); renderApprovals(); updateDashboard();
 }
-function doLogout(){currentUser=null;currentRole='CLIENT';document.getElementById('loginBox').classList.remove('hidden');document.getElementById('loggedInfo').classList.add('hidden');showLoginTab()}
-function updateBal(){document.getElementById('balLabel').textContent=fmtAmt(balance);document.getElementById('topBal').textContent='Balance: '+fmtAmt(balance)}
+function doLogout(){ currentUser=null; currentRole='CLIENT'; document.getElementById('loggedInfo').classList.add('hidden'); show('login'); }
+function updateBal(){ let s=getWithdrawStats(); document.getElementById('balLabel').textContent=fmtAmt(getBal()); document.getElementById('topBal').textContent='Balance: '+fmtAmt(getBal()); document.getElementById('totalPaid').textContent=fmtAmt(getBal()); document.getElementById('superShare').textContent=fmtAmt(s.earns.SUPER); document.getElementById('joyShare').textContent=fmtAmt(s.earns.JOY); document.getElementById('jabethShare').textContent=fmtAmt(s.earns.JABETH); }
 function updateDashboard(){
-  try{
-    document.getElementById('dashBal').textContent=fmtAmt(balance);
-    document.getElementById('dashNurses').textContent=nurses.length;
-    document.getElementById('dashPending').textContent=withdraws.filter(w=>w.status.includes('Pending')).length;
-    document.getElementById('dashUser').textContent=currentUser?currentUser.name+' ('+currentRole+')':'Not logged in';
-    document.getElementById('dashPhone').textContent=currentUser?currentUser.phone:'-';
-    document.getElementById('dashWithdraws').innerHTML=withdraws.slice().reverse().slice(0,5).map(w=>'<div class="small">'+w.who+' - '+fmtAmt(w.amt)+' - '+w.status+'</div>').join('')||'<p class="small">No withdraws yet</p>';
+  try{ let s=getWithdrawStats(); document.getElementById('dashBal').textContent=fmtAmt(getBal()); document.getElementById('dashNurses').textContent=nurses.length; document.getElementById('dashPending').textContent=withdraws.filter(w=>(w.status||'').includes('Pending')).length; document.getElementById('dashUser').textContent=currentUser?currentUser.name+' ('+currentRole+')':'Not logged in';
+  document.getElementById('superBal').textContent=fmtAmt(s.balance.SUPER); document.getElementById('superWithdrawn').textContent=fmtAmt(s.withdrawn.SUPER); document.getElementById('superPending').textContent=fmtAmt(s.pending.SUPER);
+  document.getElementById('joyBal').textContent=fmtAmt(s.balance.JOY); document.getElementById('joyWithdrawn').textContent=fmtAmt(s.withdrawn.JOY); document.getElementById('joyPending').textContent=fmtAmt(s.pending.JOY);
+  document.getElementById('jabethBal').textContent=fmtAmt(s.balance.JABETH); document.getElementById('jabethWithdrawn').textContent=fmtAmt(s.withdrawn.JABETH); document.getElementById('jabethPending').textContent=fmtAmt(s.pending.JABETH);
+  document.getElementById('dashWithdraws').innerHTML=withdraws.slice().reverse().slice(0,5).map(w=>'<div class="small">'+w.who+' - '+fmtAmt(w.amt)+' - '+w.status+'</div>').join('')||'<p class="small">No withdraws yet</p>';
   }catch(e){}
 }
-function realDeposit(){let amt=Number(document.getElementById('depAmt').value||0);if(amt<=0)return alert('Enter amount');balance+=amt;saveAll();updateBal();updateDashboard();let m=document.getElementById('depMsg');m.textContent='Added '+fmtAmt(amt)+' to balance - Saved in Cloud';m.style.display='block';document.getElementById('depAmt').value='';try{if(window.db)window.db.collection('deposits').add({amt:amt,phone:currentUser?.phone,date:new Date().toLocaleString()})}catch(e){}}
-function addNurse(){let n=document.getElementById('nName').value.trim();if(!n)return alert('Enter nurse name');nurses.push({name:n,skill:document.getElementById('nSkill').value,loc:document.getElementById('nLoc').value,price:Number(document.getElementById('nPrice').value||0)});saveAll();renderNurses();updateDashboard()}
-function renderNurses(){let q=(document.getElementById('searchNurse').value||'').toLowerCase();let html='';nurses.filter(n=>(n.name+n.skill+n.loc).toLowerCase().includes(q)).forEach((n,i)=>{html+='<div class="nurse"><b>'+n.name+'</b> <span class="badge">'+(n.skill||'')+'</span><br><span class="small">'+(n.loc||'')+' • '+fmtAmt(n.price||0)+'/day</span><br><button onclick="bookNurse('+i+')">Book This Nurse</button></div>'});document.getElementById('nurseList').innerHTML=html||'<p class="small">No nurses yet.</p>'}
-function bookNurse(i){alert('Booked '+nurses[i].name+'. Pay via Pesapal in Wallet.')}
-function downloadApp(){alert('Download App - Coming soon. Use Add to Home Screen.')}
+function realDeposit(){ let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0) return alert('Enter amount'); let p={amt:amt,phone:currentUser?.phone||'Guest',date:new Date().toLocaleString(),createdAt:Date.now()}; pays.push(p); localStorage.setItem('hc_pays',JSON.stringify(pays)); try{ if(window.db) window.db.collection('payments').add(p); }catch(e){} updateBal(); updateWithdrawUI(); updateDashboard(); let m=document.getElementById('depMsg'); m.textContent='Added '+fmtAmt(amt)+' to balance - Saved in Cloud'; m.style.display='block'; document.getElementById('depAmt').value=''; }
+function bookNow(){ let name=document.getElementById('bookName').value.trim(), phone=document.getElementById('bookPhone').value.trim(); if(!name||!phone) return alert('Fill Name and Phone'); let b={name:name,phone:phone,loc:document.getElementById('bookLoc').value,service:document.getElementById('bookService').value,notes:document.getElementById('bookNotes').value,status:'Pending',date:new Date().toLocaleString(),createdAt:Date.now()}; bookings.push(b); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); try{ if(window.db) window.db.collection('bookings').add(b); }catch(e){} document.getElementById('bookMsg').textContent='✅ Booking sent to SUPER!'; document.getElementById('bookMsg').style.display='block'; renderBookings(); }
+function renderBookings(){ document.getElementById('bookingsList').innerHTML=bookings.slice().reverse().map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.loc+'<br><span class="small">'+b.date+' • '+b.status+'</span><br>'+(currentRole==='SUPER'?'<button onclick="approveBooking('+bookings.indexOf(b)+')">✅ APPROVE</button> <button onclick="rejectBooking('+bookings.indexOf(b)+')">❌ REJECT</button>':'')+'</div>').join('')||'<p class="small">No bookings yet</p>'; }
+function approveBooking(i){ bookings[i].status='Approved ✓'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); renderBookings(); }
+function rejectBooking(i){ if(!confirm('Reject booking for '+bookings[i].name+'?')) return; bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); renderBookings(); }
+function joinNurse(){ let n=document.getElementById('nName').value.trim(); if(!n) return alert('Enter nurse name'); let nurse={name:n,phone:document.getElementById('nPhone').value,skill:document.getElementById('nSkill').value,loc:document.getElementById('nLoc').value,price:Number(document.getElementById('nPrice').value||0),exp:document.getElementById('nExp').value,school:document.getElementById('nSchool').value,cert:document.getElementById('nCert').value,about:document.getElementById('nAbout').value}; nurses.push(nurse); localStorage.setItem('hc_nurses',JSON.stringify(nurses)); try{ if(window.db) window.db.collection('nurses').add(nurse); }catch(e){} document.getElementById('nurseMsg').textContent='✅ Application sent!'; document.getElementById('nurseMsg').style.display='block'; renderNurses(); updateDashboard(); }
+function renderNurses(){ let q=(document.getElementById('searchNurse').value||'').toLowerCase(); document.getElementById('nurseList').innerHTML=nurses.filter(n=>(n.name+n.skill+n.loc).toLowerCase().includes(q)).map((n,i)=>'<div class="nurse"><b>'+n.name+'</b> <span class="badge">'+(n.skill||'')+'</span><br><span class="small">'+(n.loc||'')+' • '+fmtAmt(n.price||0)+'/day</span><br><button onclick="bookNurse('+i+')">Book This Nurse</button></div>').join('')||'<p class="small">No nurses yet.</p>'; }
+function bookNurse(i){ alert('Booked '+nurses[i].name+'. Pay via Pesapal in Wallet.'); }
+function renderPharmacy(){ let q=(document.getElementById('phSearch').value||'').toLowerCase(); document.getElementById('pharmacyList').innerHTML=pharmacyItems.filter(p=>p.name.toLowerCase().includes(q)).map(p=>'<div class="nurse"><b>'+p.name+'</b> - '+fmtAmt(p.price)+'<br><button onclick="alert(\'Added '+p.name+' to order\')">Add</button></div>').join(''); }
+function submitRating(){ let r={n:document.getElementById('rateName').value||'Guest',s:Number(document.getElementById('rateStars').value),c:document.getElementById('rateComment').value}; ratings.push(r); document.getElementById('rateMsg').textContent='✅ Thank you for rating!'; document.getElementById('rateMsg').style.display='block'; renderRatings(); }
+function downloadApp(){ alert('Download App - Use Add to Home Screen in your browser.'); }
 
-// --- WITHDRAW - FIXED ---
+// ===== WITHDRAW - FIXED =====
+function requestWithdraw(who){
+  let amtId=who==='SUPER'?'superWithdrawAmt':who==='JOY'?'joyWithdrawAmt':'jabethWithdrawAmt';
+  let phoneId=who==='SUPER'?'superWithdrawPhone':who==='JOY'?'joyWithdrawPhone':'jabethWithdrawPhone';
+  let methodId=who==='SUPER'?'superWithdrawMethod':who==='JOY'?'joyWithdrawMethod':'jabethWithdrawMethod';
+  let msgId=who==='SUPER'?'superWithdrawMsg':who==='JOY'?'joyWithdrawMsg':'jabethWithdrawMsg';
+  let amt=Number(document.getElementById(amtId).value||0); let phone=document.getElementById(phoneId).value.trim(); let method=document.getElementById(methodId).value;
+  let stats=getWithdrawStats();
+  let m=document.getElementById(msgId); m.style.display='block';
+  if(amt<=0){ m.textContent='Enter amount'; return; } if(!phone){ m.textContent='Enter MoMo / Bank'; return; }
+  if(amt>stats.balance[who]){ m.textContent='Not enough. Balance: '+fmtAmt(stats.balance[who]); return; }
+  let w={who:who,amt:amt,phone:phone,method:method,status:who==='SUPER'?'Paid ✓ (SUPER - Self)':'Pending - Waiting for SUPER Approval',date:new Date().toLocaleString(),createdAt:Date.now()};
+  withdraws.push(w); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
+  try{ if(window.db) window.db.collection('withdraws').add(w); }catch(e){}
+  m.textContent='✅ Saved in app! '+fmtAmt(amt)+' to '+phone; document.getElementById(amtId).value='';
+  updateWithdrawUI(); renderApprovals(); updateDashboard();
+}
 function requestWithdrawClient(){
-  var amt=Number(document.getElementById('clientWithAmt').value||0);
-  var phone=document.getElementById('clientWithPhone').value.trim();
-  var method=document.getElementById('clientWithMethod').value;
-  var msg=document.getElementById('clientWithMsg');
-  if(amt<=0){msg.textContent='Enter amount';msg.style.display='block';return}
-  if(!phone){msg.textContent='Enter MoMo / Bank';msg.style.display='block';return}
-  if(amt>getBal()){msg.textContent='Not enough. Balance: '+fmtAmt(getBal());msg.style.display='block';return}
-  var name=(currentClient&&currentClient.name)?currentClient.name:'Client';
-  var w={who:'CLIENT - '+name,amt:amt,phone:phone,method:method,status:'Pending - Waiting for SUPER Approval',date:new Date().toLocaleString(),createdAt:Date.now()};
-  withdraws.push(w);saveAll();
-  try{if(window.db)window.db.collection('withdraws').add(w);}catch(e){}
-  msg.textContent='✅ Saved! '+fmtAmt(amt)+' to '+phone+' - SUPER will approve in Approvals';msg.style.display='block';
-  document.getElementById('clientWithAmt').value='';updateWithdrawUI();renderApprovals();updateDashboard();
+  let amt=Number(document.getElementById('clientWithAmt').value||0); let phone=document.getElementById('clientWithPhone').value.trim(); let method=document.getElementById('clientWithMethod').value;
+  let m=document.getElementById('clientWithMsg'); m.style.display='block';
+  if(amt<=0){ m.textContent='Enter amount'; return; } if(!phone){ m.textContent='Enter MoMo'; return; }
+  if(amt>getBal()){ m.textContent='Not enough. Balance: '+fmtAmt(getBal()); return; }
+  let w={who:'CLIENT - '+(currentClient?.name||'Client'),amt:amt,phone:phone,method:method,status:'Pending - Waiting for SUPER Approval',date:new Date().toLocaleString(),createdAt:Date.now()};
+  withdraws.push(w); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
+  try{ if(window.db) window.db.collection('withdraws').add(w); }catch(e){}
+  m.textContent='✅ Saved! '+fmtAmt(amt)+' - SUPER will approve'; document.getElementById('clientWithAmt').value='';
+  updateWithdrawUI(); renderApprovals(); updateDashboard();
 }
-function requestWithdraw(){
-  var amt=Number(document.getElementById('withAmt').value||0);
-  var phone=document.getElementById('withPhone').value.trim();
-  var method=document.getElementById('withMethod').value;
-  var msg=document.getElementById('withMsg');
-  if(amt<=0){msg.textContent='Enter amount';msg.style.display='block';return}
-  if(!phone){msg.textContent='Enter phone';msg.style.display='block';return}
-  if(amt>getBal()){msg.textContent='Not enough. Balance: '+fmtAmt(getBal());msg.style.display='block';return}
-  var name=(currentUser&&currentUser.name)?currentUser.name:'Staff';
-  var w={who:currentRole+' - '+name,amt:amt,phone:phone,method:method,status:'Pending - Waiting for SUPER Approval',date:new Date().toLocaleString(),createdAt:Date.now()};
-  withdraws.push(w);saveAll();
-  try{if(window.db)window.db.collection('withdraws').add(w);}catch(e){}
-  msg.textContent='✅ Saved! '+fmtAmt(amt)+' to '+phone+' - Waiting SUPER approval';msg.style.display='block';
-  document.getElementById('withAmt').value='';updateWithdrawUI();renderApprovals();updateDashboard();
-}
+// FIXED - Added ! - OK now approves, Cancel stops
+function approvePayment(i){ let w=withdraws[i]; if(!confirm('APPROVE? Send '+fmtAmt(w.amt)+' to '+w.who+'?')) return; withdraws[i].status='Paid ✓ - Approved by SUPER'; localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); alert('✅ Approved for '+w.who); }
+function rejectPayment(i){ if(!confirm('Reject payment for '+withdraws[i].who+'?')) return; withdraws.splice(i,1); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); }
+
 function updateWithdrawUI(){
-  let pend=withdraws.filter(w=>w.status.includes('Pending'));
-  let html='<h4>⏳ Pending</h4>';if(!pend.length)html+='<p class="small">No pending withdraws</p>';
-  pend.forEach(w=>{let idx=withdraws.indexOf(w);html+='<div class="appr"><b>'+w.who+'</b> - '+fmtAmt(w.amt)+' to '+w.phone+' ('+w.method+')<br><span class="small">'+w.date+' • '+w.status+'</span><br>'+(currentRole==='SUPER'?'<button onclick="approveWithdraw('+idx+')">✅ APPROVE & PAY</button> <button onclick="rejectWithdraw('+idx+')">❌ REJECT</button>':'<span class="badge">Waiting SUPER</span>')+'</div>'});
-  document.getElementById('pendingList').innerHTML=html;
-  let all='<h4>📋 All Withdraws</h4>';withdraws.slice().reverse().forEach(w=>{all+='<div class="small">'+w.who+' - '+fmtAmt(w.amt)+' - '+w.status+' - '+w.date+'</div>'});
-  document.getElementById('superList').innerHTML=all;
+  let s=getWithdrawStats();
+  let pend=withdraws.filter(w=>(w.status||'').includes('Pending')||(w.status||'').includes('Waiting'));
+  // FIXED - Now has Approve button inside Pending list
+  let approveHTML=pend.length?pend.map(w=>'<div class="item" style="border:2px solid #dc2626">⏳ WAITING - '+w.who+'<br>Amount: '+fmtAmt(w.amt)+' to '+w.phone+' ('+w.method+')<br><span class="small">'+w.date+'</span><br><button class="btn" style="background:#16a34a" onclick="approvePayment('+withdraws.indexOf(w)+')">✅ APPROVE & PAY</button> <button class="btn" style="background:#dc2626" onclick="rejectPayment('+withdraws.indexOf(w)+')">❌ REJECT</button></div>').join(''):'<p class="small">No pending withdraws</p>';
+  document.getElementById('pendingList').innerHTML='<h4>⏳ Pending</h4>'+approveHTML;
+  document.getElementById('superApprovePayments').innerHTML='<h4>📋 SUPER Approve</h4>'+approveHTML;
+  document.getElementById('superList').innerHTML='<h4>📋 All Withdraws</h4>'+withdraws.slice().reverse().map(w=>'<div class="small">'+w.who+' - '+fmtAmt(w.amt)+' - '+w.status+' - '+w.date+'</div>').join('');
+  document.getElementById('clientWithdrawList').innerHTML='';
 }
-function approveWithdraw(i){if(currentRole!=='SUPER')return alert('SUPER only');let w=withdraws[i];if(balance<w.amt)return alert('Not enough balance');balance-=w.amt;w.status='Paid - Approved by SUPER';saveAll();updateBal();updateWithdrawUI();renderApprovals();updateDashboard();alert('Paid '+fmtAmt(w.amt)+' to '+w.phone)}
-function rejectWithdraw(i){withdraws[i].status='Rejected by SUPER';saveAll();updateWithdrawUI();renderApprovals();updateDashboard()}
-function renderAdverts(){document.getElementById('advertsBox').innerHTML=adverts.map(a=>'<div class="nurse"><b>'+a.t+'</b><br><span class="small">'+a.d+'</span></div>').join('')}
-function renderRatings(){document.getElementById('ratingsBox').innerHTML=ratings.map(r=>'<div class="small">'+'⭐'.repeat(r.s)+' '+r.n+': '+r.c+'</div>').join('')}
-function setupShareLinks(){document.getElementById('shareBox').innerHTML='<p class="small">Share: https://kwemoilevi.github.io/home-care-hero-web/</p><button class="btn btn2" onclick="navigator.clipboard.writeText(location.href);alert(\'Link copied\')">🔗 Copy Share Link</button>'}
-function refreshGpsList(){document.getElementById('gpsList').innerHTML='<p class="small">GPS: Enable location to see nurses near you (Kampala).</p>'}
-function renderApprovals(){let html='';let pend=withdraws.filter(w=>w.status.includes('Pending'));if(!pend.length)html='<p class="small">No pending approvals.</p>';pend.forEach(w=>{let idx=withdraws.indexOf(w);html+='<div class="appr"><b>'+w.who+'</b> wants '+fmtAmt(w.amt)+' to '+w.phone+'<br><span class="small">'+w.date+'</span><br><button onclick="approveWithdraw('+idx+')">✅ APPROVE & PAY</button> <button onclick="rejectWithdraw('+idx+')">❌ REJECT</button></div>'});document.getElementById('approvalsBox').innerHTML=html;document.getElementById('navAppr').textContent=pend.length?'('+pend.length+')':''}
-function renderNurseAccountBox(){document.getElementById('nurseAccountBox').innerHTML='<div class="nurse"><b>👩‍⚕️ Nurse Account</b><br><span class="small">Your earnings and withdraws are in Withdraw History above.</span></div>'}
-updateBal();renderAdverts();renderRatings();setupShareLinks();renderNurses();refreshGpsList();renderApprovals();renderNurseAccountBox();updateWithdrawUI();updateDashboard();
+function renderApprovals(){
+  let pend=withdraws.filter(w=>(w.status||'').includes('Pending')||(w.status||'').includes('Waiting'));
+  let html=''; if(!pend.length) html='<p class="small">No pending approvals.</p>';
+  pend.forEach(w=>{ let idx=withdraws.indexOf(w); html+='<div class="appr"><b>'+w.who+'</b> wants '+fmtAmt(w.amt)+' to '+w.phone+'<br><span class="small">'+w.date+'</span><br><button class="btn" style="background:#16a34a" onclick="approvePayment('+idx+')">✅ APPROVE & PAY</button> <button class="btn" style="background:#dc2626" onclick="rejectPayment('+idx+')">❌ REJECT</button></div>'; });
+  document.getElementById('approvalsBox').innerHTML=html; document.getElementById('navAppr').textContent=pend.length?'('+pend.length+')':'';
+}
+function renderAdverts(){ document.getElementById('advertsBox').innerHTML=adverts.map(a=>'<div class="nurse"><b>'+a.t+'</b><br><span class="small">'+a.d+'</span></div>').join(''); }
+function renderRatings(){ document.getElementById('ratingsBox').innerHTML=ratings.map(r=>'<div class="small">'+'⭐'.repeat(r.s)+' '+r.n+': '+r.c+'</div>').join(''); }
+function setupShareLinks(){ document.getElementById('shareBox').innerHTML='<p class="small">Share: https://kwemoilevi.github.io/home-care-hero-web/</p><button class="btn btn2" onclick="navigator.clipboard.writeText(location.href);alert(\'Link copied\')">🔗 Copy Share Link</button>'; }
+function refreshGpsList(){ document.getElementById('gpsList').innerHTML='<p class="small">GPS: Enable location to see nurses near you (Kampala).</p>'; document.getElementById('trackList').innerHTML='<p class="small">No active tracking yet.</p>'; }
+
+function loadFromCloud(){
+  if(!window.db) return;
+  window.db.collection('bookings').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!bookings.find(b=>b.phone===fb.phone && b.date===fb.date)){ bookings.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_bookings',JSON.stringify(bookings)); renderBookings(); } },()=>{});
+  window.db.collection('nurses').onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!nurses.find(n=>n.name===fb.name)){ nurses.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_nurses',JSON.stringify(nurses)); renderNurses(); } },()=>{});
+  window.db.collection('payments').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!pays.find(p=>p.date===fb.date && p.amt===fb.amt)){ pays.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_pays',JSON.stringify(pays)); updateBal(); updateWithdrawUI(); } },()=>{});
+  // FIXED - Withdraws now loaded from Cloud too - works on ALL phones
+  window.db.collection('withdraws').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!withdraws.find(w=>w.phone===fb.phone && w.date===fb.date && w.amt===fb.amt)){ withdraws.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); } },()=>{});
+}
+updateBal(); renderAdverts(); renderRatings(); setupShareLinks(); renderNurses(); renderPharmacy(); renderBookings(); refreshGpsList(); renderApprovals(); updateWithdrawUI(); updateDashboard(); loadFromCloud();
 </script>
 </body>
 </html>
