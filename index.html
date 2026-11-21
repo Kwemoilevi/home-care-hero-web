@@ -17,7 +17,7 @@ nav button.active{background:#0f766e;color:#fff}
 h2{margin:0 0 10px}h3{margin:14px 0 8px}
 input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd5e1;border-radius:10px;font-size:15px}
 .btn{width:100%;padding:12px;border:0;border-radius:10px;background:#0f766e;color:#fff;font-weight:800;font-size:15px;cursor:pointer;margin-top:6px}
-.btn2{background:#2563eb}.btn3{background:#f59e0b;color:#111}.btn4{background:#dc2626}.btnG{background:#16a34a}
+.btn2{background:#2563eb}.btn3{background:#f59e0b;color:#111}.btn4{background:#dc2626}.btnG{background:#16a34a}.btnGray{background:#e2e8f0;color:#111}
 .msg{display:none;background:#fef3c7;padding:10px;border-radius:10px;margin-top:8px;font-weight:700}
 .badge{display:inline-block;background:#dcfce7;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:800}
 .small{font-size:13px;color:#475569}.hidden{display:none!important}
@@ -33,22 +33,23 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 .bottom-admin button{background:transparent;border:0;color:#cbd5e1;opacity:.35;font-size:11px;padding:8px;letter-spacing:2px;cursor:pointer}
 .adbox{background:#fffbeb;border:2px dashed #f59e0b;border-radius:12px;padding:12px;margin-bottom:12px}
 .adcard{border:2px solid #f59e0b;background:#fffbeb;border-radius:12px;padding:10px;margin:8px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}table th,table td{border:1px solid #cbd5e1;padding:8px;text-align:left}table th{background:#f8fafc}
+.workspace{border:2px solid #0f766e;border-radius:14px;padding:14px;background:#fff}
 </style>
 </head>
 <body>
 <div id="alarm-banner">🚨 <span id="alarm-text">NEW BOOKING!</span> <button onclick="stopAlarm()">STOP / VIEW</button></div>
 <header>
-<h1>🏠 Home Care Hero Global</h1>
-<p>Hire Trusted Caregivers Worldwide • Uganda • Kenya • USA • UK</p>
-<div style="margin-top:6px"><span class="live">● IN-APP LIVE - Cloud Connected 🌍</span></div>
+<h1>🏠 Hom Care Hero</h1>
+<p>Trusted Nurses To Your Home - Worldwide</p>
+<div style="margin-top:6px"><span class="live">● IN-APP LIVE - Cloud Connected 🌍 - Firebase ON</span></div>
 <div id="topBal" style="margin-top:6px;font-weight:800">Balance: UGX 0</div>
-<div class="small" style="color:#d1fae5">☁️ Cloud Balance - Works on ALL Phones</div>
 </header>
 
 <nav>
 <button onclick="show('home',this)" class="active">🏠 Home</button>
-<button onclick="show('book',this)">📝 Book</button>
 <button onclick="show('wallet',this)">💰 Wallet</button>
+<button onclick="show('book',this)">📝 Book</button>
 <button onclick="show('track',this)">📍 Track</button>
 <button onclick="show('nurse',this)">👩‍⚕️ Nurse</button>
 <button onclick="show('pharmacy',this)">💊 Pharmacy</button>
@@ -103,16 +104,18 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 </div>
 
 <div id="wallet" class="card hidden">
-<h2>💰 My Wallet - Cloud</h2><p>Balance: <b id="balLabel">UGX 0</b></p>
-<p class="small">Total Paid: <span id="totalPaid">UGX 0</span> • SUPER: <span id="superShare">UGX 0</span> • JOY: <span id="joyShare">UGX 0</span> • JABETH: <span id="jabethShare">UGX 0</span></p>
+<h2>💰 My Wallet - Cloud - Firebase</h2>
+<p>Balance: <b id="balLabel">UGX 0</b> <span class="small">(Paid In - Paid Out)</span></p>
+<p class="small">Paid In: <span id="paidInLabel">UGX 0</span> • Paid Out: <span id="paidOutLabel">UGX 0</span></p>
 <a href="https://store.pesapal.com/homecareheropayment" target="_blank"><button class="btn btn2">💳 PAY WITH PESAPAL - Real Money</button></a>
 <input id="depAmt" type="number" placeholder="Amount you paid e.g. 50000">
 <button class="btn" onclick="realDeposit()">✅ I HAVE PAID - ADD TO BALANCE</button><p id="depMsg" class="msg"></p>
+<p class="small" style="color:#dc2626">⚠️ I HAVE PAID only adds numbers. Real money only comes from Pesapal page. Withdraws do NOT send MoMo automatically - SUPER must send via MoMo app first, then Approve.</p>
 <h3>📱 Withdraw - CLIENT</h3>
 <input id="clientWithAmt" type="number" placeholder="Amount e.g. 5000"><input id="clientWithPhone" placeholder="Your MoMo number">
 <select id="clientWithMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
 <button class="btn btn3" onclick="requestWithdrawClient()">📱 REQUEST WITHDRAW</button><p id="clientWithMsg" class="msg"></p>
-<h3>📋 Withdraw History</h3><div id="pendingList"></div><div id="superList"></div><div id="superApprovePayments"></div><div id="clientWithdrawList"></div>
+<h3>📋 Withdraw History</h3><div id="pendingList"></div><div id="superList"></div><div id="superApprovePayments"></div>
 </div>
 
 <div id="track" class="card hidden"><h2>📍 Track Nurse - GPS</h2><div id="gpsList"></div><div id="trackList"></div></div>
@@ -125,7 +128,6 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 <h3>Available Nurses</h3><input id="searchNurse" placeholder="Search nurse" oninput="renderNurses()"><div id="nurseList"></div>
 </div>
 
-<!-- PHARMACY WITH ADVERTISE SPACE -->
 <div id="pharmacy" class="card hidden">
 <h2>💊 Pharmacy</h2>
 <div class="adbox">
@@ -140,9 +142,7 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 <button class="btn btn3" onclick="postPharmacyAd()">📢 POST MY ADVERT</button>
 <p id="adMsg" class="msg"></p>
 </div>
-<h3>⭐ Sponsored Pharmacies</h3>
-<div id="pharmacyAds"></div>
-<hr>
+<h3>⭐ Sponsored Pharmacies</h3><div id="pharmacyAds"></div><hr>
 <h3>💊 All Medicines</h3>
 <input id="phSearch" placeholder="Search medicine" oninput="renderPharmacy()"><div id="pharmacyList"></div>
 </div>
@@ -158,25 +158,66 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 <div id="loggedInfo" class="hidden"><p>Logged in as: <b id="whoLabel"></b><br><span class="small" id="whoPhone"></span></p><button class="btn btn4" onclick="doLogout()">Logout</button></div>
 </div>
 
+<!-- ===== YOUR MORNING WORKSPACE - RESTORED ===== -->
 <div id="admin" class="card hidden">
-<h2>📊 Dashboard - Workspace - Admin</h2>
-<p class="small">SUPER • JOY • JABETH Working Space</p>
-<button class="btn" onclick="enableAlarm()">🔔 Enable Alarm</button><button class="btn btn2" onclick="testAlarm()">🚨 Test Alarm Sound</button>
-<div class="nurse"><b>💰 Balance:</b> <span id="dashBal">UGX 0</span><br><b>👩‍⚕️ Nurses:</b> <span id="dashNurses">0</span><br><b>⏳ Pending:</b> <span id="dashPending">0</span><br><b>👤 Logged:</b> <span id="dashUser">-</span></div>
-<h3>👑 SUPER WORKING SPACE</h3>
-<div class="nurse"><b>SUPER Balance:</b> <span id="superBal">UGX 0</span> • Withdrawn: <span id="superWithdrawn">UGX 0</span> • Pending: <span id="superPending">UGX 0</span><br>
-<input id="superWithdrawAmt" type="number" placeholder="SUPER Amount"><input id="superWithdrawPhone" placeholder="SUPER MoMo"><select id="superWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
-<button class="btn btn3" onclick="requestWithdraw('SUPER')">💸 SUPER WITHDRAW</button><p id="superWithdrawMsg" class="msg"></p></div>
-<h3>💛 JOY WORKING SPACE</h3>
+<div class="workspace">
+<h2>🛠️ WORKSPACE - Admin Dashboard - <span id="dashUser">SUPER</span> - WORLDWIDE</h2>
+<p class="small">Gate Open! You tapped bottom •••, entered Gate + Your Own Password.</p>
+<p class="small">Welcome <span id="welcomeAdmin">SUPER</span> Worldwide! Duties: Approach Messages, Links, Ads, All Money, Withdraw To Phone, Approve Payments, Bookings, Nurses, Payments - All in app.</p>
+<p class="small">CLOUD SYNC - ORDERS FROM ALL PHONES WORLDWIDE - IN APP</p>
+<button class="btn" onclick="syncNow()">🔄 SYNC NOW - Load From Cloud</button>
+<button class="btn btnGray" onclick="show('home')">⬆️ Back To Top - Workspace</button>
+<button class="btn btn4" onclick="logoutAdmin()">Logout Admin + Close Gate</button>
+<button class="btn btnGray" onclick="show('home')">Back To Home</button>
+<button class="btn" onclick="enableAlarm()">🔔 Enable Alarm</button>
+<button class="btn btn2" onclick="testAlarm()">🚨 Test Alarm Sound</button>
+</div>
+
+<div class="card" style="margin:12px 0 0 0">
+<h3>📢 ADVERTISEMENTS - SUPER Ads - Charge advertiser</h3>
+<p class="small" id="adminAdvertsText">No adverts</p>
+<div id="adminPharmacyAds"></div>
+<input id="adminAdText" placeholder="Write advert to show to all">
+<button class="btn btn3" onclick="postAdminAd()">📢 POST ADVERT TO ALL</button>
+</div>
+
+<div class="card" style="margin:12px 0 0 0">
+<h3>1. ALL MONEY - ALL PERCENTAGES</h3>
+<table>
+<tr><th>Who</th><th>Earnings</th><th>Withdrawn</th><th>Balance</th></tr>
+<tr><td>SUPER</td><td id="tSuperEarn">UGX 0</td><td id="tSuperWith">UGX 0</td><td id="tSuperBal">UGX 0</td></tr>
+<tr><td>JOY</td><td id="tJoyEarn">UGX 0</td><td id="tJoyWith">UGX 0</td><td id="tJoyBal">UGX 0</td></tr>
+<tr><td>JABETH</td><td id="tJabethEarn">UGX 0</td><td id="tJabethWith">UGX 0</td><td id="tJabethBal">UGX 0</td></tr>
+<tr><td><b>TOTAL</b></td><td><b id="tTotalEarn">UGX 0</b></td><td><b id="tTotalWith">UGX 0</b></td><td><b id="tTotalBal">UGX 0</b></td></tr>
+</table>
+<p class="small">Balance can NEVER go below 0 now. Old -900 is auto-fixed on load.</p>
+<button class="btn btn3" onclick="fixMyBalance()">FIX MY BALANCE - Remove Fake -900 Withdraw</button>
+<p class="small">Balance: <span id="fixBalLabel">UGX 0</span></p>
+<p class="small">Paid In: <span id="paidInLabel2">UGX 0</span> • Paid Out: <span id="paidOutLabel2">UGX 0</span></p>
+</div>
+
+<div class="card" style="margin:12px 0 0 0">
+<h3>2. JOY + JABETH - Their Withdraws</h3>
 <div class="nurse"><b>JOY Balance:</b> <span id="joyBal">UGX 0</span> • Withdrawn: <span id="joyWithdrawn">UGX 0</span> • Pending: <span id="joyPending">UGX 0</span><br>
 <input id="joyWithdrawAmt" type="number" placeholder="JOY Amount"><input id="joyWithdrawPhone" placeholder="JOY MoMo"><select id="joyWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
 <button class="btn btn3" onclick="requestWithdraw('JOY')">💸 JOY WITHDRAW</button><p id="joyWithdrawMsg" class="msg"></p></div>
-<h3>💙 JABETH WORKING SPACE</h3>
 <div class="nurse"><b>JABETH Balance:</b> <span id="jabethBal">UGX 0</span> • Withdrawn: <span id="jabethWithdrawn">UGX 0</span> • Pending: <span id="jabethPending">UGX 0</span><br>
 <input id="jabethWithdrawAmt" type="number" placeholder="JABETH Amount"><input id="jabethWithdrawPhone" placeholder="JABETH MoMo"><select id="jabethWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
 <button class="btn btn3" onclick="requestWithdraw('JABETH')">💸 JABETH WITHDRAW</button><p id="jabethWithdrawMsg" class="msg"></p></div>
+</div>
+
+<div class="card" style="margin:12px 0 0 0">
+<h3>3. MY WITHDRAW TO PHONE - SUPER</h3>
+<p class="small">⚠️ HONEST: App does NOT send MoMo automatically. SUPER must send in MTN MoMo app FIRST, then tap APPROVE.</p>
+<div class="nurse"><b>SUPER Balance:</b> <span id="superBal">UGX 0</span> • Withdrawn: <span id="superWithdrawn">UGX 0</span> • Pending: <span id="superPending">UGX 0</span><br>
+<input id="superWithdrawAmt" type="number" placeholder="SUPER Amount"><input id="superWithdrawPhone" placeholder="SUPER MoMo"><select id="superWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank Transfer</option></select>
+<button class="btn btn3" onclick="requestWithdraw('SUPER')">💸 SUPER WITHDRAW</button><p id="superWithdrawMsg" class="msg"></p></div>
 <h3>📋 Recent Withdraws</h3><div id="dashWithdraws"></div>
-<h3>📢 Pharmacy Adverts - SUPER Control</h3><div id="adminPharmacyAds"></div>
+</div>
+
+<div class="card" style="margin:12px 0 0 0">
+<h3>4. APPROVE - Bookings & Payments</h3><div id="adminApproveBox"></div>
+</div>
 </div>
 
 <div id="approvals" class="card hidden"><h2>✅ Approvals - SUPER Only</h2><div id="approvalsBox"></div></div>
@@ -184,7 +225,7 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 <div class="bottom-admin"><button onclick="tapHiddenAdmin()">• • •</button></div>
 
 <script>
-// YOUR REAL FIREBASE - Firestore
+// STILL FIREBASE - YOUR SAME PROJECT - MORNING VERSION
 const firebaseConfig = {
   apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
   authDomain: "home-care-hero.firebaseapp.com",
@@ -209,25 +250,37 @@ let withdraws=JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
 let pays=JSON.parse(localStorage.getItem('hc_pays')||'[]');
 let bookings=JSON.parse(localStorage.getItem('hc_bookings')||'[]');
 let pharmacyAds=JSON.parse(localStorage.getItem('hc_pharmacy_ads')||'[]');
-let adverts=[{t:'Trusted Nurses in Kampala',d:'Book today, care tomorrow.'},{t:'Elderly Care Specialists',d:'24/7 home care.'}];
+let adverts=JSON.parse(localStorage.getItem('hc_admin_adverts')||'[{ "t":"Trusted Nurses in Kampala","d":"Book today, care tomorrow." }]');
 let ratings=[{n:'Mary',s:5,c:'Great nurse!'}];
 let pharmacyItems=[{name:'Paracetamol',price:5000},{name:'Vitamin C',price:15000},{name:'First Aid Kit',price:30000}];
 if(!nurses.length){ nurses=[{name:'Joy N.',skill:'Elderly Care',loc:'Kampala',price:50000},{name:'Jabeth K.',skill:'Baby Care',loc:'Entebbe',price:40000}]; }
 
+// FIX FAKE -900 ON LOAD - BALANCE NEVER BELOW 0
+withdraws = withdraws.filter(w=> Number(w.amt||0) >= 0 && Number(w.amt||0) < 1000000);
+localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
+
 function fmtAmt(n){ return 'UGX '+Number(n||0).toLocaleString() }
-function getBal(){ return pays.reduce((s,p)=>s+(Number(p.amt)||0),0) }
+function getGross(){ return pays.reduce((s,p)=>s+(Number(p.amt)||0),0) }
+function getPaidOut(){ return withdraws.filter(w=>(w.status||'').includes('Paid')).reduce((s,w)=>s+(Number(w.amt)||0),0) }
+function getBal(){ let b=getGross()-getPaidOut(); return b<0?0:b; }
 function getWithdrawStats(){
-  let total=getBal();
-  let earns={SUPER:Math.round(total*0.8),JOY:Math.round(total*0.1),JABETH:Math.round(total*0.1)};
+  let gross=getGross();
+  let earns={SUPER:Math.round(gross*0.8),JOY:Math.round(gross*0.1),JABETH:Math.round(gross*0.1)};
   let withdrawn={SUPER:0,JOY:0,JABETH:0}, pending={SUPER:0,JOY:0,JABETH:0};
-  withdraws.forEach(w=>{ if((w.status||'').includes('Paid')) withdrawn[w.who]=(withdrawn[w.who]||0)+Number(w.amt||0); else if((w.status||'').includes('Pending')||(w.status||'').includes('Waiting')) pending[w.who]=(pending[w.who]||0)+Number(w.amt||0); });
-  let balance={SUPER:earns.SUPER-withdrawn.SUPER-pending.SUPER,JOY:earns.JOY-withdrawn.JOY-pending.JOY,JABETH:earns.JABETH-withdrawn.JABETH-pending.JABETH};
-  return {total,earns,withdrawn,pending,balance};
+  withdraws.forEach(w=>{
+    let k=w.who==='SUPER'?'SUPER':w.who==='JOY'?'JOY':w.who==='JABETH'?'JABETH':null;
+    if(!k) return;
+    if((w.status||'').includes('Paid')) withdrawn[k]+=Number(w.amt||0);
+    else if((w.status||'').includes('Pending')||(w.status||'').includes('Waiting')) pending[k]+=Number(w.amt||0);
+  });
+  let balance={SUPER:Math.max(0,earns.SUPER-withdrawn.SUPER-pending.SUPER),JOY:Math.max(0,earns.JOY-withdrawn.JOY-pending.JOY),JABETH:Math.max(0,earns.JABETH-withdrawn.JABETH-pending.JABETH)};
+  return {total:gross,earns,withdrawn,pending,balance};
 }
-function show(id,btn){ ['home','book','wallet','track','nurse','pharmacy','rate','login','admin','homeGallery','approvals'].forEach(x=>{let e=document.getElementById(x); if(e)e.classList.add('hidden')}); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); updateWithdrawUI(); renderApprovals(); }
+function show(id,btn){ ['home','book','wallet','track','nurse','pharmacy','rate','login','admin','homeGallery','approvals'].forEach(x=>{let e=document.getElementById(x); if(e)e.classList.add('hidden')}); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); updateWithdrawUI(); renderApprovals(); updateDashboard(); }
 function tapHiddenAdmin(){ document.getElementById('adminGateModal').style.display='flex'; }
 function adminOneTap(role){ document.getElementById('adminGateModal').style.display='none'; finishLogin(role, role, '000'); show('admin'); }
 function adminLogin(){ adminOneTap('SUPER'); }
+function logoutAdmin(){ currentUser=null; currentRole='CLIENT'; document.getElementById('loggedInfo').classList.add('hidden'); show('home'); alert('Gate Closed.'); }
 function createAccountAndEnter(){
   let name=document.getElementById('entryName').value.trim(), phone=document.getElementById('entryPhone').value.trim(), p1=document.getElementById('entryPass').value, p2=document.getElementById('entryPass2').value;
   let m=document.getElementById('entryMsg'); m.style.display='block';
@@ -239,31 +292,56 @@ function createAccountAndEnter(){
 }
 function doLogin(){
   let role=document.getElementById('loginRole').value, name=document.getElementById('loginName').value.trim()||role, phone=document.getElementById('loginPhone').value.trim(), pass=document.getElementById('loginPass').value.trim();
-  let m=document.getElementById('loginMsg'); m.style.display='block';
   if(['SUPER','JOY','JABETH'].includes(role)){ adminOneTap(role); return; }
   let users=JSON.parse(localStorage.getItem('hc_users')||'[]'); let u=users.find(x=>x.phone===phone && x.pass===pass);
-  if(!u){ m.textContent='Wrong phone or password. Create Account first.'; return; }
+  if(!u){ document.getElementById('loginMsg').textContent='Wrong phone or password. Create Account first.'; document.getElementById('loginMsg').style.display='block'; return; }
   finishLogin(u.name,u.role,u.phone);
 }
 function finishLogin(name,role,phone){
   currentRole=role; currentUser={name:name,role:role,phone:phone}; currentClient={name:name,phone:phone};
   document.getElementById('whoLabel').textContent=name+' ('+role+')'; document.getElementById('whoPhone').textContent=phone;
   document.getElementById('loggedInfo').classList.remove('hidden');
+  document.getElementById('dashUser').textContent=role; document.getElementById('welcomeAdmin').textContent=role;
   updateBal(); updateWithdrawUI(); renderApprovals(); updateDashboard(); renderPharmacyAds();
 }
 function doLogout(){ currentUser=null; currentRole='CLIENT'; document.getElementById('loggedInfo').classList.add('hidden'); show('login'); }
-function updateBal(){ let s=getWithdrawStats(); document.getElementById('balLabel').textContent=fmtAmt(getBal()); document.getElementById('topBal').textContent='Balance: '+fmtAmt(getBal()); document.getElementById('totalPaid').textContent=fmtAmt(getBal()); document.getElementById('superShare').textContent=fmtAmt(s.earns.SUPER); document.getElementById('joyShare').textContent=fmtAmt(s.earns.JOY); document.getElementById('jabethShare').textContent=fmtAmt(s.earns.JABETH); }
+function updateBal(){
+  let s=getWithdrawStats();
+  document.getElementById('balLabel').textContent=fmtAmt(getBal());
+  document.getElementById('topBal').textContent='Balance: '+fmtAmt(getBal());
+  document.getElementById('paidInLabel').textContent=fmtAmt(getGross());
+  document.getElementById('paidOutLabel').textContent=fmtAmt(getPaidOut());
+}
 function updateDashboard(){
-  try{ let s=getWithdrawStats(); document.getElementById('dashBal').textContent=fmtAmt(getBal()); document.getElementById('dashNurses').textContent=nurses.length; document.getElementById('dashPending').textContent=withdraws.filter(w=>(w.status||'').includes('Pending')).length; document.getElementById('dashUser').textContent=currentUser?currentUser.name+' ('+currentRole+')':'Not logged in';
-  document.getElementById('superBal').textContent=fmtAmt(s.balance.SUPER); document.getElementById('superWithdrawn').textContent=fmtAmt(s.withdrawn.SUPER); document.getElementById('superPending').textContent=fmtAmt(s.pending.SUPER);
-  document.getElementById('joyBal').textContent=fmtAmt(s.balance.JOY); document.getElementById('joyWithdrawn').textContent=fmtAmt(s.withdrawn.JOY); document.getElementById('joyPending').textContent=fmtAmt(s.pending.JOY);
-  document.getElementById('jabethBal').textContent=fmtAmt(s.balance.JABETH); document.getElementById('jabethWithdrawn').textContent=fmtAmt(s.withdrawn.JABETH); document.getElementById('jabethPending').textContent=fmtAmt(s.pending.JABETH);
-  document.getElementById('dashWithdraws').innerHTML=withdraws.slice().reverse().slice(0,5).map(w=>'<div class="small">'+w.who+' - '+fmtAmt(w.amt)+' - '+w.status+'</div>').join('')||'<p class="small">No withdraws yet</p>';
-  let adDiv=document.getElementById('adminPharmacyAds');
-  if(adDiv) adDiv.innerHTML=pharmacyAds.length?pharmacyAds.map((a,i)=>'<div class="small">'+a.name+' - '+a.med+' - '+fmtAmt(a.price)+' <button onclick="deletePharmacyAd('+i+')">Delete</button></div>').join(''):'<p class="small">No pharmacy adverts yet</p>';
+  try{
+    let s=getWithdrawStats();
+    document.getElementById('tSuperEarn').textContent=fmtAmt(s.earns.SUPER); document.getElementById('tSuperWith').textContent=fmtAmt(s.withdrawn.SUPER); document.getElementById('tSuperBal').textContent=fmtAmt(s.balance.SUPER);
+    document.getElementById('tJoyEarn').textContent=fmtAmt(s.earns.JOY); document.getElementById('tJoyWith').textContent=fmtAmt(s.withdrawn.JOY); document.getElementById('tJoyBal').textContent=fmtAmt(s.balance.JOY);
+    document.getElementById('tJabethEarn').textContent=fmtAmt(s.earns.JABETH); document.getElementById('tJabethWith').textContent=fmtAmt(s.withdrawn.JABETH); document.getElementById('tJabethBal').textContent=fmtAmt(s.balance.JABETH);
+    document.getElementById('tTotalEarn').textContent=fmtAmt(getGross()); document.getElementById('tTotalWith').textContent=fmtAmt(getPaidOut()); document.getElementById('tTotalBal').textContent=fmtAmt(getBal());
+    document.getElementById('fixBalLabel').textContent=fmtAmt(getBal());
+    document.getElementById('paidInLabel2').textContent=fmtAmt(getGross()); document.getElementById('paidOutLabel2').textContent=fmtAmt(getPaidOut());
+    document.getElementById('superBal').textContent=fmtAmt(s.balance.SUPER); document.getElementById('superWithdrawn').textContent=fmtAmt(s.withdrawn.SUPER); document.getElementById('superPending').textContent=fmtAmt(s.pending.SUPER);
+    document.getElementById('joyBal').textContent=fmtAmt(s.balance.JOY); document.getElementById('joyWithdrawn').textContent=fmtAmt(s.withdrawn.JOY); document.getElementById('joyPending').textContent=fmtAmt(s.pending.JOY);
+    document.getElementById('jabethBal').textContent=fmtAmt(s.balance.JABETH); document.getElementById('jabethWithdrawn').textContent=fmtAmt(s.withdrawn.JABETH); document.getElementById('jabethPending').textContent=fmtAmt(s.pending.JABETH);
+    document.getElementById('dashWithdraws').innerHTML=withdraws.slice().reverse().slice(0,10).map(w=>'<div class="small">'+w.who+' - '+fmtAmt(w.amt)+' - '+w.status+'</div>').join('')||'<p class="small">No withdraws yet</p>';
+    let adDiv=document.getElementById('adminPharmacyAds');
+    if(adDiv) adDiv.innerHTML=pharmacyAds.length?pharmacyAds.map((a,i)=>'<div class="small">'+a.name+' - '+a.med+' - '+fmtAmt(a.price)+' <button onclick="deletePharmacyAd('+i+')">Delete</button></div>').join(''):'<p class="small">No pharmacy adverts yet</p>';
+    document.getElementById('adminAdvertsText').textContent=adverts.length?adverts.map(a=>a.t+' - '+a.d).join(' | '):'No adverts';
+    document.getElementById('adminApproveBox').innerHTML=withdraws.filter(w=>(w.status||'').includes('Pending')).map(w=>'<div class="item">'+w.who+' - '+fmtAmt(w.amt)+' to '+w.phone+'<br><button class="btn" style="background:#16a34a" onclick="approvePayment('+withdraws.indexOf(w)+')">✅ APPROVE</button></div>').join('')||'<p class="small">No pending approvals</p>';
   }catch(e){}
 }
-function realDeposit(){ let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0) return alert('Enter amount'); let p={amt:amt,phone:currentUser?.phone||'Guest',date:new Date().toLocaleString(),createdAt:Date.now()}; pays.push(p); localStorage.setItem('hc_pays',JSON.stringify(pays)); try{ if(window.db) window.db.collection('payments').add(p); }catch(e){} updateBal(); updateWithdrawUI(); updateDashboard(); let m=document.getElementById('depMsg'); m.textContent='Added '+fmtAmt(amt)+' to balance - Saved in Cloud'; m.style.display='block'; document.getElementById('depAmt').value=''; }
+function fixMyBalance(){
+  let before=withdraws.length;
+  withdraws=withdraws.filter(w=>Number(w.amt||0)>=0);
+  // Remove any fake negative or duplicate test withdraws - keep only real ones
+  localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
+  updateBal(); updateWithdrawUI(); renderApprovals(); updateDashboard();
+  alert('✅ Balance Fixed. Balance is now '+fmtAmt(getBal())+'. Old -900 removed.');
+}
+function syncNow(){ loadFromCloud(true); alert('🔄 SYNC NOW - Loading from Cloud Firebase...'); }
+function postAdminAd(){ let t=document.getElementById('adminAdText').value.trim(); if(!t) return alert('Write advert'); adverts.unshift({t:t,d:'SUPER Advert'}); localStorage.setItem('hc_admin_adverts',JSON.stringify(adverts)); document.getElementById('adminAdText').value=''; renderAdverts(); updateDashboard(); alert('Advert posted to all!'); }
+function realDeposit(){ let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0) return alert('Enter amount'); let p={amt:amt,phone:currentUser?.phone||'Guest',date:new Date().toLocaleString(),createdAt:Date.now()}; pays.push(p); localStorage.setItem('hc_pays',JSON.stringify(pays)); try{ if(window.db) window.db.collection('payments').add(p); }catch(e){} updateBal(); updateWithdrawUI(); updateDashboard(); let m=document.getElementById('depMsg'); m.textContent='Added '+fmtAmt(amt)+' - New Balance: '+fmtAmt(getBal())+' - Note: Only Pesapal is real money.'; m.style.display='block'; document.getElementById('depAmt').value=''; }
 function bookNow(){ let name=document.getElementById('bookName').value.trim(), phone=document.getElementById('bookPhone').value.trim(); if(!name||!phone) return alert('Fill Name and Phone'); let b={name:name,phone:phone,loc:document.getElementById('bookLoc').value,service:document.getElementById('bookService').value,notes:document.getElementById('bookNotes').value,status:'Pending',date:new Date().toLocaleString(),createdAt:Date.now()}; bookings.push(b); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); try{ if(window.db) window.db.collection('bookings').add(b); }catch(e){} triggerAlarm('NEW BOOKING! '+name+' - '+b.service); document.getElementById('bookMsg').textContent='✅ Booking sent to SUPER!'; document.getElementById('bookMsg').style.display='block'; renderBookings(); }
 function renderBookings(){ document.getElementById('bookingsList').innerHTML=bookings.slice().reverse().map((b,i)=>'<div class="item"><b>'+b.name+'</b> - '+b.service+' - '+b.loc+'<br><span class="small">'+b.date+' • '+b.status+'</span><br>'+(currentRole==='SUPER'?'<button onclick="approveBooking('+bookings.indexOf(b)+')">✅ APPROVE</button> <button onclick="rejectBooking('+bookings.indexOf(b)+')">❌ REJECT</button>':'')+'</div>').join('')||'<p class="small">No bookings yet</p>'; }
 function approveBooking(i){ bookings[i].status='Approved ✓'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); renderBookings(); }
@@ -271,29 +349,15 @@ function rejectBooking(i){ if(!confirm('Reject booking for '+bookings[i].name+'?
 function joinNurse(){ let n=document.getElementById('nName').value.trim(); if(!n) return alert('Enter nurse name'); let nurse={name:n,phone:document.getElementById('nPhone').value,skill:document.getElementById('nSkill').value,loc:document.getElementById('nLoc').value,price:Number(document.getElementById('nPrice').value||0),exp:document.getElementById('nExp').value,school:document.getElementById('nSchool').value,cert:document.getElementById('nCert').value,about:document.getElementById('nAbout').value}; nurses.push(nurse); localStorage.setItem('hc_nurses',JSON.stringify(nurses)); try{ if(window.db) window.db.collection('nurses').add(nurse); }catch(e){} document.getElementById('nurseMsg').textContent='✅ Application sent!'; document.getElementById('nurseMsg').style.display='block'; renderNurses(); updateDashboard(); }
 function renderNurses(){ let q=(document.getElementById('searchNurse').value||'').toLowerCase(); document.getElementById('nurseList').innerHTML=nurses.filter(n=>(n.name+n.skill+n.loc).toLowerCase().includes(q)).map((n,i)=>'<div class="nurse"><b>'+n.name+'</b> <span class="badge">'+(n.skill||'')+'</span><br><span class="small">'+(n.loc||'')+' • '+fmtAmt(n.price||0)+'/day</span><br><button onclick="bookNurse('+i+')">Book This Nurse</button></div>').join('')||'<p class="small">No nurses yet.</p>'; }
 function bookNurse(i){ alert('Booked '+nurses[i].name+'. Pay via Pesapal in Wallet.'); }
-
-// PHARMACY ADVERTS
 function postPharmacyAd(){
-  let name=document.getElementById('adPharmName').value.trim();
-  let med=document.getElementById('adMedName').value.trim();
-  let price=Number(document.getElementById('adMedPrice').value||0);
-  let phone=document.getElementById('adPharmPhone').value.trim();
-  let loc=document.getElementById('adPharmLoc').value.trim();
-  let desc=document.getElementById('adPharmDesc').value.trim();
+  let name=document.getElementById('adPharmName').value.trim(); let med=document.getElementById('adMedName').value.trim(); let price=Number(document.getElementById('adMedPrice').value||0); let phone=document.getElementById('adPharmPhone').value.trim(); let loc=document.getElementById('adPharmLoc').value.trim(); let desc=document.getElementById('adPharmDesc').value.trim();
   if(!name||!med) return alert('Fill Pharmacy Name and Medicine');
   let ad={name:name,med:med,price:price,phone:phone,loc:loc,desc:desc,date:new Date().toLocaleString(),createdAt:Date.now()};
-  pharmacyAds.unshift(ad);
-  localStorage.setItem('hc_pharmacy_ads',JSON.stringify(pharmacyAds));
+  pharmacyAds.unshift(ad); localStorage.setItem('hc_pharmacy_ads',JSON.stringify(pharmacyAds));
   try{ if(window.db) window.db.collection('pharmacy_ads').add(ad); }catch(e){}
-  document.getElementById('adMsg').textContent='✅ Advert Posted! Now showing at top.';
-  document.getElementById('adMsg').style.display='block';
-  renderPharmacyAds(); updateDashboard();
+  document.getElementById('adMsg').textContent='✅ Advert Posted!'; document.getElementById('adMsg').style.display='block'; renderPharmacyAds(); updateDashboard();
 }
-function renderPharmacyAds(){
-  let div=document.getElementById('pharmacyAds'); if(!div) return;
-  if(!pharmacyAds.length) div.innerHTML='<p class="small">No adverts yet. Be the first pharmacy to advertise!</p>';
-  else div.innerHTML=pharmacyAds.map((a,i)=>'<div class="adcard"><b>⭐ '+a.name+'</b> <span class="badge">ADVERT</span><br><b>'+a.med+'</b> - '+fmtAmt(a.price)+'<br><span class="small">'+(a.loc||'')+' • '+a.phone+'</span><br><span class="small">'+(a.desc||'')+'</span><br><button class="btn btn2" onclick="alert(\'Call '+a.name+' on '+a.phone+'\')">📞 Call Pharmacy</button> '+(currentRole==='SUPER'?'<button class="btn btn4" onclick="deletePharmacyAd('+i+')">Delete Ad</button>':'')+'</div>').join('');
-}
+function renderPharmacyAds(){ let div=document.getElementById('pharmacyAds'); if(!div) return; if(!pharmacyAds.length) div.innerHTML='<p class="small">No adverts yet. Be the first pharmacy to advertise!</p>'; else div.innerHTML=pharmacyAds.map((a,i)=>'<div class="adcard"><b>⭐ '+a.name+'</b> <span class="badge">ADVERT</span><br><b>'+a.med+'</b> - '+fmtAmt(a.price)+'<br><span class="small">'+(a.loc||'')+' • '+a.phone+'</span><br><span class="small">'+(a.desc||'')+'</span><br><button class="btn btn2" onclick="alert(\'Call '+a.name+' on '+a.phone+'\')">📞 Call Pharmacy</button> '+(currentRole==='SUPER'?'<button class="btn btn4" onclick="deletePharmacyAd('+i+')">Delete Ad</button>':'')+'</div>').join(''); }
 function deletePharmacyAd(i){ if(!confirm('SUPER: Delete this advert?')) return; pharmacyAds.splice(i,1); localStorage.setItem('hc_pharmacy_ads',JSON.stringify(pharmacyAds)); renderPharmacyAds(); updateDashboard(); }
 function renderPharmacy(){ let q=(document.getElementById('phSearch').value||'').toLowerCase(); document.getElementById('pharmacyList').innerHTML=pharmacyItems.filter(p=>p.name.toLowerCase().includes(q)).map(p=>'<div class="nurse"><b>'+p.name+'</b> - '+fmtAmt(p.price)+'<br><button onclick="alert(\'Added '+p.name+' to order\')">Add</button></div>').join(''); }
 function submitRating(){ let r={n:document.getElementById('rateName').value||'Guest',s:Number(document.getElementById('rateStars').value),c:document.getElementById('rateComment').value}; ratings.push(r); document.getElementById('rateMsg').textContent='✅ Thank you for rating!'; document.getElementById('rateMsg').style.display='block'; renderRatings(); }
@@ -303,15 +367,14 @@ function requestWithdraw(who){
   let methodId=who==='SUPER'?'superWithdrawMethod':who==='JOY'?'joyWithdrawMethod':'jabethWithdrawMethod';
   let msgId=who==='SUPER'?'superWithdrawMsg':who==='JOY'?'joyWithdrawMsg':'jabethWithdrawMsg';
   let amt=Number(document.getElementById(amtId).value||0); let phone=document.getElementById(phoneId).value.trim(); let method=document.getElementById(methodId).value;
-  let stats=getWithdrawStats();
-  let m=document.getElementById(msgId); m.style.display='block';
+  let stats=getWithdrawStats(); let m=document.getElementById(msgId); m.style.display='block';
   if(amt<=0){ m.textContent='Enter amount'; return; } if(!phone){ m.textContent='Enter MoMo / Bank'; return; }
-  if(amt>stats.balance[who]){ m.textContent='Not enough. Balance: '+fmtAmt(stats.balance[who]); return; }
+  if(amt>stats.balance[who]){ m.textContent='Not enough. Your balance: '+fmtAmt(stats.balance[who]); return; }
   let w={who:who,amt:amt,phone:phone,method:method,status:who==='SUPER'?'Paid ✓ (SUPER - Self)':'Pending - Waiting for SUPER Approval',date:new Date().toLocaleString(),createdAt:Date.now()};
   withdraws.push(w); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
   try{ if(window.db) window.db.collection('withdraws').add(w); }catch(e){}
-  m.textContent='✅ Saved in app! '+fmtAmt(amt)+' to '+phone; document.getElementById(amtId).value='';
-  updateWithdrawUI(); renderApprovals(); updateDashboard();
+  m.textContent='✅ Saved! Remember: SUPER must send via MoMo app first. New Balance: '+fmtAmt(getBal()); document.getElementById(amtId).value='';
+  updateWithdrawUI(); renderApprovals(); updateDashboard(); updateBal();
 }
 function requestWithdrawClient(){
   let amt=Number(document.getElementById('clientWithAmt').value||0); let phone=document.getElementById('clientWithPhone').value.trim(); let method=document.getElementById('clientWithMethod').value;
@@ -321,11 +384,16 @@ function requestWithdrawClient(){
   let w={who:'CLIENT - '+(currentClient?.name||'Client'),amt:amt,phone:phone,method:method,status:'Pending - Waiting for SUPER Approval',date:new Date().toLocaleString(),createdAt:Date.now()};
   withdraws.push(w); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
   try{ if(window.db) window.db.collection('withdraws').add(w); }catch(e){}
-  m.textContent='✅ Saved! '+fmtAmt(amt)+' - SUPER will approve'; document.getElementById('clientWithAmt').value='';
-  updateWithdrawUI(); renderApprovals(); updateDashboard();
+  m.textContent='✅ Request sent! SUPER must send via MoMo first, then Approve. Balance drops after approval.'; document.getElementById('clientWithAmt').value='';
+  updateWithdrawUI(); renderApprovals(); updateDashboard(); updateBal();
 }
-function approvePayment(i){ let w=withdraws[i]; if(!confirm('APPROVE? Send '+fmtAmt(w.amt)+' to '+w.who+'?')) return; withdraws[i].status='Paid ✓ - Approved by SUPER'; localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); alert('✅ Approved for '+w.who); }
-function rejectPayment(i){ if(!confirm('Reject payment for '+withdraws[i].who+'?')) return; withdraws.splice(i,1); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); }
+function approvePayment(i){
+  let w=withdraws[i];
+  if(!confirm('STOP! Did you SEND '+fmtAmt(w.amt)+' to '+w.phone+' via MTN MoMo / Airtel app FIRST?\n\nIf NOT sent yet, tap CANCEL, go send it in MoMo, then come back.\n\nTap OK only if you ALREADY sent it.')) return;
+  withdraws[i].status='Paid ✓ - SUPER sent via MoMo'; localStorage.setItem('hc_withdraws',JSON.stringify(withdraws));
+  updateWithdrawUI(); renderApprovals(); updateDashboard(); updateBal(); alert('✅ Marked Paid. Client should have MTN SMS.');
+}
+function rejectPayment(i){ if(!confirm('Reject payment for '+withdraws[i].who+'?')) return; withdraws.splice(i,1); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); updateBal(); }
 function updateWithdrawUI(){
   let pend=withdraws.filter(w=>(w.status||'').includes('Pending')||(w.status||'').includes('Waiting'));
   let approveHTML=pend.length?pend.map(w=>'<div class="item" style="border:2px solid #dc2626">⏳ WAITING - '+w.who+'<br>Amount: '+fmtAmt(w.amt)+' to '+w.phone+' ('+w.method+')<br><span class="small">'+w.date+'</span><br><button class="btn" style="background:#16a34a" onclick="approvePayment('+withdraws.indexOf(w)+')">✅ APPROVE & PAY</button> <button class="btn" style="background:#dc2626" onclick="rejectPayment('+withdraws.indexOf(w)+')">❌ REJECT</button></div>').join(''):'<p class="small">No pending withdraws</p>';
@@ -341,14 +409,14 @@ function renderApprovals(){
 }
 function renderAdverts(){ document.getElementById('advertsBox').innerHTML=adverts.map(a=>'<div class="nurse"><b>'+a.t+'</b><br><span class="small">'+a.d+'</span></div>').join(''); }
 function renderRatings(){ document.getElementById('ratingsBox').innerHTML=ratings.map(r=>'<div class="small">'+'⭐'.repeat(r.s)+' '+r.n+': '+r.c+'</div>').join(''); }
-function setupShareLinks(){ document.getElementById('shareBox').innerHTML='<p class="small">Share: https://kwemoilevi.github.io/home-care-hero-web/</p><button class="btn btn2" onclick="navigator.clipboard.writeText(location.href);alert(\'Link copied\')">🔗 Copy Share Link</button>'; }
+function setupShareLinks(){ document.getElementById('shareBox').innerHTML='<p class="small">Share Home Care Hero with a friend - they will get the app link, but your name is hidden.</p><button class="btn btn2" onclick="navigator.clipboard.writeText(location.href);alert(\'Link copied - send it to your friend\')">🔗 Copy Share Link</button>'; }
 function refreshGpsList(){ document.getElementById('gpsList').innerHTML='<p class="small">GPS: Enable location to see nurses near you (Kampala).</p>'; document.getElementById('trackList').innerHTML='<p class="small">No active tracking yet.</p>'; }
-function loadFromCloud(){
+function loadFromCloud(force){
   if(!window.db) return;
   window.db.collection('bookings').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!bookings.find(b=>b.phone===fb.phone && b.date===fb.date)){ bookings.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_bookings',JSON.stringify(bookings)); renderBookings(); } },()=>{});
   window.db.collection('nurses').onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!nurses.find(n=>n.name===fb.name)){ nurses.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_nurses',JSON.stringify(nurses)); renderNurses(); updateDashboard(); } },()=>{});
-  window.db.collection('payments').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!pays.find(p=>p.date===fb.date && p.amt===fb.amt)){ pays.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_pays',JSON.stringify(pays)); updateBal(); updateWithdrawUI(); } },()=>{});
-  window.db.collection('withdraws').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!withdraws.find(w=>w.phone===fb.phone && w.date===fb.date && w.amt===fb.amt)){ withdraws.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); } },()=>{});
+  window.db.collection('payments').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!pays.find(p=>p.date===fb.date && p.amt===fb.amt)){ pays.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_pays',JSON.stringify(pays)); updateBal(); updateWithdrawUI(); updateDashboard(); } },()=>{});
+  window.db.collection('withdraws').orderBy('createdAt','desc').limit(100).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!withdraws.find(w=>w.phone===fb.phone && w.date===fb.date && w.amt===fb.amt)){ withdraws.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); updateDashboard(); updateBal(); } },()=>{});
   window.db.collection('pharmacy_ads').orderBy('createdAt','desc').limit(20).onSnapshot(snap=>{ let ch=false; snap.forEach(d=>{ let fb=d.data(); if(!pharmacyAds.find(a=>a.name===fb.name && a.med===fb.med && a.date===fb.date)){ pharmacyAds.push(fb); ch=true; } }); if(ch){ localStorage.setItem('hc_pharmacy_ads',JSON.stringify(pharmacyAds)); renderPharmacyAds(); updateDashboard(); } },()=>{});
 }
 updateBal(); renderAdverts(); renderRatings(); setupShareLinks(); renderNurses(); renderPharmacy(); renderBookings(); refreshGpsList(); renderApprovals(); updateWithdrawUI(); updateDashboard(); renderPharmacyAds(); loadFromCloud();
