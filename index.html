@@ -38,6 +38,11 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 .wsTab{flex:1;padding:12px 4px;border:0;background:#e9ecef;font-weight:800;border-radius:10px;cursor:pointer}
 .wsTab.active{background:#0f5132;color:#fff}
 .wsCard{background:#f8f9fa;border-radius:14px;padding:14px;margin-top:10px}
+.priceTag{background:#e8f5ee;color:#0f5132;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:800}
+.photoBox{border:2px dashed #0f5132;border-radius:16px;padding:14px;text-align:center;background:#f0faf4;margin-top:10px}
+.photoBox img{width:110px;height:110px;object-fit:cover;border-radius:50%;border:3px solid #0f5132;display:none;margin:8px auto}
+.nurseRow{display:flex;gap:10px;padding:10px;border-bottom:1px solid #eee;align-items:flex-start}
+.nurseRow img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:2px solid #0f5132;flex-shrink:0}
 </style>
 </head>
 <body>
@@ -101,14 +106,15 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 
 <div id="screen-booking" class="card hidden">
 <h2>📅 Book a Nurse</h2>
+<p class="small">Choose service. No price shown - Nurse will call you with friendly price after assessment. Free to book.</p>
 <label>Full Name</label><input id="bkName"><label>Phone</label><input id="bkPhone"><label>Location / City / Country</label><input id="bkLocation" placeholder="Your city, your country">
 <label>Choose Service</label><div id="serviceList"></div>
 <label>When?</label><input id="bkDate" type="date"><input id="bkTime" type="time" style="margin-top:8px">
 <label>Hours</label><select id="bkHours"><option value="2">2 Hours</option><option value="4">4 Hours</option><option value="8" selected>8 Hours</option><option value="12">12 Hours</option><option value="24">24 Hours</option></select>
 <label>Notes</label><textarea id="bkNotes" placeholder="Patient need..."></textarea>
-<div class="row" style="margin-top:12px"><span>Total</span><span class="price" id="bkTotal">0</span></div>
+<div class="row" style="margin-top:12px;background:#e8f5ee;padding:12px;border-radius:12px"><span><b>Price</b><br><span class="small">Nurse will call with best price</span></span><span class="priceTag">FREE ASSESSMENT • PRICE AFTER CALL</span></div>
 <h3>💳 How do you want to pay?</h3><div id="bookPayMethods"></div>
-<button class="btn green" id="bookPayBtn" style="font-size:18px;padding:16px" onclick="payForBooking()">✅ PAY & BOOK NOW</button>
+<button class="btn green" id="bookPayBtn" style="font-size:18px;padding:16px" onclick="payForBooking()">✅ BOOK NOW - Nurse Will Call You</button>
 <button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
 </div>
 
@@ -129,7 +135,23 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 <button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
 </div>
 
-<div id="screen-nurse" class="card hidden"><h2>👩‍⚕️ Join as Nurse - 🌍</h2><label>Full Name</label><input id="nName"><label>Phone</label><input id="nPhone"><label>City / Country</label><input id="nLocation" placeholder="Your city, your country"><label>Qualification</label><select id="nQual"><option>Registered Nurse</option><option>Enrolled Nurse</option><option>Midwife</option><option>Caregiver</option><option>Physiotherapist</option></select><label>Experience Years</label><input id="nExp" type="number"><label>Skills</label><textarea id="nSkills"></textarea><button class="btn green" onclick="submitNurse()">✅ Submit Application</button><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
+<div id="screen-nurse" class="card hidden">
+<h2>👩‍⚕️ Join as Nurse - 🌍</h2>
+<p class="small">Real nurses only. Your photo is for identification - customers and admins must see who you are.</p>
+<label>Full Name</label><input id="nName"><label>Phone</label><input id="nPhone"><label>City / Country</label><input id="nLocation" placeholder="Your city, your country">
+<label>Qualification</label><select id="nQual"><option>Registered Nurse</option><option>Enrolled Nurse</option><option>Midwife</option><option>Caregiver</option><option>Physiotherapist</option></select><label>Experience Years</label><input id="nExp" type="number"><label>Skills</label><textarea id="nSkills"></textarea>
+
+<!-- NURSE PHOTO FOR IDENTIFICATION -->
+<div class="photoBox">
+<b>📸 Upload Profile Picture - Required for Identification</b><br>
+<span class="small">Take a clear photo of your face. No sunglasses, no mask. This is how clients will identify you.</span><br>
+<img id="nursePhotoPreview" alt="Your photo preview">
+<input id="nPhoto" type="file" accept="image/*" onchange="previewNursePhoto(this)" style="margin-top:10px">
+<p class="small" id="nursePhotoStatus" style="color:#c0392b;font-weight:700;margin-top:6px">⚠ No photo yet - Please upload</p>
+</div>
+
+<button class="btn green" onclick="submitNurse()">✅ Submit Application</button><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
+
 <div id="screen-history" class="card hidden"><h2>📋 My Bookings</h2><div id="historyList"></div><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
 
 <div id="screen-adminGate" class="card hidden">
@@ -149,21 +171,19 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 <div id="screen-admin" class="card hidden">
 <h2 id="adminTitle">📊 Workspace</h2><p class="small" id="adminRoleText"></p>
 <p><span class="live">● Live</span></p>
-
 <div id="workspaceTabs" class="row" style="margin-top:12px">
 <button class="wsTab active" id="tab-SUPER" onclick="switchWorkspace('SUPER')">👑 SUPER<br><span style="font-size:11px">All</span></button>
 <button class="wsTab" id="tab-JOY" onclick="switchWorkspace('JOY')">👩‍⚕️ JOY<br><span style="font-size:11px">Nurses</span></button>
 <button class="wsTab" id="tab-KIMTAI" onclick="switchWorkspace('KIMTAI')">📅 KIMTAI<br><span style="font-size:11px">Bookings</span></button>
 </div>
-
 <div id="workspace-SUPER" class="wsCard">
-<h3>👑 SUPER Workspace - Owner - 80%</h3>
+<h3>👑 SUPER Workspace - Owner - 80% - Prices Visible Here Only</h3>
 <div class="kpi"><div><b id="kpiUsers">0</b><span class="small">Users</span></div><div><b id="kpiBookings">0</b><span class="small">Bookings</span></div><div><b id="kpiMoney">0</b><span class="small">Total</span></div></div>
 <div style="background:#fff3cd;padding:12px;border-radius:12px;margin-top:12px">
 <h3>💰 Money Split - SUPER ONLY</h3><div class="row"><span>Total Collected</span><b id="splitTotal">0</b></div><div class="row"><span>👑 SUPER - 80%</span><b id="splitSuper">0</b></div><div class="row"><span>👩‍⚕️ JOY - 10%</span><b id="splitJoy">0</b></div><div class="row"><span>📅 KIMTAI - 10%</span><b id="splitKimtai">0</b></div>
 </div>
-<h3>📅 All Bookings</h3><div id="adminBookings"></div>
-<h3>👩‍⚕️ All Nurses</h3><div id="adminNursesSuper"></div>
+<h3>📅 All Bookings - With Real Price For SUPER</h3><div id="adminBookings"></div>
+<h3>👩‍⚕️ All Nurses - With Photo ID</h3><div id="adminNursesSuper"></div>
 <h3>💰 All Payments</h3><div id="adminDeposits"></div>
 <h3>💊 All Pharmacy Adverts</h3><div id="adminPharmacy"></div>
 <h3>👥 All Users</h3><div id="adminUsers"></div>
@@ -177,15 +197,13 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 <p class="small" id="currentPinsText" style="margin-top:8px"></p>
 </div>
 </div>
-
 <div id="workspace-JOY" class="wsCard hidden">
 <h3>👩‍⚕️ JOY Workspace - Nurses Only - 10%</h3>
-<p class="small">Your job: Check nurses, approve real nurses only.</p>
+<p class="small">Your job: Check nurses, look at their PHOTO ID, approve real nurses only.</p>
 <div style="background:#e8f5ee;padding:12px;border-radius:12px;margin-top:10px"><b>Your Tasks:</b> <span id="joyTaskCount">0</span> nurses waiting</div>
-<h3>👩‍⚕️ Nurse Applications</h3><div id="adminNurses"></div>
+<h3>👩‍⚕️ Nurse Applications - With Photo ID</h3><div id="adminNurses"></div>
 <p class="small" style="margin-top:10px">🔒 Money is hidden from this workspace.</p>
 </div>
-
 <div id="workspace-KIMTAI" class="wsCard hidden">
 <h3>📅 KIMTAI Workspace - Bookings Only - 10%</h3>
 <p class="small">Your job: Check bookings, approve real bookings, call clients.</p>
@@ -193,11 +211,9 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 <h3>📅 Client Bookings</h3><div id="adminBookingsKimtai"></div>
 <p class="small" style="margin-top:10px">🔒 Money is hidden from this workspace.</p>
 </div>
-
 <button class="btn red" onclick="lockAdmin()">🔒 Lock Workspace</button>
 <button class="btn outline" onclick="showScreen('entry')">⬅ Back to App</button>
 </div>
-
 <p class="small" style="text-align:center">Hom Care Hero • 🌍 • Real Data Only</p>
 </div>
 <nav class="bottomnav"><button onclick="showScreen('entry')">🏠 Home</button><button onclick="showScreen('booking')">📅 Book</button><button onclick="showScreen('wallet')">💰 Wallet</button><button onclick="showScreen('pharmacy')">💊 Pharmacy</button><button onclick="showScreen('history')">📋 History</button></nav>
@@ -226,7 +242,8 @@ let currentCountry='WORLD';
 let user=null; let walletBalance=0;
 let bookings=[], nurses=[], deposits=[], pharmacyAds=[], allUsers=[];
 let selectedPay='pesapal', selectedBookPay='wallet';
-const SERVICES=[{id:'elderly',name:'👵 Elderly Care',desc:'Care for elderly',price:25000},{id:'baby',name:'👶 Baby Care',desc:'Nanny + baby',price:20000},{id:'wound',name:'🩹 Wound Care',desc:'Dressing',price:30000},{id:'postnatal',name:'🤱 Postnatal',desc:'Mother + baby',price:30000},{id:'physio',name:'💪 Physiotherapy',desc:'Recovery',price:35000},{id:'general',name:'🏠 General Nursing',desc:'Vitals',price:25000}];
+let nursePhotoData=''; // Holds nurse photo for ID
+const SERVICES=[{id:'elderly',name:'👵 Elderly Care',desc:'Care for elderly - Price after assessment',price:25000},{id:'baby',name:'👶 Baby Care',desc:'Nanny + baby - Price after assessment',price:20000},{id:'wound',name:'🩹 Wound Care',desc:'Dressing - Price after assessment',price:30000},{id:'postnatal',name:'🤱 Postnatal',desc:'Mother + baby - Price after assessment',price:30000},{id:'physio',name:'💪 Physiotherapy',desc:'Recovery - Price after assessment',price:35000},{id:'general',name:'🏠 General Nursing',desc:'Vitals - Price after assessment',price:25000}];
 let selectedService=SERVICES[5];
 function fmt(a){let c=COUNTRIES[currentCountry]||COUNTRIES.WORLD;let v=a*c.rate; if(currentCountry==='UG') return 'UGX '+Math.round(v).toLocaleString(); return c.sym+Math.round(v).toLocaleString();}
 function startGoogleListeners(){
@@ -245,6 +262,20 @@ function showScreen(name){if(['entry','booking','wallet','nurse','history','phar
 function showAuth(){['auth','entry','booking','wallet','nurse','history','adminGate','admin','pharmacy'].forEach(s=>{let el=document.getElementById('screen-'+s); if(el) el.classList.toggle('hidden',s!=='auth');}); document.getElementById('pharmacyAdHome').style.display='none';}
 function showLogin(){document.getElementById('authCreate').classList.add('hidden');document.getElementById('authLogin').classList.remove('hidden');}
 function showCreate(){document.getElementById('authLogin').classList.add('hidden');document.getElementById('authCreate').classList.remove('hidden');}
+// NURSE PHOTO - For Identification
+function previewNursePhoto(input){
+  if(!input.files || !input.files[0]) return;
+  let file=input.files[0];
+  let reader=new FileReader();
+  reader.onload=function(e){
+    nursePhotoData=e.target.result;
+    let img=document.getElementById('nursePhotoPreview');
+    img.src=nursePhotoData; img.style.display='block';
+    document.getElementById('nursePhotoStatus').innerText='✅ Photo ready - Face clear for ID';
+    document.getElementById('nursePhotoStatus').style.color='#0f5132';
+  };
+  reader.readAsDataURL(file);
+}
 async function createAccount(){
   let name=document.getElementById('regName').value.trim(),phone=document.getElementById('regPhone').value.trim(),pin=document.getElementById('regPin').value.trim(),country=document.getElementById('regCountry').value;
   if(!name||!phone||pin.length!==4){alert('Fill Name, Phone, 4-digit PIN');return;}
@@ -253,7 +284,7 @@ async function createAccount(){
   try{ if(db) await db.collection('users').add({name,phone,email:user.email,country,pin,created:new Date().toISOString()}); }catch(e){ alert('Error: '+e.message); return; }
   sessionStorage.setItem('hch_session', JSON.stringify(user));
   document.getElementById('userGreet').innerText='Hello, '+name.split(' ')[0]; document.getElementById('bkName').value=name; document.getElementById('bkPhone').value=phone;
-  alert('Welcome '+name+'! Your account is saved. You can login from any phone.');
+  alert('Welcome '+name+'! Your account is saved.');
   showScreen('entry');
 }
 async function loginUser(){
@@ -289,23 +320,23 @@ async function changeAdminPin(){
   alert('PIN Changed! '+ADMINS[who].name+' new PIN is '+np);
   renderAdmin();
 }
-function renderServices(){document.getElementById('serviceList').innerHTML=SERVICES.map(s=>`<div class="service ${s.id===selectedService.id?'selected':''}" onclick="selectService('${s.id}')"><div class="row"><b>${s.name}</b><b>${fmt(s.price)} / hr</b></div><p class="small">${s.desc}</p></div>`).join(''); updateTotal();}
+function renderServices(){document.getElementById('serviceList').innerHTML=SERVICES.map(s=>`<div class="service ${s.id===selectedService.id?'selected':''}" onclick="selectService('${s.id}')"><div class="row"><b>${s.name}</b><span class="priceTag">Price after assessment</span></div><p class="small">${s.desc}</p></div>`).join(''); updateTotal();}
 function selectService(id){selectedService=SERVICES.find(s=>s.id===id);renderServices();}
-function updateTotal(){let h=Number(document.getElementById('bkHours').value||8); document.getElementById('bkTotal').innerText=fmt(selectedService.price*h); let btn=document.getElementById('bookPayBtn'); if(btn) btn.innerText='PAY '+fmt(selectedService.price*h)+' & BOOK NOW';}
+function updateTotal(){ let btn=document.getElementById('bookPayBtn'); if(btn) btn.innerText='BOOK NOW - Nurse Will Call You With Price'; }
 document.getElementById('bkHours').addEventListener('change',updateTotal);
-function renderBookPay(){let opts=[{id:'wallet',icon:'💰',t:'Wallet Balance',d:'Pay from wallet - '+fmt(walletBalance)},{id:'pesapal',icon:'📱',t:'MoMo - Pesapal',d:'MTN / Airtel'},{id:'stripe',icon:'💳',t:'Card - Stripe',d:'Visa / Mastercard'},{id:'cash',icon:'💵',t:'Cash After Visit',d:'Pay nurse cash'}]; document.getElementById('bookPayMethods').innerHTML=opts.map(o=>`<div class="payMethod ${selectedBookPay===o.id?'active':''}" onclick="selectBookPay('${o.id}')"><span class="icon">${o.icon}</span><div><b>${o.t}</b><br><span class="small">${o.d}</span></div><span class="tick">${selectedBookPay===o.id?'✓':''}</span></div>`).join('');}
+function renderBookPay(){let opts=[{id:'wallet',icon:'💰',t:'Wallet Balance',d:'Pay from wallet'},{id:'pesapal',icon:'📱',t:'MoMo - Pesapal',d:'MTN / Airtel'},{id:'stripe',icon:'💳',t:'Card - Stripe',d:'Visa / Mastercard'},{id:'cash',icon:'💵',t:'Cash After Visit',d:'Pay nurse cash - Price after call'}]; document.getElementById('bookPayMethods').innerHTML=opts.map(o=>`<div class="payMethod ${selectedBookPay===o.id?'active':''}" onclick="selectBookPay('${o.id}')"><span class="icon">${o.icon}</span><div><b>${o.t}</b><br><span class="small">${o.d}</span></div><span class="tick">${selectedBookPay===o.id?'✓':''}</span></div>`).join('');}
 function selectBookPay(id){selectedBookPay=id;renderBookPay();}
 async function payForBooking(){
   let name=document.getElementById('bkName').value.trim(),phone=document.getElementById('bkPhone').value.trim(),loc=document.getElementById('bkLocation').value.trim();
   if(!name||!phone||!loc){alert('Fill Name, Phone, Location');return;}
   let total=selectedService.price*Number(document.getElementById('bkHours').value);
-  let b={name,phone,location:loc,service:selectedService.name,date:document.getElementById('bkDate').value,time:document.getElementById('bkTime').value,hours:document.getElementById('bkHours').value,total,notes:document.getElementById('bkNotes').value,status:selectedBookPay==='cash'?'Pending - Cash':selectedBookPay==='wallet'?'Paid - Wallet':'Pending - '+selectedBookPay,country:currentCountry,payMethod:selectedBookPay,created:new Date().toISOString()};
-  if(selectedBookPay==='wallet'){ if(walletBalance<total){alert('Wallet low. Balance '+fmt(walletBalance)+'. Top up first.'); showScreen('wallet'); return;} }
-  if(selectedBookPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(total)+' with MoMo.');}
-  if(selectedBookPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use Wallet / MoMo / Cash.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(total)+' with Card.');}
-  if(selectedBookPay==='cash'){alert('Booked! Pay '+fmt(total)+' Cash after visit.');}
+  let b={name,phone,location:loc,service:selectedService.name,date:document.getElementById('bkDate').value,time:document.getElementById('bkTime').value,hours:document.getElementById('bkHours').value,total,notes:document.getElementById('bkNotes').value,status:selectedBookPay==='cash'?'Pending - Cash - Price after call':selectedBookPay==='wallet'?'Paid - Wallet':'Pending - '+selectedBookPay,country:currentCountry,payMethod:selectedBookPay,created:new Date().toISOString()};
+  if(selectedBookPay==='wallet'){ if(walletBalance<total){alert('Wallet low. Top up first or choose Cash After Visit.'); showScreen('wallet'); return;} }
+  if(selectedBookPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay with MoMo.');}
+  if(selectedBookPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use Wallet / MoMo / Cash.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay with Card.');}
+  if(selectedBookPay==='cash'){alert('Booked! Nurse will call you with friendly price. Pay cash after visit.');}
   try{ await db.collection('bookings').add(b); }catch(e){ alert('Save error: '+e.message); return; }
-  alert('Booking saved!');
+  alert('Booking saved! Nurse will call you with price.');
   showScreen('history');
 }
 function showPharmacyForm(){ document.getElementById('pharmacyForm').classList.remove('hidden'); }
@@ -325,19 +356,32 @@ function renderPharmacy(){
 function orderFromPharmacy(phone,name){ let msg=encodeURIComponent('Hello '+name+'! I saw your advert on Hom Care Hero. I want to order medicine. My name: '+(user?user.name:'')); let clean=phone.replace(/[^0-9+]/g,''); window.open('https://wa.me/'+clean+'?text='+msg,'_blank'); }
 function setAmount(v){let inUGX=currentCountry==='WORLD'?Math.round(v*3700):currentCountry==='UG'?v:Math.round(v/COUNTRIES[currentCountry].rate); document.getElementById('depAmt').value=inUGX; document.querySelectorAll('.quick').forEach(q=>q.classList.remove('active')); event.target.classList.add('active'); updateTopUpBtn();}
 function selectPayMethod(id){selectedPay=id; ['pesapal','stripe','cash'].forEach(m=>{let el=document.getElementById('pm-'+m); el.classList.toggle('active',m===id); el.querySelector('.tick').innerText=m===id?'✓':'';}); updateTopUpBtn();}
-function updateTopUpBtn(){let amt=Number(document.getElementById('depAmt').value||0); let label=selectedPay==='pesapal'?'📱 PAY '+fmt(amt)+' WITH MoMo':selectedPay==='stripe'?'💳 PAY '+fmt(amt)+' WITH Card':'💵 PAY '+fmt(amt)+' CASH'; document.getElementById('topupBtn').innerText=label;}
+function updateTopUpBtn(){let amt=Number(document.getElementById('depAmt').value||0); let label=selectedPay==='pesapal'?'📱 PAY WITH MoMo':selectedPay==='stripe'?'💳 PAY WITH Card':'💵 PAY CASH'; document.getElementById('topupBtn').innerText=label;}
 document.getElementById('depAmt').addEventListener('input',updateTopUpBtn);
-function payTopUp(){let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){alert('Tap amount first');return;} if(selectedPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(amt)+' with MoMo. Paste Transaction ID below and Confirm.');} if(selectedPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use MoMo.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(amt)+' with Card.');} if(selectedPay==='cash'){alert('Cash selected - Pay cash to nurse.');}}
+function payTopUp(){let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){alert('Tap amount first');return;} if(selectedPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay with MoMo. Paste Transaction ID below and Confirm.');} if(selectedPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use MoMo.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay with Card.');} if(selectedPay==='cash'){alert('Cash selected - Pay cash to nurse.');}}
 async function confirmPaid(){
   let amtUGX=Number(document.getElementById('depAmt').value||0); let txn=document.getElementById('txnId').value.trim();
   if(amtUGX<=0||!txn){alert('Enter amount + Transaction ID');return;}
   if(!user){alert('Login first');return;}
   try{ await db.collection('deposits').add({amount:amtUGX,display:fmt(amtUGX),txn,phone:user.phone,name:user.name,country:currentCountry,method:selectedPay,created:new Date().toISOString()}); }catch(e){ alert('Error: '+e.message); return; }
-  document.getElementById('txnId').value=''; alert('Saved! '+fmt(amtUGX)+' will show in your wallet.');
+  document.getElementById('txnId').value=''; alert('Saved! Will show in your wallet.');
 }
 function renderWallet(){document.getElementById('walletBalance').innerText=fmt(walletBalance); document.getElementById('walletBalanceTop').innerText=fmt(walletBalance); document.getElementById('walletStatus2').innerText='● Live • '+COUNTRIES[currentCountry].flag; let my=deposits.filter(d=>user && d.phone===user.phone); document.getElementById('walletList').innerHTML=my.length?my.map(d=>`<div class="hist"><span>💰 ${d.txn} • ${d.method||''}</span><b>+ ${d.display||fmt(d.amount)}</b></div>`).join(''):'<p class="small">No transactions yet - real. Nothing fake.</p>'; updateTopUpBtn();}
-function renderHistory(){let my=user?bookings.filter(b=>b.phone===user.phone):[]; document.getElementById('historyList').innerHTML=my.length?my.map(b=>`<div class="service"><b>${b.service}</b><br><span class="small">${b.name} • ${b.phone} • ${b.location}</span><br><b>${fmt(Number(b.total||0))}</b> • ${b.status||'Pending'} • ${b.payMethod||''}</div>`).join(''):'<p class="small">No bookings yet - real. Nothing fake.</p>';}
-async function submitNurse(){let n={name:document.getElementById('nName').value,phone:document.getElementById('nPhone').value,location:document.getElementById('nLocation').value,qual:document.getElementById('nQual').value,exp:document.getElementById('nExp').value,skills:document.getElementById('nSkills').value,country:currentCountry,status:'Pending',created:new Date().toISOString()}; if(!n.name||!n.phone){alert('Fill Name + Phone');return;} try{ await db.collection('nurses').add(n); }catch(e){ alert('Error: '+e.message); return; } alert('Application saved! JOY will see it.'); showScreen('entry');}
+function renderHistory(){let my=user?bookings.filter(b=>b.phone===user.phone):[]; document.getElementById('historyList').innerHTML=my.length?my.map(b=>`<div class="service"><b>${b.service}</b><br><span class="small">${b.name} • ${b.phone} • ${b.location}</span><br><b>Price after assessment</b> • ${b.status||'Pending'} • ${b.payMethod||''}</div>`).join(''):'<p class="small">No bookings yet - real. Nothing fake.</p>';}
+async function submitNurse(){
+  let n={name:document.getElementById('nName').value,phone:document.getElementById('nPhone').value,location:document.getElementById('nLocation').value,qual:document.getElementById('nQual').value,exp:document.getElementById('nExp').value,skills:document.getElementById('nSkills').value,country:currentCountry,status:'Pending',photo:nursePhotoData,created:new Date().toISOString()};
+  if(!n.name||!n.phone){alert('Fill Name + Phone');return;}
+  if(!nursePhotoData){alert('⚠ Please upload your profile picture for identification first. Tap the photo box and choose your face photo.'); return;}
+  try{ await db.collection('nurses').add(n); }catch(e){ alert('Error: '+e.message); return; }
+  alert('Application saved with your photo! JOY will see your face and approve.'); 
+  // Clear photo after submit
+  nursePhotoData=''; document.getElementById('nursePhotoPreview').style.display='none'; document.getElementById('nPhoto').value=''; document.getElementById('nursePhotoStatus').innerText='⚠ No photo yet - Please upload'; document.getElementById('nursePhotoStatus').style.color='#c0392b';
+  showScreen('entry');
+}
+function nurseCardHTML(n, showApprove){
+  let photoHTML = n.photo ? `<img src="${n.photo}" onclick="window.open('${n.photo}','_blank')">` : `<div style="width:64px;height:64px;border-radius:50%;background:#eee;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0">👤</div>`;
+  return `<div class="nurseRow">${photoHTML}<div style="flex:1"><b>${n.name}</b> - ${n.phone}<br><span class="small">${n.qual||'Nurse'} • ${n.location||''} • Exp: ${n.exp||'0'} yrs • <b>${n.status||'Pending'}</b></span><br><span class="small">${n.skills||''}</span><br>${showApprove?`<button class="btn green" style="padding:8px;margin-top:6px" onclick="approveNurse('${n.id}')">Approve Nurse</button>`:''}</div></div>`;
+}
 function renderAdmin(){
   if(!currentAdmin) return;
   document.getElementById('kpiUsers').innerText=allUsers.length;
@@ -352,12 +396,12 @@ function renderAdmin(){
   document.getElementById('joyTaskCount').innerText=nurses.filter(n=>(n.status||'Pending')==='Pending').length;
   document.getElementById('kimtaiTaskCount').innerText=bookings.filter(b=>(b.status||'Pending').includes('Pending')).length;
   document.getElementById('adminBookings').innerHTML=bookings.length?bookings.map((b)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${b.phone} - ${fmt(Number(b.total||0))} - ${b.status||'Pending'} - ${b.location||''} <button class="btn green" style="padding:6px" onclick="approveBooking('${b.id}')">Approve</button></div>`).join(''):'No bookings yet - real';
-  document.getElementById('adminNursesSuper').innerHTML=nurses.length?nurses.map((n)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${n.name}</b> - ${n.phone} - ${n.qual||'Nurse'} - ${n.location||''} - <b>${n.status||'Pending'}</b> <button class="btn green" style="padding:6px" onclick="approveNurse('${n.id}')">Approve</button></div>`).join(''):'No nurses yet - real';
+  document.getElementById('adminNursesSuper').innerHTML=nurses.length?nurses.map((n)=>nurseCardHTML(n,true)).join(''):'No nurses yet - real';
   document.getElementById('adminDeposits').innerHTML=deposits.length?deposits.map(d=>`<div style="padding:8px;border-bottom:1px solid #eee">${d.txn} - ${d.display||fmt(d.amount)} - ${d.method||''} - ${d.name||''} - ${d.phone||''}</div>`).join(''):'No deposits yet - real';
   document.getElementById('adminPharmacy').innerHTML=pharmacyAds.length?pharmacyAds.map((p)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${p.name}</b> - ${p.city} - ${p.phone} - ${p.offer} - <b>${p.status}</b> ${p.status!=='Approved'?`<button class="btn green" style="padding:6px" onclick="approvePharmacy('${p.id}')">Approve Advert</button>`:''}</div>`).join(''):'No pharmacy adverts yet - real';
   document.getElementById('adminUsers').innerHTML=allUsers.length?allUsers.map(u=>`<div style="padding:8px;border-bottom:1px solid #eee">${u.name} - ${u.phone} - ${u.country||''}</div>`).join(''):'No users yet - real';
-  document.getElementById('adminNurses').innerHTML=nurses.length?nurses.map((n)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${n.name}</b> - ${n.phone} - ${n.qual||'Nurse'} - ${n.location||''} - <b>${n.status||'Pending'}</b> <button class="btn green" style="padding:6px" onclick="approveNurse('${n.id}')">Approve Nurse</button></div>`).join(''):'No nurses yet - real';
-  document.getElementById('adminBookingsKimtai').innerHTML=bookings.length?bookings.map((b)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${b.phone} - ${fmt(Number(b.total||0))} - ${b.status||'Pending'} - ${b.location||''} <button class="btn green" style="padding:6px" onclick="approveBooking('${b.id}')">Approve</button></div>`).join(''):'No bookings yet - real';
+  document.getElementById('adminNurses').innerHTML=nurses.length?nurses.map((n)=>nurseCardHTML(n,true)).join(''):'No nurses yet - real';
+  document.getElementById('adminBookingsKimtai').innerHTML=bookings.length?bookings.map((b)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${b.phone} - ${b.status||'Pending'} - ${b.location||''} <button class="btn green" style="padding:6px" onclick="approveBooking('${b.id}')">Approve</button></div>`).join(''):'No bookings yet - real';
 }
 async function approvePharmacy(id){ if(currentAdmin!=='SUPER'){ alert('Only SUPER can approve pharmacy adverts'); return; } try{ await db.collection('pharmacyAds').doc(id).update({status:'Approved'}); }catch(e){ alert(e.message); } }
 async function approveBooking(id){ if(currentAdmin==='JOY'){alert('JOY cannot approve bookings.');return;} try{ await db.collection('bookings').doc(id).update({status:'Approved'}); }catch(e){ alert(e.message); } }
