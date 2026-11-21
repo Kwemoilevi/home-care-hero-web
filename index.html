@@ -28,20 +28,12 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 </header>
 <div class="wrap">
 
-<!-- GATE -->
-<div id="page-gate" class="card">
-<h2>🔐 Gate</h2>
-<p class="small">Enter Gate Password to enter HOME CARE HERO</p>
-<input id="gate-pass" type="password" placeholder="Gate Password">
-<button class="gold" onclick="checkGate()">Gate Open!</button>
-<p class="center small">Gate: HERO2026</p>
-</div>
-
-<div id="page-entry" class="card hidden">
+<!-- CLIENTS FIRST - NO GATE HERE -->
+<div id="page-entry" class="card">
 <h2>Welcome Hero</h2>
 <p class="small">Care anywhere in the WORLD. Book a nurse, pay with Pesapal or Wallet.</p>
 <div class="row"><button onclick="show('page-login')">Client Login</button><button class="green" onclick="show('page-signup')">Create Account</button></div>
-<button class="gold" onclick="show('page-admin')">Admin Login - SUPER / JOY / JABETH</button>
+<button class="gold" onclick="show('page-admin')">Admin Login</button>
 <button onclick="show('page-nurse')">Nurse Login</button>
 <p class="center small">New here? Create account first.</p>
 </div>
@@ -80,13 +72,14 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <div id="my-bookings"></div>
 </div>
 
+<!-- ADMIN ONLY - GATE HIDDEN HERE, NOT VISIBLE TO CLIENTS -->
 <div id="page-admin" class="card hidden">
 <h2>Admin Login</h2>
-<p class="small">Cloud passwords - works on any phone.</p>
+<p class="small">Admins Only</p>
 <select id="ad-user"><option>SUPER</option><option>JOY</option><option>JABETH</option></select>
+<input id="ad-gate" type="password" placeholder="Gate Password">
 <input id="ad-pass" type="password" placeholder="Admin Password">
 <button onclick="adminLogin()">Gate Open!</button>
-<p class="small">SUPER: 2215 | JOY: JOY2026 | JABETH: JABETH2026</p>
 <button onclick="show('page-entry')">Back</button>
 </div>
 
@@ -128,20 +121,11 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ===== GATE PASSWORD =====
+// Gate is for ADMINS ONLY - not shown on screen
 const GATE_PASSWORD = 'HERO2026';
-function checkGate(){
-  let v = document.getElementById('gate-pass').value;
-  if(v === GATE_PASSWORD){
-    alert("Gate Open! Welcome HERO");
-    show('page-entry');
-  } else {
-    alert("Wrong Gate Password");
-  }
-}
 
 function show(id){
-  ['page-gate','page-entry','page-signup','page-login','page-book','page-admin','page-admin-dash','page-nurse','page-nurse-dash'].forEach(p=>document.getElementById(p).classList.add('hidden'));
+  ['page-entry','page-signup','page-login','page-book','page-admin','page-admin-dash','page-nurse','page-nurse-dash'].forEach(p=>document.getElementById(p).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
 }
 function getUsers(){ try{return JSON.parse(localStorage.getItem('hc_users')||'{}')}catch(e){return {}} }
@@ -180,7 +164,7 @@ function login(){
   } else alert("Wrong Phone or Password");
 }
 function updateWalletLine(){ if(currentUser) document.getElementById('wallet-line').innerText="Wallet: UGX "+(currentUser.wallet||0); }
-function logout(){ currentUser=null; show('page-gate'); }
+function logout(){ currentUser=null; show('page-entry'); }
 
 async function bookAndPay(method){
   if(!currentUser) return alert("Login first");
@@ -220,7 +204,9 @@ async function showMyBookings(){
 let currentAdmin=null;
 async function adminLogin(){
   let user=document.getElementById('ad-user').value;
+  let gate=document.getElementById('ad-gate').value;
   let pass=document.getElementById('ad-pass').value;
+  if(gate !== GATE_PASSWORD) return alert("Wrong Gate Password");
   let p=await getPasswords();
   if(p[user]===pass){
     currentAdmin=user; document.getElementById('admin-name').innerText=user;
@@ -232,7 +218,7 @@ async function changeAdminPass(){
   let np=document.getElementById('ad-newpass').value;
   if(!np) return alert("Type new password");
   let p=await getPasswords(); p[currentAdmin]=np; await savePasswords(p);
-  alert("Cloud Password Changed! Now works on ALL phones: "+currentAdmin+" / "+np);
+  alert("Cloud Password Changed! Now works on ALL phones.");
 }
 async function loadAdmin(){
   let div=document.getElementById('admin-bookings'); div.innerHTML="<h3>All Bookings - WORLD</h3>";
