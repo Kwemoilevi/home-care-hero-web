@@ -69,14 +69,14 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 <p id="entryMsg" class="msg"></p>
 </div></div>
 
+<!-- ONE-TAP ADMIN GATE - NO PASSWORD -->
 <div id="adminGateModal" class="hidden"><div class="gateBox">
-<h2>🔐 Admin Gate</h2><p class="small">SUPER / JOY / JABETH only</p>
-<input id="gatePass" type="password" placeholder="Gate Password">
-<select id="gateRole"><option value="SUPER">SUPER</option><option value="JOY">JOY</option><option value="JABETH">JABETH</option></select>
-<input id="gateName" placeholder="Your Name">
-<button class="btn" onclick="adminLogin()">🔐 ENTER WORKSPACE</button>
+<h2>👑 Admins - Tap Your Name</h2>
+<p class="small">One tap to enter. No password to type.</p>
+<button class="btn" style="font-size:18px;padding:16px" onclick="adminOneTap('SUPER')">👑 SUPER - TAP TO ENTER</button>
+<button class="btn btn2" style="font-size:18px;padding:16px" onclick="adminOneTap('JOY')">💛 JOY - TAP TO ENTER</button>
+<button class="btn btn3" style="font-size:18px;padding:16px" onclick="adminOneTap('JABETH')">💙 JABETH - TAP TO ENTER</button>
 <button class="btn btn4" onclick="document.getElementById('adminGateModal').style.display='none'">Cancel</button>
-<p id="gateMsg" class="msg"></p>
 </div></div>
 
 <div id="home" class="card">
@@ -134,6 +134,7 @@ input,select,textarea{width:100%;padding:11px;margin:6px 0;border:1px solid #cbd
 <select id="loginRole"><option value="CLIENT">CLIENT</option><option value="NURSE">NURSE</option><option value="SUPER">SUPER</option><option value="JOY">JOY</option><option value="JABETH">JABETH</option></select>
 <input id="loginName" placeholder="Your Name"><input id="loginPhone" placeholder="Phone"><input id="loginPass" type="password" placeholder="Password">
 <button class="btn btn2" onclick="doLogin()">🔐 LOGIN</button><p id="loginMsg" class="msg"></p>
+<div class="small" style="margin-top:10px;text-align:center">Admins: use faint • • • at bottom for one-tap</div>
 <div id="loggedInfo" class="hidden"><p>Logged in as: <b id="whoLabel"></b><br><span class="small" id="whoPhone"></span></p><button class="btn btn4" onclick="doLogout()">Logout</button></div>
 </div>
 
@@ -187,7 +188,6 @@ let nurses=JSON.parse(localStorage.getItem('hc_nurses')||'[]');
 let withdraws=JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
 let pays=JSON.parse(localStorage.getItem('hc_pays')||'[]');
 let bookings=JSON.parse(localStorage.getItem('hc_bookings')||'[]');
-
 let adverts=[{t:'Trusted Nurses in Kampala',d:'Book today, care tomorrow.'},{t:'Elderly Care Specialists',d:'24/7 home care.'}];
 let ratings=[{n:'Mary',s:5,c:'Great nurse!'}];
 let pharmacyItems=[{name:'Paracetamol',price:5000},{name:'Vitamin C',price:15000},{name:'First Aid Kit',price:30000}];
@@ -205,15 +205,15 @@ function getWithdrawStats(){
 }
 function show(id,btn){ ['home','book','wallet','track','nurse','pharmacy','rate','login','admin','homeGallery','approvals'].forEach(x=>{let e=document.getElementById(x); if(e)e.classList.add('hidden')}); document.getElementById(id).classList.remove('hidden'); document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); if(btn)btn.classList.add('active'); updateWithdrawUI(); renderApprovals(); }
 function tapHiddenAdmin(){ document.getElementById('adminGateModal').style.display='flex'; }
-function adminLogin(){
-  let pass=document.getElementById('gatePass').value.trim();
-  let role=document.getElementById('gateRole').value;
-  let name=document.getElementById('gateName').value.trim()||role;
-  let secrets={SUPER:'K1c2x3',JOY:'J0y',JABETH:'Jab3th'};
-  if(pass!==secrets[role]){ document.getElementById('gateMsg').textContent='Wrong Gate Password'; document.getElementById('gateMsg').style.display='block'; return; }
+
+// ONE-TAP ADMIN - NO PASSWORD, NO GATE PASSWORD
+function adminOneTap(role){
   document.getElementById('adminGateModal').style.display='none';
-  finishLogin(name,role,'000'); show('admin');
+  finishLogin(role, role, '000');
+  show('admin');
 }
+function adminLogin(){ adminOneTap('SUPER'); }
+
 function createAccountAndEnter(){
   let name=document.getElementById('entryName').value.trim(), phone=document.getElementById('entryPhone').value.trim(), p1=document.getElementById('entryPass').value, p2=document.getElementById('entryPass2').value;
   let m=document.getElementById('entryMsg'); m.style.display='block';
@@ -226,8 +226,8 @@ function createAccountAndEnter(){
 function doLogin(){
   let role=document.getElementById('loginRole').value, name=document.getElementById('loginName').value.trim()||role, phone=document.getElementById('loginPhone').value.trim(), pass=document.getElementById('loginPass').value.trim();
   let m=document.getElementById('loginMsg'); m.style.display='block';
-  let secrets={SUPER:'K1c2x3',JOY:'J0y',JABETH:'Jab3th'};
-  if(['SUPER','JOY','JABETH'].includes(role)){ if(pass!==secrets[role]){ m.textContent='Wrong password for '+role; return; } finishLogin(role,role,phone||'000'); return; }
+  // Admins in Login page also one-tap - no password needed
+  if(['SUPER','JOY','JABETH'].includes(role)){ adminOneTap(role); return; }
   let users=JSON.parse(localStorage.getItem('hc_users')||'[]'); let u=users.find(x=>x.phone===phone && x.pass===pass);
   if(!u){ m.textContent='Wrong phone or password. Create Account first.'; return; }
   finishLogin(u.name,u.role,u.phone);
