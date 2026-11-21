@@ -17,13 +17,12 @@ h2{margin:6px 0} h3{margin:8px 0} input,select,textarea{width:100%;padding:11px;
 button{cursor:pointer} .btn{background:#0b6e4f;color:#fff;border:0;padding:12px;border-radius:10px;width:100%;font-weight:800;font-size:15px;margin:6px 0}
 .btn2{background:#ff9800}.btnRed{background:#d32f2f}.btnGhost{background:#eee}
 table{width:100%;border-collapse:collapse;font-size:13px} th,td{border:1px solid #ddd;padding:7px;text-align:left}
-.small{font-size:12px;color:#555} .green{color:#0b6e4f}.red{color:#d32f2f}
+.small{font-size:12px;color:#555} .warn{background:#fff3cd;border:1px solid #ff9800;padding:10px;border-radius:10px;font-size:13px}
 .modal{display:none;position:fixed;inset:0;background:#0008;z-index:99;align-items:center;justify-content:center;padding:14px}
 .modal.open{display:flex}.modalBox{background:#fff;width:100%;max-width:480px;border-radius:14px;padding:16px;max-height:90vh;overflow:auto}
 footer{text-align:center;padding:20px;color:#777;font-size:12px}
 .gateDot{font-size:22px;cursor:pointer;padding:6px}
 .stickyAdmin{position:sticky;top:95px;background:#fff;z-index:5;border:2px solid #0b6e4f}
-.warn{background:#fff3cd;border:1px solid #ff9800;padding:10px;border-radius:10px;font-size:13px}
 </style>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
@@ -90,8 +89,10 @@ footer{text-align:center;padding:20px;color:#777;font-size:12px}
 <div id="wallet" class="page"><div class="card"><h2>💰 My Wallet - PUT MONEY IN</h2>
 <p>Balance: <b id="walletBal">UGX 0</b></p>
 <div class="warn">PUT MONEY IN = Wallet &gt; PAY NOW (Pesapal).<br>TAKE MONEY OUT = Admin Dashboard &gt; MY WITHDRAW TO PHONE.<br>Do NOT use Withdraw to put money in.</div>
-<input id="depositAmt" type="number" placeholder="Amount to Pay"><button class="btn" onclick="realDeposit()">PAY NOW - Real Pesapal</button>
+<input id="depositAmt" type="number" placeholder="Amount to Pay"><input id="depositPhone" placeholder="Phone to Pay From e.g. +256700000000">
+<button class="btn" onclick="realDeposit()">PAY NOW - Real Pesapal - Pull From My Phone</button>
 <button class="btn btnGhost" onclick="confirmPaid()">I Have Paid - Confirm</button>
+<p id="pesapalMsg" class="small"></p>
 <h3>My Payments</h3><div id="myPayments"></div></div></div>
 
 <div id="book" class="page"><div class="card"><h2>📅 Book a Nurse</h2>
@@ -111,7 +112,6 @@ footer{text-align:center;padding:20px;color:#777;font-size:12px}
 
 <div id="login" class="page"><div class="card"><h2>🔐 Login</h2><p class="small">Client login - Use Entry page. Admins tap • • • below.</p><button class="btn" onclick="show('home')">Back To Home</button></div></div>
 
-<!-- ADMIN - WORKSPACE ALWAYS VISIBLE AT TOP -->
 <div id="admin" class="page">
 <div class="card stickyAdmin">
 <h2>🛠️ WORKSPACE - Admin Dashboard - <span id="adminDutyTitle">ADMIN</span></h2>
@@ -127,7 +127,7 @@ footer{text-align:center;padding:20px;color:#777;font-size:12px}
 <div class="card"><h3>📩 APPROACH MESSAGES - SUPER - CLIENT + NURSE + STATUS</h3><div id="approachSuper"></div><input id="approachMsgSuper" placeholder="Write Approach Message"><button class="btn" onclick="sendApproach('SUPER')">Send Approach - SUPER</button></div>
 <div class="card"><h3>🔗 LINKS FOR WORLDWIDE MARKETING</h3><button class="btn" onclick="copyLink('nurse','SUPER')">Copy Nurse Form Link To SUPER</button><button class="btn" onclick="copyLink('client','SUPER')">Copy Client Form Link To SUPER</button><p id="linkOutSuper" class="small"></p></div>
 <div class="card"><h3>📢 ADVERTISEMENTS - SUPER Ads - Charge advertiser</h3><div id="adsSuper"></div></div>
-<div class="card"><h3>1. ALL MONEY - ALL PERCENTAGES</h3><table><tr><th>Who</th><th>Earnings</th><th>Withdrawn</th><th>Balance</th></tr><tr><td>SUPER</td><td id="sTotal">0</td><td id="sWithdrawn">0</td><td id="sBalanceLeft">0</td></tr><tr><td>JOY</td><td id="jTotal">0</td><td id="jWithdrawn">0</td><td id="jBalanceLeft">0</td></tr><tr><td>JABETH</td><td id="jbTotal">0</td><td id="jbWithdrawn">0</td><td id="jbBalanceLeft">0</td></tr><tr><td><b>TOTAL</b></td><td id="allTotal">0</td><td id="allWithdrawn">0</td><td id="allBalance">0</td></tr></table><div id="tblSuperEarn"></div><p class="small">Balance can NEVER go below 0 now. If you see -900, tap FIX MY BALANCE below.</p><button class="btn btn2" onclick="fixNegativeBalance()">FIX MY BALANCE - Remove Fake -900 Withdraw</button><p class="small">Balance: <span id="superBalance">0</span></p></div>
+<div class="card"><h3>1. ALL MONEY - ALL PERCENTAGES</h3><table><tr><th>Who</th><th>Earnings</th><th>Withdrawn</th><th>Balance</th></tr><tr><td>SUPER</td><td id="sTotal">0</td><td id="sWithdrawn">0</td><td id="sBalanceLeft">0</td></tr><tr><td>JOY</td><td id="jTotal">0</td><td id="jWithdrawn">0</td><td id="jBalanceLeft">0</td></tr><tr><td>JABETH</td><td id="jbTotal">0</td><td id="jbWithdrawn">0</td><td id="jbBalanceLeft">0</td></tr><tr><td><b>TOTAL</b></td><td id="allTotal">0</td><td id="allWithdrawn">0</td><td id="allBalance">0</td></tr></table><div id="tblSuperEarn"></div><p class="small">Balance can NEVER go below 0 now. Old -900 is auto-fixed on load.</p><button class="btn btn2" onclick="fixNegativeBalance()">FIX MY BALANCE - Remove Fake -900 Withdraw</button><p class="small">Balance: <span id="superBalance">0</span></p></div>
 <div class="card"><h3>3. MY WITHDRAW TO PHONE - SUPER</h3><div class="warn">WITHDRAW TO PHONE = Send YOUR earnings TO your phone via MoMo. You must have Balance first. This is NOT for putting money IN.</div><p>Your Balance: <b id="superWithdrawBal">UGX 0</b></p><input id="superWithdrawAmt" type="number" placeholder="Amount To Withdraw TO Your Phone"><input id="superWithdrawPhone" placeholder="Phone To Receive Money e.g. +256700000000"><select id="superWithdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>Bank</option></select><button class="btn" onclick="requestWithdraw('SUPER')">WITHDRAW TO MY PHONE - SUPER</button><div id="myWithdrawsSUPER"></div></div>
 <div class="card"><h3>4. APPROVE PAYMENTS FOR JOY & JABETH - SUPER ONLY</h3><p class="small">JOY / JABETH request Withdraw TO Phone. SUPER sends money in MoMo app, then taps APPROVE.</p><div id="approveWithdrawUI"></div><div id="pendingWithdraws"></div></div>
 <div class="card"><h3>5. ALL BOOKINGS</h3><div id="allBookings"></div></div>
@@ -161,6 +161,9 @@ footer{text-align:center;padding:20px;color:#777;font-size:12px}
 <footer>Hom Care Hero Worldwide ••• <span class="gateDot" onclick="openAdminGate()">•••</span> • NO CASH OUTSIDE APP</footer>
 
 <script>
+// *** PUT YOUR REAL PESAPAL CHECKOUT LINK HERE - Get it from pesapal.com > Payment Links ***
+// Example: "https://pay.pesapal.com/your-link" - If empty, app uses Manual Confirm like before
+const PESAPAL_LINK = "";
 const firebaseConfig={apiKey:"AIzaSyD6fZ2o0n3pOaDvW3Z2bX7qK9mN8vL4pQ",authDomain:"homcarehero-9bdfc.firebaseapp.com",projectId:"homcarehero-9bdfc",storageBucket:"homcarehero-9bdfc.firebasestorage.app",messagingSenderId:"123456789",appId:"1:123456789:web:abcdef"};
 try{firebase.initializeApp(firebaseConfig); var db=firebase.firestore();}catch(e){var db=null;}
 let bookings=JSON.parse(localStorage.getItem('hc_bookings')||'[]');
@@ -202,7 +205,14 @@ else{$('adminDutyTitle').textContent='ADMIN';$('adminDutyMsg').textContent='';}
 function changeMyPassword(role){let map={SUPER:'newSuperPass',JOY:'newJoyPass',JABETH:'newJabethPass'};let v=$(map[role]);let np=v?v.value:'';if(!np){alert('Enter new password');return;}let pw=getPasswords();pw[role]=np;setPasswords(pw);alert(role+' password changed!');}
 function changeGatePassword(){if(currentAdmin!=='SUPER'){alert('Only SUPER can change Gate');return;}let np=$('newGatePass').value;if(!np)return;let pw=getPasswords();pw.GATE=np;setPasswords(pw);alert('Gate Password changed by SUPER');}
 function updateWallet(){let total=payments.reduce((s,p)=>s+Number(p.amt||0),0);$('walletBal').textContent=fmtAmt(total);let h=payments.map(p=>'<div>'+p.name+' - '+fmtAmt(p.amt)+' - '+p.status+'</div>').join('')||'No payments yet';$('myPayments').innerHTML=h;}
-function realDeposit(){let a=Number($('depositAmt').value);if(!a){alert('Enter amount');return;}alert('Pesapal - Pay '+fmtAmt(a)+' via MTN MoMo / Airtel / Card in Pesapal window. After paying, tap I Have Paid.');}
+function realDeposit(){
+let a=Number($('depositAmt').value);let ph=$('depositPhone')?$('depositPhone').value.trim():(currentUser?currentUser.phone:'');
+if(!a){alert('Enter amount');return;}
+if(!ph){alert('Enter Phone to Pay From - Pesapal needs your phone to send you prompt');return;}
+if(PESAPAL_LINK && PESAPAL_LINK.length>10){$('pesapalMsg').textContent='Opening Pesapal... Pesapal will send prompt to '+ph+' - Enter your MoMo PIN to approve '+fmtAmt(a);window.open(PESAPAL_LINK,'_blank');return;}
+$('pesapalMsg').textContent='Pesapal Link not set yet. Pay '+fmtAmt(a)+' in your MTN / Airtel MoMo app to Hom Care Hero, then tap I Have Paid. Pesapal will send prompt once you add your Pesapal Link at top of code.';
+alert('Pay '+fmtAmt(a)+' in your MoMo app. Pesapal will send prompt to '+ph+' once you add your Pesapal Link. After paying, tap I Have Paid.');
+}
 function confirmPaid(){let a=Number($('depositAmt').value);if(!a){alert('Enter amount you paid');return;}payments.push({name:currentUser?currentUser.name:'Client',amt:a,status:'Paid ✓ - Real Pesapal',date:new Date().toLocaleString()});saveAll();saveToCloud();updateWallet();updateAdmin();alert('Payment recorded: '+fmtAmt(a));}
 function payNow(){show('wallet');}
 function bookFromHome(){let s=$('homeService').value;$('bookService').value=s;show('book');}
@@ -224,8 +234,7 @@ function closeDownload(){$('downloadModal').classList.remove('open');}
 function installApp(){alert('To Install: Tap Share / Menu in browser > Add To Home Screen > Install.');}
 function downloadFile(){alert('App is this same page - Add To Home Screen to install.');}
 function shareLink(){if(navigator.share)navigator.share({title:'Hom Care Hero',url:location.href});else alert('Copy link: '+location.href);}
-
-// ---------- BALANCE HELPERS - FIX FOR -900 ----------
+// BALANCE - FIX -900
 function getBalanceFor(who){
 let total=payments.reduce((s,p)=>s+Number(p.amt||0),0);
 let earn = who==='SUPER' ? total*0.8 : total*0.1;
@@ -234,16 +243,22 @@ let bal = earn - wPaid;
 return {total:total,earn:earn,wPaid:wPaid,bal: Math.max(0,bal)};
 }
 function fixNegativeBalance(){
-if(!confirm('Remove ALL withdraws that made balance negative? This will reset Withdrawn to 0 and Balance to Earnings. Tap OK to fix.'))return;
-withdraws = withdraws.filter(w=>!(w.status.includes('Paid') && getBalanceFor(w.who).bal===0 && Number(w.amt||0)>0 && payments.length===0));
-if(withdraws.length>0 && payments.length===0){
-  // If still negative because no payments at all, clear all paid withdraws - they were fake
-  withdraws = withdraws.filter(w=>!w.status.includes('Paid'));
+if(!confirm('Remove fake -900 withdraw? Tap OK to fix.'))return;
+withdraws = withdraws.filter(w=>!w.status.includes('Paid') || payments.length>0 && Number(w.amt||0) <= getBalanceFor(w.who).earn);
+if(payments.length===0){withdraws = withdraws.filter(w=>!w.status.includes('Paid'));}
+// Also remove old SUPER Self fake
+withdraws = withdraws.filter(w=>w.status!=='Paid ✓ (SUPER - Self)');
+saveAll();saveToCloud();updateAdmin();updateWithdrawUI();alert('Fixed! Balance can no longer be negative.');
 }
-saveAll();saveToCloud();updateAdmin();updateWithdrawUI();alert('Fixed! Balance can no longer be negative. Withdrawn reset.');
+function autoFixOldWithdraws(){
+// Auto-fix on load: old fake 900 with 0 earnings = delete
+if(payments.length===0){
+  let before=withdraws.length;
+  withdraws=withdraws.filter(w=>w.status!=='Paid ✓ (SUPER - Self)');
+  if(withdraws.length!==before) saveAll();
 }
-
-// ---------- WITHDRAW TO PHONE - FIXED ----------
+}
+// WITHDRAW TO PHONE - FIXED
 function requestWithdraw(who){
 let balInfo = getBalanceFor(who);
 let amtEl=$(''+who.toLowerCase()+'WithdrawAmt');let phEl=$(''+who.toLowerCase()+'WithdrawPhone');let mEl=$(''+who.toLowerCase()+'WithdrawMethod');
@@ -251,7 +266,6 @@ let amt=Number(amtEl?amtEl.value:0);let phone=phEl?phEl.value.trim():'';let meth
 if(!amt||!phone){alert('Enter Amount + Phone TO Receive Money');return;}
 if(phone.length<10){alert('Enter full phone to receive money, e.g. +256700000000');return;}
 if(amt > balInfo.bal){alert('STOP! Your Balance is only '+fmtAmt(balInfo.bal)+'. You cannot withdraw '+fmtAmt(amt)+' TO Phone. First add money via Wallet > PAY NOW (Pesapal), then withdraw.');return;}
-// JOY / JABETH = Pending for SUPER. SUPER = also Pending until SUPER confirms he sent it - so no fake instant Paid
 withdraws.push({who:who,amt:amt,phone:phone,method:method,status:'Pending - Waiting for SUPER to send TO '+phone});
 saveAll();saveToCloud();updateAdmin();updateWithdrawUI();alert('Withdraw Request Sent TO Phone '+phone+' - '+fmtAmt(amt)+' - Waiting for SUPER to send money in '+method+' app, then SUPER will tap APPROVE.');
 }
@@ -297,10 +311,11 @@ if($('adsSuper'))$('adsSuper').innerHTML=adHtml;
 updateWithdrawUI();updateWallet();updateTrack();
 }
 function saveToCloud(){if(!db)return;db.collection('homcare').doc('data').set({bookings:bookings,nurses:nurses,payments:payments,withdraws:withdraws,approaches:approaches,ads:ads,ratings:ratings});}
-function loadFromCloud(){if(!db)return;db.collection('homcare').doc('data').get().then(doc=>{if(!doc.exists)return;let d=doc.data();if(d.bookings)bookings=d.bookings;if(d.nurses)nurses=d.nurses;if(d.payments)payments=d.payments;if(d.withdraws)withdraws=d.withdraws;if(d.approaches)approaches=d.approaches;if(d.ads)ads=d.ads;if(d.ratings)ratings=d.ratings;saveAll();updateAdmin();updateWallet();updateTrack();}).catch(e=>{});}
+function loadFromCloud(){if(!db)return;db.collection('homcare').doc('data').get().then(doc=>{if(!doc.exists)return;let d=doc.data();if(d.bookings)bookings=d.bookings;if(d.nurses)nurses=d.nurses;if(d.payments)payments=d.payments;if(d.withdraws)withdraws=d.withdraws;if(d.approaches)approaches=d.approaches;if(d.ads)ads=d.ads;if(d.ratings)ratings=d.ratings;saveAll();autoFixOldWithdraws();updateAdmin();updateWallet();updateTrack();}).catch(e=>{});}
 function syncCloud(){loadFromCloud();alert('Synced From Cloud');}
 function init(){
 if($('homeCountry'))$('homeCountry').value=currentCountry;
+autoFixOldWithdraws();
 updateClient();updateWallet();updateTrack();
 if(currentAdmin){show('admin');showMyDuties();updateAdmin();}
 loadFromCloud();
