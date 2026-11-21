@@ -1,266 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hom Care Hero - Home Nursing & Care in Uganda</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hom Care Hero - Global</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f4f8f4;color:#16231a;padding-bottom:90px}
+body{font-family:system-ui,sans-serif;background:#f0f2f5;padding-bottom:95px}
 header{background:#0f5132;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10}
-header b{font-size:20px}
-header span{font-size:12px;opacity:.9}
 .wrap{max-width:640px;margin:0 auto;padding:14px}
-.card{background:#fff;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
-h2{font-size:20px;margin-bottom:6px}
-h3{font-size:16px;margin:10px 0 6px}
-p{font-size:14px;line-height:1.5;color:#33443a}
+.card{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
+h2{font-size:20px}h3{font-size:16px;margin:12px 0 6px}p{font-size:14px;line-height:1.5;color:#333}
 label{font-size:13px;font-weight:700;display:block;margin:10px 0 4px}
-input,select,textarea{width:100%;padding:12px;border:1px solid #d5ded8;border-radius:10px;font-size:15px;background:#fff}
-textarea{min-height:70px}
+input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-radius:12px;font-size:15px}
 .btn{display:block;width:100%;padding:14px;border:0;border-radius:12px;font-size:16px;font-weight:800;color:#fff;background:#0f5132;margin-top:12px;cursor:pointer}
-.btn.green{background:#0f5132}.btn.purple{background:#635bff}.btn.orange{background:#ff7a00}.btn.dark{background:#111}
-.btn.outline{background:#fff;color:#0f5132;border:2px solid #0f5132}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.pill{display:inline-block;background:#e8f5ee;color:#0f5132;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;margin:3px 3px 0 0}
-.badge{background:#fff3cd;padding:8px 10px;border-radius:10px;font-size:13px;margin-top:8px}
-.small{font-size:12px;color:#66766d}
-.price{font-size:22px;font-weight:900;color:#0f5132}
+.btn.green{background:#0f5132}.btn.purple{background:#635bff}.btn.orange{background:#ff7a00}.btn.dark{background:#111}.btn.red{background:#c0392b}.btn.grey{background:#e9ecef;color:#111}.btn.outline{background:#fff;color:#0f5132;border:2px solid #0f5132}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+.pill{display:inline-block;background:#e8f5ee;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;margin:3px 3px 0 0}
+.small{font-size:12px;color:#666}.price{font-size:26px;font-weight:900;color:#0f5132}
 .row{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .hidden{display:none!important}
 .bottomnav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #ddd;display:flex;z-index:20}
-.bottomnav button{flex:1;padding:12px 4px;border:0;background:#fff;font-size:12px;font-weight:700;color:#555;cursor:pointer}
+.bottomnav button{flex:1;padding:12px 2px;border:0;background:#fff;font-size:12px;font-weight:700;color:#555}
 .bottomnav button.active{color:#0f5132;border-top:3px solid #0f5132}
 .service{border:1px solid #e2e9e4;border-radius:12px;padding:12px;margin-top:10px}
 .service.selected{border:2px solid #0f5132;background:#f0faf4}
-table{width:100%;border-collapse:collapse;font-size:13px}
-td,th{padding:8px;border-bottom:1px solid #eee;text-align:left}
+.balanceCard{background:linear-gradient(135deg,#0f5132,#1a7a4a);color:#fff;border-radius:18px;padding:18px}
+.balanceCard .price{color:#fff;font-size:32px}
+/* SAFEBODA PAYMENTS */
+.quick{padding:12px 0;border:2px solid #e2e9e4;border-radius:12px;background:#fff;font-weight:800;cursor:pointer}
+.quick.active{background:#0f5132;color:#fff;border-color:#0f5132}
+.payMethod{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid #e2e9e4;border-radius:14px;margin-top:10px;cursor:pointer;background:#fff}
+.payMethod.active{border-color:#0f5132;background:#f0faf4}
+.payMethod .icon{font-size:28px}.payMethod .tick{margin-left:auto;font-size:20px;color:#0f5132}
+.payBig{font-size:18px;padding:16px}
+.hist{padding:12px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
+.kpi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
+.kpi div{background:#f8f9fa;border-radius:12px;padding:12px;text-align:center}.kpi b{font-size:20px;display:block}
+.lock{font-size:48px;text-align:center}
 </style>
 </head>
 <body>
-<header><b>🏥 Hom Care Hero</b><br><span>Home Nursing & Care in Uganda - Kampala • Wakiso • Entebbe</span></header>
+<header><b>🏥 Hom Care Hero</b> <span id="headerCountry">🌍 Global</span><br><span style="font-size:12px">Home Nursing & Care - Worldwide</span></header>
 <div class="wrap">
 
-<!-- ENTRY -->
-<div id="screen-entry" class="card">
-<h2>Welcome to Hom Care Hero</h2>
-<p>Professional nurses & caregivers at your home. Book in 2 minutes. Pay with MoMo or Card.</p>
-<div class="grid2" style="margin-top:12px">
-<button class="btn green" onclick="showScreen('booking')">📅 Book a Nurse</button>
-<button class="btn outline" onclick="showScreen('nurse')">👩‍⚕️ Join as Nurse</button>
+<!-- AUTH -->
+<div id="screen-auth" class="card">
+<div class="lock">🔐</div><h2 style="text-align:center">Welcome</h2><p style="text-align:center">Create account, then login with PIN like bank app.</p>
+<div id="authCreate">
+<label>Full Name</label><input id="regName" placeholder="Sarah Nakato">
+<label>Phone</label><input id="regPhone" placeholder="0700...">
+<label>Email</label><input id="regEmail" placeholder="you@email.com">
+<label>🌍 Country</label><select id="regCountry" onchange="changeCountry(this.value)"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya - KES</option><option value="NG">🇳🇬 Nigeria - NGN</option><option value="GH">🇬🇭 Ghana - GHS</option><option value="US">🇺🇸 USA - USD</option><option value="GB">🇬🇧 UK - GBP</option></select>
+<label>Create 4-Digit PIN</label><input id="regPin" type="password" maxlength="4" placeholder="1234">
+<button class="btn green" onclick="createAccount()">✅ Create Account</button>
+<p style="text-align:center;margin-top:10px"><a href="#" onclick="showLogin();return false;">Already have account? Login</a></p>
 </div>
-<div style="margin-top:12px"><span class="pill">✔ Vetted Nurses</span><span class="pill">✔ Same-Day Visit</span><span class="pill">✔ MoMo + Card</span><span class="pill">✔ Kampala</span></div>
-<p class="small" style="margin-top:10px">Emergency? Call / WhatsApp: 0700 000 000</p>
-<button class="btn dark" onclick="showScreen('wallet')">💰 My Wallet & Payments</button>
-<button class="btn outline" onclick="showScreen('history')">📋 My Bookings</button>
+<div id="authLogin" class="hidden">
+<label>Phone</label><input id="loginPhone"><label>PIN</label><input id="loginPin" type="password" maxlength="4">
+<button class="btn green" onclick="loginUser()">🔓 Unlock App</button>
+<p style="text-align:center;margin-top:10px"><a href="#" onclick="showCreate();return false;">No account? Create one</a></p>
+</div>
+<button class="btn dark" onclick="openAdminGate()">🔒 Admin Gate</button>
 </div>
 
-<!-- BOOKING -->
+<!-- HOME -->
+<div id="screen-entry" class="card hidden">
+<div class="balanceCard"><div class="row"><span>👋 <span id="userGreet">Hello</span></span><span id="countryFlag">🇺🇬 Uganda</span></div><div style="margin-top:12px;font-size:13px;opacity:.9">Wallet Balance</div><div class="price" id="walletBalanceTop">UGX 0</div><div class="small" style="color:#fff">IN-APP LIVE • SafeBoda Style</div><div class="grid2" style="margin-top:12px"><button class="btn" style="background:#fff;color:#0f5132;margin:0" onclick="showScreen('wallet')">💰 Top Up</button><button class="btn" style="background:#ff7a00;margin:0" onclick="showScreen('booking')">📅 Book Nurse</button></div></div>
+<label>🌍 Country / Currency</label><select id="countrySelect" onchange="changeCountry(this.value)"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya - KES</option><option value="NG">🇳🇬 Nigeria - NGN</option><option value="GH">🇬🇭 Ghana - GHS</option><option value="US">🇺🇸 USA - USD</option><option value="GB">🇬🇧 UK - GBP</option></select>
+<div class="grid2" style="margin-top:12px"><button class="btn green" onclick="showScreen('booking')">📅 Book Nurse</button><button class="btn outline" onclick="showScreen('nurse')">👩‍⚕️ Join as Nurse</button></div>
+<button class="btn dark" onclick="showScreen('wallet')">💰 Wallet & Payments</button>
+<button class="btn outline" onclick="showScreen('history')">📋 My Bookings</button>
+<button class="btn grey" onclick="logoutUser()">🚪 Logout / Lock</button>
+</div>
+
+<!-- BOOKING - SAFEBODA PAYMENT AT CHECKOUT -->
 <div id="screen-booking" class="card hidden">
-<h2>📅 Book a Nurse / Caregiver</h2>
-<label>Your Full Name</label><input id="bkName" placeholder="e.g. Sarah Nakato">
-<label>Phone / WhatsApp</label><input id="bkPhone" placeholder="e.g. 0700123456">
-<label>Location / Address</label><input id="bkLocation" placeholder="e.g. Ntinda, Kampala">
-<label>Choose Service - Tap One</label>
-<div id="serviceList"></div>
-<label>When do you need care?</label><input id="bkDate" type="date"><input id="bkTime" type="time" style="margin-top:8px">
-<label>Hours Needed</label><select id="bkHours"><option value="2">2 Hours</option><option value="4">4 Hours</option><option value="8" selected>8 Hours - Full Day</option><option value="12">12 Hours</option><option value="24">24 Hours - Live-in</option></select>
-<label>Notes for Nurse</label><textarea id="bkNotes" placeholder="What does patient need? Age, condition..."></textarea>
-<div class="row" style="margin-top:12px"><span>Total to Pay</span><span class="price" id="bkTotal">UGX 0</span></div>
-<div class="badge">💡 You can pay now with MoMo / Card in Wallet, or pay cash after visit. Booking is saved even if you pay later.</div>
-<button class="btn green" onclick="confirmBooking()">✅ Confirm Booking</button>
+<h2>📅 Book a Nurse</h2>
+<label>Full Name</label><input id="bkName"><label>Phone</label><input id="bkPhone"><label>Location</label><input id="bkLocation" placeholder="Ntinda, Kampala / Nairobi / Lagos">
+<label>Choose Service</label><div id="serviceList"></div>
+<label>When?</label><input id="bkDate" type="date"><input id="bkTime" type="time" style="margin-top:8px">
+<label>Hours</label><select id="bkHours"><option value="2">2 Hours</option><option value="4">4 Hours</option><option value="8" selected>8 Hours</option><option value="12">12 Hours</option><option value="24">24 Hours</option></select>
+<label>Notes</label><textarea id="bkNotes"></textarea>
+<div class="row" style="margin-top:12px"><span>Total</span><span class="price" id="bkTotal">0</span></div>
+<h3>💳 How do you want to pay? - Like SafeBoda</h3>
+<div id="bookPayMethods"></div>
+<button class="btn green payBig" id="bookPayBtn" onclick="payForBooking()">✅ PAY & BOOK NOW</button>
 <button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
 </div>
 
-<!-- WALLET -->
+<!-- WALLET - SAFEBODA STYLE -->
 <div id="screen-wallet" class="card hidden">
-<h2>💰 My Wallet</h2>
-<p>Balance available for bookings</p>
-<div class="price" id="walletBalance">UGX 0</div>
-<p class="small" id="walletStatus">Wallet: Local + Cloud - IN-APP LIVE</p>
-<h3>Top Up Wallet</h3>
-<label>Amount (UGX)</label><input id="depAmt" type="number" placeholder="e.g. 50000" value="50000">
-<button class="btn orange" onclick="payWithPesapal()">📱 Pay with MoMo - Pesapal (Uganda)</button>
-<button class="btn purple" onclick="payWithStripe()">💳 Pay with Card - Stripe (Abroad)</button>
-<label>Transaction ID / Reference from Pesapal or Stripe</label><input id="txnId" placeholder="e.g. PES123456 or pi_...">
-<button class="btn green" onclick="confirmPaid()">✅ I Have Paid - Confirm & Add to Wallet</button>
-<div class="badge">After MoMo/Card payment, copy Transaction ID, paste here, tap Confirm. Admin will verify. For testing, any ID works and adds balance instantly.</div>
-<h3>Recent Wallet Activity</h3><div id="walletList"><p class="small">No activity yet.</p></div>
+<h2>💰 Wallet - Like SafeBoda</h2>
+<div class="balanceCard"><div style="font-size:13px;opacity:.9">Your Balance</div><div class="price" id="walletBalance">0</div><div class="small" style="color:#fff" id="walletStatus2">IN-APP LIVE</div></div>
+<h3>Quick Top Up - Tap Amount</h3>
+<div class="grid4">
+<button class="quick" onclick="setAmount(10000)">10K</button>
+<button class="quick" onclick="setAmount(20000)">20K</button>
+<button class="quick active" onclick="setAmount(50000)">50K</button>
+<button class="quick" onclick="setAmount(100000)">100K</button>
+</div>
+<label>Or Enter Amount (<span id="curLabel">UGX</span>)</label><input id="depAmt" type="number" value="50000">
+<h3>Choose Payment Method</h3>
+<div class="payMethod active" id="pm-pesapal" onclick="selectPayMethod('pesapal')"><span class="icon">📱</span><div><b>MoMo - Pesapal</b><br><span class="small">MTN & Airtel - Uganda / Africa</span></div><span class="tick">✓</span></div>
+<div class="payMethod" id="pm-stripe" onclick="selectPayMethod('stripe')"><span class="icon">💳</span><div><b>Card - Stripe</b><br><span class="small">Visa / Mastercard - Global</span></div><span class="tick"></span></div>
+<div class="payMethod" id="pm-cash" onclick="selectPayMethod('cash')"><span class="icon">💵</span><div><b>Cash After Visit</b><br><span class="small">Pay nurse in cash</span></div><span class="tick"></span></div>
+<button class="btn orange payBig" id="topupBtn" onclick="payTopUp()">📱 PAY UGX 50,000 WITH MoMo</button>
+<label>Transaction ID from Pesapal / Stripe</label><input id="txnId" placeholder="PES... / pi_...">
+<button class="btn green" onclick="confirmPaid()">✅ I Have Paid - Add to Wallet</button>
+<h3>Recent Transactions</h3><div id="walletList"></div>
 <button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
 </div>
 
 <!-- NURSE -->
-<div id="screen-nurse" class="card hidden">
-<h2>👩‍⚕️ Join as Nurse / Caregiver</h2>
-<p>Earn with Hom Care Hero. Fill form, admin will approve you.</p>
-<label>Full Name</label><input id="nName" placeholder="Full name">
-<label>Phone</label><input id="nPhone" placeholder="0700...">
-<label>Location</label><input id="nLocation" placeholder="Kampala / Wakiso">
-<label>Qualification</label><select id="nQual"><option>Registered Nurse</option><option>Enrolled Nurse</option><option>Midwife</option><option>Caregiver</option><option>Physiotherapist</option></select>
-<label>Years Experience</label><input id="nExp" type="number" placeholder="e.g. 3">
-<label>Your Skills</label><textarea id="nSkills" placeholder="Elderly care, wound care, baby care..."></textarea>
-<button class="btn green" onclick="submitNurse()">✅ Submit Application</button>
-<button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
-</div>
-
+<div id="screen-nurse" class="card hidden"><h2>👩‍⚕️ Join as Nurse</h2><label>Full Name</label><input id="nName"><label>Phone</label><input id="nPhone"><label>Location</label><input id="nLocation"><label>Qualification</label><select id="nQual"><option>Registered Nurse</option><option>Enrolled Nurse</option><option>Midwife</option><option>Caregiver</option><option>Physiotherapist</option></select><label>Experience</label><input id="nExp" type="number"><label>Skills</label><textarea id="nSkills"></textarea><button class="btn green" onclick="submitNurse()">✅ Submit</button><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
 <!-- HISTORY -->
-<div id="screen-history" class="card hidden">
-<h2>📋 My Bookings</h2><div id="historyList"><p class="small">No bookings yet. Book a nurse to see it here.</p></div>
-<button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
-</div>
-
+<div id="screen-history" class="card hidden"><h2>📋 My Bookings</h2><div id="historyList"></div><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
+<!-- ADMIN GATE -->
+<div id="screen-adminGate" class="card hidden"><div class="lock">🔒</div><h2 style="text-align:center">Admin Gate Locked</h2><p style="text-align:center">Enter Admin PIN</p><label>Admin PIN</label><input id="adminPinInput" type="password" maxlength="4" placeholder="****"><button class="btn red" onclick="unlockAdmin()">🔓 Unlock Admin</button><p class="small" style="text-align:center">Default: 9999</p><button class="btn outline" onclick="showScreen('auth')">⬅ Back</button></div>
 <!-- ADMIN -->
-<div id="screen-admin" class="card hidden">
-<h2>🔐 Admin Panel</h2>
-<label>Admin Password</label><input id="adminPass" type="password" placeholder="Enter admin password">
-<button class="btn dark" onclick="adminLogin()">Login</button>
-<div id="adminContent" class="hidden">
-<h3>All Bookings</h3><div id="adminBookings"></div>
-<h3>Nurse Applications</h3><div id="adminNurses"></div>
-<h3>Wallet Deposits to Verify</h3><div id="adminDeposits"></div>
+<div id="screen-admin" class="card hidden"><h2>📊 Admin Dashboard</h2><div class="kpi"><div><b id="kpiUsers">0</b><span class="small">Users</span></div><div><b id="kpiBookings">0</b><span class="small">Bookings</span></div><div><b id="kpiMoney">0</b><span class="small">Wallet</span></div></div><h3>Bookings</h3><div id="adminBookings"></div><h3>Nurses</h3><div id="adminNurses"></div><h3>Deposits</h3><div id="adminDeposits"></div><button class="btn red" onclick="lockAdmin()">🔒 Lock Admin</button><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
+<p class="small" style="text-align:center">Hom Care Hero • Global • <a href="#" onclick="openAdminGate();return false;">🔒 Admin</a></p>
 </div>
-<button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
-</div>
-
-<p class="small" style="text-align:center">Hom Care Hero • Made in Uganda • <a href="#" onclick="showScreen('admin');return false;">Admin</a></p>
-</div>
-
-<nav class="bottomnav">
-<button id="nav-entry" class="active" onclick="showScreen('entry')">🏠 Home</button>
-<button id="nav-booking" onclick="showScreen('booking')">📅 Book</button>
-<button id="nav-wallet" onclick="showScreen('wallet')">💰 Wallet</button>
-<button id="nav-nurse" onclick="showScreen('nurse')">👩‍⚕️ Nurse</button>
-<button id="nav-history" onclick="showScreen('history')">📋 History</button>
-</nav>
-
-<!-- FIREBASE -->
+<nav class="bottomnav"><button id="nav-entry" onclick="showScreen('entry')">🏠 Home</button><button id="nav-booking" onclick="showScreen('booking')">📅 Book</button><button id="nav-wallet" onclick="showScreen('wallet')">💰 Wallet</button><button id="nav-nurse" onclick="showScreen('nurse')">👩‍⚕️ Nurse</button><button id="nav-history" onclick="showScreen('history')">📋 History</button></nav>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
-// ===== YOUR REAL LINKS - EDIT ONLY STRIPE_LINK =====
-const PESAPAL_LINK = 'https://store.pesapal.com/homecareheropayment';
-const STRIPE_LINK = 'PASTE-YOUR-buy.stripe.com-LINK-HERE';
-
-// ===== YOUR REAL FIREBASE - FROM YOUR OLD GOOD CODE =====
-const firebaseConfig = {
-  apiKey: "AIzaSyCpjdPt5Wfey4H55hxv9pd_71WkpVv4ne8",
-  authDomain: "home-care-hero.firebaseapp.com",
-  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
-  projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "38632827016",
-  appId: "1:38632827016:web:0ebca8c98541b2f3be573d",
-  measurementId: "G-ZV09KN6R90"
-};
-let db = null;
-try{ firebase.initializeApp(firebaseConfig); db = firebase.firestore(); console.log('Firebase OK'); }catch(e){ console.log('Firebase local mode', e); }
-
-// ===== DATA =====
-const SERVICES = [
-  {id:'elderly', name:'👵 Elderly Care', desc:'Compassionate care for elderly at home', price:25000},
-  {id:'baby', name:'👶 Baby / Child Care', desc:'Nanny + baby care, feeding, sleep', price:20000},
-  {id:'wound', name:'🩹 Wound Care', desc:'Dressing, cleaning, post-surgery care', price:30000},
-  {id:'postnatal', name:'🤱 Postnatal / Mother Care', desc:'New mother + baby support', price:30000},
-  {id:'physio', name:'💪 Physiotherapy', desc:'Recovery, mobility, exercise', price:35000},
-  {id:'general', name:'🏠 General Home Nursing', desc:'Vitals, medication, check-up', price:25000}
-];
-let selectedService = SERVICES[5];
-let walletBalance = Number(localStorage.getItem('hch_balance')||0);
-let bookings = JSON.parse(localStorage.getItem('hch_bookings')||'[]');
-let nurses = JSON.parse(localStorage.getItem('hch_nurses')||'[]');
-let deposits = JSON.parse(localStorage.getItem('hch_deposits')||'[]');
-
-function saveLocal(){ localStorage.setItem('hch_balance', walletBalance); localStorage.setItem('hch_bookings', JSON.stringify(bookings)); localStorage.setItem('hch_nurses', JSON.stringify(nurses)); localStorage.setItem('hch_deposits', JSON.stringify(deposits)); }
-
-function showScreen(name){
-  ['entry','booking','wallet','nurse','history','admin'].forEach(s=>{
-    document.getElementById('screen-'+s).classList.toggle('hidden', s!==name);
-    let nav=document.getElementById('nav-'+s); if(nav) nav.classList.toggle('active', s===name);
-  });
-  if(name==='wallet') renderWallet();
-  if(name==='history') renderHistory();
-  window.scrollTo(0,0);
+const PESAPAL_LINK='https://store.pesapal.com/homecareheropayment';
+const STRIPE_LINK='PASTE-YOUR-buy.stripe.com-LINK-HERE';
+const ADMIN_PIN='9999';
+const firebaseConfig={apiKey:"AIzaSyCpjdPt5Wfey4H55hxv9pd_71WkpVv4ne8",authDomain:"home-care-hero.firebaseapp.com",databaseURL:"https://home-care-hero-default-rtdb.firebaseio.com",projectId:"home-care-hero",storageBucket:"home-care-hero.firebasestorage.app",messagingSenderId:"38632827016",appId:"1:38632827016:web:0ebca8c98541b2f3be573d",measurementId:"G-ZV09KN6R90"};
+let db=null; try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();}catch(e){}
+const COUNTRIES={UG:{flag:'🇺🇬 Uganda',cur:'UGX',rate:1,sym:'UGX '},KE:{flag:'🇰🇪 Kenya',cur:'KES',rate:0.035,sym:'KES '},NG:{flag:'🇳🇬 Nigeria',cur:'NGN',rate:0.41,sym:'₦'},GH:{flag:'🇬🇭 Ghana',cur:'GHS',rate:0.004,sym:'GH₵'},US:{flag:'🇺🇸 USA',cur:'USD',rate:0.00027,sym:'$'},GB:{flag:'🇬🇧 UK',cur:'GBP',rate:0.00021,sym:'£'}};
+let currentCountry=localStorage.getItem('hch_country')||'UG';
+let user=JSON.parse(localStorage.getItem('hch_user')||'null');
+let isLogged=localStorage.getItem('hch_logged')==='1';
+let walletBalance=Number(localStorage.getItem('hch_balance')||0);
+let bookings=JSON.parse(localStorage.getItem('hch_bookings')||'[]');
+let nurses=JSON.parse(localStorage.getItem('hch_nurses')||'[]');
+let deposits=JSON.parse(localStorage.getItem('hch_deposits')||'[]');
+let allUsers=JSON.parse(localStorage.getItem('hch_allusers')||'[]');
+let selectedPay='pesapal', selectedBookPay='wallet';
+const SERVICES=[{id:'elderly',name:'👵 Elderly Care',desc:'Care for elderly',price:25000},{id:'baby',name:'👶 Baby Care',desc:'Nanny + baby',price:20000},{id:'wound',name:'🩹 Wound Care',desc:'Dressing',price:30000},{id:'postnatal',name:'🤱 Postnatal',desc:'Mother + baby',price:30000},{id:'physio',name:'💪 Physiotherapy',desc:'Recovery',price:35000},{id:'general',name:'🏠 General Nursing',desc:'Vitals',price:25000}];
+let selectedService=SERVICES[5];
+function fmt(a){let c=COUNTRIES[currentCountry];let v=a*c.rate; if(currentCountry==='UG') return 'UGX '+Math.round(v).toLocaleString(); return c.sym+Math.round(v).toLocaleString();}
+function saveLocal(){localStorage.setItem('hch_balance',walletBalance);localStorage.setItem('hch_bookings',JSON.stringify(bookings));localStorage.setItem('hch_nurses',JSON.stringify(nurses));localStorage.setItem('hch_deposits',JSON.stringify(deposits));localStorage.setItem('hch_allusers',JSON.stringify(allUsers));localStorage.setItem('hch_country',currentCountry);}
+function changeCountry(code){currentCountry=code;saveLocal();document.getElementById('countrySelect').value=code;document.getElementById('regCountry').value=code;document.getElementById('headerCountry').innerText='🌍 '+COUNTRIES[code].flag;document.getElementById('countryFlag').innerText=COUNTRIES[code].flag;document.getElementById('curLabel').innerText=COUNTRIES[code].cur;renderServices();renderWallet();renderBookPay();}
+function showScreen(name){if(['entry','booking','wallet','nurse','history'].includes(name)&&!isLogged){showAuth();return;} ['auth','entry','booking','wallet','nurse','history','adminGate','admin'].forEach(s=>{let el=document.getElementById('screen-'+s); if(el) el.classList.toggle('hidden',s!==name);}); if(name==='wallet')renderWallet(); if(name==='history')renderHistory(); if(name==='admin')renderAdmin(); window.scrollTo(0,0);}
+function showAuth(){['auth','entry','booking','wallet','nurse','history','adminGate','admin'].forEach(s=>{let el=document.getElementById('screen-'+s); if(el) el.classList.toggle('hidden',s!=='auth');});}
+function showLogin(){document.getElementById('authCreate').classList.add('hidden');document.getElementById('authLogin').classList.remove('hidden');}
+function showCreate(){document.getElementById('authLogin').classList.add('hidden');document.getElementById('authCreate').classList.remove('hidden');}
+function createAccount(){let name=document.getElementById('regName').value.trim(),phone=document.getElementById('regPhone').value.trim(),pin=document.getElementById('regPin').value.trim(),country=document.getElementById('regCountry').value; if(!name||!phone||pin.length!==4){alert('Fill Name, Phone, 4-digit PIN');return;} user={name,phone,email:document.getElementById('regEmail').value,country,pin}; allUsers.push({name,phone,country,created:new Date().toLocaleString()}); isLogged=true; localStorage.setItem('hch_user',JSON.stringify(user)); localStorage.setItem('hch_logged','1'); changeCountry(country); saveLocal(); document.getElementById('userGreet').innerText='Hello, '+name.split(' ')[0]; document.getElementById('bkName').value=name; document.getElementById('bkPhone').value=phone; alert('✅ Welcome '+name); showScreen('entry');}
+function loginUser(){let phone=document.getElementById('loginPhone').value.trim(),pin=document.getElementById('loginPin').value.trim(); if(!user||user.phone!==phone||user.pin!==pin){alert('Wrong Phone or PIN');return;} isLogged=true; localStorage.setItem('hch_logged','1'); showScreen('entry');}
+function logoutUser(){isLogged=false; localStorage.setItem('hch_logged','0'); showAuth(); showLogin();}
+function openAdminGate(){showScreen('adminGate');}
+function unlockAdmin(){if(document.getElementById('adminPinInput').value!==ADMIN_PIN){alert('Wrong Admin PIN');return;} showScreen('admin');}
+function lockAdmin(){document.getElementById('adminPinInput').value=''; showScreen('adminGate');}
+function renderServices(){document.getElementById('serviceList').innerHTML=SERVICES.map(s=>`<div class="service ${s.id===selectedService.id?'selected':''}" onclick="selectService('${s.id}')"><div class="row"><b>${s.name}</b><b>${fmt(s.price)} / hr</b></div><p class="small">${s.desc}</p></div>`).join(''); updateTotal();}
+function selectService(id){selectedService=SERVICES.find(s=>s.id===id);renderServices();}
+function updateTotal(){let h=Number(document.getElementById('bkHours').value||8); document.getElementById('bkTotal').innerText=fmt(selectedService.price*h); let btn=document.getElementById('bookPayBtn'); if(btn) btn.innerText='✅ PAY '+fmt(selectedService.price*h)+' & BOOK NOW';}
+document.getElementById('bkHours').addEventListener('change',updateTotal);
+// SAFEBODA - BOOKING PAY METHODS
+function renderBookPay(){
+  let opts=[{id:'wallet',icon:'💰',t:'Wallet Balance',d:'Pay from your wallet - '+fmt(walletBalance)},{id:'pesapal',icon:'📱',t:'MoMo - Pesapal',d:'MTN / Airtel'},{id:'stripe',icon:'💳',t:'Card - Stripe',d:'Visa / Mastercard'},{id:'cash',icon:'💵',t:'Cash After Visit',d:'Pay nurse cash'}];
+  document.getElementById('bookPayMethods').innerHTML=opts.map(o=>`<div class="payMethod ${selectedBookPay===o.id?'active':''}" onclick="selectBookPay('${o.id}')"><span class="icon">${o.icon}</span><div><b>${o.t}</b><br><span class="small">${o.d}</span></div><span class="tick">${selectedBookPay===o.id?'✓':''}</span></div>`).join('');
 }
-function renderServices(){
-  document.getElementById('serviceList').innerHTML = SERVICES.map(s=>`
-    <div class="service ${s.id===selectedService.id?'selected':''}" onclick="selectService('${s.id}')">
-      <div class="row"><b>${s.name}</b><b>UGX ${s.price.toLocaleString()} / hr</b></div>
-      <p class="small">${s.desc}</p>
-    </div>`).join('');
-  updateTotal();
-}
-function selectService(id){ selectedService = SERVICES.find(s=>s.id===id); renderServices(); }
-function updateTotal(){ let h=Number(document.getElementById('bkHours').value||8); document.getElementById('bkTotal').innerText = 'UGX ' + (selectedService.price*h).toLocaleString(); }
-document.getElementById('bkHours').addEventListener('change', updateTotal);
-
-async function confirmBooking(){
-  let name=document.getElementById('bkName').value.trim();
-  let phone=document.getElementById('bkPhone').value.trim();
-  let loc=document.getElementById('bkLocation').value.trim();
-  let date=document.getElementById('bkDate').value;
-  let time=document.getElementById('bkTime').value;
-  let hours=document.getElementById('bkHours').value;
-  if(!name||!phone||!loc){ alert('Please fill Name, Phone and Location'); return; }
-  let total = selectedService.price * Number(hours);
-  let booking = {name, phone, location:loc, service:selectedService.name, date, time, hours, total, notes:document.getElementById('bkNotes').value, status:'Pending', created:new Date().toLocaleString()};
-  bookings.unshift(booking); saveLocal();
-  try{ if(db) await db.collection('bookings').add(booking); }catch(e){ console.log(e); }
-  alert('✅ Booking Confirmed!\n'+selectedService.name+'\nTotal: UGX '+total.toLocaleString()+'\nWe will call you on '+phone);
+function selectBookPay(id){selectedBookPay=id;renderBookPay();}
+async function payForBooking(){
+  let name=document.getElementById('bkName').value.trim(),phone=document.getElementById('bkPhone').value.trim(),loc=document.getElementById('bkLocation').value.trim(); if(!name||!phone||!loc){alert('Fill Name, Phone, Location');return;}
+  let total=selectedService.price*Number(document.getElementById('bkHours').value);
+  let b={name,phone,location:loc,service:selectedService.name,date:document.getElementById('bkDate').value,time:document.getElementById('bkTime').value,hours:document.getElementById('bkHours').value,total,notes:document.getElementById('bkNotes').value,status:selectedBookPay==='cash'?'Pending - Cash':selectedBookPay==='wallet'?'Paid - Wallet':'Pending - '+selectedBookPay,country:currentCountry,payMethod:selectedBookPay,created:new Date().toLocaleString()};
+  if(selectedBookPay==='wallet'){ if(walletBalance<total){alert('Wallet low. Balance '+fmt(walletBalance)+'. Top up first in Wallet.'); showScreen('wallet'); return;} walletBalance-=total; }
+  if(selectedBookPay==='pesapal'){ window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(total)+' with MoMo, then booking is saved.'); }
+  if(selectedBookPay==='stripe'){ if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Choose Wallet / MoMo / Cash for now.'); return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(total)+' with Card.'); }
+  if(selectedBookPay==='cash'){ alert('✅ Booked! You will pay '+fmt(total)+' in Cash after visit.'); }
+  bookings.unshift(b); saveLocal(); try{if(db) await db.collection('bookings').add(b);}catch(e){}
+  if(selectedBookPay==='wallet') alert('✅ Paid from Wallet! Balance left: '+fmt(walletBalance));
   showScreen('history');
 }
-function renderHistory(){
-  if(!bookings.length){ document.getElementById('historyList').innerHTML='<p class="small">No bookings yet.</p>'; return; }
-  document.getElementById('historyList').innerHTML = bookings.map(b=>`
-    <div class="service"><b>${b.service}</b><br><span class="small">${b.name} • ${b.phone} • ${b.location}</span><br><span class="small">${b.date||''} ${b.time||''} • ${b.hours} hrs</span><br><b>UGX ${Number(b.total||0).toLocaleString()}</b> • ${b.status}<br><span class="small">${b.created||''}</span></div>`).join('');
-}
-
-// ===== PAYMENTS =====
-function payWithPesapal(){
-  let amt=Number(document.getElementById('depAmt').value||0);
-  if(amt<=0){ alert('Enter amount first'); return; }
-  window.open(PESAPAL_LINK,'_blank');
-  alert('Pesapal opened.\nPay UGX '+amt.toLocaleString()+' with MoMo.\nThen copy Transaction ID, paste below and tap Confirm Paid.');
-}
-function payWithStripe(){
-  let amt=Number(document.getElementById('depAmt').value||0);
-  if(amt<=0){ alert('Enter amount first'); return; }
-  if(!STRIPE_LINK || STRIPE_LINK.includes('PASTE')){ alert('Stripe Payment Link not set yet. Ask admin to paste buy.stripe.com link in code. For now use Pesapal MoMo.'); return; }
-  window.open(STRIPE_LINK,'_blank');
-  alert('Stripe opened.\nPay with Card.\nThen copy Transaction ID, paste below and tap Confirm Paid.');
-}
-function confirmPaid(){
-  let amt=Number(document.getElementById('depAmt').value||0);
-  let txn=document.getElementById('txnId').value.trim();
-  if(amt<=0){ alert('Enter amount'); return; }
-  if(!txn){ alert('Paste Transaction ID from Pesapal / Stripe'); return; }
-  walletBalance += amt;
-  let dep={amount:amt, txn, created:new Date().toLocaleString()};
-  deposits.unshift(dep); saveLocal();
-  document.getElementById('txnId').value='';
-  alert('✅ UGX '+amt.toLocaleString()+' added to Wallet!\nTxn: '+txn+'\nNew Balance: UGX '+walletBalance.toLocaleString());
-  renderWallet();
-}
-function renderWallet(){
-  document.getElementById('walletBalance').innerText='UGX '+walletBalance.toLocaleString();
-  document.getElementById('walletStatus').innerText='Wallet: Local + Cloud - IN-APP LIVE • Balance UGX '+walletBalance.toLocaleString();
-  document.getElementById('walletList').innerHTML = deposits.length ? deposits.map(d=>`<div class="row" style="padding:8px 0;border-bottom:1px solid #eee"><span>${d.txn}</span><b>+ UGX ${Number(d.amount).toLocaleString()}</b></div>`).join('') : '<p class="small">No activity yet.</p>';
-}
-async function submitNurse(){
-  let n={name:document.getElementById('nName').value, phone:document.getElementById('nPhone').value, location:document.getElementById('nLocation').value, qual:document.getElementById('nQual').value, exp:document.getElementById('nExp').value, skills:document.getElementById('nSkills').value, created:new Date().toLocaleString()};
-  if(!n.name||!n.phone){ alert('Fill Name and Phone'); return; }
-  nurses.unshift(n); saveLocal();
-  try{ if(db) await db.collection('nurses').add(n); }catch(e){}
-  alert('✅ Application Submitted! Admin will call you on '+n.phone);
-  showScreen('entry');
-}
-function adminLogin(){
-  if(document.getElementById('adminPass').value!=='admin123'){ alert('Wrong password. Try admin123'); return; }
-  document.getElementById('adminContent').classList.remove('hidden');
-  document.getElementById('adminBookings').innerHTML = bookings.length ? bookings.map(b=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${b.phone} - UGX ${Number(b.total||0).toLocaleString()} - ${b.status}</div>`).join('') : 'No bookings';
-  document.getElementById('adminNurses').innerHTML = nurses.length ? nurses.map(n=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${n.name}</b> - ${n.phone} - ${n.qual}</div>`).join('') : 'No nurses';
-  document.getElementById('adminDeposits').innerHTML = deposits.length ? deposits.map(d=>`<div style="padding:8px;border-bottom:1px solid #eee">${d.txn} - UGX ${Number(d.amount).toLocaleString()}</div>`).join('') : 'No deposits';
-}
-renderServices(); renderWallet(); renderHistory();
+// SAFEBODA - WALLET TOP UP
+function setAmount(v){let inUGX = currentCountry==='UG'?v : Math.round(v/COUNTRIES[currentCountry].rate); document.getElementById('depAmt').value=inUGX; document.querySelectorAll('.quick').forEach(q=>q.classList.remove('active')); event.target.classList.add('active'); updateTopUpBtn();}
+function selectPayMethod(id){selectedPay=id; ['pesapal','stripe','cash'].forEach(m=>{let el=document.getElementById('pm-'+m); el.classList.toggle('active',m===id); el.querySelector('.tick').innerText=m===id?'✓':'';}); updateTopUpBtn();}
+function updateTopUpBtn(){let amt=Number(document.getElementById('depAmt').value||0); let label=selectedPay==='pesapal'?'📱 PAY '+fmt(amt)+' WITH MoMo':selectedPay==='stripe'?'💳 PAY '+fmt(amt)+' WITH Card':'💵 PAY '+fmt(amt)+' CASH'; document.getElementById('topupBtn').innerText=label;}
+document.getElementById('depAmt').addEventListener('input',updateTopUpBtn);
+function payTopUp(){let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){alert('Tap amount first - 10K / 20K / 50K / 100K');return;} if(selectedPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(amt)+' with MoMo. Then paste Transaction ID below and tap Confirm.');} if(selectedPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use MoMo for now.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(amt)+' with Card.');} if(selectedPay==='cash'){alert('Cash selected - Pay cash to nurse, admin will add it.');}}
+function confirmPaid(){let amtUGX=Number(document.getElementById('depAmt').value||0); let txn=document.getElementById('txnId').value.trim(); if(amtUGX<=0||!txn){alert('Enter amount + Transaction ID');return;} walletBalance+=amtUGX; deposits.unshift({amount:amtUGX,display:fmt(amtUGX),txn,country:currentCountry,method:selectedPay,created:new Date().toLocaleString()}); saveLocal(); document.getElementById('txnId').value=''; alert('✅ '+fmt(amtUGX)+' added! Balance: '+fmt(walletBalance)); renderWallet();}
+function renderWallet(){document.getElementById('walletBalance').innerText=fmt(walletBalance); document.getElementById('walletBalanceTop').innerText=fmt(walletBalance); document.getElementById('walletStatus2').innerText='IN-APP LIVE • '+COUNTRIES[currentCountry].flag; document.getElementById('walletList').innerHTML=deposits.length?deposits.map(d=>`<div class="hist"><span>💰 ${d.txn} • ${d.method||''}</span><b>+ ${d.display||fmt(d.amount)}</b></div>`).join(''):'<p class="small">No transactions yet</p>'; updateTopUpBtn();}
+function renderHistory(){document.getElementById('historyList').innerHTML=bookings.length?bookings.map(b=>`<div class="service"><b>${b.service}</b><br><span class="small">${b.name} • ${b.phone} • ${b.location}</span><br><b>${fmt(Number(b.total||0))}</b> • ${b.status} • ${b.payMethod||''}</div>`).join(''):'<p class="small">No bookings yet</p>';}
+async function submitNurse(){let n={name:document.getElementById('nName').value,phone:document.getElementById('nPhone').value,location:document.getElementById('nLocation').value,qual:document.getElementById('nQual').value,exp:document.getElementById('nExp').value,skills:document.getElementById('nSkills').value,country:currentCountry,status:'Pending',created:new Date().toLocaleString()}; if(!n.name||!n.phone){alert('Fill Name + Phone');return;} nurses.unshift(n); saveLocal(); try{if(db) await db.collection('nurses').add(n);}catch(e){} alert('✅ Application Submitted!'); showScreen('entry');}
+function renderAdmin(){document.getElementById('kpiUsers').innerText=allUsers.length+1; document.getElementById('kpiBookings').innerText=bookings.length; document.getElementById('kpiMoney').innerText=fmt(walletBalance); document.getElementById('adminBookings').innerHTML=bookings.length?bookings.map((b,i)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${fmt(Number(b.total||0))} - ${b.status} <button class="btn green" style="padding:6px" onclick="approveBooking(${i})">Approve</button></div>`).join(''):'No bookings'; document.getElementById('adminNurses').innerHTML=nurses.length?nurses.map((n,i)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${n.name}</b> - ${n.phone} - ${n.status} <button class="btn green" style="padding:6px" onclick="approveNurse(${i})">Approve</button></div>`).join(''):'No nurses'; document.getElementById('adminDeposits').innerHTML=deposits.length?deposits.map(d=>`<div style="padding:8px;border-bottom:1px solid #eee">${d.txn} - ${d.display||fmt(d.amount)} - ${d.method||''}</div>`).join(''):'No deposits';}
+function approveBooking(i){bookings[i].status='Approved'; saveLocal(); renderAdmin();}
+function approveNurse(i){nurses[i].status='Approved'; saveLocal(); renderAdmin();}
+document.getElementById('countrySelect').value=currentCountry; document.getElementById('regCountry').value=currentCountry; document.getElementById('headerCountry').innerText='🌍 '+COUNTRIES[currentCountry].flag;
+if(user){document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0]; document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone;}
+if(isLogged&&user){showScreen('entry');}else{showAuth(); showCreate();}
+renderServices(); renderWallet(); renderBookPay();
 </script>
 </body>
 </html>
