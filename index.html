@@ -2,109 +2,121 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hom Care Hero - Global</title>
+<title>Hom Care Hero - Global Home Care</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:system-ui,sans-serif;background:#f0f2f5;padding-bottom:95px}
-header{background:#0f5132;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10}
+header{background:#0f5132;color:#fff;padding:14px 16px;position:sticky;top:0;z-index:10;cursor:pointer}
 .wrap{max-width:640px;margin:0 auto;padding:14px}
 .card{background:#fff;border-radius:18px;padding:16px;margin-bottom:14px;box-shadow:0 4px 16px rgba(0,0,0,.06)}
 h2{font-size:20px}h3{font-size:16px;margin:12px 0 6px}p{font-size:14px;line-height:1.5;color:#333}
 label{font-size:13px;font-weight:700;display:block;margin:10px 0 4px}
 input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-radius:12px;font-size:15px}
 .btn{display:block;width:100%;padding:14px;border:0;border-radius:12px;font-size:16px;font-weight:800;color:#fff;background:#0f5132;margin-top:12px;cursor:pointer}
-.btn.green{background:#0f5132}.btn.purple{background:#635bff}.btn.orange{background:#ff7a00}.btn.dark{background:#111}.btn.red{background:#c0392b}.btn.grey{background:#e9ecef;color:#111}.btn.outline{background:#fff;color:#0f5132;border:2px solid #0f5132}
+.btn.green{background:#0f5132}.btn.orange{background:#ff7a00}.btn.dark{background:#111}.btn.red{background:#c0392b}.btn.grey{background:#e9ecef;color:#111}.btn.outline{background:#fff;color:#0f5132;border:2px solid #0f5132}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.grid4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
-.pill{display:inline-block;background:#e8f5ee;padding:6px 10px;border-radius:999px;font-size:12px;font-weight:700;margin:3px 3px 0 0}
 .small{font-size:12px;color:#666}.price{font-size:26px;font-weight:900;color:#0f5132}
 .row{display:flex;justify-content:space-between;gap:10px;align-items:center}
 .hidden{display:none!important}
 .bottomnav{position:fixed;left:0;right:0;bottom:0;background:#fff;border-top:1px solid #ddd;display:flex;z-index:20}
 .bottomnav button{flex:1;padding:12px 2px;border:0;background:#fff;font-size:12px;font-weight:700;color:#555}
-.bottomnav button.active{color:#0f5132;border-top:3px solid #0f5132}
 .service{border:1px solid #e2e9e4;border-radius:12px;padding:12px;margin-top:10px}
 .service.selected{border:2px solid #0f5132;background:#f0faf4}
 .balanceCard{background:linear-gradient(135deg,#0f5132,#1a7a4a);color:#fff;border-radius:18px;padding:18px}
 .balanceCard .price{color:#fff;font-size:32px}
-/* SAFEBODA PAYMENTS */
 .quick{padding:12px 0;border:2px solid #e2e9e4;border-radius:12px;background:#fff;font-weight:800;cursor:pointer}
 .quick.active{background:#0f5132;color:#fff;border-color:#0f5132}
 .payMethod{display:flex;align-items:center;gap:12px;padding:14px;border:2px solid #e2e9e4;border-radius:14px;margin-top:10px;cursor:pointer;background:#fff}
 .payMethod.active{border-color:#0f5132;background:#f0faf4}
 .payMethod .icon{font-size:28px}.payMethod .tick{margin-left:auto;font-size:20px;color:#0f5132}
-.payBig{font-size:18px;padding:16px}
-.hist{padding:12px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
 .kpi{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:12px}
 .kpi div{background:#f8f9fa;border-radius:12px;padding:12px;text-align:center}.kpi b{font-size:20px;display:block}
-.lock{font-size:48px;text-align:center}
+.lock{font-size:48px;text-align:center}.hist{padding:12px 0;border-bottom:1px solid #eee;display:flex;justify-content:space-between}
+/* PHARMACY AD */
+.pharma{background:linear-gradient(135deg,#ff7a00,#ff9d2e);color:#fff;border-radius:18px;padding:16px;margin-bottom:14px}
+.pharma .price{color:#fff;font-size:18px}
+.pharmaItem{background:#fff;color:#111;border-radius:14px;padding:12px;text-align:center}
+.pharmaItem b{font-size:13px}.pharmaItem span{font-size:11px;color:#666}
 </style>
 </head>
 <body>
-<header><b>🏥 Hom Care Hero</b> <span id="headerCountry">🌍 Global</span><br><span style="font-size:12px">Home Nursing & Care - Worldwide</span></header>
+<header onclick="secretAdminTap()"><b>🏥 Hom Care Hero</b> <span id="headerCountry">🌍 Global</span><br><span style="font-size:12px">Home Nursing & Care - Worldwide • Tap 5x for Admin</span></header>
 <div class="wrap">
 
 <!-- AUTH -->
 <div id="screen-auth" class="card">
-<div class="lock">🔐</div><h2 style="text-align:center">Welcome</h2><p style="text-align:center">Create account, then login with PIN like bank app.</p>
+<div class="lock">🔐</div><h2 style="text-align:center">Welcome to Hom Care Hero</h2><p style="text-align:center">Create account once, login with PIN like bank app.</p>
 <div id="authCreate">
 <label>Full Name</label><input id="regName" placeholder="Sarah Nakato">
-<label>Phone</label><input id="regPhone" placeholder="0700...">
+<label>Phone / WhatsApp</label><input id="regPhone" placeholder="0700...">
 <label>Email</label><input id="regEmail" placeholder="you@email.com">
-<label>🌍 Country</label><select id="regCountry" onchange="changeCountry(this.value)"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya - KES</option><option value="NG">🇳🇬 Nigeria - NGN</option><option value="GH">🇬🇭 Ghana - GHS</option><option value="US">🇺🇸 USA - USD</option><option value="GB">🇬🇧 UK - GBP</option></select>
+<label>🌍 Your Country</label><select id="regCountry" onchange="changeCountry(this.value)"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya - KES</option><option value="NG">🇳🇬 Nigeria - NGN</option><option value="GH">🇬🇭 Ghana - GHS</option><option value="US">🇺🇸 USA - USD</option><option value="GB">🇬🇧 UK - GBP</option></select>
 <label>Create 4-Digit PIN</label><input id="regPin" type="password" maxlength="4" placeholder="1234">
 <button class="btn green" onclick="createAccount()">✅ Create Account</button>
 <p style="text-align:center;margin-top:10px"><a href="#" onclick="showLogin();return false;">Already have account? Login</a></p>
 </div>
 <div id="authLogin" class="hidden">
-<label>Phone</label><input id="loginPhone"><label>PIN</label><input id="loginPin" type="password" maxlength="4">
+<label>Phone</label><input id="loginPhone" placeholder="Phone you registered"><label>Enter PIN</label><input id="loginPin" type="password" maxlength="4" placeholder="****">
 <button class="btn green" onclick="loginUser()">🔓 Unlock App</button>
 <p style="text-align:center;margin-top:10px"><a href="#" onclick="showCreate();return false;">No account? Create one</a></p>
 </div>
-<button class="btn dark" onclick="openAdminGate()">🔒 Admin Gate</button>
+<!-- ADMIN BUTTON HIDDEN - NO BUTTON HERE ANYMORE -->
 </div>
+
+<!-- PHARMACY AD ON AUTH TOO -->
+<div id="pharmacyAdAuth"></div>
 
 <!-- HOME -->
 <div id="screen-entry" class="card hidden">
-<div class="balanceCard"><div class="row"><span>👋 <span id="userGreet">Hello</span></span><span id="countryFlag">🇺🇬 Uganda</span></div><div style="margin-top:12px;font-size:13px;opacity:.9">Wallet Balance</div><div class="price" id="walletBalanceTop">UGX 0</div><div class="small" style="color:#fff">IN-APP LIVE • SafeBoda Style</div><div class="grid2" style="margin-top:12px"><button class="btn" style="background:#fff;color:#0f5132;margin:0" onclick="showScreen('wallet')">💰 Top Up</button><button class="btn" style="background:#ff7a00;margin:0" onclick="showScreen('booking')">📅 Book Nurse</button></div></div>
-<label>🌍 Country / Currency</label><select id="countrySelect" onchange="changeCountry(this.value)"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya - KES</option><option value="NG">🇳🇬 Nigeria - NGN</option><option value="GH">🇬🇭 Ghana - GHS</option><option value="US">🇺🇸 USA - USD</option><option value="GB">🇬🇧 UK - GBP</option></select>
-<div class="grid2" style="margin-top:12px"><button class="btn green" onclick="showScreen('booking')">📅 Book Nurse</button><button class="btn outline" onclick="showScreen('nurse')">👩‍⚕️ Join as Nurse</button></div>
-<button class="btn dark" onclick="showScreen('wallet')">💰 Wallet & Payments</button>
+<div class="balanceCard"><div class="row"><span>👋 <span id="userGreet">Hello</span></span><span id="countryFlag">🇺🇬 Uganda</span></div><div style="margin-top:12px;font-size:13px;opacity:.9">Wallet Balance</div><div class="price" id="walletBalanceTop">UGX 0</div><div class="small" style="color:#fff">IN-APP LIVE • SafeBoda Style • Global</div><div class="grid2" style="margin-top:12px"><button class="btn" style="background:#fff;color:#0f5132;margin:0" onclick="showScreen('wallet')">💰 Top Up</button><button class="btn" style="background:#ff7a00;margin:0" onclick="showScreen('booking')">📅 Book Nurse</button></div></div>
+<label>🌍 Change Country / Currency</label><select id="countrySelect" onchange="changeCountry(this.value)"><option value="UG">🇺🇬 Uganda - UGX</option><option value="KE">🇰🇪 Kenya - KES</option><option value="NG">🇳🇬 Nigeria - NGN</option><option value="GH">🇬🇭 Ghana - GHS</option><option value="US">🇺🇸 USA - USD</option><option value="GB">🇬🇧 UK - GBP</option></select>
+<div class="grid2" style="margin-top:12px"><button class="btn green" onclick="showScreen('booking')">📅 Book a Nurse</button><button class="btn outline" onclick="showScreen('nurse')">👩‍⚕️ Join as Nurse</button></div>
+<button class="btn dark" onclick="showScreen('wallet')">💰 My Wallet & Payments</button>
 <button class="btn outline" onclick="showScreen('history')">📋 My Bookings</button>
-<button class="btn grey" onclick="logoutUser()">🚪 Logout / Lock</button>
+<button class="btn grey" onclick="logoutUser()">🚪 Logout / Lock App</button>
 </div>
 
-<!-- BOOKING - SAFEBODA PAYMENT AT CHECKOUT -->
+<!-- PHARMACY AD - FILLS WHITE SPACE ON HOME PAGE -->
+<div id="pharmacyAdHome" class="pharma">
+<div class="row"><b style="font-size:18px">💊 Hom Care Pharmacy</b><span style="background:#fff;color:#ff7a00;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:900">-20% TODAY</span></div>
+<p style="color:#fff;font-size:13px;margin:6px 0">Order medicine at home. Nurse brings it with your visit. Free delivery in Kampala!</p>
+<div class="grid4">
+<div class="pharmaItem">💊<br><b>Paracetamol</b><br><span>UGX 2,000</span><br><b style="color:#ff7a00">1,600</b></div>
+<div class="pharmaItem">🍊<br><b>Vitamin C</b><br><span>UGX 15,000</span><br><b style="color:#ff7a00">12,000</b></div>
+<div class="pharmaItem">👶<br><b>Baby Care</b><br><span>UGX 25,000</span><br><b style="color:#ff7a00">20,000</b></div>
+<div class="pharmaItem">❤️<br><b>BP Check</b><br><span>UGX 10,000</span><br><b style="color:#ff7a00">FREE</b></div>
+</div>
+<button class="btn" style="background:#fff;color:#ff7a00;margin-top:12px" onclick="orderPharmacy()">💬 Order on WhatsApp - 0771218437</button>
+<button class="btn" style="background:#111;color:#fff;margin-top:8px" onclick="showScreen('booking')">📅 Book Nurse + Pharmacy Together</button>
+<p style="color:#fff;font-size:11px;text-align:center;margin-top:8px">Licensed Pharmacy Partner • Delivery in 1 Hour • Pay with MoMo / Cash / Wallet</p>
+</div>
+
+<!-- BOOKING -->
 <div id="screen-booking" class="card hidden">
 <h2>📅 Book a Nurse</h2>
-<label>Full Name</label><input id="bkName"><label>Phone</label><input id="bkPhone"><label>Location</label><input id="bkLocation" placeholder="Ntinda, Kampala / Nairobi / Lagos">
+<label>Full Name</label><input id="bkName"><label>Phone</label><input id="bkPhone"><label>Location / City</label><input id="bkLocation" placeholder="Ntinda, Kampala / Nairobi / Lagos">
 <label>Choose Service</label><div id="serviceList"></div>
 <label>When?</label><input id="bkDate" type="date"><input id="bkTime" type="time" style="margin-top:8px">
 <label>Hours</label><select id="bkHours"><option value="2">2 Hours</option><option value="4">4 Hours</option><option value="8" selected>8 Hours</option><option value="12">12 Hours</option><option value="24">24 Hours</option></select>
-<label>Notes</label><textarea id="bkNotes"></textarea>
+<label>Notes</label><textarea id="bkNotes" placeholder="Patient need..."></textarea>
 <div class="row" style="margin-top:12px"><span>Total</span><span class="price" id="bkTotal">0</span></div>
-<h3>💳 How do you want to pay? - Like SafeBoda</h3>
-<div id="bookPayMethods"></div>
-<button class="btn green payBig" id="bookPayBtn" onclick="payForBooking()">✅ PAY & BOOK NOW</button>
+<h3>💳 How do you want to pay? - Like SafeBoda</h3><div id="bookPayMethods"></div>
+<button class="btn green" id="bookPayBtn" style="font-size:18px;padding:16px" onclick="payForBooking()">✅ PAY & BOOK NOW</button>
 <button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
 </div>
 
-<!-- WALLET - SAFEBODA STYLE -->
+<!-- WALLET -->
 <div id="screen-wallet" class="card hidden">
 <h2>💰 Wallet - Like SafeBoda</h2>
 <div class="balanceCard"><div style="font-size:13px;opacity:.9">Your Balance</div><div class="price" id="walletBalance">0</div><div class="small" style="color:#fff" id="walletStatus2">IN-APP LIVE</div></div>
 <h3>Quick Top Up - Tap Amount</h3>
-<div class="grid4">
-<button class="quick" onclick="setAmount(10000)">10K</button>
-<button class="quick" onclick="setAmount(20000)">20K</button>
-<button class="quick active" onclick="setAmount(50000)">50K</button>
-<button class="quick" onclick="setAmount(100000)">100K</button>
-</div>
+<div class="grid4"><button class="quick" onclick="setAmount(10000)">10K</button><button class="quick" onclick="setAmount(20000)">20K</button><button class="quick active" onclick="setAmount(50000)">50K</button><button class="quick" onclick="setAmount(100000)">100K</button></div>
 <label>Or Enter Amount (<span id="curLabel">UGX</span>)</label><input id="depAmt" type="number" value="50000">
 <h3>Choose Payment Method</h3>
-<div class="payMethod active" id="pm-pesapal" onclick="selectPayMethod('pesapal')"><span class="icon">📱</span><div><b>MoMo - Pesapal</b><br><span class="small">MTN & Airtel - Uganda / Africa</span></div><span class="tick">✓</span></div>
+<div class="payMethod active" id="pm-pesapal" onclick="selectPayMethod('pesapal')"><span class="icon">📱</span><div><b>MoMo - Pesapal</b><br><span class="small">MTN & Airtel - Africa</span></div><span class="tick">✓</span></div>
 <div class="payMethod" id="pm-stripe" onclick="selectPayMethod('stripe')"><span class="icon">💳</span><div><b>Card - Stripe</b><br><span class="small">Visa / Mastercard - Global</span></div><span class="tick"></span></div>
 <div class="payMethod" id="pm-cash" onclick="selectPayMethod('cash')"><span class="icon">💵</span><div><b>Cash After Visit</b><br><span class="small">Pay nurse in cash</span></div><span class="tick"></span></div>
-<button class="btn orange payBig" id="topupBtn" onclick="payTopUp()">📱 PAY UGX 50,000 WITH MoMo</button>
+<button class="btn orange" id="topupBtn" style="font-size:18px;padding:16px" onclick="payTopUp()">📱 PAY UGX 50,000 WITH MoMo</button>
 <label>Transaction ID from Pesapal / Stripe</label><input id="txnId" placeholder="PES... / pi_...">
 <button class="btn green" onclick="confirmPaid()">✅ I Have Paid - Add to Wallet</button>
 <h3>Recent Transactions</h3><div id="walletList"></div>
@@ -112,25 +124,71 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 </div>
 
 <!-- NURSE -->
-<div id="screen-nurse" class="card hidden"><h2>👩‍⚕️ Join as Nurse</h2><label>Full Name</label><input id="nName"><label>Phone</label><input id="nPhone"><label>Location</label><input id="nLocation"><label>Qualification</label><select id="nQual"><option>Registered Nurse</option><option>Enrolled Nurse</option><option>Midwife</option><option>Caregiver</option><option>Physiotherapist</option></select><label>Experience</label><input id="nExp" type="number"><label>Skills</label><textarea id="nSkills"></textarea><button class="btn green" onclick="submitNurse()">✅ Submit</button><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
+<div id="screen-nurse" class="card hidden"><h2>👩‍⚕️ Join as Nurse</h2><label>Full Name</label><input id="nName"><label>Phone</label><input id="nPhone"><label>Location / Country</label><input id="nLocation" placeholder="City, Country"><label>Qualification</label><select id="nQual"><option>Registered Nurse</option><option>Enrolled Nurse</option><option>Midwife</option><option>Caregiver</option><option>Physiotherapist</option></select><label>Experience Years</label><input id="nExp" type="number"><label>Skills</label><textarea id="nSkills"></textarea><button class="btn green" onclick="submitNurse()">✅ Submit Application</button><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
 <!-- HISTORY -->
 <div id="screen-history" class="card hidden"><h2>📋 My Bookings</h2><div id="historyList"></div><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
-<!-- ADMIN GATE -->
-<div id="screen-adminGate" class="card hidden"><div class="lock">🔒</div><h2 style="text-align:center">Admin Gate Locked</h2><p style="text-align:center">Enter Admin PIN</p><label>Admin PIN</label><input id="adminPinInput" type="password" maxlength="4" placeholder="****"><button class="btn red" onclick="unlockAdmin()">🔓 Unlock Admin</button><p class="small" style="text-align:center">Default: 9999</p><button class="btn outline" onclick="showScreen('auth')">⬅ Back</button></div>
-<!-- ADMIN -->
-<div id="screen-admin" class="card hidden"><h2>📊 Admin Dashboard</h2><div class="kpi"><div><b id="kpiUsers">0</b><span class="small">Users</span></div><div><b id="kpiBookings">0</b><span class="small">Bookings</span></div><div><b id="kpiMoney">0</b><span class="small">Wallet</span></div></div><h3>Bookings</h3><div id="adminBookings"></div><h3>Nurses</h3><div id="adminNurses"></div><h3>Deposits</h3><div id="adminDeposits"></div><button class="btn red" onclick="lockAdmin()">🔒 Lock Admin</button><button class="btn outline" onclick="showScreen('entry')">⬅ Back</button></div>
-<p class="small" style="text-align:center">Hom Care Hero • Global • <a href="#" onclick="openAdminGate();return false;">🔒 Admin</a></p>
+
+<!-- ADMIN GATE - INVISIBLE, ONLY VIA SECRET TAP -->
+<div id="screen-adminGate" class="card hidden">
+<div class="lock">🔒</div><h2 style="text-align:center">Admin Gate Locked</h2><p style="text-align:center">Choose admin, enter phone + PIN</p>
+<label>Who Are You?</label>
+<select id="adminWho">
+<option value="SUPER">👑 SUPER - 0771218437 - 80% - Manages All</option>
+<option value="JOY">👩‍⚕️ JOY CHELANGAT - 0775761052 - 10% - Nurses Only</option>
+<option value="KIMTAI">📅 KIMTAI JABETH - 0770848127 - 10% - Bookings Only</option>
+</select>
+<label>Phone Number</label><input id="adminPhone" placeholder="077...">
+<label>Admin PIN</label><input id="adminPinInput" type="password" maxlength="4" placeholder="****">
+<button class="btn red" onclick="unlockAdmin()">🔓 Unlock My Dashboard</button>
+<p class="small" style="text-align:center">Default: SUPER 9999 • JOY 1111 • KIMTAI 2222 - SUPER can change these</p>
+<button class="btn outline" onclick="showScreen('auth')">⬅ Back</button>
 </div>
-<nav class="bottomnav"><button id="nav-entry" onclick="showScreen('entry')">🏠 Home</button><button id="nav-booking" onclick="showScreen('booking')">📅 Book</button><button id="nav-wallet" onclick="showScreen('wallet')">💰 Wallet</button><button id="nav-nurse" onclick="showScreen('nurse')">👩‍⚕️ Nurse</button><button id="nav-history" onclick="showScreen('history')">📋 History</button></nav>
+
+<!-- ADMIN DASHBOARD -->
+<div id="screen-admin" class="card hidden">
+<h2 id="adminTitle">📊 Admin Dashboard</h2><p class="small" id="adminRoleText"></p>
+<div class="kpi"><div><b id="kpiUsers">0</b><span class="small">Users</span></div><div><b id="kpiBookings">0</b><span class="small">Bookings</span></div><div><b id="kpiMoney">0</b><span class="small">Wallet Total</span></div></div>
+<div id="superMoneyBox" class="hidden" style="background:#fff3cd;padding:12px;border-radius:12px;margin-top:12px">
+<h3>💰 Money Split - SUPER ONLY</h3><div class="row"><span>Total Collected</span><b id="splitTotal">0</b></div><div class="row"><span>👑 SUPER - 80%</span><b id="splitSuper">0</b></div><div class="row"><span>👩‍⚕️ JOY - 10%</span><b id="splitJoy">0</b></div><div class="row"><span>📅 KIMTAI - 10%</span><b id="splitKimtai">0</b></div>
+</div>
+<div id="adminBookingsWrap"><h3>📅 Client Bookings</h3><div id="adminBookings"></div></div>
+<div id="adminNursesWrap"><h3>👩‍⚕️ Nurse Applications</h3><div id="adminNurses"></div></div>
+<div id="adminDepositsWrap"><h3>💰 Payments / Deposits</h3><div id="adminDeposits"></div></div>
+<div id="superChangePinBox" class="hidden" style="background:#e8f5ee;padding:14px;border-radius:12px;margin-top:12px;border:2px solid #0f5132">
+<h3>🔑 Change Admin Gate PIN - SUPER ONLY</h3>
+<p class="small">Only SUPER can change gate passwords. New PIN is saved instantly.</p>
+<label>Which Admin?</label>
+<select id="changePinWho"><option value="SUPER">👑 SUPER - 0771218437</option><option value="JOY">👩‍⚕️ JOY CHELANGAT - 0775761052</option><option value="KIMTAI">📅 KIMTAI JABETH - 0770848127</option></select>
+<label>New 4-Digit PIN</label><input id="newAdminPin" type="password" maxlength="4" placeholder="e.g. 5555">
+<label>Confirm New PIN</label><input id="confirmAdminPin" type="password" maxlength="4" placeholder="Repeat new PIN">
+<button class="btn green" onclick="changeAdminPin()">✅ Save New PIN</button>
+<p class="small" id="currentPinsText" style="margin-top:8px"></p>
+</div>
+<div id="notSuperPinMsg" class="hidden" style="background:#f8f9fa;padding:12px;border-radius:12px;margin-top:12px">
+<p>🔒 <b>Change PIN is locked.</b> Only SUPER can change gate passwords. Ask SUPER to change your PIN.</p>
+</div>
+<button class="btn red" onclick="lockAdmin()">🔒 Lock Admin Dashboard</button>
+<button class="btn outline" onclick="showScreen('entry')">⬅ Back</button>
+</div>
+
+<!-- NO ADMIN LINK - INVISIBLE -->
+<p class="small" style="text-align:center">Hom Care Hero • Global • Trusted Home Care</p>
+</div>
+<nav class="bottomnav"><button onclick="showScreen('entry')">🏠 Home</button><button onclick="showScreen('booking')">📅 Book</button><button onclick="showScreen('wallet')">💰 Wallet</button><button onclick="showScreen('nurse')">👩‍⚕️ Nurse</button><button onclick="showScreen('history')">📋 History</button></nav>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
 <script>
 const PESAPAL_LINK='https://store.pesapal.com/homecareheropayment';
 const STRIPE_LINK='PASTE-YOUR-buy.stripe.com-LINK-HERE';
-const ADMIN_PIN='9999';
+const PHARMACY_WA='256771218437';
 const firebaseConfig={apiKey:"AIzaSyCpjdPt5Wfey4H55hxv9pd_71WkpVv4ne8",authDomain:"home-care-hero.firebaseapp.com",databaseURL:"https://home-care-hero-default-rtdb.firebaseio.com",projectId:"home-care-hero",storageBucket:"home-care-hero.firebasestorage.app",messagingSenderId:"38632827016",appId:"1:38632827016:web:0ebca8c98541b2f3be573d",measurementId:"G-ZV09KN6R90"};
 let db=null; try{firebase.initializeApp(firebaseConfig);db=firebase.firestore();}catch(e){}
 const COUNTRIES={UG:{flag:'🇺🇬 Uganda',cur:'UGX',rate:1,sym:'UGX '},KE:{flag:'🇰🇪 Kenya',cur:'KES',rate:0.035,sym:'KES '},NG:{flag:'🇳🇬 Nigeria',cur:'NGN',rate:0.41,sym:'₦'},GH:{flag:'🇬🇭 Ghana',cur:'GHS',rate:0.004,sym:'GH₵'},US:{flag:'🇺🇸 USA',cur:'USD',rate:0.00027,sym:'$'},GB:{flag:'🇬🇧 UK',cur:'GBP',rate:0.00021,sym:'£'}};
+function loadAdmins(){let saved=JSON.parse(localStorage.getItem('hch_admin_pins')||'null');let base={SUPER:{name:'SUPER',phone:'0771218437',pin:'9999',share:80,role:'SUPER - Manages All, Approve All, Payments'},JOY:{name:'JOY CHELANGAT',phone:'0775761052',pin:'1111',share:10,role:'JOY - Approve Nurses Only'},KIMTAI:{name:'KIMTAI JABETH',phone:'0770848127',pin:'2222',share:10,role:'KIMTAI - Client Bookings Only'}};if(saved){if(saved.SUPER)base.SUPER.pin=saved.SUPER;if(saved.JOY)base.JOY.pin=saved.JOY;if(saved.KIMTAI)base.KIMTAI.pin=saved.KIMTAI;}return base;}
+let ADMINS=loadAdmins();let currentAdmin=null;
+let tapCount=0,lastTap=0;
+function secretAdminTap(){let now=Date.now(); if(now-lastTap>2000) tapCount=0; lastTap=now; tapCount++; if(tapCount>=5){tapCount=0; openAdminGate(); alert('🔒 Secret Admin Gate Opened');}}
+function orderPharmacy(){let msg=encodeURIComponent('Hello Hom Care Pharmacy! I want to order medicine. Name: '+(user?user.name:'')+' Location: '+(document.getElementById('bkLocation')?document.getElementById('bkLocation').value:'')); window.open('https://wa.me/'+PHARMACY_WA+'?text='+msg,'_blank');}
 let currentCountry=localStorage.getItem('hch_country')||'UG';
 let user=JSON.parse(localStorage.getItem('hch_user')||'null');
 let isLogged=localStorage.getItem('hch_logged')==='1';
@@ -145,51 +203,37 @@ let selectedService=SERVICES[5];
 function fmt(a){let c=COUNTRIES[currentCountry];let v=a*c.rate; if(currentCountry==='UG') return 'UGX '+Math.round(v).toLocaleString(); return c.sym+Math.round(v).toLocaleString();}
 function saveLocal(){localStorage.setItem('hch_balance',walletBalance);localStorage.setItem('hch_bookings',JSON.stringify(bookings));localStorage.setItem('hch_nurses',JSON.stringify(nurses));localStorage.setItem('hch_deposits',JSON.stringify(deposits));localStorage.setItem('hch_allusers',JSON.stringify(allUsers));localStorage.setItem('hch_country',currentCountry);}
 function changeCountry(code){currentCountry=code;saveLocal();document.getElementById('countrySelect').value=code;document.getElementById('regCountry').value=code;document.getElementById('headerCountry').innerText='🌍 '+COUNTRIES[code].flag;document.getElementById('countryFlag').innerText=COUNTRIES[code].flag;document.getElementById('curLabel').innerText=COUNTRIES[code].cur;renderServices();renderWallet();renderBookPay();}
-function showScreen(name){if(['entry','booking','wallet','nurse','history'].includes(name)&&!isLogged){showAuth();return;} ['auth','entry','booking','wallet','nurse','history','adminGate','admin'].forEach(s=>{let el=document.getElementById('screen-'+s); if(el) el.classList.toggle('hidden',s!==name);}); if(name==='wallet')renderWallet(); if(name==='history')renderHistory(); if(name==='admin')renderAdmin(); window.scrollTo(0,0);}
-function showAuth(){['auth','entry','booking','wallet','nurse','history','adminGate','admin'].forEach(s=>{let el=document.getElementById('screen-'+s); if(el) el.classList.toggle('hidden',s!=='auth');});}
+function showScreen(name){if(['entry','booking','wallet','nurse','history'].includes(name)&&!isLogged){showAuth();return;} ['auth','entry','booking','wallet','nurse','history','adminGate','admin'].forEach(s=>{let el=document.getElementById('screen-'+s); if(el) el.classList.toggle('hidden',s!==name);}); document.getElementById('pharmacyAdHome').style.display=(name==='entry'?'block':'none'); document.getElementById('pharmacyAdAuth').style.display='none'; if(name==='auth'){document.getElementById('pharmacyAdAuth').innerHTML=document.getElementById('pharmacyAdHome').outerHTML; document.getElementById('pharmacyAdAuth').style.display='block';} if(name==='wallet')renderWallet(); if(name==='history')renderHistory(); if(name==='admin')renderAdmin(); window.scrollTo(0,0);}
+function showAuth(){['auth','entry','booking','wallet','nurse','history','adminGate','admin'].forEach(s=>{let el=document.getElementById('screen-'+s); if(el) el.classList.toggle('hidden',s!=='auth');}); document.getElementById('pharmacyAdAuth').innerHTML=document.getElementById('pharmacyAdHome').outerHTML; document.getElementById('pharmacyAdAuth').style.display='block'; document.getElementById('pharmacyAdHome').style.display='none';}
 function showLogin(){document.getElementById('authCreate').classList.add('hidden');document.getElementById('authLogin').classList.remove('hidden');}
 function showCreate(){document.getElementById('authLogin').classList.add('hidden');document.getElementById('authCreate').classList.remove('hidden');}
 function createAccount(){let name=document.getElementById('regName').value.trim(),phone=document.getElementById('regPhone').value.trim(),pin=document.getElementById('regPin').value.trim(),country=document.getElementById('regCountry').value; if(!name||!phone||pin.length!==4){alert('Fill Name, Phone, 4-digit PIN');return;} user={name,phone,email:document.getElementById('regEmail').value,country,pin}; allUsers.push({name,phone,country,created:new Date().toLocaleString()}); isLogged=true; localStorage.setItem('hch_user',JSON.stringify(user)); localStorage.setItem('hch_logged','1'); changeCountry(country); saveLocal(); document.getElementById('userGreet').innerText='Hello, '+name.split(' ')[0]; document.getElementById('bkName').value=name; document.getElementById('bkPhone').value=phone; alert('✅ Welcome '+name); showScreen('entry');}
 function loginUser(){let phone=document.getElementById('loginPhone').value.trim(),pin=document.getElementById('loginPin').value.trim(); if(!user||user.phone!==phone||user.pin!==pin){alert('Wrong Phone or PIN');return;} isLogged=true; localStorage.setItem('hch_logged','1'); showScreen('entry');}
 function logoutUser(){isLogged=false; localStorage.setItem('hch_logged','0'); showAuth(); showLogin();}
 function openAdminGate(){showScreen('adminGate');}
-function unlockAdmin(){if(document.getElementById('adminPinInput').value!==ADMIN_PIN){alert('Wrong Admin PIN');return;} showScreen('admin');}
-function lockAdmin(){document.getElementById('adminPinInput').value=''; showScreen('adminGate');}
+function unlockAdmin(){let who=document.getElementById('adminWho').value, phone=document.getElementById('adminPhone').value.trim(), pin=document.getElementById('adminPinInput').value.trim(); let a=ADMINS[who]; if(phone!==a.phone){alert('Wrong phone for '+a.name+'. Use '+a.phone);return;} if(pin!==a.pin){alert('Wrong PIN for '+a.name);return;} currentAdmin=who; document.getElementById('adminTitle').innerText='📊 Admin - '+a.name; document.getElementById('adminRoleText').innerText=a.role+' • Share '+a.share+'% • Phone '+a.phone; showScreen('admin');}
+function lockAdmin(){currentAdmin=null; document.getElementById('adminPinInput').value=''; showScreen('adminGate');}
+function changeAdminPin(){if(currentAdmin!=='SUPER'){alert('⛔ Only SUPER can change gate passwords.');return;} let who=document.getElementById('changePinWho').value; let np=document.getElementById('newAdminPin').value.trim(); let cp=document.getElementById('confirmAdminPin').value.trim(); if(np.length!==4){alert('New PIN must be 4 digits');return;} if(np!==cp){alert('PINs do not match. Type same PIN twice.');return;} ADMINS[who].pin=np; localStorage.setItem('hch_admin_pins', JSON.stringify({SUPER:ADMINS.SUPER.pin, JOY:ADMINS.JOY.pin, KIMTAI:ADMINS.KIMTAI.pin})); document.getElementById('newAdminPin').value=''; document.getElementById('confirmAdminPin').value=''; alert('✅ PIN Changed! '+ADMINS[who].name+' new PIN is '+np+'. Tell them the new PIN. Old PIN will not work again.'); showCurrentPins();}
+function showCurrentPins(){let box=document.getElementById('superChangePinBox'); let msg=document.getElementById('notSuperPinMsg'); if(currentAdmin==='SUPER'){box.classList.remove('hidden'); msg.classList.add('hidden'); document.getElementById('currentPinsText').innerText='Current PINs (SUPER only sees this): SUPER '+ADMINS.SUPER.pin+' • JOY '+ADMINS.JOY.pin+' • KIMTAI '+ADMINS.KIMTAI.pin;} else {box.classList.add('hidden'); msg.classList.remove('hidden');}}
 function renderServices(){document.getElementById('serviceList').innerHTML=SERVICES.map(s=>`<div class="service ${s.id===selectedService.id?'selected':''}" onclick="selectService('${s.id}')"><div class="row"><b>${s.name}</b><b>${fmt(s.price)} / hr</b></div><p class="small">${s.desc}</p></div>`).join(''); updateTotal();}
 function selectService(id){selectedService=SERVICES.find(s=>s.id===id);renderServices();}
 function updateTotal(){let h=Number(document.getElementById('bkHours').value||8); document.getElementById('bkTotal').innerText=fmt(selectedService.price*h); let btn=document.getElementById('bookPayBtn'); if(btn) btn.innerText='✅ PAY '+fmt(selectedService.price*h)+' & BOOK NOW';}
 document.getElementById('bkHours').addEventListener('change',updateTotal);
-// SAFEBODA - BOOKING PAY METHODS
-function renderBookPay(){
-  let opts=[{id:'wallet',icon:'💰',t:'Wallet Balance',d:'Pay from your wallet - '+fmt(walletBalance)},{id:'pesapal',icon:'📱',t:'MoMo - Pesapal',d:'MTN / Airtel'},{id:'stripe',icon:'💳',t:'Card - Stripe',d:'Visa / Mastercard'},{id:'cash',icon:'💵',t:'Cash After Visit',d:'Pay nurse cash'}];
-  document.getElementById('bookPayMethods').innerHTML=opts.map(o=>`<div class="payMethod ${selectedBookPay===o.id?'active':''}" onclick="selectBookPay('${o.id}')"><span class="icon">${o.icon}</span><div><b>${o.t}</b><br><span class="small">${o.d}</span></div><span class="tick">${selectedBookPay===o.id?'✓':''}</span></div>`).join('');
-}
+function renderBookPay(){let opts=[{id:'wallet',icon:'💰',t:'Wallet Balance',d:'Pay from wallet - '+fmt(walletBalance)},{id:'pesapal',icon:'📱',t:'MoMo - Pesapal',d:'MTN / Airtel'},{id:'stripe',icon:'💳',t:'Card - Stripe',d:'Visa / Mastercard'},{id:'cash',icon:'💵',t:'Cash After Visit',d:'Pay nurse cash'}]; document.getElementById('bookPayMethods').innerHTML=opts.map(o=>`<div class="payMethod ${selectedBookPay===o.id?'active':''}" onclick="selectBookPay('${o.id}')"><span class="icon">${o.icon}</span><div><b>${o.t}</b><br><span class="small">${o.d}</span></div><span class="tick">${selectedBookPay===o.id?'✓':''}</span></div>`).join('');}
 function selectBookPay(id){selectedBookPay=id;renderBookPay();}
-async function payForBooking(){
-  let name=document.getElementById('bkName').value.trim(),phone=document.getElementById('bkPhone').value.trim(),loc=document.getElementById('bkLocation').value.trim(); if(!name||!phone||!loc){alert('Fill Name, Phone, Location');return;}
-  let total=selectedService.price*Number(document.getElementById('bkHours').value);
-  let b={name,phone,location:loc,service:selectedService.name,date:document.getElementById('bkDate').value,time:document.getElementById('bkTime').value,hours:document.getElementById('bkHours').value,total,notes:document.getElementById('bkNotes').value,status:selectedBookPay==='cash'?'Pending - Cash':selectedBookPay==='wallet'?'Paid - Wallet':'Pending - '+selectedBookPay,country:currentCountry,payMethod:selectedBookPay,created:new Date().toLocaleString()};
-  if(selectedBookPay==='wallet'){ if(walletBalance<total){alert('Wallet low. Balance '+fmt(walletBalance)+'. Top up first in Wallet.'); showScreen('wallet'); return;} walletBalance-=total; }
-  if(selectedBookPay==='pesapal'){ window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(total)+' with MoMo, then booking is saved.'); }
-  if(selectedBookPay==='stripe'){ if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Choose Wallet / MoMo / Cash for now.'); return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(total)+' with Card.'); }
-  if(selectedBookPay==='cash'){ alert('✅ Booked! You will pay '+fmt(total)+' in Cash after visit.'); }
-  bookings.unshift(b); saveLocal(); try{if(db) await db.collection('bookings').add(b);}catch(e){}
-  if(selectedBookPay==='wallet') alert('✅ Paid from Wallet! Balance left: '+fmt(walletBalance));
-  showScreen('history');
-}
-// SAFEBODA - WALLET TOP UP
-function setAmount(v){let inUGX = currentCountry==='UG'?v : Math.round(v/COUNTRIES[currentCountry].rate); document.getElementById('depAmt').value=inUGX; document.querySelectorAll('.quick').forEach(q=>q.classList.remove('active')); event.target.classList.add('active'); updateTopUpBtn();}
+async function payForBooking(){let name=document.getElementById('bkName').value.trim(),phone=document.getElementById('bkPhone').value.trim(),loc=document.getElementById('bkLocation').value.trim(); if(!name||!phone||!loc){alert('Fill Name, Phone, Location');return;} let total=selectedService.price*Number(document.getElementById('bkHours').value); let b={name,phone,location:loc,service:selectedService.name,date:document.getElementById('bkDate').value,time:document.getElementById('bkTime').value,hours:document.getElementById('bkHours').value,total,notes:document.getElementById('bkNotes').value,status:selectedBookPay==='cash'?'Pending - Cash':selectedBookPay==='wallet'?'Paid - Wallet':'Pending - '+selectedBookPay,country:currentCountry,payMethod:selectedBookPay,created:new Date().toLocaleString()}; if(selectedBookPay==='wallet'){if(walletBalance<total){alert('Wallet low. Balance '+fmt(walletBalance)+'. Top up first.'); showScreen('wallet'); return;} walletBalance-=total;} if(selectedBookPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(total)+' with MoMo.');} if(selectedBookPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use Wallet / MoMo / Cash.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(total)+' with Card.');} if(selectedBookPay==='cash'){alert('✅ Booked! Pay '+fmt(total)+' Cash after visit.');} bookings.unshift(b); saveLocal(); try{if(db) await db.collection('bookings').add(b);}catch(e){} if(selectedBookPay==='wallet') alert('✅ Paid from Wallet! Balance left: '+fmt(walletBalance)); showScreen('history');}
+function setAmount(v){let inUGX=currentCountry==='UG'?v:Math.round(v/COUNTRIES[currentCountry].rate); document.getElementById('depAmt').value=inUGX; document.querySelectorAll('.quick').forEach(q=>q.classList.remove('active')); event.target.classList.add('active'); updateTopUpBtn();}
 function selectPayMethod(id){selectedPay=id; ['pesapal','stripe','cash'].forEach(m=>{let el=document.getElementById('pm-'+m); el.classList.toggle('active',m===id); el.querySelector('.tick').innerText=m===id?'✓':'';}); updateTopUpBtn();}
 function updateTopUpBtn(){let amt=Number(document.getElementById('depAmt').value||0); let label=selectedPay==='pesapal'?'📱 PAY '+fmt(amt)+' WITH MoMo':selectedPay==='stripe'?'💳 PAY '+fmt(amt)+' WITH Card':'💵 PAY '+fmt(amt)+' CASH'; document.getElementById('topupBtn').innerText=label;}
 document.getElementById('depAmt').addEventListener('input',updateTopUpBtn);
-function payTopUp(){let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){alert('Tap amount first - 10K / 20K / 50K / 100K');return;} if(selectedPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(amt)+' with MoMo. Then paste Transaction ID below and tap Confirm.');} if(selectedPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use MoMo for now.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(amt)+' with Card.');} if(selectedPay==='cash'){alert('Cash selected - Pay cash to nurse, admin will add it.');}}
+function payTopUp(){let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){alert('Tap amount first');return;} if(selectedPay==='pesapal'){window.open(PESAPAL_LINK,'_blank'); alert('Pesapal opened. Pay '+fmt(amt)+' with MoMo. Paste Transaction ID below and Confirm.');} if(selectedPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use MoMo.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay '+fmt(amt)+' with Card.');} if(selectedPay==='cash'){alert('Cash selected - Pay cash to nurse.');}}
 function confirmPaid(){let amtUGX=Number(document.getElementById('depAmt').value||0); let txn=document.getElementById('txnId').value.trim(); if(amtUGX<=0||!txn){alert('Enter amount + Transaction ID');return;} walletBalance+=amtUGX; deposits.unshift({amount:amtUGX,display:fmt(amtUGX),txn,country:currentCountry,method:selectedPay,created:new Date().toLocaleString()}); saveLocal(); document.getElementById('txnId').value=''; alert('✅ '+fmt(amtUGX)+' added! Balance: '+fmt(walletBalance)); renderWallet();}
-function renderWallet(){document.getElementById('walletBalance').innerText=fmt(walletBalance); document.getElementById('walletBalanceTop').innerText=fmt(walletBalance); document.getElementById('walletStatus2').innerText='IN-APP LIVE • '+COUNTRIES[currentCountry].flag; document.getElementById('walletList').innerHTML=deposits.length?deposits.map(d=>`<div class="hist"><span>💰 ${d.txn} • ${d.method||''}</span><b>+ ${d.display||fmt(d.amount)}</b></div>`).join(''):'<p class="small">No transactions yet</p>'; updateTopUpBtn();}
-function renderHistory(){document.getElementById('historyList').innerHTML=bookings.length?bookings.map(b=>`<div class="service"><b>${b.service}</b><br><span class="small">${b.name} • ${b.phone} • ${b.location}</span><br><b>${fmt(Number(b.total||0))}</b> • ${b.status} • ${b.payMethod||''}</div>`).join(''):'<p class="small">No bookings yet</p>';}
+function renderWallet(){document.getElementById('walletBalance').innerText=fmt(walletBalance); document.getElementById('walletBalanceTop').innerText=fmt(walletBalance); document.getElementById('walletStatus2').innerText='IN-APP LIVE • '+COUNTRIES[currentCountry].flag; document.getElementById('walletList').innerHTML=deposits.length?deposits.map(d=>`<div class="hist"><span>💰 ${d.txn} • ${d.method||''}</span><b>+ ${d.display||fmt(d.amount)}</b></div>`).join(''):'<p class="small">No transactions yet - real</p>'; updateTopUpBtn();}
+function renderHistory(){document.getElementById('historyList').innerHTML=bookings.length?bookings.map(b=>`<div class="service"><b>${b.service}</b><br><span class="small">${b.name} • ${b.phone} • ${b.location}</span><br><b>${fmt(Number(b.total||0))}</b> • ${b.status||'Pending'} • ${b.payMethod||''}</div>`).join(''):'<p class="small">No bookings yet</p>';}
 async function submitNurse(){let n={name:document.getElementById('nName').value,phone:document.getElementById('nPhone').value,location:document.getElementById('nLocation').value,qual:document.getElementById('nQual').value,exp:document.getElementById('nExp').value,skills:document.getElementById('nSkills').value,country:currentCountry,status:'Pending',created:new Date().toLocaleString()}; if(!n.name||!n.phone){alert('Fill Name + Phone');return;} nurses.unshift(n); saveLocal(); try{if(db) await db.collection('nurses').add(n);}catch(e){} alert('✅ Application Submitted!'); showScreen('entry');}
-function renderAdmin(){document.getElementById('kpiUsers').innerText=allUsers.length+1; document.getElementById('kpiBookings').innerText=bookings.length; document.getElementById('kpiMoney').innerText=fmt(walletBalance); document.getElementById('adminBookings').innerHTML=bookings.length?bookings.map((b,i)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${fmt(Number(b.total||0))} - ${b.status} <button class="btn green" style="padding:6px" onclick="approveBooking(${i})">Approve</button></div>`).join(''):'No bookings'; document.getElementById('adminNurses').innerHTML=nurses.length?nurses.map((n,i)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${n.name}</b> - ${n.phone} - ${n.status} <button class="btn green" style="padding:6px" onclick="approveNurse(${i})">Approve</button></div>`).join(''):'No nurses'; document.getElementById('adminDeposits').innerHTML=deposits.length?deposits.map(d=>`<div style="padding:8px;border-bottom:1px solid #eee">${d.txn} - ${d.display||fmt(d.amount)} - ${d.method||''}</div>`).join(''):'No deposits';}
-function approveBooking(i){bookings[i].status='Approved'; saveLocal(); renderAdmin();}
-function approveNurse(i){nurses[i].status='Approved'; saveLocal(); renderAdmin();}
+function renderAdmin(){if(!currentAdmin) return; showCurrentPins(); let realUsers=allUsers.length; if(realUsers===0&&user) realUsers=1; document.getElementById('kpiUsers').innerText=realUsers; document.getElementById('kpiBookings').innerText=bookings.length; let totalDeposits=deposits.reduce((s,d)=>s+Number(d.amount||0),0); if(currentAdmin==='SUPER'){document.getElementById('kpiMoney').innerText=fmt(totalDeposits); document.getElementById('superMoneyBox').classList.remove('hidden'); document.getElementById('splitTotal').innerText=fmt(totalDeposits); document.getElementById('splitSuper').innerText=fmt(totalDeposits*0.80)+' (80%)'; document.getElementById('splitJoy').innerText=fmt(totalDeposits*0.10)+' (10%)'; document.getElementById('splitKimtai').innerText=fmt(totalDeposits*0.10)+' (10%)';} else {document.getElementById('kpiMoney').innerText='🔒 Hidden'; document.getElementById('superMoneyBox').classList.add('hidden');} let showBookings=(currentAdmin==='SUPER'||currentAdmin==='KIMTAI'); let showNurses=(currentAdmin==='SUPER'||currentAdmin==='JOY'); let showPayments=(currentAdmin==='SUPER'); document.getElementById('adminBookingsWrap').style.display=showBookings?'block':'none'; document.getElementById('adminNursesWrap').style.display=showNurses?'block':'none'; document.getElementById('adminDepositsWrap').style.display=showPayments?'block':'none'; if(showBookings){document.getElementById('adminBookings').innerHTML=bookings.length?bookings.map((b,i)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${b.phone} - ${fmt(Number(b.total||0))} - ${b.status||'Pending'} <button class="btn green" style="padding:6px" onclick="approveBooking(${i})">Approve</button></div>`).join(''):'No bookings yet - real';} if(showNurses){document.getElementById('adminNurses').innerHTML=nurses.length?nurses.map((n,i)=>{let st=n.status||'Pending'; let q=n.qual||'Nurse'; let loc=n.location||''; return `<div style="padding:8px;border-bottom:1px solid #eee"><b>${n.name}</b> - ${n.phone} - ${q} - ${loc} - <b>${st}</b> <button class="btn green" style="padding:6px" onclick="approveNurse(${i})">Approve Nurse</button></div>`;}).join(''):'No nurses yet';} if(showPayments){document.getElementById('adminDeposits').innerHTML=deposits.length?deposits.map(d=>`<div style="padding:8px;border-bottom:1px solid #eee">${d.txn} - ${d.display||fmt(d.amount)} - ${d.method||''}</div>`).join(''):'No deposits yet - real';}}
+function approveBooking(i){if(currentAdmin==='JOY'){alert('⛔ JOY cannot approve bookings. Only SUPER and KIMTAI.');return;} bookings[i].status='Approved'; saveLocal(); renderAdmin(); alert('Booking Approved by '+currentAdmin);}
+function approveNurse(i){if(currentAdmin==='KIMTAI'){alert('⛔ KIMTAI cannot approve nurses. Only SUPER and JOY.');return;} nurses[i].status='Approved'; saveLocal(); renderAdmin(); alert('Nurse Approved by '+currentAdmin);}
 document.getElementById('countrySelect').value=currentCountry; document.getElementById('regCountry').value=currentCountry; document.getElementById('headerCountry').innerText='🌍 '+COUNTRIES[currentCountry].flag;
 if(user){document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0]; document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone;}
 if(isLogged&&user){showScreen('entry');}else{showAuth(); showCreate();}
