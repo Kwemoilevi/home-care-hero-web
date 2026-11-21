@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - 3 Admins System</title>
+<title>Home Care Hero</title>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -20,52 +20,51 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
 .nav{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px} .nav button{white-space:nowrap;padding:10px 14px}
 .nav button.active{background:#111}
 .adminBtn{padding:16px;font-size:17px;margin:8px 0}
+/* FAINT ADMIN BUTTON - BOTTOM - ALMOST INVISIBLE */
+.footer{margin-top:60px;text-align:center;padding:20px}
+.faintBtn{background:transparent !important;color:#e5e7eb !important;border:1px solid #f1f1f1 !important;font-size:10px !important;padding:4px 8px !important;width:auto !important;opacity:0.25;letter-spacing:1px}
+.faintBtn:active{opacity:0.9;color:#999 !important}
+.faintText{color:#f1f1f1;font-size:9px;opacity:0.3}
 </style>
 </head>
 <body>
 <h1>🏥 Home Care Hero</h1>
-<p class="small">Flutterwave + Firebase. Nurse 80% | Admin 15% (SUPER 80% / JOY 10% / KIMTAI 10%) | Platform 5%</p>
+<p class="small">Home Nursing Services - Kampala</p>
 
 <!-- LOGIN -->
 <div class="card" id="authCard">
   <h2>Login / Register</h2>
   <select id="role"><option value="patient">Patient</option><option value="nurse">Nurse</option></select>
   <input id="name" placeholder="Full Name">
-  <input id="phone" placeholder="Phone e.g 0772101875">
+  <input id="phone" placeholder="Phone">
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password (min 6)">
   <div class="row"><button onclick="register()">Register</button><button class="gray" onclick="login()">Login</button></div>
-  <p class="small">Admins do NOT register here. Admins use the Admin Gate below.</p>
-  <hr>
-  <button class="gold" onclick="showAdminGate()">🔐 ADMIN LOGIN - Tap Here</button>
+  <p class="small" id="authMsg"></p>
 </div>
 
-<!-- ADMIN GATE - STEP 1: HERO 2026 -->
+<!-- ADMIN GATE - NO PASSWORDS SHOWN -->
 <div class="card hidden" id="gateCard">
-  <h2>🔐 Admin Gate</h2>
-  <p class="small">Step 1: Enter Gate Password. All 3 admins use same gate.</p>
-  <input id="gatePass" type="password" placeholder="Gate Password">
-  <button onclick="checkGate()">Open Gate</button>
-  <button class="gray" onclick="hideAdminGate()">Back to Login</button>
-  <p class="small">Gate: HERO 2026</p>
-</div>
-
-<!-- ADMIN GATE - STEP 2: TAP OWN NAME -->
-<div class="card hidden" id="adminSelectCard">
-  <h2>Who Are You? Tap Your Name</h2>
-  <button class="adminBtn" onclick="selectAdmin('SUPER')">👑 SUPER - 80% - Manages All Bookings + Approves Payments</button>
-  <button class="adminBtn blue" onclick="selectAdmin('JOY CHELANGAT')">✅ JOY CHELANGAT - 10% - Approves Nurses</button>
-  <button class="adminBtn gold" onclick="selectAdmin('KIMTAI JABETH')">📅 KIMTAI JABETH - 10% - In Charge of Bookings</button>
+  <h2>Admin</h2>
+  <input id="gatePass" type="password" placeholder="Enter Gate Code">
+  <button onclick="checkGate()">Continue</button>
   <button class="gray" onclick="hideAdminGate()">Back</button>
 </div>
 
-<!-- ADMIN GATE - STEP 3: OWN PASSWORD -->
+<div class="card hidden" id="adminSelectCard">
+  <h2>Who Are You?</h2>
+  <button class="adminBtn" onclick="selectAdmin('SUPER')">SUPER</button>
+  <button class="adminBtn blue" onclick="selectAdmin('JOY CHELANGAT')">JOY CHELANGAT</button>
+  <button class="adminBtn gold" onclick="selectAdmin('KIMTAI JABETH')">KIMTAI JABETH</button>
+  <button class="gray" onclick="hideAdminGate()">Back</button>
+</div>
+
 <div class="card hidden" id="adminPassCard">
-  <h2 id="adminPassTitle">Enter Your Password</h2>
+  <h2 id="adminPassTitle">Enter Your Code</h2>
   <p class="small" id="adminPassDesc"></p>
-  <input id="adminPass" type="password" placeholder="Your Admin Password">
-  <button onclick="checkAdminPass()">Login as Admin</button>
-  <button class="gray" onclick="backToSelect()">Back to Names</button>
+  <input id="adminPass" type="password" placeholder="Your Personal Code">
+  <button onclick="checkAdminPass()">Login</button>
+  <button class="gray" onclick="backToSelect()">Back</button>
 </div>
 
 <!-- MAIN APP -->
@@ -75,21 +74,21 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
     <p id="adminInfo" class="small"></p>
     <p>Wallet Balance</p>
     <div class="wallet" id="walletBalance">UGX 0</div>
-    <div class="nav" id="navBar">
+    <div class="nav">
       <button onclick="showTab('walletTab')" id="btn-walletTab" class="active">Wallet</button>
       <button onclick="showTab('patientTab')" id="btn-patientTab">Book Nurse</button>
       <button onclick="showTab('nurseTab')" id="btn-nurseTab">My Jobs</button>
-      <button onclick="showTab('adminTab')" id="btn-adminTab">Admin Dashboard</button>
+      <button onclick="showTab('adminTab')" id="btn-adminTab">Dashboard</button>
       <button onclick="showTab('txnTab')" id="btn-txnTab">Transactions</button>
     </div>
     <button class="red" onclick="logout()">Logout</button>
   </div>
 
   <div class="card" id="walletTab">
-    <h2>Top Up - Flutterwave Real Money</h2>
+    <h2>Top Up - Flutterwave</h2>
     <input id="topupAmount" type="number" placeholder="Amount e.g 100000">
     <select id="payMethod"><option value="mobilemoneyuganda">MTN MoMo</option><option value="airtelmoney">Airtel Money</option><option value="card">Visa / UBA Card</option></select>
-    <button onclick="payWithFlutterwave()">Pay Now With Flutterwave</button>
+    <button onclick="payWithFlutterwave()">Pay Now</button>
     <h3>Withdraw</h3>
     <input id="withdrawAmount" type="number" placeholder="Amount">
     <input id="withdrawPhone" placeholder="MoMo Number">
@@ -112,37 +111,24 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
     <div id="myBookings"></div>
   </div>
 
-  <div class="card hidden" id="nurseTab">
-    <h2>Nurse Jobs</h2>
-    <div id="nurseJobs"></div>
-  </div>
+  <div class="card hidden" id="nurseTab"><h2>Nurse Jobs</h2><div id="nurseJobs"></div></div>
 
-  <!-- ADMIN DASHBOARD WITH PERMISSIONS -->
   <div class="card hidden" id="adminTab">
-    <h2>🔐 Admin Dashboard</h2>
+    <h2>Dashboard</h2>
     <p class="small" id="adminPermMsg"></p>
     <div id="adminStats"></div>
-
-    <!-- SUPER ONLY: ALL BOOKINGS + APPROVE PAYMENTS -->
     <div id="superSection">
-      <h3>👑 SUPER: All Bookings + Approve Payments</h3>
-      <p class="small">Only SUPER can approve admin payments and manage all bookings.</p>
+      <h3>All Bookings + Payments</h3>
       <div id="allBookings"></div>
-      <h3>Approve Admin Payments / Withdrawals</h3>
+      <h3>Withdrawals</h3>
       <div id="withdrawList"></div>
     </div>
-
-    <!-- JOY ONLY: APPROVE NURSES -->
     <div id="joySection">
-      <h3>✅ JOY: Approve Nurses</h3>
-      <p class="small">Only JOY can approve or reject nurses.</p>
+      <h3>Approve Nurses</h3>
       <div id="nurseApprovalList"></div>
     </div>
-
-    <!-- KIMTAI ONLY: BOOKINGS -->
     <div id="kimtaiSection">
-      <h3>📅 KIMTAI: In Charge of Bookings</h3>
-      <p class="small">Only KIMTAI can create / manage bookings for patients.</p>
+      <h3>In Charge of Bookings</h3>
       <select id="kimtaiNurse"><option>Select Nurse</option></select>
       <input id="kimtaiPatient" placeholder="Patient Name">
       <input id="kimtaiPhone" placeholder="Patient Phone">
@@ -150,27 +136,29 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
       <button onclick="kimtaiCreateBooking()">Create Booking for Patient</button>
       <div id="kimtaiBookings"></div>
     </div>
-
-    <h3>All Users</h3>
-    <div id="allUsers"></div>
-    <h3>All Transactions</h3>
-    <div id="allTxns"></div>
+    <h3>All Users</h3><div id="allUsers"></div>
+    <h3>All Transactions</h3><div id="allTxns"></div>
   </div>
 
   <div class="card" id="txnTab"><h2>My Transactions</h2><div id="myTxns"></div></div>
 </div>
 
+<!-- FAINT ADMIN BUTTON AT VERY BOTTOM - ALMOST INVISIBLE -->
+<div class="footer">
+  <p class="faintText">Home Care Hero © 2026 • Kampala</p>
+  <button class="faintBtn" onclick="showAdminGate()">•</button>
+</div>
+
 <script>
 const FLW_PUBLIC_KEY = "FLW_PUBLIC_KEY_LIVE_REPLACE_ME";
-// ADMIN CONFIG - EXACT AS YOU SAID
+// Admin codes are in code only, never shown on screen
 const GATE_PASSWORD = "HERO 2026";
 const ADMINS = {
-  "SUPER": { password: "2215", share: 0.80, job: "Manages All Bookings + Approves Payments for Admins", color: "SUPER" },
-  "JOY CHELANGAT": { password: "JOY 2026", share: 0.10, job: "Approves Nurses", color: "JOY" },
-  "KIMTAI JABETH": { password: "JABETH 2026", share: 0.10, job: "In Charge of Bookings", color: "KIMTAI" }
+  "SUPER": { password: "2215", share: 0.80, job: "Manages All Bookings + Approves Payments" },
+  "JOY CHELANGAT": { password: "JOY 2026", share: 0.10, job: "Approves Nurses" },
+  "KIMTAI JABETH": { password: "JABETH 2026", share: 0.10, job: "In Charge of Bookings" }
 };
 const SPLIT = { nurse: 0.80, adminTotal: 0.15, platform: 0.05 };
-
 const firebaseConfig = {
   apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
   authDomain: "home-care-hero.firebaseapp.com",
@@ -184,151 +172,43 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database(); const auth = firebase.auth();
 let currentUser=null, currentProfile=null, currentAdmin=null, selectedAdminName=null;
-
-// === ADMIN GATE ===
-function showAdminGate(){ document.getElementById('authCard').classList.add('hidden'); document.getElementById('gateCard').classList.remove('hidden'); }
+function showAdminGate(){ document.getElementById('authCard').classList.add('hidden'); document.getElementById('gateCard').classList.remove('hidden'); window.scrollTo(0,0); }
 function hideAdminGate(){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.remove('hidden'); }
-function checkGate(){ if(document.getElementById('gatePass').value===GATE_PASSWORD){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); } else alert("Wrong Gate Password. Gate is HERO 2026"); }
-function selectAdmin(name){ selectedAdminName=name; document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.remove('hidden'); document.getElementById('adminPassTitle').innerText="Hi "+name+" - Enter Your Password"; document.getElementById('adminPassDesc').innerText=ADMINS[name].job+" | Your Share: "+(ADMINS[name].share*100)+"% of Admin 15%"; }
+function checkGate(){ if(document.getElementById('gatePass').value===GATE_PASSWORD){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); } else alert("Wrong Code"); }
+function selectAdmin(name){ selectedAdminName=name; document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.remove('hidden'); document.getElementById('adminPassTitle').innerText="Hi "+name; document.getElementById('adminPassDesc').innerText=ADMINS[name].job; }
 function backToSelect(){ document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); }
 function checkAdminPass(){
   const pass=document.getElementById('adminPass').value;
   if(pass===ADMINS[selectedAdminName].password){
     currentAdmin={name:selectedAdminName, ...ADMINS[selectedAdminName]};
-    // Admin logs in as special admin profile - no Firebase Auth needed for admins, gate is the auth
     document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.add('hidden');
     document.getElementById('mainApp').classList.remove('hidden');
-    document.getElementById('uName').innerText=currentAdmin.name;
-    document.getElementById('uRole').innerText="ADMIN - "+currentAdmin.name;
-    document.getElementById('uPhone').innerText=currentAdmin.job;
-    document.getElementById('adminInfo').innerText="Logged in as Admin: "+currentAdmin.name+" | Share: "+(currentAdmin.share*100)+"% of Admin money | Job: "+currentAdmin.job;
-    document.getElementById('walletBalance').innerText="See Admin Earnings Below";
-    showTab('adminTab');
-    loadAdminDashboard();
-  } else alert("Wrong password for "+selectedAdminName);
+    document.getElementById('uName').innerText=currentAdmin.name; document.getElementById('uRole').innerText="ADMIN"; document.getElementById('uPhone').innerText=currentAdmin.job;
+    document.getElementById('adminInfo').innerText="Admin: "+currentAdmin.name+" | Share: "+(currentAdmin.share*100)+"%";
+    document.getElementById('walletBalance').innerText="See Earnings Below";
+    showTab('adminTab'); loadAdminDashboard();
+  } else alert("Wrong Code");
 }
-
-function showTab(id){
-  ['walletTab','patientTab','nurseTab','adminTab','txnTab'].forEach(t=>{ document.getElementById(t).classList.add('hidden'); document.getElementById('btn-'+t).classList.remove('active'); });
-  document.getElementById(id).classList.remove('hidden'); document.getElementById('btn-'+id).classList.add('active');
-  if(id==='adminTab') loadAdminDashboard();
-  if(id==='nurseTab') loadNurseJobs();
-  if(id==='patientTab'){ loadNurses(); loadMyBookings(); }
-}
-async function register(){
-  const name=document.getElementById('name').value.trim(); const phone=document.getElementById('phone').value.trim(); const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; const role=document.getElementById('role').value;
-  if(!name||!phone||!email||!pass) return alert("Fill all");
-  try{ const res=await auth.createUserWithEmailAndPassword(email,pass); await db.ref('users/'+res.user.uid).set({name,phone,email,role,wallet:0, approved: role==='nurse'? false : true, createdAt:Date.now()}); alert("Registered as "+role+(role==='nurse'?" - Wait for JOY to approve you":"")); }catch(e){ alert(e.message); }
-}
-async function login(){
-  const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value;
-  try{ await auth.signInWithEmailAndPassword(email,pass); }catch(e){ alert(e.message); }
-}
+function showTab(id){ ['walletTab','patientTab','nurseTab','adminTab','txnTab'].forEach(t=>{ document.getElementById(t).classList.add('hidden'); document.getElementById('btn-'+t).classList.remove('active'); }); document.getElementById(id).classList.remove('hidden'); document.getElementById('btn-'+id).classList.add('active'); if(id==='adminTab') loadAdminDashboard(); if(id==='nurseTab') loadNurseJobs(); if(id==='patientTab'){ loadNurses(); loadMyBookings(); } }
+async function register(){ const name=document.getElementById('name').value.trim(); const phone=document.getElementById('phone').value.trim(); const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; const role=document.getElementById('role').value; if(!name||!phone||!email||!pass) return alert("Fill all"); try{ const res=await auth.createUserWithEmailAndPassword(email,pass); await db.ref('users/'+res.user.uid).set({name,phone,email,role,wallet:0, approved: role==='nurse'? false : true, createdAt:Date.now()}); alert("Registered as "+role); }catch(e){ alert(e.message); } }
+async function login(){ const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; try{ await auth.signInWithEmailAndPassword(email,pass); }catch(e){ alert(e.message); } }
 function logout(){ auth.signOut(); currentAdmin=null; location.reload(); }
-auth.onAuthStateChanged(async (user)=>{
-  if(!user) return; currentUser=user;
-  const snap=await db.ref('users/'+user.uid).once('value'); currentProfile=snap.val(); if(!currentProfile) return;
-  document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden');
-  document.getElementById('uName').innerText=currentProfile.name; document.getElementById('uRole').innerText=currentProfile.role; document.getElementById('uPhone').innerText=currentProfile.phone;
-  db.ref('users/'+user.uid+'/wallet').on('value',s=>{ document.getElementById('walletBalance').innerText='UGX '+(s.val()||0).toLocaleString(); });
-  loadNurses(); loadMyBookings(); loadNurseJobs(); loadMyTxns();
-});
+auth.onAuthStateChanged(async (user)=>{ if(!user) return; currentUser=user; const snap=await db.ref('users/'+user.uid).once('value'); currentProfile=snap.val(); if(!currentProfile) return; document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentProfile.name; document.getElementById('uRole').innerText=currentProfile.role; document.getElementById('uPhone').innerText=currentProfile.phone; db.ref('users/'+user.uid+'/wallet').on('value',s=>{ document.getElementById('walletBalance').innerText='UGX '+(s.val()||0).toLocaleString(); }); loadNurses(); loadMyBookings(); loadNurseJobs(); loadMyTxns(); });
 async function getWallet(uid){ const s=await db.ref('users/'+uid+'/wallet').once('value'); return s.val()||0; }
-function payWithFlutterwave(){
-  const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<1000) return alert("Min 1,000");
-  if(FLW_PUBLIC_KEY.includes("REPLACE")) return alert("Flutterwave key not set yet. Admin SUPER must add it.");
-  const tx_ref="HCH-"+currentUser.uid+"-"+Date.now();
-  db.ref('pending_topups/'+tx_ref).set({userId:currentUser.uid, amount:amt, status:'pending', createdAt:Date.now()});
-  FlutterwaveCheckout({ public_key: FLW_PUBLIC_KEY, tx_ref: tx_ref, amount: amt, currency: "UGX", country: "UG", payment_options: document.getElementById('payMethod').value, customer: { email: currentProfile.email, phone_number: currentProfile.phone, name: currentProfile.name }, customizations: { title: "Home Care Hero", description: "Top Up "+amt }, callback: async function(data){ if(data.status==="successful"){ const bal=await getWallet(currentUser.uid); await db.ref('users/'+currentUser.uid+'/wallet').set(bal+amt); await db.ref('transactions').push({type:'topup', userId:currentUser.uid, amount:amt, status:'completed', createdAt:Date.now()}); alert("Top Up SUCCESS "+amt); } else alert("Not completed"); } });
-}
-async function requestWithdraw(){
-  const amt=parseInt(document.getElementById('withdrawAmount').value); const momo=document.getElementById('withdrawPhone').value.trim(); const method=document.getElementById('withdrawMethod').value;
-  if(!amt||!momo) return alert("Enter amount and number");
-  const bal=await getWallet(currentUser.uid); if(bal<amt) return alert("Not enough");
-  await db.ref('users/'+currentUser.uid+'/wallet').set(bal-amt);
-  await db.ref('withdrawals').push({userId:currentUser.uid, name:currentProfile.name, phone:momo, method, amount:amt, status:'pending', createdAt:Date.now()});
-  alert("Withdraw request sent. SUPER will approve.");
-}
-async function loadNurses(){
-  const snap=await db.ref('users').once('value'); const sel=document.getElementById('nurseSelect'); const kSel=document.getElementById('kimtaiNurse'); sel.innerHTML=''; if(kSel) kSel.innerHTML='';
-  if(!snap.val()) return; Object.entries(snap.val()).forEach(([id,n])=>{ if(n.role==='nurse' && n.approved!==false){ const o=document.createElement('option'); o.value=id; o.text=n.name+" - "+n.phone; sel.appendChild(o); if(kSel){ const o2=document.createElement('option'); o2.value=id; o2.text=n.name; kSel.appendChild(o2); } } });
-  if(sel.innerHTML==='') sel.innerHTML='<option>No approved nurses yet - JOY must approve</option>';
-}
-async function createBooking(){
-  const nurseId=document.getElementById('nurseSelect').value; const service=document.getElementById('service').value; const address=document.getElementById('address').value; const date=document.getElementById('date').value;
-  if(!nurseId||!address) return alert("Select nurse and address");
-  const price=parseInt(service.split('-')[1].trim()); const serviceName=service.split('-')[0].trim();
-  const bal=await getWallet(currentUser.uid); if(bal<price) return alert("Top up "+price+" first");
-  await db.ref('users/'+currentUser.uid+'/wallet').set(bal-price);
-  const nurseShare=Math.round(price*SPLIT.nurse); const adminTotal=Math.round(price*SPLIT.adminTotal); const platformShare=price-nurseShare-adminTotal;
-  const superShare=Math.round(adminTotal*0.80); const joyShare=Math.round(adminTotal*0.10); const kimtaiShare=adminTotal-superShare-joyShare;
-  const ref=db.ref('bookings').push(); await ref.set({bookingId:ref.key, patientId:currentUser.uid, patientName:currentProfile.name, nurseId, service:serviceName, price, address, date, nurseShare, adminTotal, superShare, joyShare, kimtaiShare, platformShare, status:'paid', createdAt:Date.now()});
-  await db.ref('transactions').push({type:'booking_payment', bookingId:ref.key, patientId:currentUser.uid, nurseId, amount:price, nurseShare, adminTotal, superShare, joyShare, kimtaiShare, status:'holding', createdAt:Date.now()});
-  alert(`Paid ${price}. Nurse ${nurseShare} after completion. Admin: SUPER ${superShare}, JOY ${joyShare}, KIMTAI ${kimtaiShare}`);
-  loadMyBookings();
-}
-async function loadMyBookings(){
-  if(!currentUser) return; const snap=await db.ref('bookings').once('value'); const div=document.getElementById('myBookings'); div.innerHTML='<h3>My Bookings</h3>'; if(!snap.val()) return; Object.values(snap.val()).filter(b=>b.patientId===currentUser.uid).reverse().forEach(b=>{ div.innerHTML+=`<div class="item"><b>${b.service}</b> - ${b.price} - ${b.status}</div>`; });
-}
-async function loadNurseJobs(){
-  if(!currentUser) return; const snap=await db.ref('bookings').once('value'); const div=document.getElementById('nurseJobs'); div.innerHTML=''; if(!snap.val()){ div.innerHTML='<p>No jobs</p>'; return; } let jobs=Object.values(snap.val()).filter(b=>b.nurseId===currentUser.uid); if(jobs.length===0){ div.innerHTML='<p>No jobs for you</p>'; return; } jobs.reverse().forEach(b=>{ div.innerHTML+=`<div class="item"><b>${b.service}</b> - Patient ${b.patientName} - Your Share ${b.nurseShare}<br>Status ${b.status} ${b.status==='paid'?`<button onclick="completeBooking('${b.bookingId}')">Mark Completed - Get Paid</button>`:''}</div>`; });
-}
-async function completeBooking(bookingId){
-  const snap=await db.ref('bookings/'+bookingId).once('value'); const b=snap.val(); if(!b||b.status!=='paid') return;
-  const nBal=await getWallet(b.nurseId); await db.ref('users/'+b.nurseId+'/wallet').set(nBal+b.nurseShare);
-  // Admin shares go to admin earnings pot - SUPER approves payout
-  await db.ref('admin_earnings').push({bookingId, superShare:b.superShare, joyShare:b.joyShare, kimtaiShare:b.kimtaiShare, total:b.adminTotal, status:'pending_approval', createdAt:Date.now()});
-  await db.ref('bookings/'+bookingId).update({status:'completed', completedAt:Date.now()});
-  await db.ref('transactions').push({type:'auto_split', bookingId, nurseId:b.nurseId, amount:b.price, nurseShare:b.nurseShare, superShare:b.superShare, joyShare:b.joyShare, kimtaiShare:b.kimtaiShare, status:'completed', createdAt:Date.now()});
-  alert(`Split Done! You got ${b.nurseShare}. Admin shares sent to SUPER for approval.`);
-  loadNurseJobs();
-}
+function payWithFlutterwave(){ const amt=parseInt(document.getElementById('topupAmount').value); if(!amt||amt<1000) return alert("Min 1,000"); if(FLW_PUBLIC_KEY.includes("REPLACE")) return alert("Flutterwave key not set yet."); const tx_ref="HCH-"+currentUser.uid+"-"+Date.now(); db.ref('pending_topups/'+tx_ref).set({userId:currentUser.uid, amount:amt, status:'pending', createdAt:Date.now()}); FlutterwaveCheckout({ public_key: FLW_PUBLIC_KEY, tx_ref: tx_ref, amount: amt, currency: "UGX", country: "UG", payment_options: document.getElementById('payMethod').value, customer: { email: currentProfile.email, phone_number: currentProfile.phone, name: currentProfile.name }, customizations: { title: "Home Care Hero", description: "Top Up "+amt }, callback: async function(data){ if(data.status==="successful"){ const bal=await getWallet(currentUser.uid); await db.ref('users/'+currentUser.uid+'/wallet').set(bal+amt); await db.ref('transactions').push({type:'topup', userId:currentUser.uid, amount:amt, status:'completed', createdAt:Date.now()}); alert("Top Up SUCCESS "+amt); } else alert("Not completed"); } }); }
+async function requestWithdraw(){ const amt=parseInt(document.getElementById('withdrawAmount').value); const momo=document.getElementById('withdrawPhone').value.trim(); const method=document.getElementById('withdrawMethod').value; if(!amt||!momo) return alert("Enter amount and number"); const bal=await getWallet(currentUser.uid); if(bal<amt) return alert("Not enough"); await db.ref('users/'+currentUser.uid+'/wallet').set(bal-amt); await db.ref('withdrawals').push({userId:currentUser.uid, name:currentProfile.name, phone:momo, method, amount:amt, status:'pending', createdAt:Date.now()}); alert("Withdraw request sent."); }
+async function loadNurses(){ const snap=await db.ref('users').once('value'); const sel=document.getElementById('nurseSelect'); const kSel=document.getElementById('kimtaiNurse'); sel.innerHTML=''; if(kSel) kSel.innerHTML=''; if(!snap.val()) return; Object.entries(snap.val()).forEach(([id,n])=>{ if(n.role==='nurse' && n.approved!==false){ const o=document.createElement('option'); o.value=id; o.text=n.name+" - "+n.phone; sel.appendChild(o); if(kSel){ const o2=document.createElement('option'); o2.value=id; o2.text=n.name; kSel.appendChild(o2); } } }); if(sel.innerHTML==='') sel.innerHTML='<option>No approved nurses yet</option>'; }
+async function createBooking(){ const nurseId=document.getElementById('nurseSelect').value; const service=document.getElementById('service').value; const address=document.getElementById('address').value; const date=document.getElementById('date').value; if(!nurseId||!address) return alert("Select nurse and address"); const price=parseInt(service.split('-')[1].trim()); const serviceName=service.split('-')[0].trim(); const bal=await getWallet(currentUser.uid); if(bal<price) return alert("Top up "+price+" first"); await db.ref('users/'+currentUser.uid+'/wallet').set(bal-price); const nurseShare=Math.round(price*SPLIT.nurse); const adminTotal=Math.round(price*SPLIT.adminTotal); const platformShare=price-nurseShare-adminTotal; const superShare=Math.round(adminTotal*0.80); const joyShare=Math.round(adminTotal*0.10); const kimtaiShare=adminTotal-superShare-joyShare; const ref=db.ref('bookings').push(); await ref.set({bookingId:ref.key, patientId:currentUser.uid, patientName:currentProfile.name, nurseId, service:serviceName, price, address, date, nurseShare, adminTotal, superShare, joyShare, kimtaiShare, platformShare, status:'paid', createdAt:Date.now()}); await db.ref('transactions').push({type:'booking_payment', bookingId:ref.key, patientId:currentUser.uid, nurseId, amount:price, nurseShare, adminTotal, superShare, joyShare, kimtaiShare, status:'holding', createdAt:Date.now()}); alert(`Paid ${price}.`); loadMyBookings(); }
+async function loadMyBookings(){ if(!currentUser) return; const snap=await db.ref('bookings').once('value'); const div=document.getElementById('myBookings'); div.innerHTML='<h3>My Bookings</h3>'; if(!snap.val()) return; Object.values(snap.val()).filter(b=>b.patientId===currentUser.uid).reverse().forEach(b=>{ div.innerHTML+=`<div class="item"><b>${b.service}</b> - ${b.price} - ${b.status}</div>`; }); }
+async function loadNurseJobs(){ if(!currentUser) return; const snap=await db.ref('bookings').once('value'); const div=document.getElementById('nurseJobs'); div.innerHTML=''; if(!snap.val()){ div.innerHTML='<p>No jobs</p>'; return; } let jobs=Object.values(snap.val()).filter(b=>b.nurseId===currentUser.uid); if(jobs.length===0){ div.innerHTML='<p>No jobs for you</p>'; return; } jobs.reverse().forEach(b=>{ div.innerHTML+=`<div class="item"><b>${b.service}</b> - Patient ${b.patientName} - Your Share ${b.nurseShare}<br>Status ${b.status} ${b.status==='paid'?`<button onclick="completeBooking('${b.bookingId}')">Mark Completed - Get Paid</button>`:''}</div>`; }); }
+async function completeBooking(bookingId){ const snap=await db.ref('bookings/'+bookingId).once('value'); const b=snap.val(); if(!b||b.status!=='paid') return; const nBal=await getWallet(b.nurseId); await db.ref('users/'+b.nurseId+'/wallet').set(nBal+b.nurseShare); await db.ref('admin_earnings').push({bookingId, superShare:b.superShare, joyShare:b.joyShare, kimtaiShare:b.kimtaiShare, total:b.adminTotal, status:'pending_approval', createdAt:Date.now()}); await db.ref('bookings/'+bookingId).update({status:'completed', completedAt:Date.now()}); await db.ref('transactions').push({type:'auto_split', bookingId, nurseId:b.nurseId, amount:b.price, nurseShare:b.nurseShare, superShare:b.superShare, joyShare:b.joyShare, kimtaiShare:b.kimtaiShare, status:'completed', createdAt:Date.now()}); alert(`Split Done! You got ${b.nurseShare}.`); loadNurseJobs(); }
 async function loadMyTxns(){ if(!currentUser) return; const div=document.getElementById('myTxns'); const snap=await db.ref('transactions').once('value'); div.innerHTML=''; if(!snap.val()){ div.innerHTML='<p>No transactions</p>'; return; } Object.values(snap.val()).reverse().forEach(t=>{ if(t.userId===currentUser.uid||t.patientId===currentUser.uid||t.nurseId===currentUser.uid) div.innerHTML+=`<div class="item">${t.type} - ${t.amount} - ${t.status}</div>`; }); }
-async function kimtaiCreateBooking(){
-  if(!currentAdmin || currentAdmin.name!=='KIMTAI JABETH') return alert("Only KIMTAI can do this");
-  const nurseId=document.getElementById('kimtaiNurse').value; const pname=document.getElementById('kimtaiPatient').value; const pphone=document.getElementById('kimtaiPhone').value; const svc=document.getElementById('kimtaiService').value;
-  if(!nurseId||!pname) return alert("Fill patient and nurse");
-  const price=parseInt(svc.split('-')[1].trim()); const sName=svc.split('-')[0].trim();
-  const ref=db.ref('bookings').push(); await ref.set({bookingId:ref.key, patientName:pname, patientPhone:pphone, nurseId, service:sName, price, status:'created_by_kimtai', createdAt:Date.now(), createdBy:'KIMTAI JABETH'});
-  alert("KIMTAI created booking for "+pname);
-  loadAdminDashboard();
-}
-// === ADMIN DASHBOARD WITH PERMISSIONS ===
-async function loadAdminDashboard(){
-  if(!currentAdmin){
-    document.getElementById('adminPermMsg').innerText="You are not admin. Use Admin Gate.";
-    return;
-  }
-  const name=currentAdmin.name;
-  document.getElementById('adminPermMsg').innerText=`Logged in as ${name} | Job: ${currentAdmin.job} | Share: ${currentAdmin.share*100}% of Admin 15% | Gate: HERO 2026 passed`;
-  // Show/Hide sections by permission
-  document.getElementById('superSection').style.display = (name==='SUPER') ? 'block' : 'none';
-  document.getElementById('joySection').style.display = (name==='JOY CHELANGAT' || name==='SUPER') ? 'block' : 'none';
-  document.getElementById('kimtaiSection').style.display = (name==='KIMTAI JABETH' || name==='SUPER') ? 'block' : 'none';
-  // Stats
-  const txSnap=await db.ref('transactions').once('value'); let total=0, superTotal=0, joyTotal=0, kimtaiTotal=0;
-  if(txSnap.val()) Object.values(txSnap.val()).forEach(t=>{ total+=t.amount||0; superTotal+=t.superShare||0; joyTotal+=t.joyShare||0; kimtaiTotal+=t.kimtaiShare||0; });
-  document.getElementById('adminStats').innerHTML=`<p><b>Total Volume:</b> UGX ${total.toLocaleString()}<br><b>SUPER Earnings (80%):</b> UGX ${superTotal.toLocaleString()}<br><b>JOY Earnings (10%):</b> UGX ${joyTotal.toLocaleString()}<br><b>KIMTAI Earnings (10%):</b> UGX ${kimtaiTotal.toLocaleString()}<br><b>Your Earnings:</b> UGX ${(name==='SUPER'?superTotal:name==='JOY CHELANGAT'?joyTotal:kimtaiTotal).toLocaleString()}</p>`;
-  // All bookings - SUPER + KIMTAI
-  const bSnap=await db.ref('bookings').once('value'); const bDiv=document.getElementById('allBookings'); bDiv.innerHTML=''; if(bSnap.val()) Object.values(bSnap.val()).reverse().forEach(b=>{ bDiv.innerHTML+=`<div class="item">${b.service} - ${b.patientName} - UGX ${b.price} - ${b.status} ${name==='SUPER'?`<button class="red" onclick="deleteBooking('${b.bookingId}')">SUPER: Delete Booking</button>`:''}</div>`; });
-  // KIMTAI bookings list
-  document.getElementById('kimtaiBookings').innerHTML=bDiv.innerHTML;
-  // Withdrawals - SUPER only approves
-  const wSnap=await db.ref('withdrawals').once('value'); const wDiv=document.getElementById('withdrawList'); wDiv.innerHTML=''; if(!wSnap.val()) wDiv.innerHTML='<p>No withdraw requests</p>'; else Object.entries(wSnap.val()).reverse().forEach(([id,w])=>{ wDiv.innerHTML+=`<div class="item">${w.name} - UGX ${w.amount} to ${w.phone} - ${w.status} ${name==='SUPER' && w.status==='pending'?`<button onclick="approveWithdraw('${id}')">SUPER: Approve & Mark Paid</button>`:''}</div>`; });
-  // Nurse approvals - JOY only
-  const uSnap=await db.ref('users').once('value'); const nDiv=document.getElementById('nurseApprovalList'); nDiv.innerHTML=''; const uDiv=document.getElementById('allUsers'); uDiv.innerHTML='';
-  if(uSnap.val()) Object.entries(uSnap.val()).forEach(([id,u])=>{
-    uDiv.innerHTML+=`<div class="item">${u.name} - ${u.role} - ${u.phone} - Wallet ${u.wallet||0}</div>`;
-    if(u.role==='nurse'){ nDiv.innerHTML+=`<div class="item">${u.name} - ${u.phone} - Approved: ${u.approved===false?'NO - Waiting':'YES'} ${name==='JOY CHELANGAT' || name==='SUPER'?`<button onclick="approveNurse('${id}')">JOY: Approve Nurse</button> <button class="red" onclick="rejectNurse('${id}')">Reject</button>`:''}</div>`; }
-  });
-  // All txns
-  const tDiv=document.getElementById('allTxns'); tDiv.innerHTML=''; if(txSnap.val()) Object.values(txSnap.val()).reverse().forEach(t=>{ tDiv.innerHTML+=`<div class="item">${t.type} - ${t.amount} - SUPER ${t.superShare||0} JOY ${t.joyShare||0} KIMTAI ${t.kimtaiShare||0}</div>`; });
-  loadNurses();
-}
-async function approveNurse(uid){ await db.ref('users/'+uid).update({approved:true}); alert("JOY approved nurse! Nurse can now receive bookings."); loadAdminDashboard(); }
-async function rejectNurse(uid){ await db.ref('users/'+uid).update({approved:false}); alert("Nurse rejected."); loadAdminDashboard(); }
-async function approveWithdraw(id){ await db.ref('withdrawals/'+id).update({status:'paid', approvedBy:'SUPER', paidAt:Date.now()}); alert("SUPER approved payment. Send money via MoMo / UBA now."); loadAdminDashboard(); }
-async function deleteBooking(id){ if(!confirm("SUPER: Delete this booking?")) return; await db.ref('bookings/'+id).remove(); loadAdminDashboard(); }
+async function kimtaiCreateBooking(){ if(!currentAdmin || currentAdmin.name!=='KIMTAI JABETH') return alert("Only KIMTAI can do this"); const nurseId=document.getElementById('kimtaiNurse').value; const pname=document.getElementById('kimtaiPatient').value; const pphone=document.getElementById('kimtaiPhone').value; const svc=document.getElementById('kimtaiService').value; if(!nurseId||!pname) return alert("Fill patient and nurse"); const price=parseInt(svc.split('-')[1].trim()); const sName=svc.split('-')[0].trim(); const ref=db.ref('bookings').push(); await ref.set({bookingId:ref.key, patientName:pname, patientPhone:pphone, nurseId, service:sName, price, status:'created_by_kimtai', createdAt:Date.now(), createdBy:'KIMTAI JABETH'}); alert("Booking created for "+pname); loadAdminDashboard(); }
+async function loadAdminDashboard(){ if(!currentAdmin){ document.getElementById('adminPermMsg').innerText="Not admin."; return; } const name=currentAdmin.name; document.getElementById('adminPermMsg').innerText=`Logged in as ${name} | ${currentAdmin.job}`; document.getElementById('superSection').style.display = (name==='SUPER') ? 'block' : 'none'; document.getElementById('joySection').style.display = (name==='JOY CHELANGAT' || name==='SUPER') ? 'block' : 'none'; document.getElementById('kimtaiSection').style.display = (name==='KIMTAI JABETH' || name==='SUPER') ? 'block' : 'none'; const txSnap=await db.ref('transactions').once('value'); let total=0, superTotal=0, joyTotal=0, kimtaiTotal=0; if(txSnap.val()) Object.values(txSnap.val()).forEach(t=>{ total+=t.amount||0; superTotal+=t.superShare||0; joyTotal+=t.joyShare||0; kimtaiTotal+=t.kimtaiShare||0; }); document.getElementById('adminStats').innerHTML=`<p><b>Total:</b> ${total.toLocaleString()} | <b>SUPER:</b> ${superTotal.toLocaleString()} | <b>JOY:</b> ${joyTotal.toLocaleString()} | <b>KIMTAI:</b> ${kimtaiTotal.toLocaleString()}</p>`; const bSnap=await db.ref('bookings').once('value'); const bDiv=document.getElementById('allBookings'); bDiv.innerHTML=''; if(bSnap.val()) Object.values(bSnap.val()).reverse().forEach(b=>{ bDiv.innerHTML+=`<div class="item">${b.service} - ${b.patientName} - ${b.price} - ${b.status} ${name==='SUPER'?`<button class="red" onclick="deleteBooking('${b.bookingId}')">Delete</button>`:''}</div>`; }); document.getElementById('kimtaiBookings').innerHTML=bDiv.innerHTML; const wSnap=await db.ref('withdrawals').once('value'); const wDiv=document.getElementById('withdrawList'); wDiv.innerHTML=''; if(!wSnap.val()) wDiv.innerHTML='<p>No requests</p>'; else Object.entries(wSnap.val()).reverse().forEach(([id,w])=>{ wDiv.innerHTML+=`<div class="item">${w.name} - ${w.amount} to ${w.phone} - ${w.status} ${name==='SUPER' && w.status==='pending'?`<button onclick="approveWithdraw('${id}')">Approve</button>`:''}</div>`; }); const uSnap=await db.ref('users').once('value'); const nDiv=document.getElementById('nurseApprovalList'); nDiv.innerHTML=''; const uDiv=document.getElementById('allUsers'); uDiv.innerHTML=''; if(uSnap.val()) Object.entries(uSnap.val()).forEach(([id,u])=>{ uDiv.innerHTML+=`<div class="item">${u.name} - ${u.role} - ${u.phone} - Wallet ${u.wallet||0}</div>`; if(u.role==='nurse'){ nDiv.innerHTML+=`<div class="item">${u.name} - ${u.phone} - ${u.approved===false?'Waiting':'Approved'} ${(name==='JOY CHELANGAT' || name==='SUPER')?`<button onclick="approveNurse('${id}')">Approve</button> <button class="red" onclick="rejectNurse('${id}')">Reject</button>`:''}</div>`; } }); const tDiv=document.getElementById('allTxns'); tDiv.innerHTML=''; if(txSnap.val()) Object.values(txSnap.val()).reverse().forEach(t=>{ tDiv.innerHTML+=`<div class="item">${t.type} - ${t.amount} - SUPER ${t.superShare||0} JOY ${t.joyShare||0} KIMTAI ${t.kimtaiShare||0}</div>`; }); loadNurses(); }
+async function approveNurse(uid){ await db.ref('users/'+uid).update({approved:true}); alert("Nurse approved"); loadAdminDashboard(); }
+async function rejectNurse(uid){ await db.ref('users/'+uid).update({approved:false}); alert("Nurse rejected"); loadAdminDashboard(); }
+async function approveWithdraw(id){ await db.ref('withdrawals/'+id).update({status:'paid', approvedBy:'SUPER', paidAt:Date.now()}); alert("Approved"); loadAdminDashboard(); }
+async function deleteBooking(id){ if(!confirm("Delete this booking?")) return; await db.ref('bookings/'+id).remove(); loadAdminDashboard(); }
 </script>
 </body>
 </html>
