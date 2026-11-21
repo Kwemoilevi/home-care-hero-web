@@ -45,6 +45,8 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 .nurseRow img{width:64px;height:64px;object-fit:cover;border-radius:50%;border:2px solid #0f5132;flex-shrink:0}
 .authTab{flex:1;padding:12px;border:0;background:#e9ecef;font-weight:800;border-radius:10px;cursor:pointer}
 .authTab.active{background:#0f5132;color:#fff}
+.withdrawBox{background:#fff;border:2px solid #0f5132;border-radius:16px;padding:14px;margin-top:12px}
+.withdrawBox .big{font-size:28px;font-weight:900;color:#0f5132}
 </style>
 </head>
 <body>
@@ -58,31 +60,27 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 <button class="authTab active" id="tab-login" onclick="showLogin()">🔓 Login</button>
 <button class="authTab" id="tab-create" onclick="showCreate()">✨ Create New Account</button>
 </div>
-
 <div id="authLogin">
 <label>Phone - We remember this phone</label><input id="loginPhone" placeholder="Phone you registered">
-<label>Enter PIN - We remember your PIN too if you tick below</label><input id="loginPin" type="password" maxlength="4" placeholder="****">
+<label>Enter PIN</label><input id="loginPin" type="password" maxlength="4" placeholder="****">
 <label style="display:flex;align-items:center;gap:8px;font-weight:400"><input type="checkbox" id="rememberMe" checked style="width:20px"> ✅ Remember me on this phone - Don't ask again</label>
 <button class="btn green" onclick="loginUser()">🔓 Unlock App</button>
 <p style="text-align:center;margin-top:10px"><a href="#" onclick="showForgot();return false;">Forgot PIN? Tap here to reset with your phone</a></p>
 <p style="text-align:center;margin-top:8px" id="savedAccountText" class="small"></p>
 </div>
-
 <div id="authForgot" class="hidden" style="background:#fff3cd;padding:12px;border-radius:12px;margin-top:10px">
-<h3>🔑 Forgot PIN? Reset It</h3>
-<p class="small">Type your phone, then your NEW PIN. We will find your account and change PIN.</p>
+<h3>🔑 Forgot PIN? Reset It</h3><p class="small">Type your phone, then your NEW PIN.</p>
 <label>Your Phone</label><input id="forgotPhone" placeholder="Phone you registered">
 <label>New 4-Digit PIN</label><input id="forgotPin" type="password" maxlength="4" placeholder="New PIN e.g. 1234">
 <button class="btn orange" onclick="resetPin()">✅ Reset My PIN & Login</button>
 <button class="btn outline" onclick="hideForgot()">⬅ Back to Login</button>
 </div>
-
 <div id="authCreate" class="hidden">
 <label>Full Name</label><input id="regName" placeholder="Your full name">
 <label>Phone / WhatsApp</label><input id="regPhone" placeholder="Your phone">
 <label>Email</label><input id="regEmail" placeholder="you@email.com">
 <label>🌍 Your Country</label><select id="regCountry" onchange="changeCountry(this.value)"><option value="WORLD">🌍 - Choose Your Country</option><option value="UG">🌍 - UGX</option><option value="KE">🇰🇪 Kenya - KES</option><option value="NG">🇳🇬 Nigeria - NGN</option><option value="GH">🇬🇭 Ghana - GHS</option><option value="US">🇺🇸 USA - USD</option><option value="GB">🇬🇧 UK - GBP</option><option value="ZA">🇿🇦 South Africa - ZAR</option><option value="TZ">🇹🇿 Tanzania - TZS</option><option value="RW">🇷🇼 Rwanda - RWF</option></select>
-<label>Create 4-Digit PIN - Remember this PIN</label><input id="regPin" type="password" maxlength="4" placeholder="1234">
+<label>Create 4-Digit PIN</label><input id="regPin" type="password" maxlength="4" placeholder="1234">
 <button class="btn green" onclick="createAccount()">✅ Create Account - Remember Me</button>
 </div>
 </div>
@@ -193,12 +191,36 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 <button class="wsTab" id="tab-JOY" onclick="switchWorkspace('JOY')">👩‍⚕️ JOY<br><span style="font-size:11px">Nurses</span></button>
 <button class="wsTab" id="tab-KIMTAI" onclick="switchWorkspace('KIMTAI')">📅 KIMTAI<br><span style="font-size:11px">Bookings</span></button>
 </div>
+
+<!-- SUPER WORKSPACE -->
 <div id="workspace-SUPER" class="wsCard">
-<h3>👑 SUPER Workspace - Owner - 80% - Prices Visible Here Only</h3>
+<h3>👑 SUPER Workspace - Owner - 80%</h3>
 <div class="kpi"><div><b id="kpiUsers">0</b><span class="small">Users</span></div><div><b id="kpiBookings">0</b><span class="small">Bookings</span></div><div><b id="kpiMoney">0</b><span class="small">Total</span></div></div>
 <div style="background:#fff3cd;padding:12px;border-radius:12px;margin-top:12px">
 <h3>💰 Money Split - SUPER ONLY</h3><div class="row"><span>Total Collected</span><b id="splitTotal">0</b></div><div class="row"><span>👑 SUPER - 80%</span><b id="splitSuper">0</b></div><div class="row"><span>👩‍⚕️ JOY - 10%</span><b id="splitJoy">0</b></div><div class="row"><span>📅 KIMTAI - 10%</span><b id="splitKimtai">0</b></div>
 </div>
+
+<!-- SUPER WITHDRAW - FIXED -->
+<div class="withdrawBox">
+<h3>💸 Withdraw - SUPER</h3>
+<div class="row"><span>Your Available Balance</span><span class="big" id="superAvailable">0</span></div>
+<div class="row"><span class="small">Total Earned (80%)</span><span class="small" id="superEarned">0</span></div>
+<div class="row"><span class="small">Already Withdrawn</span><span class="small" id="superWithdrawn">0</span></div>
+<label>How much to withdraw? (UGX amount in system)</label><input id="superWithdrawAmt" type="number" placeholder="e.g. 40000">
+<label>Send To - Your MoMo Number</label><input id="superWithdrawPhone" value="0771218437">
+<label>Method</label><select id="superWithdrawMethod"><option value="MoMo - MTN">MoMo - MTN</option><option value="MoMo - Airtel">MoMo - Airtel</option><option value="Cash">Cash</option><option value="Bank">Bank</option></select>
+<button class="btn green" style="font-size:18px" onclick="withdrawSuper()">💸 WITHDRAW MY MONEY NOW</button>
+<p class="small">SUPER withdraws instantly - No approval needed. It is your money.</p>
+</div>
+
+<!-- APPROVE JOY / KIMTAI WITHDRAWALS - SUPER ONLY -->
+<div style="background:#fff3cd;padding:12px;border-radius:12px;margin-top:12px">
+<h3>⏳ Withdraw Requests To Approve - SUPER ONLY</h3>
+<p class="small">JOY and KIMTAI request, you approve, then you send them MoMo manually.</p>
+<div id="withdrawRequestsSuper"><p class="small">No requests yet.</p></div>
+</div>
+<div style="margin-top:10px"><h3>📜 My Withdraw History</h3><div id="withdrawHistorySuper"></div></div>
+
 <h3>📅 All Bookings</h3><div id="adminBookings"></div>
 <h3>👩‍⚕️ All Nurses - With Photo ID</h3><div id="adminNursesSuper"></div>
 <h3>💰 All Payments</h3><div id="adminDeposits"></div>
@@ -214,20 +236,49 @@ input,select,textarea{width:100%;padding:13px;border:1px solid #d5ded8;border-ra
 <p class="small" id="currentPinsText" style="margin-top:8px"></p>
 </div>
 </div>
+
+<!-- JOY WORKSPACE -->
 <div id="workspace-JOY" class="wsCard hidden">
 <h3>👩‍⚕️ JOY Workspace - Nurses Only - 10%</h3>
 <p class="small">Your job: Check nurses, look at their PHOTO ID, approve real nurses only.</p>
+<div class="withdrawBox">
+<h3>💸 Withdraw - JOY - Your 10%</h3>
+<div class="row"><span>Your Available Balance</span><span class="big" id="joyAvailable">0</span></div>
+<div class="row"><span class="small">Total Earned (10%)</span><span class="small" id="joyEarned">0</span></div>
+<div class="row"><span class="small">Already Withdrawn / Pending</span><span class="small" id="joyWithdrawn">0</span></div>
+<label>How much to withdraw?</label><input id="joyWithdrawAmt" type="number" placeholder="e.g. 5000">
+<label>Send To - Your MoMo Number</label><input id="joyWithdrawPhone" value="0775761052">
+<label>Method</label><select id="joyWithdrawMethod"><option value="MoMo - MTN">MoMo - MTN</option><option value="MoMo - Airtel">MoMo - Airtel</option><option value="Cash">Cash</option></select>
+<button class="btn green" style="font-size:18px" onclick="requestWithdraw('JOY')">💸 REQUEST WITHDRAW - SUPER Will Approve</button>
+<p class="small">SUPER must approve your request. Then SUPER will send you MoMo.</p>
+</div>
+<div style="margin-top:10px"><h3>📜 My Withdraw History</h3><div id="withdrawHistoryJoy"></div></div>
 <div style="background:#e8f5ee;padding:12px;border-radius:12px;margin-top:10px"><b>Your Tasks:</b> <span id="joyTaskCount">0</span> nurses waiting</div>
 <h3>👩‍⚕️ Nurse Applications - With Photo ID</h3><div id="adminNurses"></div>
-<p class="small" style="margin-top:10px">🔒 Money is hidden from this workspace.</p>
+<p class="small" style="margin-top:10px">🔒 Money is hidden from this workspace except your own withdraw.</p>
 </div>
+
+<!-- KIMTAI WORKSPACE -->
 <div id="workspace-KIMTAI" class="wsCard hidden">
 <h3>📅 KIMTAI Workspace - Bookings Only - 10%</h3>
 <p class="small">Your job: Check bookings, approve real bookings, call clients.</p>
+<div class="withdrawBox">
+<h3>💸 Withdraw - KIMTAI - Your 10%</h3>
+<div class="row"><span>Your Available Balance</span><span class="big" id="kimtaiAvailable">0</span></div>
+<div class="row"><span class="small">Total Earned (10%)</span><span class="small" id="kimtaiEarned">0</span></div>
+<div class="row"><span class="small">Already Withdrawn / Pending</span><span class="small" id="kimtaiWithdrawn">0</span></div>
+<label>How much to withdraw?</label><input id="kimtaiWithdrawAmt" type="number" placeholder="e.g. 5000">
+<label>Send To - Your MoMo Number</label><input id="kimtaiWithdrawPhone" value="0770848127">
+<label>Method</label><select id="kimtaiWithdrawMethod"><option value="MoMo - MTN">MoMo - MTN</option><option value="MoMo - Airtel">MoMo - Airtel</option><option value="Cash">Cash</option></select>
+<button class="btn green" style="font-size:18px" onclick="requestWithdraw('KIMTAI')">💸 REQUEST WITHDRAW - SUPER Will Approve</button>
+<p class="small">SUPER must approve your request. Then SUPER will send you MoMo.</p>
+</div>
+<div style="margin-top:10px"><h3>📜 My Withdraw History</h3><div id="withdrawHistoryKimtai"></div></div>
 <div style="background:#e8f5ee;padding:12px;border-radius:12px;margin-top:10px"><b>Your Tasks:</b> <span id="kimtaiTaskCount">0</span> bookings waiting</div>
 <h3>📅 Client Bookings</h3><div id="adminBookingsKimtai"></div>
-<p class="small" style="margin-top:10px">🔒 Money is hidden from this workspace.</p>
+<p class="small" style="margin-top:10px">🔒 Money is hidden from this workspace except your own withdraw.</p>
 </div>
+
 <button class="btn red" onclick="lockAdmin()">🔒 Lock Workspace</button>
 <button class="btn outline" onclick="showScreen('entry')">⬅ Back to App</button>
 </div>
@@ -257,7 +308,7 @@ function switchWorkspace(ws){
 }
 let currentCountry='WORLD';
 let user=null; let walletBalance=0;
-let bookings=[], nurses=[], deposits=[], pharmacyAds=[], allUsers=[];
+let bookings=[], nurses=[], deposits=[], pharmacyAds=[], allUsers=[], withdrawals=[];
 let selectedPay='pesapal', selectedBookPay='wallet';
 let nursePhotoData='';
 const SERVICES=[{id:'elderly',name:'👵 Elderly Care',desc:'Care for elderly - Price after assessment',price:25000},{id:'baby',name:'👶 Baby Care',desc:'Nanny + baby - Price after assessment',price:20000},{id:'wound',name:'🩹 Wound Care',desc:'Dressing - Price after assessment',price:30000},{id:'postnatal',name:'🤱 Postnatal',desc:'Mother + baby - Price after assessment',price:30000},{id:'physio',name:'💪 Physiotherapy',desc:'Recovery - Price after assessment',price:35000},{id:'general',name:'🏠 General Nursing',desc:'Vitals - Price after assessment',price:25000}];
@@ -270,6 +321,7 @@ function startGoogleListeners(){
   db.collection('deposits').orderBy('created','desc').onSnapshot(s=>{ deposits=s.docs.map(d=>({id:d.id,...d.data()})); renderWallet(); renderAdminIfOpen(); recalcWallet(); });
   db.collection('pharmacyAds').orderBy('created','desc').onSnapshot(s=>{ pharmacyAds=s.docs.map(d=>({id:d.id,...d.data()})); renderPharmacy(); renderAdminIfOpen(); });
   db.collection('users').onSnapshot(s=>{ allUsers=s.docs.map(d=>({id:d.id,...d.data()})); renderAdminIfOpen(); });
+  db.collection('withdrawals').orderBy('created','desc').onSnapshot(s=>{ withdrawals=s.docs.map(d=>({id:d.id,...d.data()})); renderAdminIfOpen(); });
   db.collection('adminPins').doc('pins').onSnapshot(s=>{ if(s.exists){ let d=s.data(); if(d.SUPER) ADMINS.SUPER.pin=d.SUPER; if(d.JOY) ADMINS.JOY.pin=d.JOY; if(d.KIMTAI) ADMINS.KIMTAI.pin=d.KIMTAI; } });
 }
 function renderAdminIfOpen(){ let el=document.getElementById('screen-admin'); if(el && !el.classList.contains('hidden')) renderAdmin(); }
@@ -290,132 +342,110 @@ function previewNursePhoto(input){
   };
   reader.readAsDataURL(file);
 }
-// FIXED AUTH - localStorage remembers forever, Login first, Forgot PIN
 function saveUserToPhone(){
-  try{
-    localStorage.setItem('hch_user', JSON.stringify(user));
-    localStorage.setItem('hch_phone', user.phone);
-    if(document.getElementById('rememberMe') && document.getElementById('rememberMe').checked){
-      localStorage.setItem('hch_pin', user.pin);
-    }
-    // Keep old session key for backup
-    sessionStorage.setItem('hch_session', JSON.stringify(user));
-  }catch(e){}
+  try{ localStorage.setItem('hch_user', JSON.stringify(user)); localStorage.setItem('hch_phone', user.phone); if(document.getElementById('rememberMe') && document.getElementById('rememberMe').checked){ localStorage.setItem('hch_pin', user.pin); } sessionStorage.setItem('hch_session', JSON.stringify(user)); }catch(e){}
 }
-function loadUserFromPhone(){
-  try{
-    let saved = localStorage.getItem('hch_user') || sessionStorage.getItem('hch_session');
-    if(saved){ user=JSON.parse(saved); return true; }
-  }catch(e){}
-  return false;
-}
+function loadUserFromPhone(){ try{ let saved = localStorage.getItem('hch_user') || sessionStorage.getItem('hch_session'); if(saved){ user=JSON.parse(saved); return true; } }catch(e){} return false; }
 function showLogin(){
-  document.getElementById('authLogin').classList.remove('hidden');
-  document.getElementById('authCreate').classList.add('hidden');
-  document.getElementById('authForgot').classList.add('hidden');
-  document.getElementById('tab-login').classList.add('active');
-  document.getElementById('tab-create').classList.remove('active');
-  // Auto-fill remembered phone + PIN
-  let savedPhone = localStorage.getItem('hch_phone');
-  let savedPin = localStorage.getItem('hch_pin');
-  let savedUser = localStorage.getItem('hch_user');
-  if(savedPhone) document.getElementById('loginPhone').value=savedPhone;
-  if(savedPin) document.getElementById('loginPin').value=savedPin;
+  document.getElementById('authLogin').classList.remove('hidden'); document.getElementById('authCreate').classList.add('hidden'); document.getElementById('authForgot').classList.add('hidden'); document.getElementById('tab-login').classList.add('active'); document.getElementById('tab-create').classList.remove('active');
+  let savedPhone = localStorage.getItem('hch_phone'); let savedPin = localStorage.getItem('hch_pin'); let savedUser = localStorage.getItem('hch_user');
+  if(savedPhone) document.getElementById('loginPhone').value=savedPhone; if(savedPin) document.getElementById('loginPin').value=savedPin;
   if(savedUser){ try{ let u=JSON.parse(savedUser); document.getElementById('savedAccountText').innerText='✅ Remembered: '+u.name+' - '+u.phone+' - Tap Unlock to enter'; }catch(e){} }
 }
-function showCreate(){
-  document.getElementById('authCreate').classList.remove('hidden');
-  document.getElementById('authLogin').classList.add('hidden');
-  document.getElementById('authForgot').classList.add('hidden');
-  document.getElementById('tab-create').classList.add('active');
-  document.getElementById('tab-login').classList.remove('active');
-}
+function showCreate(){ document.getElementById('authCreate').classList.remove('hidden'); document.getElementById('authLogin').classList.add('hidden'); document.getElementById('authForgot').classList.add('hidden'); document.getElementById('tab-create').classList.add('active'); document.getElementById('tab-login').classList.remove('active'); }
 function showForgot(){ document.getElementById('authForgot').classList.remove('hidden'); document.getElementById('authLogin').classList.add('hidden'); }
 function hideForgot(){ document.getElementById('authForgot').classList.add('hidden'); document.getElementById('authLogin').classList.remove('hidden'); }
 async function resetPin(){
-  let phone=document.getElementById('forgotPhone').value.trim();
-  let newPin=document.getElementById('forgotPin').value.trim();
+  let phone=document.getElementById('forgotPhone').value.trim(); let newPin=document.getElementById('forgotPin').value.trim();
   if(!phone || newPin.length!==4){ alert('Type your phone + new 4-digit PIN'); return; }
   if(!db){ alert('Not connected'); return; }
-  try{
-    let snap=await db.collection('users').where('phone','==',phone).get();
-    if(snap.empty){ alert('No account with phone '+phone+' found. Please Create Account first.'); return; }
-    let docId=snap.docs[0].id; let d=snap.docs[0].data();
-    await db.collection('users').doc(docId).update({pin:newPin});
-    user={name:d.name,phone:d.phone,email:d.email,country:d.country,pin:newPin};
-    saveUserToPhone();
-    changeCountry(d.country||'WORLD');
-    document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0];
-    document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone;
-    alert('PIN Reset! Welcome back '+user.name+'. Your new PIN is '+newPin+' - We will remember it.');
-    showScreen('entry');
-  }catch(e){ alert('Reset error: '+e.message); }
+  try{ let snap=await db.collection('users').where('phone','==',phone).get(); if(snap.empty){ alert('No account with phone '+phone+' found. Please Create Account first.'); return; } let docId=snap.docs[0].id; let d=snap.docs[0].data(); await db.collection('users').doc(docId).update({pin:newPin}); user={name:d.name,phone:d.phone,email:d.email,country:d.country,pin:newPin}; saveUserToPhone(); changeCountry(d.country||'WORLD'); document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0]; document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone; alert('PIN Reset! Welcome back '+user.name+'. Your new PIN is '+newPin); showScreen('entry'); }catch(e){ alert('Reset error: '+e.message); }
 }
 async function createAccount(){
   let name=document.getElementById('regName').value.trim(),phone=document.getElementById('regPhone').value.trim(),pin=document.getElementById('regPin').value.trim(),country=document.getElementById('regCountry').value;
   if(!name||!phone||pin.length!==4){alert('Fill Name, Phone, 4-digit PIN');return;}
-  // Check if phone already exists - don't create duplicate, just login
-  if(db){
-    try{
-      let check=await db.collection('users').where('phone','==',phone).get();
-      if(!check.empty){ alert('You already have an account with this phone '+phone+'. We will log you in. Use your old PIN or tap Forgot PIN to reset.'); showLogin(); document.getElementById('loginPhone').value=phone; return; }
-    }catch(e){}
-  }
-  user={name,phone,email:document.getElementById('regEmail').value,country,pin};
-  changeCountry(country);
+  if(db){ try{ let check=await db.collection('users').where('phone','==',phone).get(); if(!check.empty){ alert('You already have an account with this phone '+phone+'. We will log you in. Use your old PIN or tap Forgot PIN.'); showLogin(); document.getElementById('loginPhone').value=phone; return; } }catch(e){} }
+  user={name,phone,email:document.getElementById('regEmail').value,country,pin}; changeCountry(country);
   try{ if(db) await db.collection('users').add({name,phone,email:user.email,country,pin,created:new Date().toISOString()}); }catch(e){ alert('Error: '+e.message); return; }
-  saveUserToPhone();
-  document.getElementById('userGreet').innerText='Hello, '+name.split(' ')[0]; document.getElementById('bkName').value=name; document.getElementById('bkPhone').value=phone;
-  alert('Welcome '+name+'! We will remember you - you will NOT need to create again.');
-  showScreen('entry');
+  saveUserToPhone(); document.getElementById('userGreet').innerText='Hello, '+name.split(' ')[0]; document.getElementById('bkName').value=name; document.getElementById('bkPhone').value=phone; alert('Welcome '+name+'! We will remember you.'); showScreen('entry');
 }
 async function loginUser(){
   let phone=document.getElementById('loginPhone').value.trim(),pin=document.getElementById('loginPin').value.trim();
   if(!phone || pin.length!==4){ alert('Type phone + 4-digit PIN'); return; }
   if(!db){ alert('Not connected'); return; }
-  try{ let snap=await db.collection('users').where('phone','==',phone).where('pin','==',pin).get(); if(snap.empty){ alert('Wrong Phone or PIN. If you forgot PIN, tap Forgot PIN below to reset - Do NOT create new account.'); return; } let d=snap.docs[0].data(); user={name:d.name,phone:d.phone,email:d.email,country:d.country,pin:d.pin}; changeCountry(d.country||'WORLD'); saveUserToPhone(); document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0]; document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone; alert('Welcome back '+user.name+' - Remembered!'); showScreen('entry'); }catch(e){ alert('Login error: '+e.message); }
+  try{ let snap=await db.collection('users').where('phone','==',phone).where('pin','==',pin).get(); if(snap.empty){ alert('Wrong Phone or PIN. If you forgot PIN, tap Forgot PIN below - Do NOT create new account.'); return; } let d=snap.docs[0].data(); user={name:d.name,phone:d.phone,email:d.email,country:d.country,pin:d.pin}; changeCountry(d.country||'WORLD'); saveUserToPhone(); document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0]; document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone; alert('Welcome back '+user.name+' - Remembered!'); showScreen('entry'); }catch(e){ alert('Login error: '+e.message); }
 }
-function logoutUser(){
-  // Logout only clears session, but keeps phone for next login - so user doesn't need to type again
-  let keepPhone = user ? user.phone : localStorage.getItem('hch_phone');
-  user=null; 
-  try{ localStorage.removeItem('hch_user'); sessionStorage.removeItem('hch_session'); if(keepPhone) localStorage.setItem('hch_phone', keepPhone); }catch(e){}
-  showAuth(); showLogin();
-  if(keepPhone) document.getElementById('loginPhone').value=keepPhone;
-}
-function openAdminGate(){
-  // Auto-fill remembered admin
-  let savedAdmin = localStorage.getItem('hch_admin');
-  if(savedAdmin){ try{ let a=JSON.parse(savedAdmin); document.getElementById('adminWho').value=a.who; document.getElementById('adminPhone').value=a.phone; document.getElementById('adminPinInput').value=a.pin; }catch(e){} }
-  showScreen('adminGate');
-}
+function logoutUser(){ let keepPhone = user ? user.phone : localStorage.getItem('hch_phone'); user=null; try{ localStorage.removeItem('hch_user'); sessionStorage.removeItem('hch_session'); if(keepPhone) localStorage.setItem('hch_phone', keepPhone); }catch(e){} showAuth(); showLogin(); if(keepPhone) document.getElementById('loginPhone').value=keepPhone; }
+function openAdminGate(){ let savedAdmin = localStorage.getItem('hch_admin'); if(savedAdmin){ try{ let a=JSON.parse(savedAdmin); document.getElementById('adminWho').value=a.who; document.getElementById('adminPhone').value=a.phone; document.getElementById('adminPinInput').value=a.pin; }catch(e){} } showScreen('adminGate'); }
 async function unlockAdmin(){
   await loadAdminPinsFromGoogle();
   let who=document.getElementById('adminWho').value, phone=document.getElementById('adminPhone').value.trim(), pin=document.getElementById('adminPinInput').value.trim();
   let a=ADMINS[who]; if(phone!==a.phone){alert('Wrong phone for '+a.name);return;} if(pin!==a.pin){alert('Wrong PIN');return;}
-  currentAdmin=who;
-  // Remember admin too
-  try{ if(document.getElementById('rememberAdmin').checked) localStorage.setItem('hch_admin', JSON.stringify({who,phone,pin})); }catch(e){}
-  document.getElementById('tab-SUPER').style.display=(who==='SUPER'?'block':'none');
-  document.getElementById('tab-JOY').style.display=(who==='SUPER'||who==='JOY'?'block':'none');
-  document.getElementById('tab-KIMTAI').style.display=(who==='SUPER'||who==='KIMTAI'?'block':'none');
-  document.getElementById('adminTitle').innerText='Workspace - '+a.name;
-  document.getElementById('adminRoleText').innerText=a.role+' • Phone '+a.phone;
+  currentAdmin=who; try{ if(document.getElementById('rememberAdmin').checked) localStorage.setItem('hch_admin', JSON.stringify({who,phone,pin})); }catch(e){}
+  document.getElementById('tab-SUPER').style.display=(who==='SUPER'?'block':'none'); document.getElementById('tab-JOY').style.display=(who==='SUPER'||who==='JOY'?'block':'none'); document.getElementById('tab-KIMTAI').style.display=(who==='SUPER'||who==='KIMTAI'?'block':'none');
+  document.getElementById('adminTitle').innerText='Workspace - '+a.name; document.getElementById('adminRoleText').innerText=a.role+' • Phone '+a.phone;
   if(who==='JOY') currentWorkspace='JOY'; else if(who==='KIMTAI') currentWorkspace='KIMTAI'; else currentWorkspace='SUPER';
-  showScreen('admin');
-  ['SUPER','JOY','KIMTAI'].forEach(w=>{ document.getElementById('workspace-'+w).classList.toggle('hidden', w!==currentWorkspace); document.getElementById('tab-'+w).classList.toggle('active', w===currentWorkspace); });
-  renderAdmin();
+  showScreen('admin'); ['SUPER','JOY','KIMTAI'].forEach(w=>{ document.getElementById('workspace-'+w).classList.toggle('hidden', w!==currentWorkspace); document.getElementById('tab-'+w).classList.toggle('active', w===currentWorkspace); }); renderAdmin();
 }
 function lockAdmin(){currentAdmin=null; document.getElementById('adminPinInput').value=''; showScreen('adminGate');}
 async function changeAdminPin(){
   if(currentAdmin!=='SUPER'){alert('Only SUPER can change PINs.');return;}
   let who=document.getElementById('changePinWho').value; let np=document.getElementById('newAdminPin').value.trim(); let cp=document.getElementById('confirmAdminPin').value.trim();
   if(np.length!==4){alert('New PIN must be 4 digits');return;} if(np!==cp){alert('PINs do not match.');return;}
-  ADMINS[who].pin=np;
-  try{ await db.collection('adminPins').doc('pins').set({SUPER:ADMINS.SUPER.pin, JOY:ADMINS.JOY.pin, KIMTAI:ADMINS.KIMTAI.pin}); }catch(e){ alert('Save error: '+e.message); return; }
-  document.getElementById('newAdminPin').value=''; document.getElementById('confirmAdminPin').value='';
-  alert('PIN Changed! '+ADMINS[who].name+' new PIN is '+np);
-  renderAdmin();
+  ADMINS[who].pin=np; try{ await db.collection('adminPins').doc('pins').set({SUPER:ADMINS.SUPER.pin, JOY:ADMINS.JOY.pin, KIMTAI:ADMINS.KIMTAI.pin}); }catch(e){ alert('Save error: '+e.message); return; }
+  document.getElementById('newAdminPin').value=''; document.getElementById('confirmAdminPin').value=''; alert('PIN Changed! '+ADMINS[who].name+' new PIN is '+np); renderAdmin();
+}
+// WITHDRAW LOGIC - FIXED
+function getAdminBalances(){
+  let total = deposits.reduce((s,d)=>s+Number(d.amount||0),0);
+  let earned = {SUPER: total*0.80, JOY: total*0.10, KIMTAI: total*0.10};
+  let withdrawn = {SUPER:0, JOY:0, KIMTAI:0};
+  withdrawals.forEach(w=>{
+    if(w.status==='Approved' || w.status==='Paid' || w.status==='Completed' || w.status==='Withdrawn'){
+      if(withdrawn[w.admin]!==undefined) withdrawn[w.admin]+=Number(w.amount||0);
+    }
+    if(w.status==='Pending' && w.admin!=='SUPER'){
+      // Pending counts as reserved for JOY/KIMTAI so they cannot double-request
+      if(withdrawn[w.admin]!==undefined) withdrawn[w.admin]+=Number(w.amount||0);
+    }
+  });
+  return {total, earned, withdrawn, available:{SUPER: Math.max(0, earned.SUPER - withdrawn.SUPER), JOY: Math.max(0, earned.JOY - withdrawn.JOY), KIMTAI: Math.max(0, earned.KIMTAI - withdrawn.KIMTAI)}};
+}
+async function withdrawSuper(){
+  if(currentAdmin!=='SUPER'){ alert('Only SUPER can withdraw as SUPER'); return; }
+  let amt = Number(document.getElementById('superWithdrawAmt').value||0);
+  let phone = document.getElementById('superWithdrawPhone').value.trim();
+  let method = document.getElementById('superWithdrawMethod').value;
+  let bal = getAdminBalances();
+  if(amt<=0){ alert('Enter amount to withdraw'); return; }
+  if(amt > bal.available.SUPER){ alert('Not enough. Your available is '+fmt(bal.available.SUPER)+'. Total earned '+fmt(bal.earned.SUPER)+', already withdrawn '+fmt(bal.withdrawn.SUPER)); return; }
+  if(!phone){ alert('Enter MoMo number to send to'); return; }
+  if(!confirm('Withdraw '+fmt(amt)+' to '+phone+' via '+method+'? Tap OK, then send yourself MoMo from Pesapal / your account and mark as done.')) return;
+  try{ await db.collection('withdrawals').add({admin:'SUPER',name:'SUPER',phone,amount:amt,method,status:'Approved',created:new Date().toISOString()}); }catch(e){ alert('Error: '+e.message); return; }
+  document.getElementById('superWithdrawAmt').value='';
+  alert('✅ SUPER Withdraw recorded: '+fmt(amt)+' to '+phone+'. Now send yourself MoMo from Pesapal. Your new balance is '+fmt(bal.available.SUPER - amt));
+}
+async function requestWithdraw(who){
+  if(currentAdmin!==who && currentAdmin!=='SUPER'){ alert('You can only request for yourself'); return; }
+  let amtEl = who==='JOY' ? document.getElementById('joyWithdrawAmt') : document.getElementById('kimtaiWithdrawAmt');
+  let phoneEl = who==='JOY' ? document.getElementById('joyWithdrawPhone') : document.getElementById('kimtaiWithdrawPhone');
+  let methodEl = who==='JOY' ? document.getElementById('joyWithdrawMethod') : document.getElementById('kimtaiWithdrawMethod');
+  let amt = Number(amtEl.value||0); let phone = phoneEl.value.trim(); let method = methodEl.value;
+  let bal = getAdminBalances();
+  if(amt<=0){ alert('Enter amount to withdraw'); return; }
+  if(amt > bal.available[who]){ alert('Not enough. Your available is '+fmt(bal.available[who])); return; }
+  try{ await db.collection('withdrawals').add({admin:who,name:ADMINS[who].name,phone,amount:amt,method,status:'Pending',created:new Date().toISOString()}); }catch(e){ alert('Error: '+e.message); return; }
+  amtEl.value='';
+  alert('✅ Request sent to SUPER! '+fmt(amt)+' - SUPER will approve and send you MoMo to '+phone+'. Wait for SUPER approval.');
+}
+async function approveWithdraw(id){
+  if(currentAdmin!=='SUPER'){ alert('Only SUPER can approve'); return; }
+  try{ await db.collection('withdrawals').doc(id).update({status:'Approved'}); }catch(e){ alert(e.message); }
+  alert('Approved! Now send MoMo manually to that admin from your Pesapal / MoMo.');
+}
+async function rejectWithdraw(id){
+  if(currentAdmin!=='SUPER'){ alert('Only SUPER can reject'); return; }
+  try{ await db.collection('withdrawals').doc(id).update({status:'Rejected'}); }catch(e){ alert(e.message); }
 }
 function renderServices(){document.getElementById('serviceList').innerHTML=SERVICES.map(s=>`<div class="service ${s.id===selectedService.id?'selected':''}" onclick="selectService('${s.id}')"><div class="row"><b>${s.name}</b><span class="priceTag">Price after assessment</span></div><p class="small">${s.desc}</p></div>`).join(''); updateTotal();}
 function selectService(id){selectedService=SERVICES.find(s=>s.id===id);renderServices();}
@@ -433,16 +463,14 @@ async function payForBooking(){
   if(selectedBookPay==='stripe'){if(!STRIPE_LINK||STRIPE_LINK.includes('PASTE')){alert('Stripe link not set yet. Use Wallet / MoMo / Cash.');return;} window.open(STRIPE_LINK,'_blank'); alert('Stripe opened. Pay with Card.');}
   if(selectedBookPay==='cash'){alert('Booked! Nurse will call you with friendly price. Pay cash after visit.');}
   try{ await db.collection('bookings').add(b); }catch(e){ alert('Save error: '+e.message); return; }
-  alert('Booking saved! Nurse will call you with price.');
-  showScreen('history');
+  alert('Booking saved! Nurse will call you with price.'); showScreen('history');
 }
 function showPharmacyForm(){ document.getElementById('pharmacyForm').classList.remove('hidden'); }
 async function submitPharmacyAd(){
  let name=document.getElementById('phName').value.trim(), city=document.getElementById('phCity').value.trim(), phone=document.getElementById('phPhone').value.trim(), offer=document.getElementById('phOffer').value.trim(), price=document.getElementById('phPrice').value.trim();
  if(!name||!city||!phone){ alert('Fill Pharmacy Name, City/Country, WhatsApp Number'); return; }
  try{ await db.collection('pharmacyAds').add({name,city,phone,offer:offer||'',price:price||'',status:'Pending',created:new Date().toISOString()}); }catch(e){ alert('Error: '+e.message); return; }
- alert('Your pharmacy advert saved! SUPER will approve.');
- document.getElementById('pharmacyForm').classList.add('hidden');
+ alert('Your pharmacy advert saved! SUPER will approve.'); document.getElementById('pharmacyForm').classList.add('hidden');
 }
 function renderPharmacy(){
  let approved = pharmacyAds.filter(p=>p.status==='Approved');
@@ -480,15 +508,33 @@ function nurseCardHTML(n, showApprove){
 }
 function renderAdmin(){
   if(!currentAdmin) return;
+  let bal = getAdminBalances();
   document.getElementById('kpiUsers').innerText=allUsers.length;
   document.getElementById('kpiBookings').innerText=bookings.length;
-  let totalDeposits=deposits.reduce((s,d)=>s+Number(d.amount||0),0);
-  document.getElementById('kpiMoney').innerText=fmt(totalDeposits);
-  document.getElementById('splitTotal').innerText=fmt(totalDeposits);
-  document.getElementById('splitSuper').innerText=fmt(totalDeposits*0.80)+' (80%)';
-  document.getElementById('splitJoy').innerText=fmt(totalDeposits*0.10)+' (10%)';
-  document.getElementById('splitKimtai').innerText=fmt(totalDeposits*0.10)+' (10%)';
+  document.getElementById('kpiMoney').innerText=fmt(bal.total);
+  document.getElementById('splitTotal').innerText=fmt(bal.total);
+  document.getElementById('splitSuper').innerText=fmt(bal.earned.SUPER)+' (80%)';
+  document.getElementById('splitJoy').innerText=fmt(bal.earned.JOY)+' (10%)';
+  document.getElementById('splitKimtai').innerText=fmt(bal.earned.KIMTAI)+' (10%)';
   document.getElementById('currentPinsText').innerText='Current PINs (SUPER only): SUPER '+ADMINS.SUPER.pin+' • JOY '+ADMINS.JOY.pin+' • KIMTAI '+ADMINS.KIMTAI.pin;
+  // Withdraw balances
+  document.getElementById('superAvailable').innerText=fmt(bal.available.SUPER);
+  document.getElementById('superEarned').innerText=fmt(bal.earned.SUPER);
+  document.getElementById('superWithdrawn').innerText=fmt(bal.withdrawn.SUPER);
+  document.getElementById('joyAvailable').innerText=fmt(bal.available.JOY);
+  document.getElementById('joyEarned').innerText=fmt(bal.earned.JOY);
+  document.getElementById('joyWithdrawn').innerText=fmt(bal.withdrawn.JOY);
+  document.getElementById('kimtaiAvailable').innerText=fmt(bal.available.KIMTAI);
+  document.getElementById('kimtaiEarned').innerText=fmt(bal.earned.KIMTAI);
+  document.getElementById('kimtaiWithdrawn').innerText=fmt(bal.withdrawn.KIMTAI);
+  // Withdraw requests for SUPER
+  let pending = withdrawals.filter(w=>w.status==='Pending');
+  document.getElementById('withdrawRequestsSuper').innerHTML = pending.length ? pending.map(w=>`<div style="padding:8px;border-bottom:1px solid #eee;background:#fff;border-radius:8px;margin-top:6px"><b>${w.admin} - ${w.name}</b> wants <b>${fmt(Number(w.amount||0))}</b> to ${w.phone} via ${w.method}<br><button class="btn green" style="padding:8px;margin-top:6px" onclick="approveWithdraw('${w.id}')">✅ Approve & I Will Send MoMo</button><button class="btn red" style="padding:8px" onclick="rejectWithdraw('${w.id}')">❌ Reject</button></div>`).join('') : '<p class="small">No pending requests. JOY / KIMTAI have not requested yet.</p>';
+  // Histories
+  let histHTML = (who)=>{ let list=withdrawals.filter(w=>w.admin===who); return list.length ? list.map(w=>`<div style="padding:8px;border-bottom:1px solid #eee">${fmt(Number(w.amount||0))} → ${w.phone} • ${w.method} • <b>${w.status}</b></div>`).join('') : '<p class="small">No withdrawals yet.</p>'; };
+  document.getElementById('withdrawHistorySuper').innerHTML=histHTML('SUPER');
+  document.getElementById('withdrawHistoryJoy').innerHTML=histHTML('JOY');
+  document.getElementById('withdrawHistoryKimtai').innerHTML=histHTML('KIMTAI');
   document.getElementById('joyTaskCount').innerText=nurses.filter(n=>(n.status||'Pending')==='Pending').length;
   document.getElementById('kimtaiTaskCount').innerText=bookings.filter(b=>(b.status||'Pending').includes('Pending')).length;
   document.getElementById('adminBookings').innerHTML=bookings.length?bookings.map((b)=>`<div style="padding:8px;border-bottom:1px solid #eee"><b>${b.service}</b> - ${b.name} - ${b.phone} - ${fmt(Number(b.total||0))} - ${b.status||'Pending'} - ${b.location||''} <button class="btn green" style="padding:6px" onclick="approveBooking('${b.id}')">Approve</button></div>`).join(''):'No bookings yet - real';
@@ -502,11 +548,8 @@ function renderAdmin(){
 async function approvePharmacy(id){ if(currentAdmin!=='SUPER'){ alert('Only SUPER can approve pharmacy adverts'); return; } try{ await db.collection('pharmacyAds').doc(id).update({status:'Approved'}); }catch(e){ alert(e.message); } }
 async function approveBooking(id){ if(currentAdmin==='JOY'){alert('JOY cannot approve bookings.');return;} try{ await db.collection('bookings').doc(id).update({status:'Approved'}); }catch(e){ alert(e.message); } }
 async function approveNurse(id){ if(currentAdmin==='KIMTAI'){alert('KIMTAI cannot approve nurses.');return;} try{ await db.collection('nurses').doc(id).update({status:'Approved'}); }catch(e){ alert(e.message); } }
-// START - Load remembered user from localStorage (NOT sessionStorage)
 let hasRememberedUser = loadUserFromPhone();
-if(hasRememberedUser && user){
-  try{ changeCountry(user.country||'WORLD'); document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0]; document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone; }catch(e){}
-}
+if(hasRememberedUser && user){ try{ changeCountry(user.country||'WORLD'); document.getElementById('userGreet').innerText='Hello, '+user.name.split(' ')[0]; document.getElementById('bkName').value=user.name; document.getElementById('bkPhone').value=user.phone; }catch(e){} }
 loadAdminPinsFromGoogle();
 startGoogleListeners();
 renderServices(); renderWallet(); renderBookPay(); renderPharmacy();
