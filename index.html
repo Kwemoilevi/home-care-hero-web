@@ -7,7 +7,7 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>
-*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f0f4f8;color:#111}
+*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f0f4f8;color:#111;padding-bottom:50px}
 header{background:#0b3d5e;color:#fff;padding:14px;text-align:center}
 header h1{margin:0;font-size:22px} header p{margin:2px;font-size:12px;opacity:.9}
 .wrap{max-width:560px;margin:0 auto;padding:14px}
@@ -20,18 +20,20 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 .badge{display:inline-block;background:#ffe9a8;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
 .booking{border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
 .stat{background:#f0f4f8;border-radius:10px;padding:10px;margin:6px 0;font-size:14px}
+/* FAINT ADMIN AT BOTTOM */
+.bottom-admin{position:fixed;bottom:6px;left:0;right:0;text-align:center;z-index:99}
+.bottom-admin button{background:transparent;border:0;color:#cbd5e1;opacity:.35;font-size:11px;padding:8px;letter-spacing:2px;cursor:pointer}
+.bottom-admin button:active{opacity:.8}
 </style>
 </head>
 <body>
 <header><h1>🌍 HOME CARE HERO - WORLD</h1><p>SUPER • JOY • KIMTAI | Global Care</p></header>
 <div class="wrap">
 
-<!-- CLIENTS FIRST -->
 <div id="page-entry" class="card">
 <h2>Welcome Hero</h2>
 <p class="small">Care anywhere in the WORLD. Book a nurse, pay with Pesapal or Wallet.</p>
 <div class="row"><button onclick="show('page-login')">Client Login</button><button class="green" onclick="show('page-signup')">Create Account</button></div>
-<button class="gold" onclick="show('page-admin')">Admin Login</button>
 <button onclick="show('page-nurse')">Nurse Login</button>
 <p class="center small">New here? Create account first.</p>
 </div>
@@ -71,7 +73,6 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <div id="my-bookings"></div>
 </div>
 
-<!-- ADMIN LOGIN - GATE FOR ADMINS ONLY -->
 <div id="page-admin" class="card hidden">
 <h2>Admin Login</h2>
 <p class="small">Admins Only - Tap your name</p>
@@ -83,7 +84,6 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <button onclick="show('page-entry')">Back</button>
 </div>
 
-<!-- SUPER DASHBOARD -->
 <div id="page-super" class="card hidden">
 <h2>👑 SUPER Dashboard</h2>
 <p class="small">Manages ALL bookings + Approves payments for admins</p>
@@ -97,7 +97,6 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <button class="red" onclick="logout()">Logout</button>
 </div>
 
-<!-- JOY DASHBOARD -->
 <div id="page-joy" class="card hidden">
 <h2>✅ JOY CHELANGAT Dashboard</h2>
 <p class="small">Approves Nurses</p>
@@ -111,7 +110,6 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <button class="red" onclick="logout()">Logout</button>
 </div>
 
-<!-- KIMTAI DASHBOARD -->
 <div id="page-kimtai" class="card hidden">
 <h2>📅 KIMTAI JABETH Dashboard</h2>
 <p class="small">In Charge of Bookings</p>
@@ -146,12 +144,15 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 </div>
 
 </div>
+
+<!-- FAINT AT BOTTOM - ONLY YOU KNOW -->
+<div class="bottom-admin"><button onclick="show('page-admin')">• • •</button></div>
+
 <script>
 const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "home-care-hero.firebaseapp.com", projectId: "home-care-hero", storageBucket: "home-care-hero.appspot.com", messagingSenderId: "YOUR_SENDER_ID", appId: "YOUR_APP_ID" };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const GATE_PASSWORD = 'HERO2026';
-
 function show(id){
   ['page-entry','page-signup','page-login','page-book','page-admin','page-super','page-joy','page-kimtai','page-nurse','page-nurse-dash'].forEach(p=>document.getElementById(p).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
@@ -163,10 +164,8 @@ async function getPasswords(){
   return {SUPER:'2215',JOY:'JOY2026',JABETH:'JABETH2026'};
 }
 async function savePasswords(p){ try{ await db.collection('settings').doc('passwords').set(p); }catch(e){} localStorage.setItem('hc_passwords', JSON.stringify(p)); }
-
 let currentUser=null, currentAdmin=null, selectedAdmin=null;
 function selectAdmin(name){ selectedAdmin=name; document.getElementById('selected-admin').innerText='Selected: '+name+' - Now enter Gate + Your Password'; }
-
 function signup(){
   let name=document.getElementById('su-name').value.trim(), phone=document.getElementById('su-phone').value.trim(), pass=document.getElementById('su-pass').value, country=document.getElementById('su-country').value.trim()||'Uganda', role=document.getElementById('su-role').value;
   if(!name||!phone||!pass) return alert("Fill all");
@@ -179,15 +178,8 @@ function login(){
 }
 function updateWalletLine(){ if(currentUser) document.getElementById('wallet-line').innerText="Wallet: UGX "+(currentUser.wallet||0); }
 function logout(){ currentUser=null; currentAdmin=null; selectedAdmin=null; show('page-entry'); }
-
-// SPLIT: Nurse 80% | Admin 15% (SUPER 80% of admin, JOY 10%, KIMTAI 10%) | Platform 5%
 function calcSplit(amount){
-  let nurseShare=Math.round(amount*0.80);
-  let adminTotal=Math.round(amount*0.15);
-  let superShare=Math.round(adminTotal*0.80);
-  let joyShare=Math.round(adminTotal*0.10);
-  let kimtaiShare=adminTotal-superShare-joyShare;
-  let platformShare=amount-nurseShare-adminTotal;
+  let nurseShare=Math.round(amount*0.80); let adminTotal=Math.round(amount*0.15); let superShare=Math.round(adminTotal*0.80); let joyShare=Math.round(adminTotal*0.10); let kimtaiShare=adminTotal-superShare-joyShare; let platformShare=amount-nurseShare-adminTotal;
   return {nurseShare,adminTotal,superShare,joyShare,kimtaiShare,platformShare};
 }
 async function bookAndPay(method){
@@ -205,61 +197,44 @@ async function showMyBookings(){
   let div=document.getElementById('my-bookings'); div.innerHTML="<h3>My Bookings</h3>";
   try{ let snap=await db.collection('bookings').where('clientPhone','==',currentUser.phone).get(); if(snap.empty) div.innerHTML+="<p class='small'>No bookings yet</p>"; snap.forEach(d=>{ let b=d.data(); div.innerHTML+=`<div class='booking'><b>${b.service}</b> - ${b.patient}<br>${b.location} | ${b.country}<br>Amount: ${b.amount} | ${b.status}</div>` }); }catch(e){ div.innerHTML+="Error: "+e.message }
 }
-
-// ADMIN LOGIN -> OWN DASHBOARD
 async function adminLogin(){
   if(!selectedAdmin) return alert("Tap your name first - SUPER / JOY / JABETH");
   let gate=document.getElementById('ad-gate').value, pass=document.getElementById('ad-pass').value;
   if(gate!==GATE_PASSWORD) return alert("Wrong Gate Password");
   let p=await getPasswords();
   if(p[selectedAdmin]!==pass) return alert("Wrong Password for "+selectedAdmin);
-  currentAdmin=selectedAdmin;
-  alert("Gate Open! Welcome "+selectedAdmin);
+  currentAdmin=selectedAdmin; alert("Gate Open! Welcome "+selectedAdmin);
   if(selectedAdmin==='SUPER'){ show('page-super'); loadSuper(); }
   if(selectedAdmin==='JOY'){ show('page-joy'); loadJoy(); }
   if(selectedAdmin==='JABETH'){ show('page-kimtai'); loadKimtai(); }
 }
 async function changeAdminPass(){
-  let np=document.getElementById('super-newpass')?.value || document.getElementById('joy-newpass')?.value || document.getElementById('kimtai-newpass')?.value;
-  // get from visible dashboard
-  if(currentAdmin==='SUPER') np=document.getElementById('super-newpass').value;
-  if(currentAdmin==='JOY') np=document.getElementById('joy-newpass').value;
-  if(currentAdmin==='JABETH') np=document.getElementById('kimtai-newpass').value;
+  let np=""; if(currentAdmin==='SUPER') np=document.getElementById('super-newpass').value; if(currentAdmin==='JOY') np=document.getElementById('joy-newpass').value; if(currentAdmin==='JABETH') np=document.getElementById('kimtai-newpass').value;
   if(!np) return alert("Type new password");
   let p=await getPasswords(); p[currentAdmin]=np; await savePasswords(p); alert("Password Changed! Works on ALL phones.");
 }
-
-// SUPER: ALL BOOKINGS + APPROVE PAYMENTS
 async function loadSuper(){
-  let div=document.getElementById('super-bookings'), payDiv=document.getElementById('super-payments'), stats=document.getElementById('super-stats');
-  div.innerHTML="Loading..."; payDiv.innerHTML="";
+  let div=document.getElementById('super-bookings'), payDiv=document.getElementById('super-payments'), stats=document.getElementById('super-stats'); div.innerHTML="Loading..."; payDiv.innerHTML="";
   try{
     let snap=await db.collection('bookings').orderBy('createdAt','desc').get();
-    let total=0, superTotal=0, joyTotal=0, kimTotal=0, nurseTotal=0;
-    div.innerHTML=""; if(snap.empty) div.innerHTML="<p class='small'>No bookings yet</p>";
+    let total=0, superTotal=0, joyTotal=0, kimTotal=0, nurseTotal=0; div.innerHTML=""; if(snap.empty) div.innerHTML="<p class='small'>No bookings yet</p>";
     snap.forEach(d=>{ let b=d.data(); total+=b.amount||0; superTotal+=b.superShare||0; joyTotal+=b.joyShare||0; kimTotal+=b.kimtaiShare||0; nurseTotal+=b.nurseShare||0;
-      div.innerHTML+=`<div class='booking'><b>${b.service}</b> - ${b.patient} (${b.clientName||b.createdBy})<br>${b.location} | ${b.country||''}<br>Amount: ${b.amount} | Nurse: ${b.nurseShare} | SUPER: ${b.superShare} | JOY: ${b.joyShare} | KIMTAI: ${b.kimtaiShare}<br>Status: ${b.status}<br><button class="red" onclick="superDeleteBooking('${d.id}')">Delete Booking</button></div>`;
+      div.innerHTML+=`<div class='booking'><b>${b.service}</b> - ${b.patient} (${b.clientName||b.createdBy})<br>${b.location}<br>Amount: ${b.amount} | Nurse: ${b.nurseShare} | SUPER: ${b.superShare} | JOY: ${b.joyShare} | KIMTAI: ${b.kimtaiShare}<br>Status: ${b.status}<br><button class="red" onclick="superDeleteBooking('${d.id}')">Delete Booking</button></div>`;
       payDiv.innerHTML+=`<div class='booking'>${b.patient} - ${b.amount} - ${b.status} <button onclick="superApprovePayment('${d.id}')">Approve & Pay Admins</button></div>`;
     });
-    stats.innerHTML=`Total: ${total} | Nurse Pool: ${nurseTotal} | SUPER (80% of admin): ${superTotal} | JOY: ${joyTotal} | KIMTAI: ${kimTotal}`;
+    stats.innerHTML=`Total: ${total} | Nurse Pool: ${nurseTotal} | SUPER: ${superTotal} | JOY: ${joyTotal} | KIMTAI: ${kimTotal}`;
   }catch(e){ div.innerHTML="Error: "+e.message }
 }
-async function superApprovePayment(id){ if(!confirm("Approve this payment? SUPER approves admin payouts.")) return; try{ await db.collection('bookings').doc(id).update({status:'Approved by SUPER - Paid'}); alert("SUPER Approved! Payment released."); loadSuper(); }catch(e){ alert(e.message) } }
+async function superApprovePayment(id){ if(!confirm("Approve this payment? SUPER approves admin payouts.")) return; try{ await db.collection('bookings').doc(id).update({status:'Approved by SUPER - Paid'}); alert("SUPER Approved!"); loadSuper(); }catch(e){ alert(e.message) } }
 async function superDeleteBooking(id){ if(!confirm("SUPER: Delete this booking?")) return; try{ await db.collection('bookings').doc(id).delete(); loadSuper(); }catch(e){ alert(e.message) } }
-
-// JOY: APPROVE NURSES
 function loadJoy(){
-  let users=getUsers(); let wait=document.getElementById('joy-nurses'), appr=document.getElementById('joy-approved'), stats=document.getElementById('joy-stats');
-  wait.innerHTML=""; appr.innerHTML=""; let countW=0, countA=0;
+  let users=getUsers(); let wait=document.getElementById('joy-nurses'), appr=document.getElementById('joy-approved'), stats=document.getElementById('joy-stats'); wait.innerHTML=""; appr.innerHTML=""; let countW=0, countA=0;
   Object.entries(users).forEach(([phone,u])=>{ if(u.role!=='nurse') return; if(!u.approved){ countW++; wait.innerHTML+=`<div class='booking'><b>${u.name}</b> - ${phone} - ${u.country}<br><button class="green" onclick="joyApproveNurse('${phone}')">Approve Nurse</button> <button class="red" onclick="joyRejectNurse('${phone}')">Reject</button></div>`; } else { countA++; appr.innerHTML+=`<div class='booking'><b>${u.name}</b> - ${phone} - Approved ✅</div>`; } });
-  if(countW===0) wait.innerHTML="<p class='small'>No nurses waiting</p>";
-  if(countA===0) appr.innerHTML="<p class='small'>No approved nurses yet</p>";
+  if(countW===0) wait.innerHTML="<p class='small'>No nurses waiting</p>"; if(countA===0) appr.innerHTML="<p class='small'>No approved nurses yet</p>";
   stats.innerHTML=`Waiting: ${countW} | Approved: ${countA} | Your share: 10% of Admin 15%`;
 }
-function joyApproveNurse(phone){ let users=getUsers(); users[phone].approved=true; saveUsers(users); alert("JOY Approved Nurse: "+users[phone].name); loadJoy(); }
-function joyRejectNurse(phone){ let users=getUsers(); delete users[phone]; saveUsers(users); alert("Nurse rejected and removed."); loadJoy(); }
-
-// KIMTAI: IN CHARGE OF BOOKINGS
+function joyApproveNurse(phone){ let users=getUsers(); users[phone].approved=true; saveUsers(users); alert("JOY Approved: "+users[phone].name); loadJoy(); }
+function joyRejectNurse(phone){ let users=getUsers(); delete users[phone]; saveUsers(users); alert("Nurse rejected."); loadJoy(); }
 async function loadKimtai(){
   let div=document.getElementById('kimtai-bookings'), stats=document.getElementById('kimtai-stats'); div.innerHTML="Loading...";
   try{ let snap=await db.collection('bookings').orderBy('createdAt','desc').get(); let total=0, count=0; div.innerHTML=""; if(snap.empty) div.innerHTML="<p class='small'>No bookings yet</p>"; snap.forEach(d=>{ let b=d.data(); total+=b.amount||0; count++; div.innerHTML+=`<div class='booking'><b>${b.service}</b> - ${b.patient}<br>${b.location} | ${b.amount} | ${b.status}<br><button onclick="kimtaiAssign('${d.id}')">Assign Nurse / Manage</button></div>`; }); stats.innerHTML=`Total Bookings: ${count} | Total Value: ${total} | Your share: 10% of Admin 15%`; }catch(e){ div.innerHTML="Error: "+e.message }
@@ -271,8 +246,6 @@ async function kimtaiCreateBooking(){
   try{ await db.collection('bookings').add(booking); alert("KIMTAI Created Booking for "+patient); loadKimtai(); }catch(e){ alert(e.message) }
 }
 async function kimtaiAssign(id){ let nurse=prompt("Enter Nurse Phone to assign:"); if(!nurse) return; try{ await db.collection('bookings').doc(id).update({status:'Assigned by KIMTAI to '+nurse}); alert("Assigned!"); loadKimtai(); }catch(e){ alert(e.message) } }
-
-// NURSE
 function nurseLogin(){
   let phone=document.getElementById('nu-phone').value.trim(), pass=document.getElementById('nu-pass').value; let users=getUsers();
   if(users[phone] && users[phone].pass===pass){
