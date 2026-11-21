@@ -28,7 +28,6 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
 <h1>🏥 Home Care Hero</h1>
 <p class="small">Home Nursing - For All Countries</p>
 
-<!-- COUNTRY -->
 <div class="countryBar">
   <b>🌍 Choose Your Country</b>
   <select id="countrySelect" onchange="changeCountry()">
@@ -45,10 +44,10 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
   <div class="small" style="color:#fff" id="countryInfo">Uganda • Currency: UGX</div>
 </div>
 
-<!-- PUBLIC LINKS - COPY AND SEND ON WHATSAPP -->
+<!-- PUBLIC LINKS - ONLY NURSE + CLIENT - NO ADMIN LINKS HERE ANYMORE -->
 <div class="card" id="linksCard">
   <h2>🔗 Share Links - Send on WhatsApp</h2>
-  <p class="small">Tap COPY, then paste in WhatsApp / SMS to nurse or client.</p>
+  <p class="small">Only these 2 links are public. Admin links are NOT here anymore.</p>
   <b>1. Nurse Application Form Link:</b>
   <div class="linkBox" id="nurseLink"></div>
   <button class="linkBtn" onclick="copyLink('nurse')">📋 Copy Nurse Form Link</button>
@@ -57,33 +56,24 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
   <div class="linkBox" id="clientLink"></div>
   <button class="linkBtn" onclick="copyLink('client')">📋 Copy Client Form Link</button>
   <button onclick="openForm('client')">Open Client Form →</button>
-  <b>3. Admin Links (Only for Admins):</b>
-  <div class="linkBox" id="superLink"></div>
-  <button class="linkBtn" onclick="copyLink('super')">📋 Copy SUPER Link</button>
-  <div class="linkBox" id="joyLink"></div>
-  <button class="linkBtn" onclick="copyLink('joy')">📋 Copy JOY Link</button>
-  <div class="linkBox" id="allAdminLink"></div>
-  <button class="linkBtn" onclick="copyLink('all')">📋 Copy ALL Admins Link</button>
-  <p class="small">SUPER Link opens SUPER login. JOY Link opens JOY login. ALL Admins Link opens Gate for any admin.</p>
 </div>
 
-<!-- NURSE APPLICATION FORM -->
+<!-- NURSE FORM -->
 <div class="card hidden" id="nurseFormCard">
   <h2>👩‍⚕️ Nurse Application Form</h2>
-  <p class="small">Fill this form. JOY CHELANGAT will approve you. You will get SMS / WhatsApp after approval.</p>
+  <p class="small">Fill this form. JOY will approve you.</p>
   <input id="nFullName" placeholder="Full Name *">
-  <input id="nPhone" placeholder="Phone / WhatsApp * e.g +256...">
+  <input id="nPhone" placeholder="Phone / WhatsApp *">
   <input id="nEmail" placeholder="Email">
   <select id="nCountry"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>USA</option><option>UK</option><option>Other</option></select>
   <input id="nCity" placeholder="City / Location *">
-  <select id="nGender"><option>Female</option><option>Male</option></select>
-  <select id="nService"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option><option>Baby Care</option><option>All Services</option></select>
-  <input id="nExperience" placeholder="Years of Experience - e.g 5 years">
-  <input id="nQualification" placeholder="Qualification - e.g Diploma in Nursing">
-  <input id="nID" placeholder="National ID / Passport Number">
+  <select id="nService"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option><option>Baby Care</option></select>
+  <input id="nExperience" placeholder="Years of Experience">
+  <input id="nQualification" placeholder="Qualification">
+  <input id="nID" placeholder="National ID / Passport">
   <textarea id="nAbout" placeholder="Tell us about yourself..."></textarea>
-  <input id="nPrice" type="number" placeholder="Your Price Per Day - e.g 50000">
-  <button onclick="submitNurseApplication()">Submit Application to JOY →</button>
+  <input id="nPrice" type="number" placeholder="Your Price Per Day">
+  <button onclick="submitNurseApplication()">Submit Application →</button>
   <button class="gray" onclick="closeForms()">Back</button>
   <p class="small" id="nurseFormMsg"></p>
 </div>
@@ -91,18 +81,18 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
 <!-- CLIENT FORM -->
 <div class="card hidden" id="clientFormCard">
   <h2>🧑‍🦱 Client Form - Request a Nurse</h2>
-  <p class="small">Fill this form. It goes to ALL ADMINS - SUPER, JOY and KIMTAI. They will call you back.</p>
+  <p class="small">Fill this form. All Admins will call you back.</p>
   <input id="cName" placeholder="Your Full Name *">
   <input id="cPhone" placeholder="Phone / WhatsApp *">
   <input id="cEmail" placeholder="Email">
   <select id="cCountry"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>Ghana</option><option>South Africa</option><option>USA</option><option>UK</option><option>Other</option></select>
-  <input id="cLocation" placeholder="Patient Location / Address *">
+  <input id="cLocation" placeholder="Patient Location *">
   <select id="cService"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option><option>Baby Care</option></select>
   <select id="cDuration"><option>1 Day</option><option>1 Week</option><option>1 Month</option><option>Long Term</option></select>
   <input id="cDate" type="date">
-  <textarea id="cDetails" placeholder="Patient condition, age, what help do you need?"></textarea>
+  <textarea id="cDetails" placeholder="Patient condition, what help do you need?"></textarea>
   <input id="cBudget" type="number" placeholder="Your Budget">
-  <button onclick="submitClientForm()">Send Request to ALL Admins →</button>
+  <button onclick="submitClientForm()">Send Request to Admins →</button>
   <button class="gray" onclick="closeForms()">Back</button>
   <p class="small" id="clientFormMsg"></p>
 </div>
@@ -111,13 +101,11 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
 <div class="card" id="authCard">
   <h2>Login / Register</h2>
   <select id="role"><option value="patient">Patient</option><option value="nurse">Nurse</option></select>
-  <input id="name" placeholder="Full Name">
-  <input id="phone" placeholder="Phone">
-  <input id="email" placeholder="Email">
-  <input id="password" type="password" placeholder="Password (min 6)">
+  <input id="name" placeholder="Full Name"><input id="phone" placeholder="Phone"><input id="email" placeholder="Email"><input id="password" type="password" placeholder="Password (min 6)">
   <div class="row"><button onclick="register()">Register</button><button class="gray" onclick="login()">Login</button></div>
   <hr>
   <button class="bigAdmin" onclick="showAdminGate()">🔐 ADMIN LOGIN - Tap Here</button>
+  <p class="small" style="text-align:center">Admins only - Need Gate Code</p>
 </div>
 
 <div class="card hidden" id="gateCard"><h2>Admin Gate</h2><input id="gatePass" type="password" placeholder="Enter Gate Code"><button onclick="checkGate()">Continue</button><button class="gray" onclick="hideAdminGate()">Back</button></div>
@@ -136,11 +124,18 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
   <div class="card hidden" id="patientTab"><h2>Book a Nurse</h2><select id="nurseSelect"><option>Loading...</option></select><select id="service"><option>Home Nursing</option><option>Elderly Care</option><option>Postnatal Care</option><option>Physiotherapy</option></select><input id="servicePrice" type="number" placeholder="Price"><input id="address" placeholder="Location"><input id="date" type="date"><button onclick="createBooking()">Create Booking & Pay From Wallet</button><div id="myBookings"></div></div>
   <div class="card hidden" id="nurseTab"><h2>Nurse Jobs</h2><div id="nurseJobs"></div></div>
   <div class="card hidden" id="adminTab">
-    <h2>Dashboard - All Countries</h2><p class="small" id="adminPermMsg"></p><div id="adminStats"></div>
+    <h2>Dashboard</h2><p class="small" id="adminPermMsg"></p><div id="adminStats"></div>
+    <!-- ADMIN LINKS ARE NOW INSIDE HERE - ONLY ADMINS CAN SEE AFTER LOGIN -->
+    <div style="background:#f0fdfa;padding:10px;border-radius:10px;border:1px dashed #0f766e">
+      <b>🔗 Your Private Admin Links - Do NOT Share Publicly</b>
+      <p class="small">Only you 3 can see this box after login. Copy from here only.</p>
+      <div class="linkBox" id="superLink"></div><button class="linkBtn" onclick="copyLink('super')">Copy SUPER Link</button>
+      <div class="linkBox" id="joyLink"></div><button class="linkBtn" onclick="copyLink('joy')">Copy JOY Link</button>
+    </div>
     <div id="superSection"><h3>All Bookings + Payments (SUPER)</h3><div id="allBookings"></div><h3>Withdrawals</h3><div id="withdrawList"></div></div>
-    <div id="joySection"><h3>✅ JOY: Nurse Applications - Approve Nurses</h3><div id="nurseApplicationsList"></div><h3>Approved Nurses</h3><div id="nurseApprovalList"></div></div>
+    <div id="joySection"><h3>✅ JOY: Nurse Applications</h3><div id="nurseApplicationsList"></div><h3>Approved Nurses</h3><div id="nurseApprovalList"></div></div>
     <div id="kimtaiSection"><h3>📅 KIMTAI: Client Requests + Bookings</h3><div id="clientRequestsList"></div><select id="kimtaiNurse"><option>Select Nurse</option></select><input id="kimtaiPatient" placeholder="Patient Name"><input id="kimtaiPhone" placeholder="Patient Phone"><input id="kimtaiPrice" type="number" placeholder="Price"><button onclick="kimtaiCreateBooking()">Create Booking for Patient</button><div id="kimtaiBookings"></div></div>
-    <h3>📩 All Client Requests (All Admins Can See)</h3><div id="allClientRequests"></div>
+    <h3>📩 All Client Requests (All Admins)</h3><div id="allClientRequests"></div>
     <h3>All Users</h3><div id="allUsers"></div><h3>All Transactions</h3><div id="allTxns"></div>
   </div>
   <div class="card" id="txnTab"><h2>My Transactions</h2><div id="myTxns"></div></div>
@@ -157,71 +152,31 @@ const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", auth
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database(); const auth = firebase.auth();
 let currentUser=null, currentProfile=null, currentAdmin=null, selectedAdminName=null;
-
-// === LINKS ===
 function getBaseUrl(){ return window.location.href.split('?')[0].split('#')[0]; }
 function buildLinks(){
   const base=getBaseUrl();
   document.getElementById('nurseLink').innerText=base+"?form=nurse";
   document.getElementById('clientLink').innerText=base+"?form=client";
-  document.getElementById('superLink').innerText=base+"?admin=SUPER";
-  document.getElementById('joyLink').innerText=base+"?admin=JOY";
-  document.getElementById('allAdminLink').innerText=base+"?admin=ALL";
+  const s=document.getElementById('superLink'); if(s) s.innerText=base+"?admin=SUPER";
+  const j=document.getElementById('joyLink'); if(j) j.innerText=base+"?admin=JOY";
 }
 function copyLink(type){
-  let txt="";
-  if(type==='nurse') txt=document.getElementById('nurseLink').innerText;
-  if(type==='client') txt=document.getElementById('clientLink').innerText;
-  if(type==='super') txt=document.getElementById('superLink').innerText;
-  if(type==='joy') txt=document.getElementById('joyLink').innerText;
-  if(type==='all') txt=document.getElementById('allAdminLink').innerText;
-  navigator.clipboard.writeText(txt).then(()=>alert("Link Copied! Now paste in WhatsApp:\n"+txt));
+  let txt=""; if(type==='nurse') txt=document.getElementById('nurseLink').innerText; if(type==='client') txt=document.getElementById('clientLink').innerText; if(type==='super') txt=document.getElementById('superLink').innerText; if(type==='joy') txt=document.getElementById('joyLink').innerText;
+  navigator.clipboard.writeText(txt).then(()=>alert("Link Copied! Paste in WhatsApp:\n"+txt));
 }
-function openForm(type){
-  if(type==='nurse'){ document.getElementById('nurseFormCard').classList.remove('hidden'); document.getElementById('clientFormCard').classList.add('hidden'); window.scrollTo(0,0); }
-  if(type==='client'){ document.getElementById('clientFormCard').classList.remove('hidden'); document.getElementById('nurseFormCard').classList.add('hidden'); window.scrollTo(0,0); }
-}
+function openForm(type){ if(type==='nurse'){ document.getElementById('nurseFormCard').classList.remove('hidden'); document.getElementById('clientFormCard').classList.add('hidden'); window.scrollTo(0,0); } if(type==='client'){ document.getElementById('clientFormCard').classList.remove('hidden'); document.getElementById('nurseFormCard').classList.add('hidden'); window.scrollTo(0,0); } }
 function closeForms(){ document.getElementById('nurseFormCard').classList.add('hidden'); document.getElementById('clientFormCard').classList.add('hidden'); }
-// Auto-open from link: ?form=nurse or ?form=client or ?admin=SUPER / JOY / ALL
-window.onload=function(){
-  buildLinks();
-  const params=new URLSearchParams(window.location.search);
-  const form=params.get('form'); const admin=params.get('admin');
-  if(form==='nurse') openForm('nurse');
-  if(form==='client') openForm('client');
-  if(admin==='SUPER'){ showAdminGate(); setTimeout(()=>selectAdmin('SUPER'),300); }
-  if(admin==='JOY'){ showAdminGate(); setTimeout(()=>selectAdmin('JOY CHELANGAT'),300); }
-  if(admin==='ALL'){ showAdminGate(); }
-};
-
-// === NURSE APPLICATION ===
-async function submitNurseApplication(){
-  const name=document.getElementById('nFullName').value.trim(); const phone=document.getElementById('nPhone').value.trim();
-  if(!name||!phone) return alert("Please fill Name and Phone");
-  const data={ name, phone, email:document.getElementById('nEmail').value, country:document.getElementById('nCountry').value, city:document.getElementById('nCity').value, gender:document.getElementById('nGender').value, service:document.getElementById('nService').value, experience:document.getElementById('nExperience').value, qualification:document.getElementById('nQualification').value, idNumber:document.getElementById('nID').value, about:document.getElementById('nAbout').value, price:document.getElementById('nPrice').value, status:'waiting_joy', createdAt:Date.now() };
-  await db.ref('nurse_applications').push(data);
-  document.getElementById('nurseFormMsg').innerText="✅ Application Sent! JOY will review and call you on "+phone;
-  alert("Application Sent to JOY! She will approve you.");
-}
-// === CLIENT FORM ===
-async function submitClientForm(){
-  const name=document.getElementById('cName').value.trim(); const phone=document.getElementById('cPhone').value.trim();
-  if(!name||!phone) return alert("Please fill Name and Phone");
-  const data={ name, phone, email:document.getElementById('cEmail').value, country:document.getElementById('cCountry').value, location:document.getElementById('cLocation').value, service:document.getElementById('cService').value, duration:document.getElementById('cDuration').value, date:document.getElementById('cDate').value, details:document.getElementById('cDetails').value, budget:document.getElementById('cBudget').value, status:'new', sentTo:'ALL_ADMINS', createdAt:Date.now() };
-  await db.ref('client_requests').push(data);
-  document.getElementById('clientFormMsg').innerText="✅ Request Sent to ALL ADMINS! SUPER, JOY and KIMTAI will call you back on "+phone;
-  alert("Request Sent to ALL Admins!");
-}
-
-// === ADMIN + REST ===
+window.onload=function(){ buildLinks(); const params=new URLSearchParams(window.location.search); const form=params.get('form'); const admin=params.get('admin'); if(form==='nurse') openForm('nurse'); if(form==='client') openForm('client'); if(admin==='SUPER'){ showAdminGate(); setTimeout(()=>selectAdmin('SUPER'),300); } if(admin==='JOY'){ showAdminGate(); setTimeout(()=>selectAdmin('JOY CHELANGAT'),300); } if(admin==='ALL'){ showAdminGate(); } };
+async function submitNurseApplication(){ const name=document.getElementById('nFullName').value.trim(); const phone=document.getElementById('nPhone').value.trim(); if(!name||!phone) return alert("Fill Name and Phone"); const data={ name, phone, email:document.getElementById('nEmail').value, country:document.getElementById('nCountry').value, city:document.getElementById('nCity').value, service:document.getElementById('nService').value, experience:document.getElementById('nExperience').value, qualification:document.getElementById('nQualification').value, idNumber:document.getElementById('nID').value, about:document.getElementById('nAbout').value, price:document.getElementById('nPrice').value, status:'waiting_joy', createdAt:Date.now() }; await db.ref('nurse_applications').push(data); document.getElementById('nurseFormMsg').innerText="✅ Application Sent! JOY will review."; alert("Application Sent to JOY!"); }
+async function submitClientForm(){ const name=document.getElementById('cName').value.trim(); const phone=document.getElementById('cPhone').value.trim(); if(!name||!phone) return alert("Fill Name and Phone"); const data={ name, phone, email:document.getElementById('cEmail').value, country:document.getElementById('cCountry').value, location:document.getElementById('cLocation').value, service:document.getElementById('cService').value, duration:document.getElementById('cDuration').value, date:document.getElementById('cDate').value, details:document.getElementById('cDetails').value, budget:document.getElementById('cBudget').value, status:'new', sentTo:'ALL_ADMINS', createdAt:Date.now() }; await db.ref('client_requests').push(data); document.getElementById('clientFormMsg').innerText="✅ Request Sent to ALL ADMINS!"; alert("Request Sent to ALL Admins!"); }
 function showAdminGate(){ document.getElementById('authCard').classList.add('hidden'); document.getElementById('gateCard').classList.remove('hidden'); window.scrollTo(0,0); }
 function hideAdminGate(){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.remove('hidden'); }
 function checkGate(){ if(document.getElementById('gatePass').value===GATE_PASSWORD){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); } else alert("Wrong Code"); }
 function selectAdmin(name){ selectedAdminName=name; document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.remove('hidden'); document.getElementById('adminPassTitle').innerText="Hi "+name; document.getElementById('adminPassDesc').innerText=ADMINS[name].job; }
 function backToSelect(){ document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); }
-function checkAdminPass(){ const pass=document.getElementById('adminPass').value; if(pass===ADMINS[selectedAdminName].password){ currentAdmin={name:selectedAdminName, ...ADMINS[selectedAdminName]}; document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentAdmin.name; document.getElementById('uRole').innerText="ADMIN"; document.getElementById('uPhone').innerText=currentAdmin.job; document.getElementById('adminInfo').innerText="Admin: "+currentAdmin.name+" | Share: "+(currentAdmin.share*100)+"%"; document.getElementById('walletBalance').innerText="See Earnings Below"; showTab('adminTab'); loadAdminDashboard(); } else alert("Wrong Code"); }
+function checkAdminPass(){ const pass=document.getElementById('adminPass').value; if(pass===ADMINS[selectedAdminName].password){ currentAdmin={name:selectedAdminName, ...ADMINS[selectedAdminName]}; document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentAdmin.name; document.getElementById('uRole').innerText="ADMIN"; document.getElementById('uPhone').innerText=currentAdmin.job; document.getElementById('adminInfo').innerText="Admin: "+currentAdmin.name; document.getElementById('walletBalance').innerText="See Earnings Below"; showTab('adminTab'); loadAdminDashboard(); } else alert("Wrong Code"); }
 function showTab(id){ ['walletTab','patientTab','nurseTab','adminTab','txnTab'].forEach(t=>{ document.getElementById(t).classList.add('hidden'); document.getElementById('btn-'+t).classList.remove('active'); }); document.getElementById(id).classList.remove('hidden'); document.getElementById('btn-'+id).classList.add('active'); if(id==='adminTab') loadAdminDashboard(); if(id==='nurseTab') loadNurseJobs(); if(id==='patientTab'){ loadNurses(); loadMyBookings(); } }
-async function register(){ const name=document.getElementById('name').value.trim(); const phone=document.getElementById('phone').value.trim(); const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; const role=document.getElementById('role').value; if(!name||!phone||!email||!pass) return alert("Fill all"); try{ const res=await auth.createUserWithEmailAndPassword(email,pass); await db.ref('users/'+res.user.uid).set({name,phone,email,role,country:currentCountry.code,currency:currentCountry.currency,wallet:0, approved: role==='nurse'? false : true, createdAt:Date.now()}); alert("Registered as "+role+" in "+currentCountry.code); }catch(e){ alert(e.message); } }
+async function register(){ const name=document.getElementById('name').value.trim(); const phone=document.getElementById('phone').value.trim(); const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; const role=document.getElementById('role').value; if(!name||!phone||!email||!pass) return alert("Fill all"); try{ const res=await auth.createUserWithEmailAndPassword(email,pass); await db.ref('users/'+res.user.uid).set({name,phone,email,role,country:currentCountry.code,currency:currentCountry.currency,wallet:0, approved: role==='nurse'? false : true, createdAt:Date.now()}); alert("Registered as "+role); }catch(e){ alert(e.message); } }
 async function login(){ const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; try{ await auth.signInWithEmailAndPassword(email,pass); }catch(e){ alert(e.message); } }
 function logout(){ auth.signOut(); currentAdmin=null; location.reload(); }
 auth.onAuthStateChanged(async (user)=>{ if(!user) return; currentUser=user; const snap=await db.ref('users/'+user.uid).once('value'); currentProfile=snap.val(); if(!currentProfile) return; document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentProfile.name; document.getElementById('uRole').innerText=currentProfile.role; document.getElementById('uPhone').innerText=currentProfile.phone; db.ref('users/'+user.uid+'/wallet').on('value',s=>{ document.getElementById('walletBalance').innerText=(currentProfile.currency||'UGX')+" "+(s.val()||0).toLocaleString(); }); loadNurses(); loadMyBookings(); loadNurseJobs(); loadMyTxns(); });
@@ -236,23 +191,20 @@ async function completeBooking(bookingId){ const snap=await db.ref('bookings/'+b
 async function loadMyTxns(){ if(!currentUser) return; const div=document.getElementById('myTxns'); const snap=await db.ref('transactions').once('value'); div.innerHTML=''; if(!snap.val()){ div.innerHTML='<p>No transactions</p>'; return; } Object.values(snap.val()).reverse().forEach(t=>{ if(t.userId===currentUser.uid||t.patientId===currentUser.uid||t.nurseId===currentUser.uid) div.innerHTML+=`<div class="item">${t.type} - ${t.amount} - ${t.status}</div>`; }); }
 async function kimtaiCreateBooking(){ if(!currentAdmin || currentAdmin.name!=='KIMTAI JABETH') return alert("Only KIMTAI can do this"); const nurseId=document.getElementById('kimtaiNurse').value; const pname=document.getElementById('kimtaiPatient').value; const pphone=document.getElementById('kimtaiPhone').value; const price=parseInt(document.getElementById('kimtaiPrice').value); if(!nurseId||!pname||!price) return alert("Fill all"); const ref=db.ref('bookings').push(); await ref.set({bookingId:ref.key, patientName:pname, patientPhone:pphone, nurseId, service:"Home Nursing", price, status:'created_by_kimtai', createdAt:Date.now(), createdBy:'KIMTAI JABETH'}); alert("Booking created for "+pname); loadAdminDashboard(); }
 async function loadAdminDashboard(){
-  if(!currentAdmin) return; const name=currentAdmin.name; document.getElementById('adminPermMsg').innerText=`Logged in as ${name} | ${currentAdmin.job}`;
+  if(!currentAdmin) return; const name=currentAdmin.name; document.getElementById('adminPermMsg').innerText=`Logged in as ${name} | ${currentAdmin.job}`; buildLinks();
   document.getElementById('superSection').style.display = (name==='SUPER') ? 'block' : 'none';
   document.getElementById('joySection').style.display = (name==='JOY CHELANGAT' || name==='SUPER') ? 'block' : 'none';
   document.getElementById('kimtaiSection').style.display = (name==='KIMTAI JABETH' || name==='SUPER') ? 'block' : 'none';
-  // Nurse Applications - For JOY
-  const naSnap=await db.ref('nurse_applications').once('value'); const naDiv=document.getElementById('nurseApplicationsList'); naDiv.innerHTML=''; if(!naSnap.val()) naDiv.innerHTML='<p>No nurse applications yet</p>'; else Object.entries(naSnap.val()).reverse().forEach(([id,a])=>{ naDiv.innerHTML+=`<div class="item"><b>${a.name}</b> - ${a.phone} - ${a.country} - ${a.city}<br>${a.service} - ${a.experience} - ${a.qualification}<br>Status: ${a.status} <button onclick="approveApplication('${id}')">JOY: Approve</button> <button class="red" onclick="rejectApplication('${id}')">Reject</button></div>`; });
-  // Client Requests - For ALL ADMINS
-  const crSnap=await db.ref('client_requests').once('value'); const crDiv=document.getElementById('clientRequestsList'); const allCrDiv=document.getElementById('allClientRequests'); crDiv.innerHTML=''; allCrDiv.innerHTML=''; if(!crSnap.val()){ crDiv.innerHTML='<p>No client requests yet</p>'; allCrDiv.innerHTML='<p>No client requests yet</p>'; } else Object.entries(crSnap.val()).reverse().forEach(([id,c])=>{ const html=`<div class="item"><b>${c.name}</b> - ${c.phone} - ${c.country} - ${c.location}<br>${c.service} - ${c.duration} - Budget ${c.budget}<br>${c.details||''}<br>Status: ${c.status} <button onclick="callClient('${c.phone}')">Call Client</button></div>`; crDiv.innerHTML+=html; allCrDiv.innerHTML+=html; });
+  const naSnap=await db.ref('nurse_applications').once('value'); const naDiv=document.getElementById('nurseApplicationsList'); naDiv.innerHTML=''; if(!naSnap.val()) naDiv.innerHTML='<p>No nurse applications yet</p>'; else Object.entries(naSnap.val()).reverse().forEach(([id,a])=>{ naDiv.innerHTML+=`<div class="item"><b>${a.name}</b> - ${a.phone} - ${a.country}<br>${a.service} - ${a.experience}<br>Status: ${a.status} <button onclick="approveApplication('${id}')">Approve</button> <button class="red" onclick="rejectApplication('${id}')">Reject</button></div>`; });
+  const crSnap=await db.ref('client_requests').once('value'); const crDiv=document.getElementById('clientRequestsList'); const allCrDiv=document.getElementById('allClientRequests'); crDiv.innerHTML=''; allCrDiv.innerHTML=''; if(!crSnap.val()){ crDiv.innerHTML='<p>No client requests yet</p>'; allCrDiv.innerHTML='<p>No client requests yet</p>'; } else Object.entries(crSnap.val()).reverse().forEach(([id,c])=>{ const html=`<div class="item"><b>${c.name}</b> - ${c.phone} - ${c.country} - ${c.location}<br>${c.service} - ${c.duration}<br>Status: ${c.status}</div>`; crDiv.innerHTML+=html; allCrDiv.innerHTML+=html; });
   const txSnap=await db.ref('transactions').once('value'); let total=0, superTotal=0, joyTotal=0, kimtaiTotal=0; if(txSnap.val()) Object.values(txSnap.val()).forEach(t=>{ total+=t.amount||0; superTotal+=t.superShare||0; joyTotal+=t.joyShare||0; kimtaiTotal+=t.kimtaiShare||0; }); document.getElementById('adminStats').innerHTML=`<p><b>Total:</b> ${total.toLocaleString()} | <b>SUPER:</b> ${superTotal.toLocaleString()} | <b>JOY:</b> ${joyTotal.toLocaleString()} | <b>KIMTAI:</b> ${kimtaiTotal.toLocaleString()}</p>`;
   const bSnap=await db.ref('bookings').once('value'); const bDiv=document.getElementById('allBookings'); bDiv.innerHTML=''; if(bSnap.val()) Object.values(bSnap.val()).reverse().forEach(b=>{ bDiv.innerHTML+=`<div class="item">${b.service} - ${b.patientName} - ${b.price} ${b.currency||''} - ${b.status} ${name==='SUPER'?`<button class="red" onclick="deleteBooking('${b.bookingId}')">Delete</button>`:''}</div>`; }); document.getElementById('kimtaiBookings').innerHTML=bDiv.innerHTML;
   const wSnap=await db.ref('withdrawals').once('value'); const wDiv=document.getElementById('withdrawList'); wDiv.innerHTML=''; if(!wSnap.val()) wDiv.innerHTML='<p>No requests</p>'; else Object.entries(wSnap.val()).reverse().forEach(([id,w])=>{ wDiv.innerHTML+=`<div class="item">${w.name} - ${w.amount} to ${w.phone} - ${w.status} ${name==='SUPER' && w.status==='pending'?`<button onclick="approveWithdraw('${id}')">Approve</button>`:''}</div>`; });
   const uSnap=await db.ref('users').once('value'); const nDiv=document.getElementById('nurseApprovalList'); nDiv.innerHTML=''; const uDiv=document.getElementById('allUsers'); uDiv.innerHTML=''; if(uSnap.val()) Object.entries(uSnap.val()).forEach(([id,u])=>{ uDiv.innerHTML+=`<div class="item">${u.name} - ${u.role} - ${u.phone} - Wallet ${u.wallet||0}</div>`; if(u.role==='nurse'){ nDiv.innerHTML+=`<div class="item">${u.name} - ${u.phone} - ${u.approved===false?'Waiting':'Approved'} ${(name==='JOY CHELANGAT' || name==='SUPER')?`<button onclick="approveNurse('${id}')">Approve</button>`:''}</div>`; } });
   const tDiv=document.getElementById('allTxns'); tDiv.innerHTML=''; if(txSnap.val()) Object.values(txSnap.val()).reverse().forEach(t=>{ tDiv.innerHTML+=`<div class="item">${t.type} - ${t.amount} - SUPER ${t.superShare||0} JOY ${t.joyShare||0} KIMTAI ${t.kimtaiShare||0}</div>`; }); loadNurses();
 }
-async function approveApplication(id){ await db.ref('nurse_applications/'+id).update({status:'approved_by_joy'}); alert("JOY approved nurse application! Now tell nurse to Register in app."); loadAdminDashboard(); }
+async function approveApplication(id){ await db.ref('nurse_applications/'+id).update({status:'approved_by_joy'}); alert("Approved!"); loadAdminDashboard(); }
 async function rejectApplication(id){ await db.ref('nurse_applications/'+id).update({status:'rejected'}); alert("Rejected"); loadAdminDashboard(); }
-function callClient(phone){ window.location.href="tel:"+phone; }
 async function approveNurse(uid){ await db.ref('users/'+uid).update({approved:true}); alert("Nurse approved"); loadAdminDashboard(); }
 async function approveWithdraw(id){ await db.ref('withdrawals/'+id).update({status:'paid', approvedBy:'SUPER', paidAt:Date.now()}); alert("Approved"); loadAdminDashboard(); }
 async function deleteBooking(id){ if(!confirm("Delete this booking?")) return; await db.ref('bookings/'+id).remove(); loadAdminDashboard(); }
