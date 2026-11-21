@@ -10,7 +10,7 @@
 <style>
 *{box-sizing:border-box;font-family:Arial} body{margin:0;background:#f4f6f8;padding:12px}
 .card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-h1{color:#0f766e;margin:4px 0} input,select,button{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd;font-size:15px}
+h1{color:#0f766e;margin:4px 0;cursor:pointer;user-select:none} input,select,button{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd;font-size:15px}
 button{background:#0f766e;color:#fff;border:0;font-weight:bold;cursor:pointer}
 button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button.blue{background:#2563eb} button.gold{background:#f59e0b}
 .wallet{font-size:32px;font-weight:bold;color:#0f766e} .small{font-size:13px;color:#666}
@@ -20,18 +20,17 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
 .nav{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px} .nav button{white-space:nowrap;padding:10px 14px}
 .nav button.active{background:#111}
 .adminBtn{padding:16px;font-size:17px;margin:8px 0}
-/* FAINT ADMIN BUTTON - BOTTOM - ALMOST INVISIBLE */
-.footer{margin-top:60px;text-align:center;padding:20px}
-.faintBtn{background:transparent !important;color:#e5e7eb !important;border:1px solid #f1f1f1 !important;font-size:10px !important;padding:4px 8px !important;width:auto !important;opacity:0.25;letter-spacing:1px}
-.faintBtn:active{opacity:0.9;color:#999 !important}
-.faintText{color:#f1f1f1;font-size:9px;opacity:0.3}
+/* BOTTOM ADMIN - NOW VISIBLE BUT STILL DISCREET */
+.footer{margin-top:60px;text-align:center;padding:20px 10px 40px;border-top:1px solid #eee}
+.faintBtn{background:#e5e7eb !important;color:#888 !important;border:1px solid #ddd !important;font-size:12px !important;padding:8px 16px !important;width:auto !important;opacity:1;border-radius:20px}
+.faintText{color:#aaa;font-size:11px}
+.hint{color:#999;font-size:11px;margin-top:8px}
 </style>
 </head>
 <body>
-<h1>🏥 Home Care Hero</h1>
-<p class="small">Home Nursing Services - Kampala</p>
+<h1 id="appTitle" onclick="tapTitle()">🏥 Home Care Hero</h1>
+<p class="small">Home Nursing Services - Kampala • Tap title 5 times for Admin</p>
 
-<!-- LOGIN -->
 <div class="card" id="authCard">
   <h2>Login / Register</h2>
   <select id="role"><option value="patient">Patient</option><option value="nurse">Nurse</option></select>
@@ -43,7 +42,6 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
   <p class="small" id="authMsg"></p>
 </div>
 
-<!-- ADMIN GATE - NO PASSWORDS SHOWN -->
 <div class="card hidden" id="gateCard">
   <h2>Admin</h2>
   <input id="gatePass" type="password" placeholder="Enter Gate Code">
@@ -67,7 +65,6 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
   <button class="gray" onclick="backToSelect()">Back</button>
 </div>
 
-<!-- MAIN APP -->
 <div id="mainApp" class="hidden">
   <div class="card">
     <p>Welcome <b id="uName"></b> • <span class="badge" id="uRole"></span> • <span id="uPhone"></span></p>
@@ -83,7 +80,6 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
     </div>
     <button class="red" onclick="logout()">Logout</button>
   </div>
-
   <div class="card" id="walletTab">
     <h2>Top Up - Flutterwave</h2>
     <input id="topupAmount" type="number" placeholder="Amount e.g 100000">
@@ -95,63 +91,33 @@ button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button
     <select id="withdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>UBA Bank</option></select>
     <button class="gray" onclick="requestWithdraw()">Request Withdraw</button>
   </div>
-
   <div class="card hidden" id="patientTab">
     <h2>Book a Nurse</h2>
     <select id="nurseSelect"><option>Loading...</option></select>
-    <select id="service">
-      <option value="Home Nursing - 50000">Home Nursing - UGX 50,000</option>
-      <option value="Elderly Care - 100000">Elderly Care - UGX 100,000</option>
-      <option value="Postnatal Care - 150000">Postnatal Care - UGX 150,000</option>
-      <option value="Physiotherapy - 200000">Physiotherapy - UGX 200,000</option>
-    </select>
-    <input id="address" placeholder="Location">
-    <input id="date" type="date">
-    <button onclick="createBooking()">Create Booking & Pay From Wallet</button>
-    <div id="myBookings"></div>
+    <select id="service"><option value="Home Nursing - 50000">Home Nursing - UGX 50,000</option><option value="Elderly Care - 100000">Elderly Care - UGX 100,000</option><option value="Postnatal Care - 150000">Postnatal Care - UGX 150,000</option><option value="Physiotherapy - 200000">Physiotherapy - UGX 200,000</option></select>
+    <input id="address" placeholder="Location"><input id="date" type="date">
+    <button onclick="createBooking()">Create Booking & Pay From Wallet</button><div id="myBookings"></div>
   </div>
-
   <div class="card hidden" id="nurseTab"><h2>Nurse Jobs</h2><div id="nurseJobs"></div></div>
-
   <div class="card hidden" id="adminTab">
-    <h2>Dashboard</h2>
-    <p class="small" id="adminPermMsg"></p>
-    <div id="adminStats"></div>
-    <div id="superSection">
-      <h3>All Bookings + Payments</h3>
-      <div id="allBookings"></div>
-      <h3>Withdrawals</h3>
-      <div id="withdrawList"></div>
-    </div>
-    <div id="joySection">
-      <h3>Approve Nurses</h3>
-      <div id="nurseApprovalList"></div>
-    </div>
-    <div id="kimtaiSection">
-      <h3>In Charge of Bookings</h3>
-      <select id="kimtaiNurse"><option>Select Nurse</option></select>
-      <input id="kimtaiPatient" placeholder="Patient Name">
-      <input id="kimtaiPhone" placeholder="Patient Phone">
-      <select id="kimtaiService"><option value="Home Nursing - 50000">Home Nursing - 50,000</option><option value="Elderly Care - 100000">Elderly Care - 100,000</option></select>
-      <button onclick="kimtaiCreateBooking()">Create Booking for Patient</button>
-      <div id="kimtaiBookings"></div>
-    </div>
-    <h3>All Users</h3><div id="allUsers"></div>
-    <h3>All Transactions</h3><div id="allTxns"></div>
+    <h2>Dashboard</h2><p class="small" id="adminPermMsg"></p><div id="adminStats"></div>
+    <div id="superSection"><h3>All Bookings + Payments</h3><div id="allBookings"></div><h3>Withdrawals</h3><div id="withdrawList"></div></div>
+    <div id="joySection"><h3>Approve Nurses</h3><div id="nurseApprovalList"></div></div>
+    <div id="kimtaiSection"><h3>In Charge of Bookings</h3><select id="kimtaiNurse"><option>Select Nurse</option></select><input id="kimtaiPatient" placeholder="Patient Name"><input id="kimtaiPhone" placeholder="Patient Phone"><select id="kimtaiService"><option value="Home Nursing - 50000">Home Nursing - 50,000</option><option value="Elderly Care - 100000">Elderly Care - 100,000</option></select><button onclick="kimtaiCreateBooking()">Create Booking for Patient</button><div id="kimtaiBookings"></div></div>
+    <h3>All Users</h3><div id="allUsers"></div><h3>All Transactions</h3><div id="allTxns"></div>
   </div>
-
   <div class="card" id="txnTab"><h2>My Transactions</h2><div id="myTxns"></div></div>
 </div>
 
-<!-- FAINT ADMIN BUTTON AT VERY BOTTOM - ALMOST INVISIBLE -->
+<!-- BOTTOM - NOW YOU CAN SEE IT -->
 <div class="footer">
-  <p class="faintText">Home Care Hero © 2026 • Kampala</p>
-  <button class="faintBtn" onclick="showAdminGate()">•</button>
+  <p class="faintText">Home Care Hero © 2026 • Kampala • v1.0</p>
+  <button class="faintBtn" onclick="showAdminGate()">• Admin •</button>
+  <p class="hint">Admins: Tap • Admin • below OR tap title 5 times</p>
 </div>
 
 <script>
 const FLW_PUBLIC_KEY = "FLW_PUBLIC_KEY_LIVE_REPLACE_ME";
-// Admin codes are in code only, never shown on screen
 const GATE_PASSWORD = "HERO 2026";
 const ADMINS = {
   "SUPER": { password: "2215", share: 0.80, job: "Manages All Bookings + Approves Payments" },
@@ -159,36 +125,18 @@ const ADMINS = {
   "KIMTAI JABETH": { password: "JABETH 2026", share: 0.10, job: "In Charge of Bookings" }
 };
 const SPLIT = { nurse: 0.80, adminTotal: 0.15, platform: 0.05 };
-const firebaseConfig = {
-  apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
-  authDomain: "home-care-hero.firebaseapp.com",
-  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
-  projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "38632827016",
-  appId: "1:38632827016:web:0ebca8c98541b2fb3e573d",
-  measurementId: "G-ZV09KN6R90"
-};
+const firebaseConfig = { apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8", authDomain: "home-care-hero.firebaseapp.com", databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com", projectId: "home-care-hero", storageBucket: "home-care-hero.firebasestorage.app", messagingSenderId: "38632827016", appId: "1:38632827016:web:0ebca8c98541b2fb3e573d", measurementId: "G-ZV09KN6R90" };
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database(); const auth = firebase.auth();
-let currentUser=null, currentProfile=null, currentAdmin=null, selectedAdminName=null;
+let currentUser=null, currentProfile=null, currentAdmin=null, selectedAdminName=null, titleTaps=0, lastTap=0;
+// SECRET: TAP TITLE 5 TIMES
+function tapTitle(){ const now=Date.now(); if(now-lastTap>1000) titleTaps=0; lastTap=now; titleTaps++; if(titleTaps>=5){ titleTaps=0; showAdminGate(); } }
 function showAdminGate(){ document.getElementById('authCard').classList.add('hidden'); document.getElementById('gateCard').classList.remove('hidden'); window.scrollTo(0,0); }
 function hideAdminGate(){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.remove('hidden'); }
 function checkGate(){ if(document.getElementById('gatePass').value===GATE_PASSWORD){ document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); } else alert("Wrong Code"); }
 function selectAdmin(name){ selectedAdminName=name; document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.remove('hidden'); document.getElementById('adminPassTitle').innerText="Hi "+name; document.getElementById('adminPassDesc').innerText=ADMINS[name].job; }
 function backToSelect(){ document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.remove('hidden'); }
-function checkAdminPass(){
-  const pass=document.getElementById('adminPass').value;
-  if(pass===ADMINS[selectedAdminName].password){
-    currentAdmin={name:selectedAdminName, ...ADMINS[selectedAdminName]};
-    document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.add('hidden');
-    document.getElementById('mainApp').classList.remove('hidden');
-    document.getElementById('uName').innerText=currentAdmin.name; document.getElementById('uRole').innerText="ADMIN"; document.getElementById('uPhone').innerText=currentAdmin.job;
-    document.getElementById('adminInfo').innerText="Admin: "+currentAdmin.name+" | Share: "+(currentAdmin.share*100)+"%";
-    document.getElementById('walletBalance').innerText="See Earnings Below";
-    showTab('adminTab'); loadAdminDashboard();
-  } else alert("Wrong Code");
-}
+function checkAdminPass(){ const pass=document.getElementById('adminPass').value; if(pass===ADMINS[selectedAdminName].password){ currentAdmin={name:selectedAdminName, ...ADMINS[selectedAdminName]}; document.getElementById('gateCard').classList.add('hidden'); document.getElementById('adminSelectCard').classList.add('hidden'); document.getElementById('adminPassCard').classList.add('hidden'); document.getElementById('authCard').classList.add('hidden'); document.getElementById('mainApp').classList.remove('hidden'); document.getElementById('uName').innerText=currentAdmin.name; document.getElementById('uRole').innerText="ADMIN"; document.getElementById('uPhone').innerText=currentAdmin.job; document.getElementById('adminInfo').innerText="Admin: "+currentAdmin.name+" | Share: "+(currentAdmin.share*100)+"%"; document.getElementById('walletBalance').innerText="See Earnings Below"; showTab('adminTab'); loadAdminDashboard(); } else alert("Wrong Code"); }
 function showTab(id){ ['walletTab','patientTab','nurseTab','adminTab','txnTab'].forEach(t=>{ document.getElementById(t).classList.add('hidden'); document.getElementById('btn-'+t).classList.remove('active'); }); document.getElementById(id).classList.remove('hidden'); document.getElementById('btn-'+id).classList.add('active'); if(id==='adminTab') loadAdminDashboard(); if(id==='nurseTab') loadNurseJobs(); if(id==='patientTab'){ loadNurses(); loadMyBookings(); } }
 async function register(){ const name=document.getElementById('name').value.trim(); const phone=document.getElementById('phone').value.trim(); const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; const role=document.getElementById('role').value; if(!name||!phone||!email||!pass) return alert("Fill all"); try{ const res=await auth.createUserWithEmailAndPassword(email,pass); await db.ref('users/'+res.user.uid).set({name,phone,email,role,wallet:0, approved: role==='nurse'? false : true, createdAt:Date.now()}); alert("Registered as "+role); }catch(e){ alert(e.message); } }
 async function login(){ const email=document.getElementById('email').value.trim(); const pass=document.getElementById('password').value; try{ await auth.signInWithEmailAndPassword(email,pass); }catch(e){ alert(e.message); } }
