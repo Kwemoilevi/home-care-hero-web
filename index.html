@@ -161,9 +161,8 @@ footer{text-align:center;padding:20px;color:#777;font-size:12px}
 <footer>Hom Care Hero Worldwide ••• <span class="gateDot" onclick="openAdminGate()">•••</span> • NO CASH OUTSIDE APP</footer>
 
 <script>
-// *** PUT YOUR REAL PESAPAL CHECKOUT LINK HERE - Get it from pesapal.com > Payment Links ***
-// Example: "https://pay.pesapal.com/your-link" - If empty, app uses Manual Confirm like before
-const PESAPAL_LINK = "";
+// YOUR REAL PESAPAL STORE LINK - FROM YOUR SCREENSHOT - DO NOT CHANGE
+const PESAPAL_LINK = "https://store.pesapal.com/homecareherc";
 const firebaseConfig={apiKey:"AIzaSyD6fZ2o0n3pOaDvW3Z2bX7qK9mN8vL4pQ",authDomain:"homcarehero-9bdfc.firebaseapp.com",projectId:"homcarehero-9bdfc",storageBucket:"homcarehero-9bdfc.firebasestorage.app",messagingSenderId:"123456789",appId:"1:123456789:web:abcdef"};
 try{firebase.initializeApp(firebaseConfig); var db=firebase.firestore();}catch(e){var db=null;}
 let bookings=JSON.parse(localStorage.getItem('hc_bookings')||'[]');
@@ -209,11 +208,12 @@ function realDeposit(){
 let a=Number($('depositAmt').value);let ph=$('depositPhone')?$('depositPhone').value.trim():(currentUser?currentUser.phone:'');
 if(!a){alert('Enter amount');return;}
 if(!ph){alert('Enter Phone to Pay From - Pesapal needs your phone to send you prompt');return;}
-if(PESAPAL_LINK && PESAPAL_LINK.length>10){$('pesapalMsg').textContent='Opening Pesapal... Pesapal will send prompt to '+ph+' - Enter your MoMo PIN to approve '+fmtAmt(a);window.open(PESAPAL_LINK,'_blank');return;}
-$('pesapalMsg').textContent='Pesapal Link not set yet. Pay '+fmtAmt(a)+' in your MTN / Airtel MoMo app to Hom Care Hero, then tap I Have Paid. Pesapal will send prompt once you add your Pesapal Link at top of code.';
-alert('Pay '+fmtAmt(a)+' in your MoMo app. Pesapal will send prompt to '+ph+' once you add your Pesapal Link. After paying, tap I Have Paid.');
+localStorage.setItem('hc_pending_amt',a);localStorage.setItem('hc_pending_phone',ph);
+$('pesapalMsg').textContent='Opening your Pesapal Store: store.pesapal.com/homecareherc - Fill SAME amount '+a+' and SAME phone '+ph+' on Pesapal page, tap MAKE PAYMENT, then Pesapal will send prompt to '+ph+' - Enter MoMo PIN to approve.';
+alert('Opening Pesapal Store. Fill SAME amount '+a+' and SAME phone '+ph+' on Pesapal page, tap MAKE PAYMENT. Pesapal will send prompt to your phone.');
+window.open(PESAPAL_LINK,'_blank');
 }
-function confirmPaid(){let a=Number($('depositAmt').value);if(!a){alert('Enter amount you paid');return;}payments.push({name:currentUser?currentUser.name:'Client',amt:a,status:'Paid ✓ - Real Pesapal',date:new Date().toLocaleString()});saveAll();saveToCloud();updateWallet();updateAdmin();alert('Payment recorded: '+fmtAmt(a));}
+function confirmPaid(){let a=Number($('depositAmt').value||localStorage.getItem('hc_pending_amt')||0);if(!a){alert('Enter amount you paid on Pesapal');return;}payments.push({name:currentUser?currentUser.name:'Client',amt:a,status:'Paid ✓ - Real Pesapal',date:new Date().toLocaleString()});saveAll();saveToCloud();updateWallet();updateAdmin();alert('Payment recorded: '+fmtAmt(a)+' - After Pesapal pulls money, tap this.');}
 function payNow(){show('wallet');}
 function bookFromHome(){let s=$('homeService').value;$('bookService').value=s;show('book');}
 function submitBooking(){let b={name:$('bookName').value,phone:$('bookPhone').value,loc:$('bookLoc').value,service:$('bookService').value,date:$('bookDate').value,notes:$('bookNotes').value,amt:Number($('bookAmt').value||0),status:'Pending - Waiting for SUPER'};if(!b.name||!b.phone){$('bookMsg').textContent='Fill name + phone';return;}bookings.push(b);saveAll();saveToCloud();$('bookMsg').textContent='Booking Sent To SUPER! SUPER will approve and send to JABETH.';updateTrack();updateAdmin();}
@@ -234,7 +234,6 @@ function closeDownload(){$('downloadModal').classList.remove('open');}
 function installApp(){alert('To Install: Tap Share / Menu in browser > Add To Home Screen > Install.');}
 function downloadFile(){alert('App is this same page - Add To Home Screen to install.');}
 function shareLink(){if(navigator.share)navigator.share({title:'Hom Care Hero',url:location.href});else alert('Copy link: '+location.href);}
-// BALANCE - FIX -900
 function getBalanceFor(who){
 let total=payments.reduce((s,p)=>s+Number(p.amt||0),0);
 let earn = who==='SUPER' ? total*0.8 : total*0.1;
@@ -244,21 +243,16 @@ return {total:total,earn:earn,wPaid:wPaid,bal: Math.max(0,bal)};
 }
 function fixNegativeBalance(){
 if(!confirm('Remove fake -900 withdraw? Tap OK to fix.'))return;
-withdraws = withdraws.filter(w=>!w.status.includes('Paid') || payments.length>0 && Number(w.amt||0) <= getBalanceFor(w.who).earn);
-if(payments.length===0){withdraws = withdraws.filter(w=>!w.status.includes('Paid'));}
-// Also remove old SUPER Self fake
 withdraws = withdraws.filter(w=>w.status!=='Paid ✓ (SUPER - Self)');
 saveAll();saveToCloud();updateAdmin();updateWithdrawUI();alert('Fixed! Balance can no longer be negative.');
 }
 function autoFixOldWithdraws(){
-// Auto-fix on load: old fake 900 with 0 earnings = delete
 if(payments.length===0){
   let before=withdraws.length;
   withdraws=withdraws.filter(w=>w.status!=='Paid ✓ (SUPER - Self)');
   if(withdraws.length!==before) saveAll();
 }
 }
-// WITHDRAW TO PHONE - FIXED
 function requestWithdraw(who){
 let balInfo = getBalanceFor(who);
 let amtEl=$(''+who.toLowerCase()+'WithdrawAmt');let phEl=$(''+who.toLowerCase()+'WithdrawPhone');let mEl=$(''+who.toLowerCase()+'WithdrawMethod');
