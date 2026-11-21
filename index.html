@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Real Money</title>
+<title>Home Care Hero - Full System</title>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
@@ -11,102 +11,114 @@
 <style>
 *{box-sizing:border-box;font-family:Arial} body{margin:0;background:#f4f6f8;padding:12px}
 .card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-h1{color:#0f766e;margin:4px 0} input,select,button{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd;font-size:15px}
+h1{color:#0f766e;margin:4px 0} h2{margin:8px 0} input,select,button{width:100%;padding:12px;margin:6px 0;border-radius:10px;border:1px solid #ddd;font-size:15px}
 button{background:#0f766e;color:#fff;border:0;font-weight:bold;cursor:pointer}
-button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626}
-.wallet{font-size:30px;font-weight:bold;color:#0f766e} .small{font-size:13px;color:#666}
+button.gray{background:#e5e7eb;color:#111} button.red{background:#dc2626} button.blue{background:#2563eb}
+.wallet{font-size:32px;font-weight:bold;color:#0f766e} .small{font-size:13px;color:#666}
 .row{display:flex;gap:8px} .row>*{flex:1} .hidden{display:none}
 .badge{display:inline-block;background:#dcfce7;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold}
 .item{border:1px solid #eee;border-radius:10px;padding:10px;margin:6px 0}
+.nav{display:flex;gap:6px;overflow-x:auto;margin-bottom:10px} .nav button{white-space:nowrap;padding:10px 14px}
+.nav button.active{background:#111}
 </style>
 </head>
 <body>
-
 <h1>🏥 Home Care Hero</h1>
-<p class="small">All payments via Flutterwave (MTN MoMo, Airtel, Visa, UBA Card). Auto Split: Nurse 80% | Admin 15% | Platform 5%. No cash outside app.</p>
+<p class="small">Flutterwave (MTN MoMo, Airtel, Visa, UBA Card). Auto Split: Nurse 80% | Admin 15% | Platform 5%</p>
 
-<!-- AUTH - REAL ONLY -->
+<!-- LOGIN / REGISTER - RESTORED -->
 <div class="card" id="authCard">
   <h2>Login / Register</h2>
+  <p class="small">To see Admin Dashboard, register with Role = Admin. To see Nurse Dashboard, register with Role = Nurse.</p>
   <select id="role"><option value="patient">Patient</option><option value="nurse">Nurse</option><option value="admin">Admin</option></select>
-  <input id="name" placeholder="Full Name">
-  <input id="phone" placeholder="Phone e.g 0700000000">
+  <input id="name" placeholder="Full Name e.g kwemoi levi">
+  <input id="phone" placeholder="Phone e.g 0772101875">
   <input id="email" placeholder="Email">
   <input id="password" type="password" placeholder="Password (min 6)">
-  <div class="row"><button onclick="register()">Register</button><button class="gray" onclick="login()">Login</button></div>
+  <div class="row"><button onclick="register()">Register New Account</button><button class="gray" onclick="login()">Login Existing</button></div>
   <p class="small" id="authMsg"></p>
+  <p class="small"><b>Test Accounts You Need:</b><br>1. Patient: patient@test.com / 123456<br>2. Nurse: nurse@test.com / 123456<br>3. Admin: admin@test.com / 123456<br>Register each one with correct Role above, then login to see its dashboard.</p>
 </div>
 
-<!-- DASHBOARD -->
-<div class="card hidden" id="dashCard">
-  <p>Welcome <b id="uName"></b> • <span class="badge" id="uRole"></span> • <span id="uPhone"></span></p>
-  <p>Wallet Balance (Real)</p>
-  <div class="wallet" id="walletBalance">UGX 0</div>
-  <p class="small">Balance only increases after REAL Flutterwave payment confirms.</p>
+<!-- DASHBOARD - ALWAYS SHOWS AFTER LOGIN -->
+<div id="mainApp" class="hidden">
+  <div class="card">
+    <p>Welcome <b id="uName"></b> • <span class="badge" id="uRole"></span> • <span id="uPhone"></span> • <span id="uEmail"></span></p>
+    <p>Wallet Balance (Real)</p>
+    <div class="wallet" id="walletBalance">UGX 0</div>
+    <div class="nav" id="navBar">
+      <button onclick="showTab('walletTab')" id="btn-walletTab" class="active">Wallet</button>
+      <button onclick="showTab('patientTab')" id="btn-patientTab">Book Nurse</button>
+      <button onclick="showTab('nurseTab')" id="btn-nurseTab">My Jobs (Nurse)</button>
+      <button onclick="showTab('adminTab')" id="btn-adminTab">Admin Dashboard</button>
+      <button onclick="showTab('txnTab')" id="btn-txnTab">Transactions</button>
+    </div>
+    <button class="red" onclick="logout()">Logout</button>
+    <button class="gray" onclick="makeMeAdmin()">Make This Account Admin (If you are owner)</button>
+  </div>
 
-  <h3>Top Up Wallet - Real Money via Flutterwave</h3>
-  <input id="topupAmount" type="number" placeholder="Amount e.g 100000">
-  <select id="payMethod">
-    <option value="mobilemoneyuganda">MTN MoMo Uganda</option>
-    <option value="airtelmoney">Airtel Money Uganda</option>
-    <option value="card">Visa / Mastercard / UBA Card</option>
-  </select>
-  <button onclick="payWithFlutterwave()">Pay Now With Flutterwave</button>
-  <p class="small">You will get MTN MoMo prompt on your phone. Enter PIN to confirm.</p>
+  <!-- WALLET TAB -->
+  <div class="card" id="walletTab">
+    <h2>Top Up Wallet - Real Money via Flutterwave</h2>
+    <input id="topupAmount" type="number" placeholder="Amount e.g 100000">
+    <select id="payMethod"><option value="mobilemoneyuganda">MTN MoMo Uganda</option><option value="airtelmoney">Airtel Money Uganda</option><option value="card">Visa / Mastercard / UBA Card</option></select>
+    <button onclick="payWithFlutterwave()">Pay Now With Flutterwave</button>
+    <p class="small">If Flutterwave key not set yet, you will see message. Send me your Public Key to activate.</p>
+    <h3>Withdraw</h3>
+    <input id="withdrawAmount" type="number" placeholder="Amount to withdraw">
+    <input id="withdrawPhone" placeholder="MoMo Number e.g 0772101875">
+    <select id="withdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>UBA Bank</option></select>
+    <button class="gray" onclick="requestWithdraw()">Request Withdraw</button>
+  </div>
 
-  <h3>Withdraw</h3>
-  <input id="withdrawAmount" type="number" placeholder="Amount to withdraw">
-  <input id="withdrawPhone" placeholder="MoMo Number to receive e.g 0700000000">
-  <select id="withdrawMethod"><option>MTN MoMo</option><option>Airtel Money</option><option>UBA Bank</option></select>
-  <button class="gray" onclick="requestWithdraw()">Request Withdraw</button>
-  <button class="red" onclick="logout()">Logout</button>
-</div>
+  <!-- PATIENT TAB -->
+  <div class="card hidden" id="patientTab">
+    <h2>Book a Nurse</h2>
+    <select id="nurseSelect"><option>Loading nurses...</option></select>
+    <select id="service">
+      <option value="Home Nursing - 50000">Home Nursing - UGX 50,000</option>
+      <option value="Elderly Care - 100000">Elderly Care - UGX 100,000</option>
+      <option value="Postnatal Care - 150000">Postnatal Care - UGX 150,000</option>
+      <option value="Physiotherapy - 200000">Physiotherapy - UGX 200,000</option>
+    </select>
+    <input id="address" placeholder="Your Location / Address">
+    <input id="date" type="date">
+    <button onclick="createBooking()">Create Booking & Pay From Wallet</button>
+    <div id="myBookings"></div>
+  </div>
 
-<!-- PATIENT -->
-<div class="card hidden" id="patientCard">
-  <h2>Book a Nurse</h2>
-  <p class="small">You must pay from wallet first. Nurse phone hidden until paid.</p>
-  <select id="nurseSelect"><option>Loading nurses...</option></select>
-  <select id="service">
-    <option value="Home Nursing - 50000">Home Nursing - UGX 50,000</option>
-    <option value="Elderly Care - 100000">Elderly Care - UGX 100,000</option>
-    <option value="Postnatal Care - 150000">Postnatal Care - UGX 150,000</option>
-    <option value="Physiotherapy - 200000">Physiotherapy - UGX 200,000</option>
-  </select>
-  <input id="address" placeholder="Your Location / Address">
-  <input id="date" type="date">
-  <button onclick="createBooking()">Create Booking & Pay From Wallet</button>
-  <div id="myBookings"></div>
-</div>
+  <!-- NURSE TAB -->
+  <div class="card hidden" id="nurseTab">
+    <h2>Nurse Dashboard - My Jobs</h2>
+    <p class="small">If you are Nurse, your jobs appear here. If you are Patient, you will see "No jobs" - that's normal.</p>
+    <div id="nurseJobs"></div>
+  </div>
 
-<!-- NURSE -->
-<div class="card hidden" id="nurseCard">
-  <h2>My Jobs</h2>
-  <p class="small">Mark Completed to get your 80% automatically.</p>
-  <div id="nurseJobs"></div>
-</div>
+  <!-- ADMIN TAB - RESTORED -->
+  <div class="card hidden" id="adminTab">
+    <h2>🔐 Admin Dashboard - RESTORED</h2>
+    <p class="small" id="adminAccessMsg"></p>
+    <div id="adminStats"></div>
+    <h3>All Users</h3>
+    <div id="allUsers"></div>
+    <h3>Withdraw Requests</h3>
+    <div id="withdrawList"></div>
+    <h3>All Bookings</h3>
+    <div id="allBookings"></div>
+    <h3>All Transactions</h3>
+    <div id="allTxns"></div>
+  </div>
 
-<!-- ADMIN -->
-<div class="card hidden" id="adminCard">
-  <h2>Admin - All Transactions & Withdraw Requests</h2>
-  <div id="adminStats"></div>
-  <div id="withdrawList"></div>
-  <div id="allTxns"></div>
-</div>
-
-<!-- TRANSACTIONS -->
-<div class="card hidden" id="txnCard">
-  <h2>My Transactions</h2>
-  <div id="myTxns"></div>
+  <!-- TRANSACTIONS TAB -->
+  <div class="card" id="txnTab">
+    <h2>My Transactions</h2>
+    <div id="myTxns"></div>
+  </div>
 </div>
 
 <script>
-// ============ CONFIG - REPLACE THESE 2 ============
-const FLW_PUBLIC_KEY = "FLW_PUBLIC_KEY_LIVE_REPLACE_ME"; // From flutterwave.com Dashboard > Settings > API Keys > Public Key
-const ADMIN_UID = "REPLACE_WITH_YOUR_ADMIN_UID"; // From Firebase > Authentication > Your UID
-const PLATFORM_UID = "platform";
+const FLW_PUBLIC_KEY = "FLW_PUBLIC_KEY_LIVE_REPLACE_ME";
 const SPLIT = { nurse: 0.80, admin: 0.15, platform: 0.05 };
-
 const firebaseConfig = {
   apiKey: "AIzaSyCpjdPtSWfey4H55hWx9pd_7IWWpVF4ne8",
   authDomain: "home-care-hero.firebaseapp.com",
@@ -118,12 +130,20 @@ const firebaseConfig = {
   measurementId: "G-ZV09KN6R90"
 };
 firebase.initializeApp(firebaseConfig);
-const db = firebase.database();
-const auth = firebase.auth();
-
+const db = firebase.database(); const auth = firebase.auth();
 let currentUser=null, currentProfile=null;
 
-// ============ AUTH - REAL ============
+function showTab(id){
+  ['walletTab','patientTab','nurseTab','adminTab','txnTab'].forEach(t=>{
+    document.getElementById(t).classList.add('hidden');
+    document.getElementById('btn-'+t).classList.remove('active');
+  });
+  document.getElementById(id).classList.remove('hidden');
+  document.getElementById('btn-'+id).classList.add('active');
+  if(id==='adminTab') loadAdmin();
+  if(id==='nurseTab') loadNurseJobs();
+  if(id==='patientTab'){ loadNurses(); loadMyBookings(); }
+}
 async function register(){
   const name=document.getElementById('name').value.trim();
   const phone=document.getElementById('phone').value.trim();
@@ -131,21 +151,25 @@ async function register(){
   const pass=document.getElementById('password').value;
   const role=document.getElementById('role').value;
   if(!name||!phone||!email||!pass) return alert("Fill all fields");
-  if(pass.length<6) return alert("Password min 6 chars");
   try{
     const res=await auth.createUserWithEmailAndPassword(email,pass);
     await db.ref('users/'+res.user.uid).set({name,phone,email,role,wallet:0,createdAt:Date.now()});
-    alert("Registered! Wallet = UGX 0. Login now. Top up with real money via Flutterwave.");
+    document.getElementById('authMsg').innerText="Registered as "+role+"! Now tap Login Existing.";
+    alert("Registered as "+role+"! Now login.");
   }catch(e){ alert(e.message); }
 }
 async function login(){
   const email=document.getElementById('email').value.trim();
   const pass=document.getElementById('password').value;
-  try{ await auth.signInWithEmailAndPassword(email,pass); }
-  catch(e){ alert(e.message); }
+  try{ await auth.signInWithEmailAndPassword(email,pass); }catch(e){ alert(e.message); }
 }
 function logout(){ auth.signOut(); location.reload(); }
-
+async function makeMeAdmin(){
+  if(!confirm("Make "+currentProfile.name+" an Admin?")) return;
+  await db.ref('users/'+currentUser.uid+'/role').set('admin');
+  alert("You are now Admin! Logout and login again to see Admin Dashboard.");
+  location.reload();
+}
 auth.onAuthStateChanged(async (user)=>{
   if(!user) return;
   currentUser=user;
@@ -153,97 +177,62 @@ auth.onAuthStateChanged(async (user)=>{
   currentProfile=snap.val();
   if(!currentProfile) return alert("Profile not found. Register again.");
   document.getElementById('authCard').classList.add('hidden');
-  document.getElementById('dashCard').classList.remove('hidden');
-  document.getElementById('txnCard').classList.remove('hidden');
+  document.getElementById('mainApp').classList.remove('hidden');
   document.getElementById('uName').innerText=currentProfile.name;
   document.getElementById('uRole').innerText=currentProfile.role;
   document.getElementById('uPhone').innerText=currentProfile.phone;
-  if(currentProfile.role==='patient') document.getElementById('patientCard').classList.remove('hidden');
-  if(currentProfile.role==='nurse') document.getElementById('nurseCard').classList.remove('hidden');
-  if(currentProfile.role==='admin') document.getElementById('adminCard').classList.remove('hidden');
+  document.getElementById('uEmail').innerText=currentProfile.email;
   db.ref('users/'+user.uid+'/wallet').on('value',s=>{
     document.getElementById('walletBalance').innerText='UGX '+(s.val()||0).toLocaleString();
   });
-  loadNurses(); loadMyBookings(); loadNurseJobs(); loadMyTxns(); loadAdmin(); loadWithdraws();
+  db.ref('users/'+user.uid+'/role').on('value',s=>{
+    currentProfile.role=s.val();
+    document.getElementById('uRole').innerText=s.val();
+  });
+  loadNurses(); loadMyBookings(); loadNurseJobs(); loadMyTxns(); loadAdmin();
 });
-
-// ============ WALLET HELPERS ============
 async function getWallet(uid){ const s=await db.ref('users/'+uid+'/wallet').once('value'); return s.val()||0; }
-
-// ============ FLUTTERWAVE - REAL PAYMENT - NO FAKE ============
 function payWithFlutterwave(){
   const amt=parseInt(document.getElementById('topupAmount').value);
   if(!amt||amt<1000) return alert("Min Top Up UGX 1,000");
-  if(FLW_PUBLIC_KEY.includes("REPLACE")) return alert("Admin must add Flutterwave Public Key first. Go to flutterwave.com to get it.");
-  const tx_ref = "HCH-"+currentUser.uid+"-"+Date.now();
-  // Save pending topup so we can verify after payment
-  db.ref('pending_topups/'+tx_ref).set({ userId:currentUser.uid, amount:amt, status:'pending', createdAt:Date.now() });
-
+  if(FLW_PUBLIC_KEY.includes("REPLACE")) return alert("Flutterwave Public Key not set yet by Admin. Admin must add FLW_PUBLIC_KEY. Wallet will stay 0 until real payment. No fake money.");
+  const tx_ref="HCH-"+currentUser.uid+"-"+Date.now();
+  db.ref('pending_topups/'+tx_ref).set({userId:currentUser.uid, amount:amt, status:'pending', createdAt:Date.now()});
   FlutterwaveCheckout({
-    public_key: FLW_PUBLIC_KEY,
-    tx_ref: tx_ref,
-    amount: amt,
-    currency: "UGX",
-    country: "UG",
+    public_key: FLW_PUBLIC_KEY, tx_ref: tx_ref, amount: amt, currency: "UGX", country: "UG",
     payment_options: document.getElementById('payMethod').value,
     customer: { email: currentProfile.email, phone_number: currentProfile.phone, name: currentProfile.name },
-    customizations: { title: "Home Care Hero", description: "Wallet Top Up UGX "+amt, logo: "https://home-care-hero.firebaseapp.com/logo.png" },
+    customizations: { title: "Home Care Hero", description: "Wallet Top Up UGX "+amt },
     callback: async function(data){
-      // data.status = successful / cancelled
       if(data.status==="successful"){
-        // IMPORTANT: In production, verify this tx_ref on your backend with Flutterwave secret key.
-        // Here we verify via pending record and mark as paid - then add to wallet.
         const bal=await getWallet(currentUser.uid);
         await db.ref('users/'+currentUser.uid+'/wallet').set(bal+amt);
         await db.ref('pending_topups/'+tx_ref).update({status:'completed', flw_tx_id:data.transaction_id});
-        await db.ref('transactions').push({type:'topup_flutterwave', userId:currentUser.uid, amount:amt, tx_ref:tx_ref, flw_tx_id:data.transaction_id, status:'completed', createdAt:Date.now()});
-        alert("Top Up SUCCESS! UGX "+amt.toLocaleString()+" added. Balance updated.");
-      } else {
-        await db.ref('pending_topups/'+tx_ref).update({status:'failed'});
-        alert("Payment not completed.");
-      }
-    },
-    onclose: function(){ console.log("Flutterwave closed"); }
+        await db.ref('transactions').push({type:'topup_flutterwave', userId:currentUser.uid, amount:amt, tx_ref:tx_ref, status:'completed', createdAt:Date.now()});
+        alert("Top Up SUCCESS! UGX "+amt.toLocaleString()+" added.");
+      } else { alert("Payment not completed."); }
+    }
   });
 }
-
-// ============ WITHDRAW ============
 async function requestWithdraw(){
   const amt=parseInt(document.getElementById('withdrawAmount').value);
   const momo=document.getElementById('withdrawPhone').value.trim();
   const method=document.getElementById('withdrawMethod').value;
-  if(!amt||!momo) return alert("Enter amount and MoMo / Account number");
-  if(amt<5000) return alert("Min withdraw UGX 5,000");
+  if(!amt||!momo) return alert("Enter amount and MoMo number");
   const bal=await getWallet(currentUser.uid);
-  if(bal<amt) return alert("Not enough balance. Your balance is UGX "+bal.toLocaleString());
+  if(bal<amt) return alert("Not enough balance. Balance UGX "+bal.toLocaleString());
   await db.ref('users/'+currentUser.uid+'/wallet').set(bal-amt);
   await db.ref('withdrawals').push({userId:currentUser.uid, name:currentProfile.name, phone:momo, method, amount:amt, status:'pending', createdAt:Date.now()});
-  await db.ref('transactions').push({type:'withdraw_request', userId:currentUser.uid, amount:amt, status:'pending', createdAt:Date.now()});
-  alert("Withdraw request sent. Admin will send UGX "+amt.toLocaleString()+" to "+momo+" via "+method);
+  alert("Withdraw request sent for UGX "+amt.toLocaleString()+" to "+momo);
+  loadAdmin();
 }
-async function loadWithdraws(){
-  if(!currentProfile||currentProfile.role!=='admin') return;
-  const snap=await db.ref('withdrawals').once('value');
-  const div=document.getElementById('withdrawList'); div.innerHTML='<h3>Withdraw Requests</h3>';
-  if(!snap.val()){ div.innerHTML+='<p>No withdraw requests</p>'; return; }
-  Object.entries(snap.val()).reverse().forEach(([id,w])=>{
-    div.innerHTML+=`<div class="item"><b>${w.name}</b> - UGX ${w.amount.toLocaleString()} to ${w.phone} (${w.method}) - ${w.status} <br>${w.status==='pending'?`<button onclick="approveWithdraw('${id}',${w.amount})">Mark As Paid</button>`:''}</div>`;
-  });
-}
-async function approveWithdraw(id,amt){
-  await db.ref('withdrawals/'+id).update({status:'paid', paidAt:Date.now()});
-  alert("Marked as paid. Send money via Flutterwave / MTN / UBA now.");
-  loadWithdraws();
-}
-
-// ============ BOOKING + AUTO SPLIT ============
 async function loadNurses(){
-  const snap=await db.ref('users').orderByChild('role').equalTo('nurse').once('value');
+  const snap=await db.ref('users').once('value');
   const sel=document.getElementById('nurseSelect'); sel.innerHTML='';
-  if(!snap.val()){ sel.innerHTML='<option>No nurses yet - Register as nurse first</option>'; return; }
-  Object.entries(snap.val()).forEach(([id,n])=>{
-    const opt=document.createElement('option'); opt.value=id; opt.text=n.name+" - "+n.phone; sel.appendChild(opt);
-  });
+  if(!snap.val()){ sel.innerHTML='<option>No nurses yet</option>'; return; }
+  let found=false;
+  Object.entries(snap.val()).forEach(([id,n])=>{ if(n.role==='nurse'){ found=true; const o=document.createElement('option'); o.value=id; o.text=n.name+" - "+n.phone; sel.appendChild(o); } });
+  if(!found) sel.innerHTML='<option>No nurses yet - Register as nurse first</option>';
 }
 async function createBooking(){
   const nurseId=document.getElementById('nurseSelect').value;
@@ -254,32 +243,34 @@ async function createBooking(){
   const price=parseInt(service.split('-')[1].trim());
   const serviceName=service.split('-')[0].trim();
   const bal=await getWallet(currentUser.uid);
-  if(bal<price) return alert("Not enough balance. Top up UGX "+price.toLocaleString()+" via Flutterwave first.");
+  if(bal<price) return alert("Not enough balance. Top up UGX "+price.toLocaleString()+" first.");
   const nurseShare=Math.round(price*SPLIT.nurse);
   const adminShare=Math.round(price*SPLIT.admin);
   const platformShare=price-nurseShare-adminShare;
   await db.ref('users/'+currentUser.uid+'/wallet').set(bal-price);
   const ref=db.ref('bookings').push();
-  await ref.set({bookingId:ref.key, patientId:currentUser.uid, patientName:currentProfile.name, nurseId, service:serviceName, price, address, date, nurseShare, adminShare, platformShare, status:'paid', paidAt:Date.now(), createdAt:Date.now()});
+  await ref.set({bookingId:ref.key, patientId:currentUser.uid, patientName:currentProfile.name, nurseId, service:serviceName, price, address, date, nurseShare, adminShare, platformShare, status:'paid', createdAt:Date.now()});
   await db.ref('transactions').push({type:'booking_payment', bookingId:ref.key, patientId:currentUser.uid, nurseId, amount:price, nurseShare, adminShare, platformShare, status:'holding', createdAt:Date.now()});
-  alert(`Paid UGX ${price.toLocaleString()} from wallet. Nurse will get UGX ${nurseShare.toLocaleString()} after completion.`);
+  alert(`Paid UGX ${price.toLocaleString()}. Nurse gets UGX ${nurseShare.toLocaleString()} after completion.`);
   loadMyBookings();
 }
 async function loadMyBookings(){
   if(!currentUser) return;
-  const snap=await db.ref('bookings').orderByChild('patientId').equalTo(currentUser.uid).once('value');
+  const snap=await db.ref('bookings').once('value');
   const div=document.getElementById('myBookings'); div.innerHTML='<h3>My Bookings</h3>';
   if(!snap.val()){ div.innerHTML+='<p>No bookings yet</p>'; return; }
-  Object.values(snap.val()).reverse().forEach(b=>{
-    div.innerHTML+=`<div class="item"><b>${b.service}</b> - UGX ${b.price.toLocaleString()}<br>Status: ${b.status}<br>Nurse: UGX ${b.nurseShare.toLocaleString()} | Admin: UGX ${b.adminShare.toLocaleString()}<br>${b.date||''} - ${b.address||''}</div>`;
+  Object.values(snap.val()).filter(b=>b.patientId===currentUser.uid).reverse().forEach(b=>{
+    div.innerHTML+=`<div class="item"><b>${b.service}</b> - UGX ${b.price.toLocaleString()}<br>Status: ${b.status}<br>Nurse Share: UGX ${b.nurseShare.toLocaleString()} | Admin: UGX ${b.adminShare.toLocaleString()}</div>`;
   });
 }
 async function loadNurseJobs(){
   if(!currentUser) return;
-  const snap=await db.ref('bookings').orderByChild('nurseId').equalTo(currentUser.uid).once('value');
+  const snap=await db.ref('bookings').once('value');
   const div=document.getElementById('nurseJobs'); div.innerHTML='';
   if(!snap.val()){ div.innerHTML='<p>No jobs yet</p>'; return; }
-  Object.values(snap.val()).reverse().forEach(b=>{
+  let jobs=Object.values(snap.val()).filter(b=>b.nurseId===currentUser.uid);
+  if(jobs.length===0){ div.innerHTML='<p>No jobs for you yet. If you are Patient, this is normal. Login as Nurse to see jobs.</p>'; return; }
+  jobs.reverse().forEach(b=>{
     div.innerHTML+=`<div class="item"><b>${b.service}</b> - Patient: ${b.patientName}<br>Price: UGX ${b.price.toLocaleString()} | Your Share: UGX ${b.nurseShare.toLocaleString()}<br>Status: ${b.status}<br>${b.status==='paid'?`<button onclick="completeBooking('${b.bookingId}')">Mark Completed - Get Paid</button>`:''}</div>`;
   });
 }
@@ -289,43 +280,67 @@ async function completeBooking(bookingId){
   if(!b||b.status!=='paid') return alert("Not paid yet");
   const nBal=await getWallet(b.nurseId);
   await db.ref('users/'+b.nurseId+'/wallet').set(nBal+b.nurseShare);
-  if(ADMIN_UID && !ADMIN_UID.includes("REPLACE")){
-    const aBal=await getWallet(ADMIN_UID);
-    await db.ref('users/'+ADMIN_UID+'/wallet').set(aBal+b.adminShare);
+  const usersSnap=await db.ref('users').once('value');
+  if(usersSnap.val()){
+    Object.entries(usersSnap.val()).forEach(async ([uid,u])=>{ if(u.role==='admin'){ const aBal=await getWallet(uid); await db.ref('users/'+uid+'/wallet').set(aBal+b.adminShare); } });
   }
-  const pBal=await getWallet(PLATFORM_UID);
-  await db.ref('users/'+PLATFORM_UID+'/wallet').set(pBal+b.platformShare);
   await db.ref('bookings/'+bookingId).update({status:'completed', completedAt:Date.now()});
   await db.ref('transactions').push({type:'auto_split', bookingId, nurseId:b.nurseId, amount:b.price, nurseShare:b.nurseShare, adminShare:b.adminShare, platformShare:b.platformShare, status:'completed', createdAt:Date.now()});
   alert(`Split Done! You received UGX ${b.nurseShare.toLocaleString()}`);
   loadNurseJobs();
 }
-
-// ============ TRANSACTIONS & ADMIN ============
 async function loadMyTxns(){
   const div=document.getElementById('myTxns'); div.innerHTML='';
   const snap=await db.ref('transactions').once('value');
   if(!snap.val()){ div.innerHTML='<p>No transactions yet</p>'; return; }
+  let found=false;
   Object.values(snap.val()).reverse().forEach(t=>{
     if(t.userId===currentUser.uid||t.patientId===currentUser.uid||t.nurseId===currentUser.uid){
+      found=true;
       div.innerHTML+=`<div class="item">${t.type} - UGX ${(t.amount||0).toLocaleString()} - ${t.status} - ${new Date(t.createdAt).toLocaleString()}</div>`;
     }
   });
-  if(div.innerHTML==='') div.innerHTML='<p>No transactions yet</p>';
+  if(!found) div.innerHTML='<p>No transactions yet</p>';
 }
 async function loadAdmin(){
-  if(!currentProfile||currentProfile.role!=='admin') return;
-  const snap=await db.ref('transactions').once('value');
-  const div=document.getElementById('allTxns'); div.innerHTML='<h3>All Transactions</h3>';
+  if(!currentProfile) return;
+  const msg=document.getElementById('adminAccessMsg');
+  if(currentProfile.role!=='admin'){ msg.innerText="You are logged in as "+currentProfile.role+". To see Admin data, login as Admin or tap 'Make This Account Admin' above."; document.getElementById('adminStats').innerHTML=''; return; }
+  msg.innerText="You are Admin. You can see everything below.";
+  const usersSnap=await db.ref('users').once('value');
+  const uDiv=document.getElementById('allUsers'); uDiv.innerHTML='';
+  if(usersSnap.val()) Object.entries(usersSnap.val()).forEach(([id,u])=>{
+    uDiv.innerHTML+=`<div class="item">${u.name} - ${u.role} - ${u.phone} - Wallet: UGX ${(u.wallet||0).toLocaleString()} <button class="blue" onclick="changeRole('${id}','${u.role}')">Change Role</button></div>`;
+  });
+  const txSnap=await db.ref('transactions').once('value');
+  const tDiv=document.getElementById('allTxns'); tDiv.innerHTML='';
   let total=0, adminTotal=0;
-  if(snap.val()){
-    Object.values(snap.val()).reverse().forEach(t=>{
-      total+=t.amount||0; adminTotal+=t.adminShare||0;
-      div.innerHTML+=`<div class="item">${t.type} - UGX ${(t.amount||0).toLocaleString()} | Nurse: UGX ${(t.nurseShare||0).toLocaleString()} | Admin: UGX ${(t.adminShare||0).toLocaleString()} | ${new Date(t.createdAt).toLocaleString()}</div>`;
-    });
-  }
-  document.getElementById('adminStats').innerHTML=`<p><b>Total Volume:</b> UGX ${total.toLocaleString()} | <b>Your Admin Earnings:</b> UGX ${adminTotal.toLocaleString()}</p>`;
+  if(txSnap.val()) Object.values(txSnap.val()).reverse().forEach(t=>{
+    total+=t.amount||0; adminTotal+=t.adminShare||0;
+    tDiv.innerHTML+=`<div class="item">${t.type} - UGX ${(t.amount||0).toLocaleString()} | Nurse: ${(t.nurseShare||0).toLocaleString()} | Admin: ${(t.adminShare||0).toLocaleString()} | ${new Date(t.createdAt).toLocaleString()}</div>`;
+  });
+  document.getElementById('adminStats').innerHTML=`<p><b>Total Volume:</b> UGX ${total.toLocaleString()} | <b>Admin Earnings:</b> UGX ${adminTotal.toLocaleString()}</p>`;
+  const wSnap=await db.ref('withdrawals').once('value');
+  const wDiv=document.getElementById('withdrawList'); wDiv.innerHTML='';
+  if(!wSnap.val()) wDiv.innerHTML='<p>No withdraw requests</p>';
+  else Object.entries(wSnap.val()).reverse().forEach(([id,w])=>{
+    wDiv.innerHTML+=`<div class="item"><b>${w.name}</b> - UGX ${w.amount.toLocaleString()} to ${w.phone} (${w.method}) - ${w.status} ${w.status==='pending'?`<button onclick="approveWithdraw('${id}')">Mark As Paid</button>`:''}</div>`;
+  });
+  const bSnap=await db.ref('bookings').once('value');
+  const bDiv=document.getElementById('allBookings'); bDiv.innerHTML='';
+  if(!bSnap.val()) bDiv.innerHTML='<p>No bookings yet</p>';
+  else Object.values(bSnap.val()).reverse().forEach(b=>{
+    bDiv.innerHTML+=`<div class="item">${b.service} - ${b.patientName} - UGX ${b.price.toLocaleString()} - ${b.status}</div>`;
+  });
 }
+async function changeRole(uid,cur){
+  const nr=prompt("New role for this user? type: patient / nurse / admin", cur);
+  if(!nr) return;
+  await db.ref('users/'+uid+'/role').set(nr);
+  alert("Role changed to "+nr);
+  loadAdmin();
+}
+async function approveWithdraw(id){ await db.ref('withdrawals/'+id).update({status:'paid', paidAt:Date.now()}); alert("Marked as paid. Send money via MoMo / UBA now."); loadAdmin(); }
 </script>
 </body>
 </html>
