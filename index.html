@@ -3,223 +3,271 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Home Care Hero - Global</title>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore-compat.js"></script>
+<title>HOME CARE HERO - WORLD</title>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
 <style>
-*{box-sizing:border-box;font-family:Arial,sans-serif}
-body{margin:0;background:#f2f4f7;padding-bottom:20px}
-.header{background:#00A651;color:#fff;padding:16px;text-align:center;position:sticky;top:0;z-index:10}
-.card{background:#fff;margin:12px;padding:14px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-.btn{background:#00A651;color:#fff;border:none;padding:12px 16px;border-radius:10px;font-weight:bold;width:100%;margin-top:8px;cursor:pointer}
-.btnBlue{background:#2563eb}.btnPurple{background:#635BFF}.btnGrey{background:#666}
-input,select,textarea{width:100%;padding:11px;margin-top:6px;border:1px solid #ddd;border-radius:10px;font-size:15px}
-.hidden{display:none!important}
-.item{padding:10px;border:1px solid #eee;border-radius:10px;margin-top:8px}
-.small{font-size:12px;color:#666}
-.langBtn{padding:6px 10px;border-radius:20px;border:1px solid #fff;background:transparent;color:#fff;margin:2px}
+*{box-sizing:border-box} body{margin:0;font-family:Arial;background:#f0f4f8;color:#111}
+header{background:#0b3d5e;color:#fff;padding:14px;text-align:center}
+header h1{margin:0;font-size:22px} header p{margin:2px;font-size:12px;opacity:.9}
+.wrap{max-width:520px;margin:0 auto;padding:14px}
+.card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
+input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:10px;font-size:15px}
+button{width:100%;padding:13px;border:0;border-radius:10px;background:#0b3d5e;color:#fff;font-weight:700;font-size:15px;cursor:pointer;margin-top:6px}
+button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} button.red{background:#b91c1c}
+.small{font-size:12px;color:#555} .center{text-align:center}
+.hidden{display:none} .row{display:flex;gap:8px} .row button{flex:1}
+.badge{display:inline-block;background:#ffe9a8;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
+.booking{border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
 </style>
 </head>
 <body>
+<header>
+<h1>🌍 HOME CARE HERO - WORLD</h1>
+<p>SUPER • JOY • JABETH | Global Care</p>
+</header>
+<div class="wrap">
 
-<div class="header">
-<h2 style="margin:0">🏥 Home Care Hero - Global</h2>
-<p style="margin:4px 0 0">Trusted Nurse At Home - Any Country</p>
-<div>
-<button class="langBtn" onclick="setLang('en')">English</button>
-<button class="langBtn" onclick="setLang('lg')">Luganda</button>
-<button class="langBtn" onclick="setLang('sw')">Kiswahili</button>
-<button class="langBtn" onclick="setLang('fr')">Français</button>
-</div>
-<div style="margin-top:8px">
-<select id="countrySelect" onchange="setCountry(this.value)" style="max-width:220px">
-<option value="UG">Uganda</option><option value="KE">Kenya</option><option value="TZ">Tanzania</option>
-<option value="RW">Rwanda</option><option value="NG">Nigeria</option><option value="GH">Ghana</option>
-<option value="ZA">South Africa</option><option value="US">USA</option><option value="GB">UK</option>
-<option value="IN">India</option><option value="AE">UAE</option>
-</select>
-</div>
+<!-- GATE -->
+<div id="page-gate" class="card">
+<h2>🔐 Gate</h2>
+<p class="small">Enter Gate Password to enter HOME CARE HERO</p>
+<input id="gate-pass" type="password" placeholder="Gate Password">
+<button class="gold" onclick="checkGate()">Gate Open!</button>
+<p class="center small">Gate: HERO2026</p>
 </div>
 
-<div class="card" id="entryGate">
-<h3>Welcome to Home Care Hero</h3>
-<div id="entryCreate">
-<input id="entryName" placeholder="Full Name">
-<input id="entryPhone" placeholder="Phone / WhatsApp e.g. +256...">
-<input id="entryPass" type="password" placeholder="Create Password - Min 4">
-<button class="btn" onclick="createAccountAndEnter()">Create Account & Enter</button>
-<button class="btn btnGrey" onclick="showEntryLogin()">Already have account? Login</button>
-</div>
-<div id="entryLogin" class="hidden">
-<input id="entryLoginPhone" placeholder="Phone">
-<input id="entryLoginPass" type="password" placeholder="Password">
-<button class="btn" onclick="loginAndEnter()">Login & Enter</button>
-<button class="btn btnGrey" onclick="showEntryCreate()">Back to Create</button>
-</div>
-<p class="small" id="entryMsg"></p>
+<div id="page-entry" class="card hidden">
+<h2>Welcome Hero</h2>
+<p class="small">Care anywhere in the WORLD. Book a nurse, pay with Pesapal or Wallet.</p>
+<div class="row"><button onclick="show('page-login')">Client Login</button><button class="green" onclick="show('page-signup')">Create Account</button></div>
+<button class="gold" onclick="show('page-admin')">Admin Login - SUPER / JOY / JABETH</button>
+<button onclick="show('page-nurse')">Nurse Login</button>
+<p class="center small">New here? Create account first.</p>
 </div>
 
-<div class="card" id="homeCard">
-<h3>Book a Nurse at Home</h3>
-<p>Country: <b id="currentCountryName">Uganda</b> | <span id="clientWelcome"></span></p>
-<label>Service</label>
-<select id="bookService" onchange="updateServicePrice()">
-<option value="Home Nursing">Home Nursing</option>
-<option value="Elderly Care">Elderly Care</option>
-<option value="Baby / Postnatal">Baby / Postnatal Care</option>
-<option value="Wound Dressing">Wound Dressing</option>
-<option value="Physiotherapy">Physiotherapy</option>
-</select>
-<p>Price: <b id="servicePrice"></b></p>
-<label>Your Name</label><input id="bookName" placeholder="Your Name">
-<label>Phone</label><input id="bookPhone" placeholder="Phone">
-<label>Location / City</label><input id="bookLocation" placeholder="e.g. Ntinda, Kampala">
-<label>Date</label><input id="bookDate" type="date">
-<label>Notes</label><textarea id="bookNotes" placeholder="What does patient need?"></textarea>
-<button class="btn" onclick="bookNow()">📅 Book Nurse - To SUPER in App</button>
-<button class="btn btnBlue" onclick="getMyLocation('locMsg')">📍 Use My GPS Location</button>
-<p class="small" id="locMsg"></p><p class="small" id="bookMsg"></p>
+<div id="page-signup" class="card hidden">
+<h2>Create Account</h2>
+<input id="su-name" placeholder="Full Name">
+<input id="su-phone" placeholder="Phone e.g. +256...">
+<input id="su-pass" type="password" placeholder="Create Password">
+<input id="su-country" placeholder="Country">
+<button class="green" onclick="signup()">Create Account</button>
+<button onclick="show('page-entry')">Back</button>
 </div>
 
-<div class="card">
-<h3>💰 Wallet - Deposit</h3>
-<p>Balance: <b id="bal">0</b></p>
-<label>Amount</label><input id="depAmt" type="number" placeholder="e.g. 50000">
-<button class="btn" onclick="realDeposit()">🇺🇬 Deposit with Pesapal - MoMo / Card - Uganda</button>
-<button class="btn btnPurple" onclick="realDepositStripe()">🌍 Deposit with Stripe - Card - Global</button>
-<button class="btn btnGrey" onclick="confirmPaid()">✅ I Paid - Paste Pesapal Transaction ID</button>
-<p class="small" id="walletMsg"></p>
+<div id="page-login" class="card hidden">
+<h2>Client Login</h2>
+<input id="li-phone" placeholder="Phone">
+<input id="li-pass" type="password" placeholder="Password">
+<button onclick="login()">Login</button>
+<button onclick="show('page-entry')">Back</button>
 </div>
 
-<div class="card">
-<h3>👩‍⚕️ Join as Nurse</h3>
-<input id="nurseName" placeholder="Nurse Full Name">
-<input id="nursePhone" placeholder="Nurse Phone">
-<button class="btn btnBlue" onclick="createNurseAccount()">✅ Create Nurse Account</button>
-<button class="btn btnGrey" onclick="nurseLogin()">🔑 Nurse Login</button>
-<div id="nurseAccountBox"></div>
+<div id="page-book" class="card hidden">
+<h2>Book a Nurse <span class="badge" id="user-badge"></span></h2>
+<p class="small" id="wallet-line">Wallet: UGX 0</p>
+<input id="bk-name" placeholder="Patient Name">
+<input id="bk-location" placeholder="Location / Address">
+<select id="bk-service"><option>Home Nursing</option><option>Elderly Care</option><option>Baby Care</option><option>Post Surgery Care</option><option>Physiotherapy</option></select>
+<select id="bk-country"><option>Uganda</option><option>Kenya</option><option>Tanzania</option><option>Rwanda</option><option>Nigeria</option><option>South Africa</option><option>USA</option><option>UK</option><option>Other - WORLD</option></select>
+<input id="bk-amount" type="number" placeholder="Amount UGX e.g. 50000" value="50000">
+<textarea id="bk-notes" placeholder="Notes for nurse"></textarea>
+<button class="green" onclick="bookAndPay('pesapal')">Pay with Pesapal</button>
+<button class="gold" onclick="bookAndPay('wallet')">Pay with Wallet</button>
+<button onclick="showMyBookings()">My Bookings</button>
+<button class="red" onclick="logout()">Logout</button>
+<div id="my-bookings"></div>
 </div>
 
-<div class="card">
-<h3>💊 Pharmacy</h3>
-<input id="pharmaSearch" placeholder="Search medicine..." oninput="renderPharmacy()">
-<div id="pharmacyList"></div>
+<div id="page-admin" class="card hidden">
+<h2>Admin Login</h2>
+<p class="small">Cloud passwords - works on any phone.</p>
+<select id="ad-user"><option>SUPER</option><option>JOY</option><option>JABETH</option></select>
+<input id="ad-pass" type="password" placeholder="Admin Password">
+<button onclick="adminLogin()">Gate Open!</button>
+<p class="small">SUPER: 2215 | JOY: JOY2026 | JABETH: JABETH2026</p>
+<button onclick="show('page-entry')">Back</button>
 </div>
 
-<div class="card">
-<h3>🔐 Client Login</h3>
-<input id="loginPhone" placeholder="Phone"><input id="loginPass" type="password" placeholder="Password">
-<button class="btn" onclick="loginClientFromLoginPage()">Login</button>
-<p class="small" id="loginMsg"></p>
-<button class="btn btnGrey" onclick="tapHiddenAdmin()">⚙️ Admin - SUPER / JOY / JABETH</button>
+<div id="page-admin-dash" class="card hidden">
+<h2>Admin Dashboard - <span id="admin-name"></span></h2>
+<p class="small" id="admin-stats"></p>
+<input id="ad-newpass" type="password" placeholder="New Password for this Admin">
+<button class="gold" onclick="changeAdminPass()">Change My Cloud Password</button>
+<div id="admin-bookings"></div>
+<button class="red" onclick="logout()">Logout</button>
 </div>
 
-<div class="card" id="adminCard">
-<h3>Admin Dashboard - Approvals</h3>
-<select id="adminRole"><option value="SUPER">SUPER</option><option value="JOY">JOY</option><option value="JABETH">JABETH</option></select>
-<input id="adminPass" type="password" placeholder="Admin Password">
-<button class="btn" onclick="adminLogin()">Login as Admin</button>
-<p class="small" id="adminLoginMsg"></p>
-<div id="superDash" class="hidden"><h4>SUPER - Approve All</h4></div>
-<div id="joyDash" class="hidden"><h4>JOY - Approve Nurses</h4></div>
-<div id="jabethDash" class="hidden"><h4>JABETH - Approve Bookings</h4></div>
-<div id="approvalsList"></div>
-<div id="superApprovePayments"></div>
-<p>Total: <b id="jbTotal"></b> | Collected: <b id="jbTotalCollected"></b></p>
+<div id="page-nurse" class="card hidden">
+<h2>Nurse Login</h2>
+<input id="nu-phone" placeholder="Nurse Phone">
+<input id="nu-pass" type="password" placeholder="Password">
+<button onclick="nurseLogin()">Login as Nurse</button>
+<button onclick="show('page-entry')">Back</button>
 </div>
 
-<div class="card">
-<h3>📤 Share App</h3>
-<button class="btn btnBlue" onclick="shareAppLink()">Share App Link</button>
-<p class="small" id="shareMsg"></p>
-<button class="btn btnGrey" onclick="enableNotifications()">🔔 Enable Notifications</button>
+<div id="page-nurse-dash" class="card hidden">
+<h2>Nurse Dashboard</h2>
+<p class="small" id="nurse-info"></p>
+<div id="nurse-bookings"></div>
+<button class="red" onclick="logout()">Logout</button>
+</div>
+
 </div>
 
 <script>
 const firebaseConfig = {
-  apiKey: "PASTE_YOUR_API_KEY_HERE",
+  apiKey: "YOUR_API_KEY",
   authDomain: "home-care-hero.firebaseapp.com",
-  databaseURL: "https://home-care-hero-default-rtdb.firebaseio.com",
   projectId: "home-care-hero",
-  storageBucket: "home-care-hero.firebasestorage.app",
-  messagingSenderId: "PASTE_YOUR_SENDER_ID_HERE",
-  appId: "PASTE_YOUR_APP_ID_HERE"
+  storageBucket: "home-care-hero.appspot.com",
+  messagingSenderId: "YOUR_SENDER_ID",
+  appId: "YOUR_APP_ID"
 };
-try{ firebase.initializeApp(firebaseConfig); window.db = firebase.firestore(); }catch(e){ window.db = null; }
-const PESAPAL_LINK = "https://store.pesapal.com/homecareheropayment";
-const STRIPE_LINK = "PASTE_YOUR_STRIPE_PAYMENT_LINK_HERE";
-const WORLD = {
-  UG:{name:"Uganda",cur:"UGX",rate:1,sym:"UGX",prices:{'Home Nursing':50000,'Elderly Care':40000,'Baby / Postnatal':45000,'Wound Dressing':35000,'Physiotherapy':60000}},
-  KE:{name:"Kenya",cur:"KES",rate:0.035,sym:"KES",prices:{'Home Nursing':1800,'Elderly Care':1500,'Baby / Postnatal':1600,'Wound Dressing':1200,'Physiotherapy':2200}},
-  TZ:{name:"Tanzania",cur:"TZS",rate:0.7,sym:"TZS",prices:{'Home Nursing':35000,'Elderly Care':30000,'Baby / Postnatal':32000,'Wound Dressing':25000,'Physiotherapy':40000}},
-  RW:{name:"Rwanda",cur:"RWF",rate:0.35,sym:"RWF",prices:{'Home Nursing':18000,'Elderly Care':15000,'Baby / Postnatal':16000,'Wound Dressing':12000,'Physiotherapy':20000}},
-  NG:{name:"Nigeria",cur:"NGN",rate:0.4,sym:"NGN",prices:{'Home Nursing':20000,'Elderly Care':17000,'Baby / Postnatal':18000,'Wound Dressing':14000,'Physiotherapy':24000}},
-  GH:{name:"Ghana",cur:"GHS",rate:0.004,sym:"GHS",prices:{'Home Nursing':220,'Elderly Care':180,'Baby / Postnatal':200,'Wound Dressing':150,'Physiotherapy':260}},
-  ZA:{name:"South Africa",cur:"ZAR",rate:0.005,sym:"ZAR",prices:{'Home Nursing':280,'Elderly Care':230,'Baby / Postnatal':250,'Wound Dressing':190,'Physiotherapy':320}},
-  US:{name:"USA",cur:"USD",rate:0.00027,sym:"$",prices:{'Home Nursing':15,'Elderly Care':12,'Baby / Postnatal':13,'Wound Dressing':10,'Physiotherapy':18}},
-  GB:{name:"UK",cur:"GBP",rate:0.00021,sym:"£",prices:{'Home Nursing':12,'Elderly Care':10,'Baby / Postnatal':11,'Wound Dressing':8,'Physiotherapy':15}},
-  IN:{name:"India",cur:"INR",rate:0.022,sym:"₹",prices:{'Home Nursing':1200,'Elderly Care':1000,'Baby / Postnatal':1100,'Wound Dressing':800,'Physiotherapy':1500}},
-  AE:{name:"UAE",cur:"AED",rate:0.001,sym:"AED",prices:{'Home Nursing':55,'Elderly Care':45,'Baby / Postnatal':48,'Wound Dressing':35,'Physiotherapy':65}}
-};
-let currentCountry = localStorage.getItem('hc_country') || 'UG';
-let currentLang = 'en';
-let currentClient = JSON.parse(localStorage.getItem('hc_current_client')||'null');
-let currentNurse = JSON.parse(localStorage.getItem('hc_current_nurse')||'null');
-let currentAdmin = null, gateOpen = false;
-let clientAccounts = JSON.parse(localStorage.getItem('hc_clients')||'[]');
-let nurseAccounts = JSON.parse(localStorage.getItem('hc_nurse_accounts')||'[]');
-let bookings = JSON.parse(localStorage.getItem('hc_bookings')||'[]');
-let pays = JSON.parse(localStorage.getItem('hc_pays')||'[]');
-let withdraws = JSON.parse(localStorage.getItem('hc_withdraws')||'[]');
-let nurseEarnings = JSON.parse(localStorage.getItem('hc_nurse_earnings')||'[]');
-let rejectedIds = JSON.parse(localStorage.getItem('hc_rejected_ids')||'[]');
-bookings.forEach(b=>{ if(!b.id) b.id='b'+Date.now()+Math.floor(Math.random()*999); });
-bookings = bookings.filter(b=>!rejectedIds.includes(b.id));
-localStorage.setItem('hc_bookings', JSON.stringify(bookings));
-function setCountry(c){ currentCountry=c; localStorage.setItem('hc_country',c); document.getElementById('currentCountryName').innerText=WORLD[c].name; updateServicePrice(); updateBal(); }
-function setLang(l){ currentLang=l; alert('Language: '+l); }
-function fmtAmt(a){ let w=WORLD[currentCountry]||WORLD.UG; return w.sym+' '+Number(a||0).toLocaleString(); }
-function updateServicePrice(){ let s=document.getElementById('bookService').value; let p=(WORLD[currentCountry]||WORLD.UG).prices[s]||50000; document.getElementById('servicePrice').innerText=fmtAmt(p); }
-function showEntryLogin(){ document.getElementById('entryCreate').classList.add('hidden'); document.getElementById('entryLogin').classList.remove('hidden'); }
-function showEntryCreate(){ document.getElementById('entryLogin').classList.add('hidden'); document.getElementById('entryCreate').classList.remove('hidden'); }
-function setLoggedIn(){ if(currentClient) document.getElementById('clientWelcome').innerText='Logged in as '+currentClient.name; }
-function updateClientUI(){ setLoggedIn(); let bn=document.getElementById('bookName'); if(bn&&currentClient&&!bn.value) bn.value=currentClient.name; let bp=document.getElementById('bookPhone'); if(bp&&currentClient&&!bp.value) bp.value=currentClient.phone; }
-function enterApp(acc){ currentClient=acc; localStorage.setItem('hc_current_client',JSON.stringify(acc)); setLoggedIn(); updateClientUI(); document.getElementById('entryGate').style.display='none'; }
-function createAccountAndEnter(){ let name=document.getElementById('entryName').value.trim(); let phone=document.getElementById('entryPhone').value.trim(); let pass=document.getElementById('entryPass').value.trim(); if(!name){document.getElementById('entryMsg').innerText='❌ Enter Full Name';return;} if(!phone){document.getElementById('entryMsg').innerText='❌ Enter Phone';return;} if(pass.length<4){document.getElementById('entryMsg').innerText='❌ Password Min 4';return;} let ex=clientAccounts.find(c=>c.phone===phone); if(ex){ex.pass=pass;ex.name=name;ex.country=currentCountry; localStorage.setItem('hc_clients',JSON.stringify(clientAccounts)); enterApp(ex); return;} let acc={name:name,phone:phone,pass:pass,country:currentCountry,lang:currentLang,date:new Date().toLocaleString()}; clientAccounts.push(acc); localStorage.setItem('hc_clients',JSON.stringify(clientAccounts)); if(window.db) window.db.collection('clients').add(acc).catch(()=>{}); enterApp(acc); }
-function loginAndEnter(){ let phone=document.getElementById('entryLoginPhone').value.trim(); let pass=document.getElementById('entryLoginPass').value.trim(); if(!phone||!pass){document.getElementById('entryMsg').innerText='❌ Enter Phone + Password';return;} let acc=clientAccounts.find(c=>c.phone===phone); if(!acc){ let na={name:'User '+phone,phone:phone,pass:pass,country:currentCountry,date:new Date().toLocaleString()}; clientAccounts.push(na); localStorage.setItem('hc_clients',JSON.stringify(clientAccounts)); enterApp(na); return; } if(String(acc.pass).trim()===pass){ enterApp(acc); } else { document.getElementById('entryMsg').innerText='❌ Wrong Password'; } }
-function loginClientFromLoginPage(){ let phone=document.getElementById('loginPhone').value.trim(); let pass=document.getElementById('loginPass').value.trim(); if(!phone||!pass){document.getElementById('loginMsg').innerText='❌ Enter Phone + Password';return;} let acc=clientAccounts.find(c=>c.phone===phone); if(!acc){ let na={name:'User '+phone,phone:phone,pass:pass,country:currentCountry,date:new Date().toLocaleString()}; clientAccounts.push(na); localStorage.setItem('hc_clients',JSON.stringify(clientAccounts)); currentClient=na; localStorage.setItem('hc_current_client',JSON.stringify(na)); setLoggedIn(); document.getElementById('loginMsg').innerText='✅ New account created!'; return; } if(String(acc.pass).trim()===pass){ currentClient=acc; localStorage.setItem('hc_current_client',JSON.stringify(acc)); setLoggedIn(); document.getElementById('loginMsg').innerText='✅ Welcome '+acc.name; } else { document.getElementById('loginMsg').innerText='❌ Wrong Password'; } }
-function getBal(){ return pays.reduce((s,p)=>s+(Number(p.amt)||0),0); }
-function updateBal(){ document.getElementById('bal').innerText=fmtAmt(getBal()); }
-function realDeposit(){ let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){document.getElementById('walletMsg').innerText='❌ Enter amount';return;} document.getElementById('walletMsg').innerText='Opening YOUR Pesapal store for '+fmtAmt(amt)+' - After paying, copy Transaction ID and tap Confirm below.'; window.open(PESAPAL_LINK,'_blank'); }
-function realDepositStripe(){ let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){document.getElementById('walletMsg').innerText='❌ Enter amount';return;} if(STRIPE_LINK.includes('PASTE_YOUR')){ document.getElementById('walletMsg').innerText='Paste your Stripe Payment Link in STRIPE_LINK first - Stripe Dashboard > Payment Links'; return; } window.open(STRIPE_LINK,'_blank'); }
-function confirmPaid(){ let amt=Number(document.getElementById('depAmt').value||0); if(amt<=0){document.getElementById('walletMsg').innerText='❌ Enter amount first';return;} let tx=prompt('Paste Pesapal Transaction ID from your Pesapal receipt:'); if(!tx) return; let p={id:'p'+Date.now(),amt:amt,phone:currentClient?currentClient.phone:'',tx:tx.trim(),country:currentCountry,date:new Date().toLocaleString(),status:'Pending - SUPER to verify Tx: '+tx.trim()}; pays.push(p); localStorage.setItem('hc_pays',JSON.stringify(pays)); if(window.db) window.db.collection('payments').add(p).catch(()=>{}); document.getElementById('walletMsg').innerText='✅ Saved! Tx: '+tx+' - SUPER will verify.'; updateBal(); renderApprovals(); }
-function bookNow(){ let name=document.getElementById('bookName').value.trim(); let phone=document.getElementById('bookPhone').value.trim(); let loc=document.getElementById('bookLocation').value.trim(); let date=document.getElementById('bookDate').value; let svc=document.getElementById('bookService').value; let notes=document.getElementById('bookNotes').value.trim(); if(!name||!phone||!loc||!date){document.getElementById('bookMsg').innerText='❌ Fill Name, Phone, Location, Date';return;} let price=(WORLD[currentCountry]||WORLD.UG).prices[svc]||50000; let b={id:'b'+Date.now(),service:svc,amount:price,name:name,phone:phone,location:loc,date:date,notes:notes,country:currentCountry,status:'Pending',createdAt:new Date().toLocaleString()}; bookings.push(b); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); if(window.db) window.db.collection('bookings').add(b).catch(()=>{}); document.getElementById('bookMsg').innerText='✅ Booking sent to SUPER! SUPER will assign a nurse.'; renderApprovals(); }
-function createNurseAccount(){ let name=document.getElementById('nurseName').value.trim(); let phone=document.getElementById('nursePhone').value.trim(); if(!name||!phone){alert('Fill Name + Phone first');return;} let pass=prompt('Create Nurse Password - Min 4 for '+phone); if(!pass||pass.trim().length<4){alert('Password Min 4');return;} pass=pass.trim(); let ex=nurseAccounts.find(n=>n.phone===phone); if(ex){ex.pass=pass;ex.name=name;} else nurseAccounts.push({name:name,phone:phone,pass:pass,country:currentCountry,date:new Date().toLocaleString()}); localStorage.setItem('hc_nurse_accounts',JSON.stringify(nurseAccounts)); currentNurse={name:name,phone:phone}; localStorage.setItem('hc_current_nurse',JSON.stringify(currentNurse)); alert('✅ Nurse Account Created! '+name); renderNurseAccountBox(); }
-function nurseLogin(){ let phone=prompt('Nurse Phone:'); if(!phone) return; let pass=prompt('Nurse Password:'); if(!pass) return; let acc=nurseAccounts.find(n=>n.phone===phone.trim()); if(!acc||String(acc.pass).trim()!==pass.trim()){alert('❌ Wrong phone or password');return;} currentNurse={name:acc.name,phone:acc.phone}; localStorage.setItem('hc_current_nurse',JSON.stringify(currentNurse)); alert('✅ Welcome Nurse '+acc.name); renderNurseAccountBox(); }
-function nurseLogout(){ currentNurse=null; localStorage.removeItem('hc_current_nurse'); renderNurseAccountBox(); }
-function renderNurseAccountBox(){ let box=document.getElementById('nurseAccountBox'); if(!box) return; let my=nurseEarnings.filter(e=>currentNurse&&e.nursePhone===currentNurse.phone); let tot=my.reduce((s,e)=>s+(e.nurseShare||0),0); box.innerHTML=currentNurse?'<b>Nurse: '+currentNurse.name+' ('+currentNurse.phone+')</b><br><span class="small">My Earnings: <b style="color:#16a34a">'+fmtAmt(tot)+'</b></span><br><button class="btn btnGrey" onclick="nurseLogout()">Logout Nurse</button>':'<p class="small">Create account to track your earnings.</p>'; }
-function renderPharmacy(){ let q=(document.getElementById('pharmaSearch').value||'').toLowerCase(); let meds=[{n:'Paracetamol',p:5000},{n:'Amoxicillin',p:12000},{n:'Vitamin C',p:8000},{n:'ORS',p:3000}]; let f=meds.filter(m=>m.n.toLowerCase().includes(q)); document.getElementById('pharmacyList').innerHTML=f.map(m=>'<div class="item">'+m.n+' - '+fmtAmt(m.p)+'</div>').join(''); }
-function getPasswords(){ return JSON.parse(localStorage.getItem('hc_passwords')||'{}'); }
-function tapHiddenAdmin(){ document.getElementById('adminCard').scrollIntoView({behavior:'smooth'}); }
-function adminLogin(){ let role=document.getElementById('adminRole').value; let pass=document.getElementById('adminPass').value.trim(); let pw=getPasswords(); if(pass===pw[role]){ currentAdmin=role; gateOpen=true; document.getElementById('adminLoginMsg').innerText='✅ Gate Open!'; showMyDuties(); renderApprovals(); } else { document.getElementById('adminLoginMsg').innerText='❌ Wrong Password for '+role; } }
-function showMyDuties(){ document.getElementById('superDash').classList.add('hidden'); document.getElementById('joyDash').classList.add('hidden'); document.getElementById('jabethDash').classList.add('hidden'); if(currentAdmin==='SUPER') document.getElementById('superDash').classList.remove('hidden'); if(currentAdmin==='JOY') document.getElementById('joyDash').classList.remove('hidden'); if(currentAdmin==='JABETH') document.getElementById('jabethDash').classList.remove('hidden'); }
-function renderApprovals(){ let el=document.getElementById('approvalsList'); if(!el) return; let html='<h4>Bookings ('+bookings.length+')</h4>'+bookings.map((b,i)=>'<div class="item"><b>'+b.service+'</b> - '+b.name+' - '+fmtAmt(b.amount)+'<br>'+b.location+' | '+b.date+'<br><button onclick="approveBooking('+i+')">Approve</button> <button onclick="rejectBooking('+i+')">Reject</button></div>').join(''); html+='<h4>Payments ('+pays.length+')</h4>'+pays.map((p,i)=>'<div class="item">'+fmtAmt(p.amt)+' - Tx: '+p.tx+' - '+p.status+'<br><button onclick="approvePayment('+i+')">Approve</button> <button onclick="rejectPayment('+i+')">Reject</button></div>').join(''); el.innerHTML=html||'No approvals yet.'; updateWithdrawUI(); }
-function approveBooking(i){ bookings[i].status='Approved'; localStorage.setItem('hc_bookings',JSON.stringify(bookings)); renderApprovals(); alert('✅ Booking Approved'); }
-function rejectBooking(i){ let b=bookings[i]; if(b&&b.id){ rejectedIds.push(b.id); localStorage.setItem('hc_rejected_ids',JSON.stringify(rejectedIds)); } bookings.splice(i,1); localStorage.setItem('hc_bookings',JSON.stringify(bookings)); renderApprovals(); }
-function approvePayment(i){ pays[i].status='Paid ✅ - Approved by SUPER'; localStorage.setItem('hc_pays',JSON.stringify(pays)); renderApprovals(); alert('✅ Approved for '+pays[i].phone); }
-function rejectPayment(i){ if(confirm('Reject payment for '+pays[i].phone+'?')){ pays.splice(i,1); localStorage.setItem('hc_pays',JSON.stringify(pays)); renderApprovals(); } }
-function getWithdrawStats(){ let total=pays.reduce((s,p)=>s+(Number(p.amt)||0),0); let earns={SUPER:Math.round(total*0.8),JOY:Math.round(total*0.1),JABETH:Math.round(total*0.1)}; let withdrawn={SUPER:0,JOY:0,JABETH:0}; let pending={SUPER:0,JOY:0,JABETH:0}; withdraws.forEach(w=>{ if(w.status.includes('Paid')) withdrawn[w.who]+=w.amt; else if(w.status.includes('Pending')||w.status.includes('Waiting')) pending[w.who]+=w.amt; }); let balance={SUPER:earns.SUPER-withdrawn.SUPER-pending.SUPER,JOY:earns.JOY-withdrawn.JOY-pending.JOY,JABETH:earns.JABETH-withdrawn.JABETH-pending.JABETH}; return {total,earns,withdrawn,pending,balance}; }
-function requestWithdraw(who){ let amt=Number(prompt('Withdraw amount for '+who+' (Balance: '+fmtAmt(getWithdrawStats().balance[who])+')')||0); if(amt<=0){alert('Enter amount');return;} let stats=getWithdrawStats(); if(amt>stats.balance[who]){alert('❌ Not enough. Balance: '+fmtAmt(stats.balance[who]));return;} let phone=prompt('MoMo / Bank number:'); if(!phone) return; let method=prompt('Method - MoMo / Bank:')||'MoMo'; let w={who:who,amt:amt,phone:phone,method:method,status:who==='SUPER'?'Paid ✅ (SUPER - Self)':'Pending - Waiting SUPER Approval',date:new Date().toLocaleString(),createdAt:new Date().getTime()}; withdraws.push(w); localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); if(window.db) window.db.collection('withdraws').add(w).catch(()=>{}); alert('✅ Saved in app!'); updateWithdrawUI(); renderApprovals(); }
-function approvePaymentWithdraw(i){ let w=withdraws[i]; if(confirm('APPROVE? Send '+fmtAmt(w.amt)+' to '+w.phone+'?')){ w.status='Paid ✅ - Approved by SUPER'; localStorage.setItem('hc_withdraws',JSON.stringify(withdraws)); updateWithdrawUI(); renderApprovals(); alert('✅ Approved for '+w.who); } }
-function updateWithdrawUI(){ let s=getWithdrawStats(); let set=(id,val)=>{ let e=document.getElementById(id); if(e) e.innerText=val; }; set('jbTotal',fmtAmt(s.total)); set('jbTotalCollected',fmtAmt(s.total)); let el=document.getElementById('superApprovePayments'); if(el){ let pend=withdraws.filter(w=>w.status.includes('Pending')||w.status.includes('Waiting')); el.innerHTML=pend.length?pend.map((w,i)=>'<div class="item">⏳ WAITING - '+w.who+'<br>Amount: '+fmtAmt(w.amt)+' - '+w.phone+'</div>').join(''):'<div class="item">✅ No pending payments.</div>'; } }
-function enableNotifications(){ if('Notification' in window){ Notification.requestPermission().then(p=>{ if(p==='granted'){ new Notification('Home Care Hero 🔔',{body:'In-app alarm ON'}); alert('✅ Notifications ON'); } else alert('Allow Notifications'); }); } }
-function getBaseLink(){ return location.origin + location.pathname; }
-function shareAppLink(){ let link=getBaseLink()+'?country='+currentCountry; let msg='🏥 Home Care Hero 🌍\n\nTrusted nurse to your home, any country. FREE to join. Pay INSIDE app only.\n\nTap link:\n'+link; if(navigator.share){ navigator.share({title:'Home Care Hero',text:msg,url:link}).catch(()=>{}); } else { navigator.clipboard.writeText(msg).then(()=>{ document.getElementById('shareMsg').innerText='✅ Link Copied!'; }); } }
-function bookService(s){ document.getElementById('bookService').value=s; updateServicePrice(); document.getElementById('homeCard').scrollIntoView({behavior:'smooth'}); }
-function getMyLocation(elId){ if(!navigator.geolocation){ document.getElementById(elId).innerText='GPS not supported'; return; } document.getElementById(elId).innerText='Getting GPS...'; navigator.geolocation.getCurrentPosition(pos=>{ document.getElementById('bookLocation').value='GPS: '+pos.coords.latitude.toFixed(4)+', '+pos.coords.longitude.toFixed(4); document.getElementById(elId).innerText='✅ GPS captured'; },()=>{ document.getElementById(elId).innerText='❌ GPS denied, type location manually'; }); }
-document.getElementById('countrySelect').value=currentCountry;
-document.getElementById('currentCountryName').innerText=(WORLD[currentCountry]||WORLD.UG).name;
-updateServicePrice(); updateBal(); renderPharmacy(); renderNurseAccountBox(); renderApprovals(); setLoggedIn(); updateClientUI();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ===== GATE PASSWORD =====
+const GATE_PASSWORD = 'HERO2026';
+function checkGate(){
+  let v = document.getElementById('gate-pass').value;
+  if(v === GATE_PASSWORD){
+    alert("Gate Open! Welcome HERO");
+    show('page-entry');
+  } else {
+    alert("Wrong Gate Password");
+  }
+}
+
+function show(id){
+  ['page-gate','page-entry','page-signup','page-login','page-book','page-admin','page-admin-dash','page-nurse','page-nurse-dash'].forEach(p=>document.getElementById(p).classList.add('hidden'));
+  document.getElementById(id).classList.remove('hidden');
+}
+function getUsers(){ try{return JSON.parse(localStorage.getItem('hc_users')||'{}')}catch(e){return {}} }
+function saveUsers(u){ localStorage.setItem('hc_users', JSON.stringify(u)) }
+
+async function getPasswords(){
+  try{
+    let doc = await db.collection('settings').doc('passwords').get();
+    if(doc.exists) return doc.data();
+  }catch(e){}
+  return {SUPER:'2215',JOY:'JOY2026',JABETH:'JABETH2026'};
+}
+async function savePasswords(p){
+  try{ await db.collection('settings').doc('passwords').set(p); }catch(e){ alert("Cloud save failed - check Firebase Rules."); }
+  localStorage.setItem('hc_passwords', JSON.stringify(p));
+}
+
+let currentUser=null;
+function signup(){
+  let name=document.getElementById('su-name').value.trim();
+  let phone=document.getElementById('su-phone').value.trim();
+  let pass=document.getElementById('su-pass').value;
+  let country=document.getElementById('su-country').value.trim()||'Uganda';
+  if(!name||!phone||!pass) return alert("Fill all");
+  let users=getUsers(); users[phone]={name,phone,pass,country,wallet:0}; saveUsers(users);
+  alert("Account Created! Login now."); show('page-login');
+}
+function login(){
+  let phone=document.getElementById('li-phone').value.trim();
+  let pass=document.getElementById('li-pass').value;
+  let users=getUsers();
+  if(users[phone] && users[phone].pass===pass){
+    currentUser=users[phone]; document.getElementById('user-badge').innerText=currentUser.name;
+    document.getElementById('bk-name').value=currentUser.name;
+    updateWalletLine(); show('page-book');
+  } else alert("Wrong Phone or Password");
+}
+function updateWalletLine(){ if(currentUser) document.getElementById('wallet-line').innerText="Wallet: UGX "+(currentUser.wallet||0); }
+function logout(){ currentUser=null; show('page-gate'); }
+
+async function bookAndPay(method){
+  if(!currentUser) return alert("Login first");
+  let name=document.getElementById('bk-name').value;
+  let loc=document.getElementById('bk-location').value;
+  let service=document.getElementById('bk-service').value;
+  let country=document.getElementById('bk-country').value;
+  let amount=Number(document.getElementById('bk-amount').value||0);
+  let notes=document.getElementById('bk-notes').value;
+  if(!name||!loc||!amount) return alert("Fill patient, location, amount");
+  if(method==='wallet'){
+    if((currentUser.wallet||0) < amount) return alert("Wallet low. Use Pesapal.");
+    currentUser.wallet-=amount;
+    let users=getUsers(); users[currentUser.phone]=currentUser; saveUsers(users); updateWalletLine();
+  } else {
+    alert("Pesapal: You would be redirected to Pesapal here. For demo, we mark as Paid via Pesapal.");
+  }
+  let nurseShare=Math.round(amount*0.8);
+  let joyShare=Math.round(amount*0.1);
+  let jabethShare=amount-nurseShare-joyShare;
+  let booking={clientPhone:currentUser.phone,clientName:currentUser.name,patient:name,location:loc,service,country,amount,notes,method,status:'Paid - Waiting Nurse',nurseShare,joyShare,jabethShare,createdAt:new Date().toISOString(),assignedTo:'SUPER'};
+  try{
+    await db.collection('bookings').add(booking);
+    alert("✅ Booking Saved! Nurse: "+nurseShare+" | JOY: "+joyShare+" | JABETH: "+jabethShare);
+  }catch(e){ alert("Firebase Error: "+e.message); }
+  showMyBookings();
+}
+async function showMyBookings(){
+  let div=document.getElementById('my-bookings'); div.innerHTML="<h3>My Bookings</h3>";
+  try{
+    let snap=await db.collection('bookings').where('clientPhone','==',currentUser.phone).get();
+    if(snap.empty) div.innerHTML+="<p class='small'>No bookings yet</p>";
+    snap.forEach(d=>{ let b=d.data(); div.innerHTML+=`<div class='booking'><b>${b.service}</b> - ${b.patient}<br>${b.location} | ${b.country}<br>Amount: ${b.amount} | ${b.status}<br><small>${b.method}</small></div>` });
+  }catch(e){ div.innerHTML+="Error: "+e.message }
+}
+
+let currentAdmin=null;
+async function adminLogin(){
+  let user=document.getElementById('ad-user').value;
+  let pass=document.getElementById('ad-pass').value;
+  let p=await getPasswords();
+  if(p[user]===pass){
+    currentAdmin=user; document.getElementById('admin-name').innerText=user;
+    alert("Gate Open! Welcome "+user);
+    show('page-admin-dash'); loadAdmin();
+  } else alert("Wrong Password");
+}
+async function changeAdminPass(){
+  let np=document.getElementById('ad-newpass').value;
+  if(!np) return alert("Type new password");
+  let p=await getPasswords(); p[currentAdmin]=np; await savePasswords(p);
+  alert("Cloud Password Changed! Now works on ALL phones: "+currentAdmin+" / "+np);
+}
+async function loadAdmin(){
+  let div=document.getElementById('admin-bookings'); div.innerHTML="<h3>All Bookings - WORLD</h3>";
+  let stats=document.getElementById('admin-stats');
+  try{
+    let snap=await db.collection('bookings').orderBy('createdAt','desc').get();
+    let total=0, nurseTotal=0, joyTotal=0, jabTotal=0;
+    snap.forEach(d=>{ let b=d.data(); total+=b.amount||0; nurseTotal+=b.nurseShare||0; joyTotal+=b.joyShare||0; jabTotal+=b.jabethShare||0;
+      div.innerHTML+=`<div class='booking'><b>${b.service}</b> - ${b.patient} (${b.clientName})<br>${b.location} | ${b.country}<br>Amount: ${b.amount} | Nurse: ${b.nurseShare} | JOY: ${b.joyShare} | JABETH: ${b.jabethShare}<br>Status: ${b.status}<br><button onclick="withdraw('${d.id}',${b.amount})">Withdraw / Settle 80/10/10</button></div>`;
+    });
+    stats.innerText=`Total: ${total} | Nurse Pool: ${nurseTotal} | JOY: ${joyTotal} | JABETH: ${jabTotal}`;
+    if(snap.empty) div.innerHTML+="<p class='small'>No bookings yet</p>";
+  }catch(e){ div.innerHTML+="Error: "+e.message }
+}
+async function withdraw(id,amount){
+  if(!confirm("Settle this booking? Nurse gets 80%, JOY 10%, JABETH 10%")) return;
+  try{ await db.collection('bookings').doc(id).update({status:'Settled - Withdrawn'}); alert("Settled! Nurse 80% sent."); loadAdmin(); }catch(e){ alert(e.message) }
+}
+
+function nurseLogin(){
+  let phone=document.getElementById('nu-phone').value.trim();
+  let pass=document.getElementById('nu-pass').value;
+  let users=getUsers();
+  if(users[phone] && users[phone].pass===pass){
+    document.getElementById('nurse-info').innerText="Nurse: "+users[phone].name+" | "+phone;
+    show('page-nurse-dash'); loadNurseBookings();
+  } else alert("Wrong Nurse Phone/Password - Create account first, then login as Nurse");
+}
+async function loadNurseBookings(){
+  let div=document.getElementById('nurse-bookings'); div.innerHTML="<h3>Available Jobs</h3>";
+  try{
+    let snap=await db.collection('bookings').get();
+    snap.forEach(d=>{ let b=d.data(); div.innerHTML+=`<div class='booking'><b>${b.service}</b> - ${b.patient}<br>${b.location} | ${b.country}<br>Pay to Nurse: ${b.nurseShare} (80%)<br>Status: ${b.status}</div>` });
+  }catch(e){ div.innerHTML+="Error: "+e.message }
+}
 </script>
 </body>
 </html>
