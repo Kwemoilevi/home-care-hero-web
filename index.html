@@ -14,25 +14,30 @@ header h1{margin:0;font-size:22px} header p{margin:2px;font-size:12px;opacity:.9
 .card{background:#fff;border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,.08)}
 input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #ccc;border-radius:10px;font-size:15px}
 button{width:100%;padding:13px;border:0;border-radius:10px;background:#0b3d5e;color:#fff;font-weight:700;font-size:15px;cursor:pointer;margin-top:6px}
-button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} button.red{background:#b91c1c} button.gray{background:#e5e7eb;color:#111}
+button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} button.red{background:#b91c1c}
 .small{font-size:12px;color:#555} .center{text-align:center}
 .hidden{display:none} .row{display:flex;gap:8px} .row button{flex:1}
 .badge{display:inline-block;background:#ffe9a8;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700}
 .booking{border:1px solid #eee;border-radius:10px;padding:10px;margin:8px 0}
 .stat{background:#f0f4f8;border-radius:10px;padding:10px;margin:6px 0;font-size:14px}
-/* FAINT ADMIN AT BOTTOM */
 .bottom-admin{position:fixed;bottom:6px;left:0;right:0;text-align:center;z-index:99}
 .bottom-admin button{background:transparent;border:0;color:#cbd5e1;opacity:.35;font-size:11px;padding:8px;letter-spacing:2px;cursor:pointer}
-.bottom-admin button:active{opacity:.8}
+/* ALARM BANNER */
+#alarm-banner{position:fixed;top:0;left:0;right:0;background:#dc2626;color:#fff;padding:14px;text-align:center;font-weight:700;z-index:9999;display:none;animation:blink 0.8s infinite}
+@keyframes blink{50%{opacity:.6}}
+#alarm-banner button{background:#fff;color:#dc2626;width:auto;padding:6px 14px;margin-left:10px;font-size:13px}
 </style>
 </head>
 <body>
+<div id="alarm-banner">🚨 <span id="alarm-text">NEW BOOKING!</span> <button onclick="stopAlarm()">STOP / VIEW</button></div>
 <header><h1>🌍 HOME CARE HERO - WORLD</h1><p>SUPER • JOY • KIMTAI | Global Care</p></header>
 <div class="wrap">
 
 <div id="page-entry" class="card">
 <h2>Welcome Hero</h2>
 <p class="small">Care anywhere in the WORLD. Book a nurse, pay with Pesapal or Wallet.</p>
+<button class="gold" onclick="enableAlarm()">🔔 Enable Notifications + Alarm</button>
+<p class="small center">Tap once to allow sound + notifications. Nurses & Admins must tap this.</p>
 <div class="row"><button onclick="show('page-login')">Client Login</button><button class="green" onclick="show('page-signup')">Create Account</button></div>
 <button onclick="show('page-nurse')">Nurse Login</button>
 <p class="center small">New here? Create account first.</p>
@@ -87,6 +92,8 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <div id="page-super" class="card hidden">
 <h2>👑 SUPER Dashboard</h2>
 <p class="small">Manages ALL bookings + Approves payments for admins</p>
+<button class="gold" onclick="enableAlarm()">🔔 Enable Alarm</button>
+<button onclick="testAlarm()">🚨 Test Alarm Sound</button>
 <div class="stat" id="super-stats"></div>
 <input id="super-newpass" type="password" placeholder="Change my password">
 <button class="gold" onclick="changeAdminPass()">Change My Password</button>
@@ -100,6 +107,8 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <div id="page-joy" class="card hidden">
 <h2>✅ JOY CHELANGAT Dashboard</h2>
 <p class="small">Approves Nurses</p>
+<button class="gold" onclick="enableAlarm()">🔔 Enable Alarm</button>
+<button onclick="testAlarm()">🚨 Test Alarm Sound</button>
 <div class="stat" id="joy-stats"></div>
 <input id="joy-newpass" type="password" placeholder="Change my password">
 <button class="gold" onclick="changeAdminPass()">Change My Password</button>
@@ -113,6 +122,8 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <div id="page-kimtai" class="card hidden">
 <h2>📅 KIMTAI JABETH Dashboard</h2>
 <p class="small">In Charge of Bookings</p>
+<button class="gold" onclick="enableAlarm()">🔔 Enable Alarm</button>
+<button onclick="testAlarm()">🚨 Test Alarm Sound</button>
 <div class="stat" id="kimtai-stats"></div>
 <input id="kimtai-newpass" type="password" placeholder="Change my password">
 <button class="gold" onclick="changeAdminPass()">Change My Password</button>
@@ -139,13 +150,13 @@ button.green{background:#0a7a42} button.gold{background:#d4a017;color:#000} butt
 <div id="page-nurse-dash" class="card hidden">
 <h2>Nurse Dashboard</h2>
 <p class="small" id="nurse-info"></p>
+<button class="gold" onclick="enableAlarm()">🔔 Enable Alarm</button>
+<button onclick="testAlarm()">🚨 Test Alarm Sound</button>
 <div id="nurse-bookings"></div>
 <button class="red" onclick="logout()">Logout</button>
 </div>
 
 </div>
-
-<!-- FAINT AT BOTTOM - ONLY YOU KNOW -->
 <div class="bottom-admin"><button onclick="show('page-admin')">• • •</button></div>
 
 <script>
@@ -153,6 +164,81 @@ const firebaseConfig = { apiKey: "YOUR_API_KEY", authDomain: "home-care-hero.fir
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 const GATE_PASSWORD = 'HERO2026';
+
+// ===== ALARM SYSTEM FOR NURSES + ADMINS =====
+let alarmInterval=null, alarmAudioCtx=null, alarmEnabled=false, lastBookingCount=0, lastBookingIds=new Set();
+
+async function enableAlarm(){
+  alarmEnabled=true;
+  try{ if('Notification' in window) await Notification.requestPermission(); }catch(e){}
+  try{ alarmAudioCtx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){}
+  // Save that this device wants alarms
+  localStorage.setItem('hc_alarm','on');
+  alert("🔔 Alarm ON! You will hear 🚨 when new booking comes.");
+  testAlarm();
+}
+function playBeep(){
+  try{
+    if(!alarmAudioCtx) alarmAudioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    let ctx=alarmAudioCtx;
+    for(let i=0;i<3;i++){
+      let o=ctx.createOscillator(), g=ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.type='square'; o.frequency.value=880;
+      g.gain.setValueAtTime(0.5, ctx.currentTime + i*0.4);
+      g.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + i*0.4 + 0.3);
+      o.start(ctx.currentTime + i*0.4); o.stop(ctx.currentTime + i*0.4 + 0.35);
+    }
+  }catch(e){}
+}
+function triggerAlarm(msg){
+  if(!alarmEnabled && localStorage.getItem('hc_alarm')!=='on') return;
+  document.getElementById('alarm-text').innerText=msg;
+  document.getElementById('alarm-banner').style.display='block';
+  playBeep();
+  if(navigator.vibrate) navigator.vibrate([500,200,500,200,500]);
+  try{ if('Notification' in window && Notification.permission==='granted'){ new Notification('🚨 HOME CARE HERO', {body: msg}); } }catch(e){}
+  // Keep beeping every 2 sec until stopped
+  clearInterval(alarmInterval);
+  alarmInterval=setInterval(()=>{ playBeep(); if(navigator.vibrate) navigator.vibrate([500,200,500]); }, 2000);
+}
+function stopAlarm(){
+  document.getElementById('alarm-banner').style.display='none';
+  clearInterval(alarmInterval);
+  if(navigator.vibrate) navigator.vibrate(0);
+}
+function testAlarm(){ alarmEnabled=true; triggerAlarm('TEST ALARM - This is how you will hear new bookings!'); }
+function notifyAll(msg){
+  // Save notification to Firestore so all devices can see it
+  db.collection('notifications').add({message:msg, createdAt:new Date().toISOString(), seen:false}).catch(()=>{});
+  triggerAlarm(msg);
+}
+// Listen live for new bookings - nurses + admins hear it instantly
+db.collection('bookings').orderBy('createdAt','desc').limit(1).onSnapshot(snap=>{
+  snap.forEach(d=>{
+    let b=d.data();
+    if(!lastBookingIds.has(d.id)){
+      if(lastBookingIds.size>0){
+        // Only alarm if we are logged in as nurse or admin
+        if(currentAdmin || document.getElementById('page-nurse-dash').classList.contains('hidden')===false){
+          triggerAlarm(`NEW BOOKING! ${b.service} - ${b.patient} - ${b.location} - UGX ${b.amount}`);
+        }
+      }
+      lastBookingIds.add(d.id);
+    }
+  });
+});
+// Also listen for notifications collection
+db.collection('notifications').orderBy('createdAt','desc').limit(1).onSnapshot(snap=>{
+  snap.forEach(d=>{
+    let n=d.data();
+    if(n.createdAt && Date.now() - new Date(n.createdAt).getTime() < 15000){
+      // Don't double alarm if already triggered by booking listener
+    }
+  });
+});
+if(localStorage.getItem('hc_alarm')==='on') alarmEnabled=true;
+
 function show(id){
   ['page-entry','page-signup','page-login','page-book','page-admin','page-super','page-joy','page-kimtai','page-nurse','page-nurse-dash'].forEach(p=>document.getElementById(p).classList.add('hidden'));
   document.getElementById(id).classList.remove('hidden');
@@ -164,7 +250,7 @@ async function getPasswords(){
   return {SUPER:'2215',JOY:'JOY2026',JABETH:'JABETH2026'};
 }
 async function savePasswords(p){ try{ await db.collection('settings').doc('passwords').set(p); }catch(e){} localStorage.setItem('hc_passwords', JSON.stringify(p)); }
-let currentUser=null, currentAdmin=null, selectedAdmin=null;
+let currentUser=null, currentAdmin=null, selectedAdmin=null, currentNursePhone=null;
 function selectAdmin(name){ selectedAdmin=name; document.getElementById('selected-admin').innerText='Selected: '+name+' - Now enter Gate + Your Password'; }
 function signup(){
   let name=document.getElementById('su-name').value.trim(), phone=document.getElementById('su-phone').value.trim(), pass=document.getElementById('su-pass').value, country=document.getElementById('su-country').value.trim()||'Uganda', role=document.getElementById('su-role').value;
@@ -177,7 +263,7 @@ function login(){
   if(users[phone] && users[phone].pass===pass){ currentUser=users[phone]; document.getElementById('user-badge').innerText=currentUser.name; document.getElementById('bk-name').value=currentUser.name; updateWalletLine(); show('page-book'); } else alert("Wrong Phone or Password");
 }
 function updateWalletLine(){ if(currentUser) document.getElementById('wallet-line').innerText="Wallet: UGX "+(currentUser.wallet||0); }
-function logout(){ currentUser=null; currentAdmin=null; selectedAdmin=null; show('page-entry'); }
+function logout(){ currentUser=null; currentAdmin=null; selectedAdmin=null; currentNursePhone=null; stopAlarm(); show('page-entry'); }
 function calcSplit(amount){
   let nurseShare=Math.round(amount*0.80); let adminTotal=Math.round(amount*0.15); let superShare=Math.round(adminTotal*0.80); let joyShare=Math.round(adminTotal*0.10); let kimtaiShare=adminTotal-superShare-joyShare; let platformShare=amount-nurseShare-adminTotal;
   return {nurseShare,adminTotal,superShare,joyShare,kimtaiShare,platformShare};
@@ -186,11 +272,18 @@ async function bookAndPay(method){
   if(!currentUser) return alert("Login first");
   let name=document.getElementById('bk-name').value, loc=document.getElementById('bk-location').value, service=document.getElementById('bk-service').value, country=document.getElementById('bk-country').value, amount=Number(document.getElementById('bk-amount').value||0), notes=document.getElementById('bk-notes').value;
   if(!name||!loc||!amount) return alert("Fill patient, location, amount");
-  if(method==='wallet'){ if((currentUser.wallet||0)<amount) return alert("Wallet low. Use Pesapal."); currentUser.wallet-=amount; let users=getUsers(); users[currentUser.phone]=currentUser; saveUsers(users); updateWalletLine(); }
-  else alert("Pesapal: Redirect to Pesapal here. Marked as Paid for demo.");
+  if(method==='wallet'){
+    if((currentUser.wallet||0)<amount) return alert("Wallet low. Use Pesapal.");
+    currentUser.wallet-=amount; let users=getUsers(); users[currentUser.phone]=currentUser; saveUsers(users); updateWalletLine();
+  }
   let s=calcSplit(amount);
-  let booking={clientPhone:currentUser.phone,clientName:currentUser.name,patient:name,location:loc,service,country,amount,notes,method,status:'Paid - Waiting Nurse',...s,createdAt:new Date().toISOString(),createdBy:'Client'};
-  try{ await db.collection('bookings').add(booking); alert(`✅ Booking Saved! Nurse ${s.nurseShare} | SUPER ${s.superShare} | JOY ${s.joyShare} | KIMTAI ${s.kimtaiShare} | Platform ${s.platformShare}`); }catch(e){ alert("Firebase Error: "+e.message); }
+  let booking={clientPhone:currentUser.phone,clientName:currentUser.name,patient:name,location:loc,service,country,amount,notes,method,status: method==='wallet'?'Paid - Waiting Nurse':'Pesapal - Pending Confirmation',...s,createdAt:new Date().toISOString(),createdBy:'Client'};
+  try{ await db.collection('bookings').add(booking);
+    // 🚨 ALARM TO NURSES + ADMINS
+    notifyAll(`NEW BOOKING! ${service} - ${name} - ${loc} - UGX ${amount}`);
+    if(method==='pesapal'){ alert("Booking created. Complete payment in Pesapal to confirm."); }
+    else { alert(`Booking Saved! Nurse ${s.nurseShare} | SUPER ${s.superShare} | JOY ${s.joyShare} | KIMTAI ${s.kimtaiShare} | Platform ${s.platformShare}`); }
+  }catch(e){ alert("Firebase Error: "+e.message); }
   showMyBookings();
 }
 async function showMyBookings(){
@@ -225,7 +318,7 @@ async function loadSuper(){
     stats.innerHTML=`Total: ${total} | Nurse Pool: ${nurseTotal} | SUPER: ${superTotal} | JOY: ${joyTotal} | KIMTAI: ${kimTotal}`;
   }catch(e){ div.innerHTML="Error: "+e.message }
 }
-async function superApprovePayment(id){ if(!confirm("Approve this payment? SUPER approves admin payouts.")) return; try{ await db.collection('bookings').doc(id).update({status:'Approved by SUPER - Paid'}); alert("SUPER Approved!"); loadSuper(); }catch(e){ alert(e.message) } }
+async function superApprovePayment(id){ if(!confirm("Approve this payment? SUPER approves admin payouts.")) return; try{ await db.collection('bookings').doc(id).update({status:'Approved by SUPER - Paid'}); notifyAll(`PAYMENT APPROVED BY SUPER! Booking ${id} Paid.`); alert("SUPER Approved!"); loadSuper(); }catch(e){ alert(e.message) } }
 async function superDeleteBooking(id){ if(!confirm("SUPER: Delete this booking?")) return; try{ await db.collection('bookings').doc(id).delete(); loadSuper(); }catch(e){ alert(e.message) } }
 function loadJoy(){
   let users=getUsers(); let wait=document.getElementById('joy-nurses'), appr=document.getElementById('joy-approved'), stats=document.getElementById('joy-stats'); wait.innerHTML=""; appr.innerHTML=""; let countW=0, countA=0;
@@ -233,7 +326,7 @@ function loadJoy(){
   if(countW===0) wait.innerHTML="<p class='small'>No nurses waiting</p>"; if(countA===0) appr.innerHTML="<p class='small'>No approved nurses yet</p>";
   stats.innerHTML=`Waiting: ${countW} | Approved: ${countA} | Your share: 10% of Admin 15%`;
 }
-function joyApproveNurse(phone){ let users=getUsers(); users[phone].approved=true; saveUsers(users); alert("JOY Approved: "+users[phone].name); loadJoy(); }
+function joyApproveNurse(phone){ let users=getUsers(); users[phone].approved=true; saveUsers(users); notifyAll(`NURSE APPROVED! ${users[phone].name} can now take jobs.`); alert("JOY Approved: "+users[phone].name); loadJoy(); }
 function joyRejectNurse(phone){ let users=getUsers(); delete users[phone]; saveUsers(users); alert("Nurse rejected."); loadJoy(); }
 async function loadKimtai(){
   let div=document.getElementById('kimtai-bookings'), stats=document.getElementById('kimtai-stats'); div.innerHTML="Loading...";
@@ -243,14 +336,15 @@ async function kimtaiCreateBooking(){
   let patient=document.getElementById('k-patient').value, phone=document.getElementById('k-phone').value, loc=document.getElementById('k-location').value, service=document.getElementById('k-service').value, amount=Number(document.getElementById('k-amount').value||0);
   if(!patient||!loc||!amount) return alert("Fill patient, location, amount");
   let s=calcSplit(amount); let booking={clientPhone:phone||'KIMTAI',clientName:patient,patient,location:loc,service,country:'Uganda',amount,notes:'Created by KIMTAI',method:'KIMTAI',status:'Created by KIMTAI - Waiting Nurse',...s,createdAt:new Date().toISOString(),createdBy:'KIMTAI JABETH'};
-  try{ await db.collection('bookings').add(booking); alert("KIMTAI Created Booking for "+patient); loadKimtai(); }catch(e){ alert(e.message) }
+  try{ await db.collection('bookings').add(booking); notifyAll(`NEW BOOKING by KIMTAI! ${service} - ${patient} - ${loc}`); alert("KIMTAI Created Booking for "+patient); loadKimtai(); }catch(e){ alert(e.message) }
 }
-async function kimtaiAssign(id){ let nurse=prompt("Enter Nurse Phone to assign:"); if(!nurse) return; try{ await db.collection('bookings').doc(id).update({status:'Assigned by KIMTAI to '+nurse}); alert("Assigned!"); loadKimtai(); }catch(e){ alert(e.message) } }
+async function kimtaiAssign(id){ let nurse=prompt("Enter Nurse Phone to assign:"); if(!nurse) return; try{ await db.collection('bookings').doc(id).update({status:'Assigned by KIMTAI to '+nurse}); notifyAll(`NURSE ASSIGNED! Booking ${id} assigned to ${nurse}`); alert("Assigned!"); loadKimtai(); }catch(e){ alert(e.message) } }
 function nurseLogin(){
   let phone=document.getElementById('nu-phone').value.trim(), pass=document.getElementById('nu-pass').value; let users=getUsers();
   if(users[phone] && users[phone].pass===pass){
     if(users[phone].role!=='nurse') return alert("This account is not a Nurse");
     if(!users[phone].approved) return alert("Wait for JOY to approve you first.");
+    currentNursePhone=phone;
     document.getElementById('nurse-info').innerText="Nurse: "+users[phone].name+" | "+phone; show('page-nurse-dash'); loadNurseBookings();
   } else alert("Wrong Nurse Phone/Password");
 }
