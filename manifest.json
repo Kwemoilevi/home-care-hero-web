@@ -1,24 +1,23 @@
 {
-  "name": "Hom Care Hero - Trusted Nurses Worldwide",
-  "short_name": "Hom Care Hero",
-  "description": "Book a Trusted Nurse Anywhere - Elderly, Wound Care, Broken Bones, Physiotherapy - Worldwide",
-  "start_url": "/",
+  "name": "Home Care Hero",
+  "short_name": "Home Care Hero",
+  "description": "Trusted Nurses To Your Home - Book a nurse, pay via Pesapal, track on GPS.",
+  "start_url": "https://home-care-web.vercel.app/",
   "display": "standalone",
-  "background_color": "#FFF7ED",
-  "theme_color": "#7c3aed",
-  "orientation": "portrait",
+  "background_color": "#0f766e",
+  "theme_color": "#0f766e",
   "icons": [
     {
-      "src": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=192&q=80",
-      "sizes": "192x192",
+      "src": "icon.png",
+      "sizes": "512x512",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "https://images.unsplash.com/photo-1576765608535-5f04d1e3f289?w=512&q=80",
+      "src": "icon.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any"
+      "purpose": "maskable"
     }
   ]
 }
