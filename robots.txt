@@ -1,4 +1,3 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://home-care-hero-web.vercel.app/sitemap.xml
+Sitemap: https://home-care-web.vercel.app/sitemap.xml
