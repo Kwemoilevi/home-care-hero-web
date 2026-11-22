@@ -1,23 +1,13 @@
 {
   "name": "Home Care Hero",
   "short_name": "Home Care Hero",
-  "description": "Trusted Nurses To Your Home - Book a nurse, pay via Pesapal, track on GPS.",
-  "start_url": "https://home-care-web.vercel.app/",
+  "description": "Trusted Nurses To Your Home - Book a nurse, pay via Pesapal, track on GPS",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f766e",
   "theme_color": "#0f766e",
   "icons": [
-    {
-      "src": "icon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any"
-    },
-    {
-      "src": "icon.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    }
+    { "src": "icon.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon.png", "sizes": "192x192", "type": "image/png", "purpose": "any" }
   ]
 }
