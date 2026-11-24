@@ -1,1 +1,41 @@
-{"name":"Home Care Hero","short_name":"Home Care Hero","start_url":"./index.html","display":"standalone","background_color":"#0f766e","theme_color":"#0f766e","icons":[{"src":"icon.png","sizes":"512x512","type":"image/png"}]}
+{
+  "name": "Home Care Hero",
+  "short_name": "Home Care Hero",
+  "description": "Home Care Hero - Manage carers, clients, visits, schedules and care reports in one simple app.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#2563eb",
+  "lang": "en",
+  "categories": ["business", "productivity", "health"],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-1.png",
+      "sizes": "1080x1920",
+      "type": "image/png",
+      "form_factor": "narrow"
+    }
+  ]
+}
